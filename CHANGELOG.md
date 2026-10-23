@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3 — 2026-10-23
+
+- Added the supplied Celloras logo to the README and preserved the original PNG bytes in `docs/assets/celloras-logo.png`.
+
 ## 0.1.2 — 2026-10-23
 
 - Simplified signup to email, password and password confirmation. First/last name are optional administrative attributes; registration and subsequent login do not require them.

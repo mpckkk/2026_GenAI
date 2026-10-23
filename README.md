@@ -1,5 +1,9 @@
 # Celloras
 
+<p align="center">
+  <img src="docs/assets/celloras-logo.png" alt="Celloras — plant cell logo and wordmark" width="560" />
+</p>
+
 A soybean cell-annotation research workspace for the Open Agent Hackathon 2026.
 
 All work lives on [`celloras.com`](https://github.com/mpckkk/2026_GenAI/tree/celloras.com). The initial foundation includes a landing page, Keycloak registration/login/logout, owned projects in PostgreSQL, and service health. Scientific annotation, H-MEM, Zetaris, Nemotron, NeMo Files and NVIDIA tracing are explicit pending integrations.
@@ -16,7 +20,7 @@ docker compose up --build -d
 
 Open http://localhost:3100 and choose **Get started**. Keycloak serves registration at http://localhost:8180. The generated `.env` contains local secrets and is ignored by Git; `npm run setup` refuses to overwrite it. The local admin username is `admin`; its generated password is `KEYCLOAK_ADMIN_PASSWORD` in that file.
 
-Direct screens: [Log in](http://localhost:3100/login) and [Create account](http://localhost:3100/register). Both use the Celloras black-and-white theme, following the [design kit](https://space.heyamigo.org/items/337333f2-4a2c-41c1-b09a-3bc8a58e9e79). Keycloak still handles credentials and validation. The supplied logo image is pending; the theme currently displays a text wordmark.
+Direct screens: [Log in](http://localhost:3100/login) and [Create account](http://localhost:3100/register). Both use the Celloras black-and-white theme, following the [design kit](https://space.heyamigo.org/items/337333f2-4a2c-41c1-b09a-3bc8a58e9e79). Keycloak still handles credentials and validation. The supplied logo is stored in [docs/assets/celloras-logo.png](docs/assets/celloras-logo.png); the auth theme currently displays a text wordmark.
 
 Registration asks only for email, password and password confirmation. First/last name are optional administrative attributes and are not part of signup.
 

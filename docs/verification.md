@@ -2,6 +2,10 @@
 
 Status is updated from actual runs, not inferred from configuration.
 
+## README logo — 2026-10-23
+
+Copied the supplied 1712×1152 PNG unchanged into `docs/assets/celloras-logo.png`; source and repository SHA-256 hashes match. Rendered the README with GitHub's Markdown API, opened the result locally in Chrome, confirmed the image loaded at 560px width and inspected the screenshot. Formatting checks passed. The original image bytes were also uploaded to Amigospace under Celloras Branding.
+
 ## Simplified signup — 2026-10-23
 
 - Registration now contains only email, password and confirmation. First/last name inputs are absent from the rendered form; Keycloak no longer requires them from end users.
