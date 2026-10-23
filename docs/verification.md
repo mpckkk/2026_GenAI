@@ -2,6 +2,13 @@
 
 Status is updated from actual runs, not inferred from configuration.
 
+## Simplified signup — 2026-10-23
+
+- Registration now contains only email, password and confirmation. First/last name inputs are absent from the rendered form; Keycloak no longer requires them from end users.
+- All three browser tests passed (7.4 seconds), including two real registrations without names, logout and subsequent login without a profile-completion prompt. Inspected updated desktop/mobile registration screenshots; the desktop card is 560px wide with larger padding and field spacing.
+- Applied and confirmed the profile configuration on the existing local realm. Imported the same configuration into a temporary real realm and confirmed both name attributes were optional and restricted to administration; removed only that temporary realm afterward.
+- Lint passed. The app, Keycloak and PostgreSQL remain healthy. Existing accounts and projects were preserved.
+
 ## Login and registration theme — 2026-10-23
 
 - Applied the Celloras black-and-white design kit to an inherited `keycloak.v2` theme; activated it in the existing local realm and confirmed the saved theme via the admin API.

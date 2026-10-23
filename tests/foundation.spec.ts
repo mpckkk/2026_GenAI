@@ -49,8 +49,8 @@ async function register(page: Page, email: string, password: string) {
   await page.goto("/register");
   await expect(page).toHaveURL(/localhost:8180/);
   await page.locator('input[name="email"]').fill(email);
-  await page.locator('input[name="firstName"]').fill("Test");
-  await page.locator('input[name="lastName"]').fill("Researcher");
+  await expect(page.locator('input[name="firstName"]')).toHaveCount(0);
+  await expect(page.locator('input[name="lastName"]')).toHaveCount(0);
   await page.locator('input[name="password"]').fill(password);
   await page.locator('input[name="password-confirm"]').fill(password);
   await page

@@ -16,7 +16,7 @@
     "db:migrate": "node --env-file=.env scripts/migrate.mjs",
     "setup": "node scripts/setup.mjs",
     "test:e2e": "playwright test",
-    "auth:theme": "node --env-file=.env scripts/keycloak-theme.mjs"
+    "auth:configure": "node --env-file=.env scripts/keycloak-configure.mjs"
   },
   "dependencies": {
     "next": "16.4.2",

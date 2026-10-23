@@ -1,7 +1,8 @@
 # Engineering notes
 
 - Read the current Amigospace design kit before styling screens. Celloras uses black/white, Inter or system sans, 8px controls and 400/600 weights. The earlier green/cream landing is not evidence of the agreed design direction. Do not recreate a supplied logo from a prose description; obtain its actual bytes.
-- Keycloak realm import skips existing realms. A theme requires both a mounted theme directory and a saved `loginTheme` setting; `npm run auth:theme` updates and confirms that setting locally.
+- Keycloak realm import skips existing realms. A theme requires both a mounted theme directory and a saved `loginTheme` setting; `npm run auth:configure` updates and confirms theme and signup settings locally.
+- User correction: signup should ask only for email/password/confirmation. First/last name do not belong in the first step. Configure their permissions and remove required rules in Keycloak; hiding required fields with CSS would break real registration. Keep the form spacious and review it as a signup experience, not only as a working provider form.
 - PatternFly login defaults add desktop container padding and switch the container to block layout on mobile. Override both explicitly, scope footer padding to direct children, and inspect screenshots at both widths. Passing account-flow tests alone does not prove the layout is correct.
 
 - Git branch naming should result in an actual branch when requested. `celloras.com` is the sole working branch; `main` is an empty baseline.

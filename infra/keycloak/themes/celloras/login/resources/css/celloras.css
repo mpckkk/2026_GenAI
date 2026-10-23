@@ -232,6 +232,36 @@ span.pf-v5-c-form-control:has(input[aria-invalid="true"]) {
   border-color: #a30000;
 }
 
+/* Signup needs room around the form, even after removing profile fields. */
+body[data-page-id="login-register"] .pf-v5-c-login__container {
+  max-width: 560px;
+  gap: 32px;
+}
+
+body[data-page-id="login-register"] .pf-v5-c-login__main-header {
+  padding: 40px 48px 24px;
+}
+
+body[data-page-id="login-register"] .pf-v5-c-login__main-body {
+  padding: 0 48px;
+}
+
+body[data-page-id="login-register"] .subtitle {
+  margin-bottom: 24px;
+  color: #666;
+  font-size: 13px;
+}
+
+#kc-register-form {
+  gap: 24px;
+}
+
+body[data-page-id="login-register"]
+  .pf-v5-c-login__main
+  > .pf-v5-c-login__main-footer {
+  padding: 24px 48px 40px;
+}
+
 @media (max-width: 480px) {
   .pf-v5-c-login {
     padding: 32px 16px;
@@ -241,11 +271,19 @@ span.pf-v5-c-form-control:has(input[aria-invalid="true"]) {
     padding: 24px 24px 20px;
   }
 
-  .pf-v5-c-login__main-body {
+  body[data-page-id="login-register"] .pf-v5-c-login__main-header {
+    padding: 32px 24px 24px;
+  }
+
+  .pf-v5-c-login__main-body,
+  body[data-page-id="login-register"] .pf-v5-c-login__main-body {
     padding: 0 24px;
   }
 
-  .pf-v5-c-login__main > .pf-v5-c-login__main-footer {
+  .pf-v5-c-login__main > .pf-v5-c-login__main-footer,
+  body[data-page-id="login-register"]
+    .pf-v5-c-login__main
+    > .pf-v5-c-login__main-footer {
     padding: 24px;
   }
 }

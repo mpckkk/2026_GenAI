@@ -49,6 +49,8 @@ test("branded auth screens, mobile layout and real validation", async ({
   await expect(
     page.getByLabel("Confirm password", { exact: false }),
   ).toBeVisible();
+  await expect(page.locator('input[name="firstName"]')).toHaveCount(0);
+  await expect(page.locator('input[name="lastName"]')).toHaveCount(0);
   await page.screenshot({
     path: testInfo.outputPath("register-mobile.png"),
     fullPage: true,

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2 — 2026-10-23
+
+- Simplified signup to email, password and password confirmation. First/last name are optional administrative attributes; registration and subsequent login do not require them.
+- Widened registration to 560px and increased card padding and field spacing, with a separate mobile layout.
+- Added the profile settings to realm import and renamed the existing setup command to `npm run auth:configure` to apply theme and signup settings to existing realms.
+
 ## 0.1.1 — 2026-10-23
 
 - Replaced the default Keycloak login/registration appearance with the Celloras design kit: black actions, white cards, system sans, 8px controls and responsive spacing.
