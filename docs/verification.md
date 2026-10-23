@@ -2,6 +2,14 @@
 
 Status is updated from actual runs, not inferred from configuration.
 
+## Login and registration theme — 2026-10-23
+
+- Applied the Celloras black-and-white design kit to an inherited `keycloak.v2` theme; activated it in the existing local realm and confirmed the saved theme via the admin API.
+- Lint passed. All three real browser tests passed against the running Compose stack (9.1 seconds): branded forms/validation, public access, and two-account registration/login/logout/project isolation.
+- Inspected desktop (1440×1000) and mobile (390×844) screenshots for login, registration and validation states. Corrected inherited desktop padding, nested-footer spacing and the mobile container display before the final run. Password show/hide controls and account navigation work; registration has no horizontal overflow.
+- App, Keycloak and PostgreSQL remain healthy. Theme files are mounted directly; no app image rebuild was needed for these changes.
+- The exact logo image was not available in the received attachment. Screens currently use the text wordmark. The earlier landing/workspace styling is outside this focused auth-screen change.
+
 ## Passed
 
 - Production Next.js build succeeded.

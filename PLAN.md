@@ -49,3 +49,11 @@ Local development only: Keycloak start-dev and loopback-bound ports. Production 
 ## Completion
 
 Foundation implemented and verified against the real Compose stack. See `docs/verification.md` for exact evidence and explicit integration limits. The initial shell initializer was replaced by SQL before the first implementation commit; no preexisting repository files were deleted or renamed.
+
+## Login and registration design — 2026-10-23
+
+Apply the [Celloras Design Kit](https://space.heyamigo.org/items/337333f2-4a2c-41c1-b09a-3bc8a58e9e79) to the actual credential forms: white/light-gray surfaces, black actions, system sans, 8px controls and restrained spacing. The logo attachment is not available as image bytes; use the product name until the exact asset arrives.
+
+1. CREATE an inherited Keycloak login theme (properties, CSS, English messages and a home-link footer). Preserve the provider's credential handling, accessibility and validation templates.
+2. UPDATE Compose and realm import to load it. CREATE a small explicit theme-activation script for existing realms; importing alone does not update them.
+3. UPDATE real browser tests for desktop/mobile forms, password visibility and invalid input; rerun account registration/login/logout. Record screenshots, verification, changelog and lessons. Commit on `celloras.com` and save the result in Amigospace.

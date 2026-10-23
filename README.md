@@ -16,6 +16,17 @@ docker compose up --build -d
 
 Open http://localhost:3100 and choose **Get started**. Keycloak serves registration at http://localhost:8180. The generated `.env` contains local secrets and is ignored by Git; `npm run setup` refuses to overwrite it. The local admin username is `admin`; its generated password is `KEYCLOAK_ADMIN_PASSWORD` in that file.
 
+Direct screens: [Log in](http://localhost:3100/login) and [Create account](http://localhost:3100/register). Both use the Celloras black-and-white theme, following the [design kit](https://space.heyamigo.org/items/337333f2-4a2c-41c1-b09a-3bc8a58e9e79). Keycloak still handles credentials and validation. The supplied logo image is pending; the theme currently displays a text wordmark.
+
+If you already created the local realm before the theme was added, activate it once after restarting Keycloak:
+
+```sh
+docker compose up -d --wait keycloak
+npm run auth:theme
+```
+
+The command changes only the local realm's login theme and confirms the saved setting. New realms select it automatically. Theme files are mounted from `infra/keycloak/themes/celloras`; local theme caching is disabled, so CSS changes need no app rebuild.
+
 Compose runs the app, one migration job, PostgreSQL and Keycloak. Separate database roles own `celloras` and `keycloak`. Data persists in the `celloras_postgres-data` named volume. `docker compose down` stops services without deleting it; do not add `-v` unless intentionally resetting all local accounts and projects.
 
 For app development on the host:

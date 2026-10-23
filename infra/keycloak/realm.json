@@ -1,6 +1,7 @@
 {
   "realm": "celloras",
   "displayName": "Celloras",
+  "loginTheme": "celloras",
   "enabled": true,
   "registrationAllowed": true,
   "registrationEmailAsUsername": true,

@@ -53,7 +53,9 @@ async function register(page: Page, email: string, password: string) {
   await page.locator('input[name="lastName"]').fill("Researcher");
   await page.locator('input[name="password"]').fill(password);
   await page.locator('input[name="password-confirm"]').fill(password);
-  await page.getByRole("button", { name: "Register", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Create account", exact: true })
+    .click();
   await expect(page).toHaveURL("http://localhost:3100/app");
 }
 
@@ -136,7 +138,7 @@ test("real Keycloak accounts, project ownership and logout", async ({
   await expect(page).toHaveURL(/localhost:8180/);
   await page.locator('input[name="username"]').fill(email);
   await page.locator('input[name="password"]').fill(password);
-  await page.getByRole("button", { name: /Sign In/i }).click();
+  await page.getByRole("button", { name: "Log in", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:3100/app");
   await expect(
     page.getByRole("heading", { name: `Soybean ${suffix}` }),

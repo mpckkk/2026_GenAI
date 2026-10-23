@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 — 2026-10-23
+
+- Replaced the default Keycloak login/registration appearance with the Celloras design kit: black actions, white cards, system sans, 8px controls and responsive spacing.
+- Preserved Keycloak's real credential forms, password visibility controls, validation and OIDC flow; added a home link and clearer account navigation.
+- Mounted the inherited theme in Compose and added explicit activation for existing local realms. The exact logo asset is still pending.
+- Added browser coverage and screenshots for both forms and their validation states; verified registration, login, logout and account isolation against the running stack.
+
 ## 0.1.0 — 2026-10-23
 
 - Created the Next.js/TypeScript workspace foundation on `celloras.com`.
