@@ -1,5 +1,28 @@
 # Celloras implementation record
 
+## Ready-to-use local demo — 2026-10-23
+
+Complete locally: both examples contain actual agent evidence, the root review is saved, and a fresh-login replay preserved all IDs/counts. Desktop/mobile screenshots and source/follow-up interactions were checked; lint/format passed. Existing chat history remains intact. See `docs/demo.md` and `docs/verification.md`.
+
+Outcome: the existing demo account opens prepared soybean examples with real source-backed agent responses, a saved illustrative review, and a short presentation path. The account currently has one experiment and two chat messages but no sample or marker entries. Preserve these records. Use the existing authenticated HTTP APIs and real OpenShell worker; never insert assistant replies or scientific results directly.
+
+| Action | Path                         | Change                                                                                                                                                                             | Package |
+| ------ | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| CREATE | `scripts/prepare-demo.mjs`   | Sign in through Keycloak, append named/versioned example context/markers/notes, request real evidence, save a clearly labeled example review, verify UI and emit links/screenshots | 1       |
+| CREATE | `data/demo-experiments.json` | Root match and ambiguous-nodule example inputs with explicit illustrative-data labels, stable submission keys and presentation prompts                                             | 1       |
+| UPDATE | `package.json`               | Expose `demo:prepare`                                                                                                                                                              | 1       |
+| CREATE | `docs/demo.md`               | Two-minute presentation path, prompts, setup/retry contract and truthful scope                                                                                                     | 2       |
+| UPDATE | `README.md`                  | Link the prepared demo workflow                                                                                                                                                    | 2       |
+| UPDATE | `CHANGELOG.md`               | Record demo preparation capability                                                                                                                                                 | 2       |
+| UPDATE | `docs/verification.md`       | Record real login, agent execution, replay and desktop/mobile observations                                                                                                         | 2       |
+| UPDATE | `learned.md`                 | Record the demo-data and replay requirements                                                                                                                                       | 2       |
+| UPDATE | `PLAN.md`                    | Scope, ledger and observed completion                                                                                                                                              | 1–2     |
+
+No deletions or renames. No auth bypass, new schema, product runtime change, or replacement of existing research. Credentials stay in environment variables and never enter source, logs, screenshots or Amigospace. Local preparation records identifiers in ignored artifacts; fixed research/chat submission IDs permit replay without duplicating content or rerunning inference. An ambiguous project-create response stops for reconciliation rather than retrying blindly.
+
+1. Implement and run the small local preparation script through actual login/APIs. Reuse the uniquely named `Soybean demo` project; add a separate `Soybean nodule demo` project. Read actual persisted evidence before saving an explicitly illustrative provisional root review; leave the nodule decision open for the user. Exit: both real runs complete and their cards/source links render.
+2. Verify a fresh login, desktop/mobile cards, saved review and draft-preserving follow-up; rerun preparation and confirm identical project/record/turn counts. Inspect screenshots, lint/format the changed scripts/config/docs, record limits, push on `celloras.com` and save the direct demo links in Amigospace. No broad app rebuild is needed because product runtime code is unchanged.
+
 ## Soybean marker evidence and review — 2026-10-23
 
 Implementation and local acceptance are complete. The production app/worker and evidence workload are active; six real evidence journeys and nine existing browser regressions passed. Fresh/populated migration rehearsals preserved existing data, and source compatibility, ownership, review retries, long-history links and mobile layout were exercised. See `docs/verification.md` for observed evidence and limits. Delivery uses the sole `celloras.com` branch and the existing Amigospace wave record.

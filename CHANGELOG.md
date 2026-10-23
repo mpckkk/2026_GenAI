@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.10 — 2026-10-23
+
+- Added authenticated local demo preparation with published soybean root and ambiguous-nodule examples, real agent evidence cards, an explicitly illustrative saved root review and a two-minute presentation guide.
+- Preparation resumes through stable submission IDs, preserves existing conversations and user reviews, and produces direct links plus desktop/mobile screenshots without saving credentials or browser sessions.
+
 ## 0.1.9 — 2026-10-23
 
 - Connected a bounded marker-evidence lookup through the real Codex/OpenShell conversation. The worker checks ownership, retrieves actual reference associations, saves their provenance and gives the result back to the agent for explanation.

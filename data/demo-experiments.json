@@ -1,0 +1,51 @@
+{
+  "version": "soybean-walkthrough-v1",
+  "examples": [
+    {
+      "key": "root",
+      "projectName": "Soybean demo",
+      "context": {
+        "speciesId": "glycine-max",
+        "tissue": "Root",
+        "sampleLabel": "Published root markers · demo example",
+        "developmentalStage": "6-day-old roots",
+        "genomeVersion": "Glycine_max_v2.1.52",
+        "geneIdNamespace": "Glyma",
+        "notes": "Illustrative marker-list walkthrough using published reference associations. This is not an uploaded sample or a measured expression matrix. Context matches the source reference for demonstration."
+      },
+      "markerLabel": "Root example · possible endodermis",
+      "genes": ["Glyma.14G218700", "Glyma.16G106800", "Glyma.01G000100"],
+      "guide": "DEMO WALKTHROUGH — Open the marker evidence card, expand Endodermis and follow a source paragraph. Two selected genes are published associations; the third illustrates an ID absent from this limited reference. The saved provisional review is a prepared example, not a validated annotation. Try asking: Why is this only a provisional cell-type label? Then open Soybean nodule demo in the sidebar to explore a shared marker. No expression matrix or real sample is represented here.",
+      "prompt": "Walk me through the saved ‘Root example · possible endodermis’ demo. Look up its published marker evidence and show the evidence card. Briefly explain the matching genes, the missing reference hit and what the overlap cannot prove. Say these are illustrative marker inputs, not an analyzed sample. Finish with one useful follow-up question I can ask.",
+      "expectedCandidates": ["Endodermis"],
+      "matchedGenes": ["Glyma.14G218700", "Glyma.16G106800"],
+      "review": {
+        "decision": "candidate",
+        "cellType": "Endodermis",
+        "notes": "Prepared demo review: provisional Endodermis based on two published exact marker associations. This illustrative list is not a real analyzed sample. Expression specificity, QC, competing identities and biological context still need assessment."
+      },
+      "followUp": "Why is the Endodermis label only provisional, and what evidence would strengthen or weaken it?"
+    },
+    {
+      "key": "nodule",
+      "projectName": "Soybean nodule demo",
+      "context": {
+        "speciesId": "glycine-max",
+        "tissue": "Nodule",
+        "sampleLabel": "Shared nodule marker · demo example",
+        "developmentalStage": "28 days after inoculation",
+        "genomeVersion": "Glycine_max_v2.1.52",
+        "geneIdNamespace": "Glyma",
+        "notes": "Illustrative shared-marker walkthrough using a published reference association. This is not an uploaded sample or a measured expression matrix. Context matches the source reference for demonstration."
+      },
+      "markerLabel": "Nodule example · shared marker",
+      "genes": ["Glyma.13G334500"],
+      "guide": "DEMO WALKTHROUGH — One published gene is shared by Sclereid layer and Vascular bundle in this nodule reference. Expand both candidates and Shared markers. Ask what additional evidence is needed. Then open Review and save your decision, choose Keep unresolved, and save your own note. The preparation script leaves this decision to you and preserves it on rerun. These are illustrative marker inputs, not an analyzed single-cell sample.",
+      "prompt": "Walk me through the saved ‘Nodule example · shared marker’ demo. Look up its published evidence and show the evidence card. Explain why the same marker supports competing cell types without choosing a winner. Say this is an illustrative marker list, not an analyzed sample. Invite me to inspect Shared markers and save an unresolved review.",
+      "expectedCandidates": ["Sclereid layer", "Vascular bundle"],
+      "matchedGenes": ["Glyma.13G334500"],
+      "review": null,
+      "followUp": "What additional evidence would distinguish Sclereid layer from Vascular bundle for this shared marker?"
+    }
+  ]
+}

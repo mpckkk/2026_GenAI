@@ -19,6 +19,7 @@
     "setup": "node scripts/setup.mjs",
     "agent:setup": "node scripts/setup-agent.mjs",
     "agent:verify": "node scripts/verify-agent.mjs",
+    "demo:prepare": "node scripts/prepare-demo.mjs",
     "agent:gateway:start": "node scripts/agent-gateway.mjs start",
     "agent:gateway:stop": "node scripts/agent-gateway.mjs stop",
     "test:e2e": "playwright test",

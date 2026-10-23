@@ -14,6 +14,8 @@ Published marker evidence lookup is connected for soybean roots and mature nodul
 
 ## Research workflow
 
+For a ready-to-present local account, use the [guided demo](docs/demo.md). `npm run demo:prepare` signs in with supplied local credentials and prepares root and nodule examples through the real agent; it can resume without duplicating completed runs.
+
 1. Create or reopen an experiment from the sidebar and send a message to the agent. The composer stays visible while the conversation scrolls.
 2. Open **Study context → Edit context** to save tissue, sample, developmental stage and genome/identifier context. Unknown details can stay empty.
 3. Use **Add markers** in the study panel to save a cluster's gene list: 1–200 distinct identifiers, with original text and case preserved. Exact duplicate tokens are removed only from the separate normalized list.

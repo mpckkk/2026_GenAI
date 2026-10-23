@@ -1,5 +1,8 @@
 # Engineering notes
 
+- A demo login is not a prepared demo. Populate owned sample/marker records through the real application, obtain actual model/tool results, and give the presenter a short route through evidence, uncertainty and saved review. Label selected example genes as illustrative inputs rather than an analyzed sample.
+- Demo preparation must resume existing submissions instead of generating another set of records and inference calls. Reconcile uniquely named owned projects before creating, preserve subsequent user decisions, and stop on failed turns or uncertain non-idempotent creation.
+
 - Verify the source's actual annotation build and marker method before importing facts. A paper may use different builds for transcriptomics and proteomics. A blocked supplementary workbook and downloadable raw counts do not justify claiming a marker-table integration.
 - Preserve malformed source identifiers as documented exclusions instead of silently fixing them. Keep unsupported symbols separate from valid gene IDs absent from a limited reference, and keep shared-marker ambiguity visible.
 - A tool result and a researcher's decision are different records. Persist the canonical evidence/input/source snapshot first, then resolve an explicit review against that completed owned run. Reject client-supplied evidence and candidate labels absent from the actual result.

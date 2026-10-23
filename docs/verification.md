@@ -2,6 +2,13 @@
 
 Status is updated from actual runs, not inferred from configuration.
 
+## Prepared local demo — 2026-10-23
+
+- Signed in to the existing local demo account through its real Keycloak form. Its Soybean demo experiment had two existing chat turns and no research entries; both turns were preserved. Prepared a root sample/marker example, walkthrough note, real agent evidence response and explicitly illustrative provisional Endodermis review. Added a separate nodule example with a shared marker and two competing candidates, leaving its review to the presenter.
+- `npm run demo:prepare` uses the actual owned HTTP APIs and OpenShell worker. Both evidence results matched the published reference and the saved input IDs. The script verified source links, saved review text, draft-preserving follow-up actions, reload, and desktop/390px mobile layout without horizontal overflow. Screenshots were inspected. No assistant replies or tool evidence were inserted directly into storage.
+- A second complete preparation signed in afresh and reused identical project, marker, turn, evidence and review IDs. Database counts were unchanged: root had four research entries, three chat turns (including the two original turns), and one evidence run; nodule had three research entries, one turn and one evidence run. No completed inference was repeated. The initial preparation stopped after a UI locator matched both candidate and saved-review text; scoping it to the candidate list corrected the check, and resumption retained the already saved result.
+- Repository lint and formatting passed. Product runtime, authentication and schema code are unchanged; no app rebuild or additional scientific capability is claimed. Logs, direct links and screenshots are ignored under `.artifacts/demo-ready/`; credentials and browser sessions were not saved. See the [presentation guide](demo.md).
+
 ## Soybean marker evidence and review — 2026-10-23
 
 - Extracted factual associations from the actual Methods paragraphs p0230/p0235 of Cervantes-Pérez et al. (2024), DOI 10.1016/j.xplc.2024.100984: 62 associations, 45 distinct Glyma gene IDs and six cell-type labels per tissue. The importer checks the expected source layout/build/counts and records the downloaded HTML hash, exclusions and source URLs. The source's malformed `Glyma.15G2100100` and unmapped symbols are excluded, not guessed. [Scope and reproduction](soybean-reference.md).
