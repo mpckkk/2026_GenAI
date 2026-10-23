@@ -21,6 +21,7 @@ import { ChatService } from "./services/chat";
 const projects = new PostgresProjects();
 const access = new AccessService(projects);
 const plants = new ConfiguredPlantCatalog(plantDefinitions);
+const chat = new ChatService(access, new PostgresChat());
 export const services = {
   auth: new KeycloakAuth(),
   projects,
@@ -31,8 +32,8 @@ export const services = {
     access,
     new PostgresAnalysis(new LocalScientificData()),
   ),
-  chat: new ChatService(access, new PostgresChat()),
-  annotation: new AnnotationService(access),
+  chat,
+  annotation: new AnnotationService(access, chat),
   memory: new HmemMemory(),
   data: new ZetarisData(),
   assets: new NvidiaAssets(),

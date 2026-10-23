@@ -4,8 +4,9 @@ import type {
   ScientificResult,
 } from "./scientific-data";
 import type { LiteratureResult } from "./literature";
+import type { AnnotationResult, AnnotationReview } from "./annotation";
 export interface ScientificAction {
-  operation: ScientificOperation | "literature";
+  operation: ScientificOperation | "literature" | "annotation";
   datasetId: string;
   cluster?: string;
   genes?: string[];
@@ -30,7 +31,11 @@ export interface ScientificRun extends Run {
 export interface LiteratureRun extends Run {
   result: LiteratureResult;
 }
-export type AnalysisRun = (Run & { result: ScientificResult }) | LiteratureRun;
+export interface AnnotationRun extends Run {
+  result: Omit<AnnotationResult, "payload">;
+}
+export type AnalysisRun =
+  (Run & { result: ScientificResult | AnnotationResult }) | LiteratureRun;
 export interface AnalysisReview {
   id: string;
   runId: string;
@@ -48,11 +53,22 @@ export interface AnalysisRepository {
     userId: string,
     projectId: string,
     runId: string,
-  ): Promise<AnalysisRun & { reviews: AnalysisReview[] }>;
+  ): Promise<
+    AnalysisRun & {
+      reviews: AnalysisReview[];
+      annotationReviews: AnnotationReview[];
+    }
+  >;
   review(
     userId: string,
     projectId: string,
     runId: string,
     input: unknown,
   ): Promise<{ review: AnalysisReview }>;
+  reviewAnnotation(
+    userId: string,
+    projectId: string,
+    runId: string,
+    input: unknown,
+  ): Promise<{ review: AnnotationReview }>;
 }

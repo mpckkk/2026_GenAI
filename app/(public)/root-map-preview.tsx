@@ -88,7 +88,7 @@ export function RootMapPreview() {
     <figure className={styles.mapCard}>
       <div className={styles.mapTopline}>
         <div>
-          <span className={styles.kicker}>Public data preview</span>
+          <span className={styles.kicker}>Published atlas preview</span>
           <h3>Soybean root atlas</h3>
         </div>
         <span className={styles.mapBadge}>UMAP</span>
@@ -115,7 +115,7 @@ export function RootMapPreview() {
       <div className={styles.plot}>
         <canvas
           ref={canvas}
-          aria-label={`Published soybean root UMAP with 7,496 nuclei. ${selected ? `${selected.nCells} nuclei in ${selected.publishedLabel}, source group ${cluster}, are highlighted green. Cell-type names are the authors’ published annotations.` : "Loading data."}`}
+          aria-label={`Published soybean root UMAP with 7,496 nuclei. ${selected ? `${selected.nCells} nuclei labeled ${selected.publishedLabel} by the authors (group ${cluster}) are highlighted green.` : "Loading data."}`}
           role="img"
         />
         {!data && (
@@ -141,8 +141,13 @@ export function RootMapPreview() {
         </strong>
       </div>
       <figcaption>
-        Cell-type names are the authors’ published annotations. All 7,496 nuclei
-        from GSE270392; original author UMAP.
+        <a
+          href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View source study <span aria-hidden="true">↗</span>
+        </a>
       </figcaption>
     </figure>
   );

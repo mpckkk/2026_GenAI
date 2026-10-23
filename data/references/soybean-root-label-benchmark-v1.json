@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "source": {
+    "title": "Published root barcode metadata · Zhang et al., Table S1",
+    "url": "https://ars.els-cdn.com/content/image/1-s2.0-S009286742401273X-mmc1.xlsx",
+    "doi": "10.1016/j.cell.2024.10.050",
+    "sha256": "83f86cdeda3b566968ec84f6caf7be4ee133e5e445b1d16845b79ebbff6d7287",
+    "bytes": 41762874,
+    "retrievedAt": "2026-10-23",
+    "sheet": "Sheet1",
+    "columns": "S:AD; root tissue T, barcode S, cluster Z, label AC"
+  },
+  "datasetId": "gse270392-root-rna-v1",
+  "datasetArtifactVersion": "02f079834ad067c47b77e1e34c86501d783fa78fc1797c7aa7f8ab23c13bbda5",
+  "purpose": "Retrospective agreement with labels from the same study. Never used by the annotation engine. This is not independent biological validation or a generalization estimate.",
+  "matchedCellCount": 7496,
+  "cellMembershipSha256": "6b4630369947932c3c80a42e71e604ee32c08e0f36c75ddc2be9bb2c3ad86e11",
+  "clusters": [
+    { "cluster": "0", "nCells": 2027, "publishedLabel": "Cortex" },
+    { "cluster": "1_0", "nCells": 1115, "publishedLabel": "Procambium" },
+    { "cluster": "1_1", "nCells": 303, "publishedLabel": "Pericycle" },
+    { "cluster": "2", "nCells": 1333, "publishedLabel": "Epidermis" },
+    { "cluster": "3", "nCells": 704, "publishedLabel": "Epidermis" },
+    { "cluster": "4", "nCells": 502, "publishedLabel": "Endodermis" },
+    { "cluster": "5", "nCells": 493, "publishedLabel": "Cortex" },
+    { "cluster": "6", "nCells": 388, "publishedLabel": "Root hair" },
+    { "cluster": "7", "nCells": 349, "publishedLabel": "Cortex" },
+    { "cluster": "8_0", "nCells": 145, "publishedLabel": "Phloem" },
+    { "cluster": "8_1", "nCells": 112, "publishedLabel": "Xylem" },
+    { "cluster": "8_2", "nCells": 25, "publishedLabel": "Phloem" }
+  ]
+}

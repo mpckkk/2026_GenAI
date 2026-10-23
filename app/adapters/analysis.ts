@@ -7,6 +7,7 @@ import type {
   AnalysisReview,
   AnalysisRepository,
 } from "../core/analysis";
+import type { AnnotationReview } from "../core/annotation";
 
 import { ChatSubmissionConflictError } from "../core/chat";
 import { ProjectNotFoundError } from "../core/errors";
@@ -111,9 +112,17 @@ export class PostgresAnalysis implements AnalysisRepository {
       "SELECT * FROM analysis_reviews WHERE project_id=$1 AND owner_id=$2 AND run_id=$3 ORDER BY created_at DESC LIMIT 20",
       [projectId, userId, runId],
     );
+    const annotationReviews = await database().query(
+      `SELECT * FROM (
+        SELECT r.*,row_number() OVER(PARTITION BY cluster ORDER BY created_at DESC,id DESC) AS review_order
+        FROM annotation_reviews r WHERE project_id=$1 AND owner_id=$2 AND run_id=$3
+      ) ranked WHERE review_order<=5 ORDER BY created_at DESC,id DESC`,
+      [projectId, userId, runId],
+    );
     return {
       ...analysisRun(found.rows[0], true),
       reviews: reviews.rows.map(review),
+      annotationReviews: annotationReviews.rows.map(annotationReview),
     };
   }
   async review(
@@ -209,6 +218,122 @@ export class PostgresAnalysis implements AnalysisRepository {
       c.release();
     }
   }
+  async reviewAnnotation(
+    userId: string,
+    projectId: string,
+    runId: string,
+    input: unknown,
+  ): Promise<{ review: AnnotationReview }> {
+    runId = runId.toLowerCase();
+    const run = await this.get(userId, projectId, runId);
+    if (!("operation" in run.result) || run.result.operation !== "annotation")
+      throw new AnalysisError("analysis_input_invalid");
+    if (!input || typeof input !== "object" || Array.isArray(input))
+      throw new AnalysisError("analysis_input_invalid");
+    const v = input as Record<string, unknown>;
+    if (
+      Object.keys(v).some(
+        (key) =>
+          !["submissionId", "cluster", "decision", "cellType", "note"].includes(
+            key,
+          ),
+      ) ||
+      typeof v.submissionId !== "string" ||
+      !UUID.test(v.submissionId) ||
+      typeof v.cluster !== "string" ||
+      !/^[A-Za-z0-9_.-]{1,64}$/.test(v.cluster) ||
+      typeof v.decision !== "string" ||
+      !["accepted", "corrected", "unresolved", "rejected"].includes(
+        v.decision,
+      ) ||
+      typeof v.note !== "string" ||
+      !v.note.trim() ||
+      v.note.length > 4000 ||
+      /\0|[\uD800-\uDFFF]/u.test(v.note)
+    )
+      throw new AnalysisError("analysis_input_invalid");
+    const cluster = run.result.payload.clusters.find(
+      (item) => item.cluster === v.cluster,
+    );
+    if (!cluster) throw new AnalysisError("analysis_input_invalid");
+    let cellType: string | null = null;
+    if (v.decision === "accepted" || v.decision === "corrected") {
+      if (
+        typeof v.cellType !== "string" ||
+        !v.cellType.trim() ||
+        v.cellType.length > 200 ||
+        /\0|[\uD800-\uDFFF]/u.test(v.cellType)
+      )
+        throw new AnalysisError("analysis_input_invalid");
+      cellType = v.cellType.trim();
+      if (
+        v.decision === "accepted" &&
+        !cluster.candidates.some((candidate) => candidate.cellType === cellType)
+      )
+        throw new AnalysisError("analysis_input_invalid");
+    } else if (v.cellType !== null && v.cellType !== undefined) {
+      throw new AnalysisError("analysis_input_invalid");
+    }
+    const c = await database().connect();
+    try {
+      await c.query("BEGIN");
+      await c.query(
+        "SELECT id FROM projects WHERE id=$1 AND owner_id=$2 FOR UPDATE",
+        [projectId, userId],
+      );
+      const existing = await c.query(
+        "SELECT * FROM annotation_reviews WHERE project_id=$1 AND owner_id=$2 AND submission_id=$3",
+        [projectId, userId, v.submissionId],
+      );
+      if (existing.rows[0]) {
+        const r = existing.rows[0];
+        if (
+          r.run_id !== runId ||
+          r.cluster !== v.cluster ||
+          r.decision !== v.decision ||
+          r.cell_type !== cellType ||
+          r.note !== v.note.trim()
+        )
+          throw new ChatSubmissionConflictError();
+        await c.query("COMMIT");
+        return { review: annotationReview(r) };
+      }
+      const saved = await c.query(
+        `INSERT INTO annotation_reviews(project_id,owner_id,run_id,submission_id,cluster,decision,cell_type,note)
+        SELECT p.id,$2,a.id,$4,$5,$6,$7,$8 FROM projects p
+        JOIN analysis_runs a ON a.project_id=p.id JOIN agent_turns t ON t.id=a.turn_id
+        WHERE p.id=$1 AND p.owner_id=$2 AND a.owner_id=$2 AND a.id=$3 AND a.operation='annotation'
+          AND t.project_id=$1 AND t.owner_id=$2 AND t.status='completed' AND NOT t.cancel_requested RETURNING *`,
+        [
+          projectId,
+          userId,
+          runId,
+          v.submissionId,
+          v.cluster,
+          v.decision,
+          cellType,
+          v.note.trim(),
+        ],
+      );
+      if (!saved.rows[0]) throw new ProjectNotFoundError();
+      await c.query("COMMIT");
+      console.info(
+        JSON.stringify({
+          event: "annotation.review.saved",
+          projectId,
+          runId,
+          reviewId: saved.rows[0].id,
+          decision: v.decision,
+        }),
+      );
+      return { review: annotationReview(saved.rows[0]) };
+    } catch (error) {
+      await c.query("ROLLBACK");
+      throw error;
+    } finally {
+      c.release();
+    }
+  }
 }
 function review(row: Record<string, unknown>): AnalysisReview {
   return {
@@ -217,6 +342,17 @@ function review(row: Record<string, unknown>): AnalysisReview {
     decision: row.decision as AnalysisReview["decision"],
     note: row.note as string,
     cluster: row.cluster as string | null,
+    createdAt: new Date(row.created_at as string).toISOString(),
+  };
+}
+function annotationReview(row: Record<string, unknown>): AnnotationReview {
+  return {
+    id: row.id as string,
+    runId: row.run_id as string,
+    cluster: row.cluster as string,
+    decision: row.decision as AnnotationReview["decision"],
+    cellType: row.cell_type as string | null,
+    note: row.note as string,
     createdAt: new Date(row.created_at as string).toISOString(),
   };
 }

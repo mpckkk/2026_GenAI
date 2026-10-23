@@ -42,7 +42,8 @@
                   "marker_evidence",
                   "lookup_marker_evidence",
                   "scientific_result",
-                  "literature_result"
+                  "literature_result",
+                  "annotation_result"
                 ]
               },
               "entryId": {
@@ -78,7 +79,8 @@
                   "markers",
                   "expression",
                   "dotplot",
-                  "literature"
+                  "literature",
+                  "annotation"
                 ]
               },
               "cluster": {

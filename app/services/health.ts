@@ -1,5 +1,6 @@
 import { LocalScientificData } from "../adapters/scientific-data.mjs";
 import { CuratedLiterature } from "../adapters/literature.mjs";
+import { MarkerAnnotationEngine } from "../adapters/annotation-engine.mjs";
 import "server-only";
 import { PublishedMarkerReference } from "@/app/adapters/marker-reference.mjs";
 import { database } from "@/app/adapters/database";
@@ -42,6 +43,9 @@ export async function foundationHealth(): Promise<ServiceHealth[]> {
           );
           await database().query(
             "SELECT dataset_id FROM project_datasets LIMIT 0",
+          );
+          await database().query(
+            "SELECT submission_id,cluster,cell_type FROM annotation_reviews LIMIT 0",
           );
         },
       },
@@ -95,6 +99,15 @@ const scientific = new LocalScientificData();
 async function researchHealth(): Promise<ServiceHealth[]> {
   return Promise.all(
     [
+      {
+        name: "Cell-type annotation",
+        check: async () => {
+          const h = await new MarkerAnnotationEngine({
+            scientificData: scientific,
+          }).health();
+          return `${h.reference.markerGeneCount} verified marker genes · ${h.reference.cellTypeCount} root identities · researcher review required`;
+        },
+      },
       {
         name: "Scientific dataset",
         check: async () => {

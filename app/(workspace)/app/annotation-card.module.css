@@ -1,0 +1,515 @@
+.card {
+  min-width: 0;
+  max-width: 100%;
+  margin: 16px 0;
+  overflow: hidden;
+  border: 1px solid #d9e1d8;
+  border-radius: 10px;
+  background: #fff;
+  overflow-wrap: anywhere;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 16px;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e2e9e0;
+  background: #f3f7f1;
+  font-size: 12px;
+  color: #52634f;
+}
+
+.header strong {
+  color: #244e28;
+  font-weight: 600;
+}
+.body {
+  padding: 20px;
+  min-width: 0;
+}
+.body h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+.caption {
+  color: #626960;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+.counts {
+  display: flex;
+  gap: 8px 20px;
+  flex-wrap: wrap;
+  margin: 18px 0 12px;
+  font-size: 12px;
+  color: #5a6258;
+}
+.counts strong {
+  font-size: 19px;
+  color: #253b27;
+  margin-right: 3px;
+}
+.clusters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  margin: 16px 0 22px;
+}
+.clusters button {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+  text-align: left;
+  border: 1px solid #dfe3dc;
+  border-radius: 7px;
+  padding: 9px;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+}
+.clusters button strong {
+  font-weight: 600;
+}
+.clusters button span {
+  font-size: 11px;
+}
+.clusters button small {
+  color: #6b7067;
+  font-size: 10px;
+}
+.clusters button[aria-pressed="true"] {
+  border-color: #326b37;
+  background: #f1f7ee;
+  box-shadow: inset 0 0 0 1px #326b37;
+}
+.clusters button:hover {
+  border-color: #70916c;
+}
+.card [data-status="suggested"] {
+  color: #1b5e20;
+}
+.card [data-status="ambiguous"] {
+  color: #805911;
+}
+.card [data-status="unresolved"] {
+  color: #62675f;
+}
+.clusterHeading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.clusterHeading h4,
+.review h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+}
+.clusterHeading .caption {
+  margin: 5px 0 0;
+}
+.status {
+  border: 1px solid #dce3d7;
+  border-radius: 20px;
+  background: #f8faf6;
+  padding: 4px 8px;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.reason {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #454d43;
+  margin: 12px 0;
+}
+.candidates {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  min-width: 0;
+}
+.candidate {
+  border: 1px solid #e0e5dc;
+  border-radius: 8px;
+  min-width: 0;
+  overflow: hidden;
+}
+.candidate > summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px 12px;
+  list-style: none;
+  cursor: pointer;
+  padding: 13px;
+}
+.candidate > summary::-webkit-details-marker {
+  display: none;
+}
+.candidate > summary::after {
+  content: "View evidence +";
+  grid-column: 2;
+  grid-row: 2;
+  color: #456b41;
+  font-size: 11px;
+  align-self: center;
+}
+.candidate[open] > summary::after {
+  content: "Hide evidence −";
+}
+.candidate[open] > summary {
+  border-bottom: 1px solid #e7ebe3;
+  background: #fbfcfa;
+}
+.candidateTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  min-width: 0;
+  font-size: 14px;
+}
+.candidateTitle strong {
+  font-weight: 600;
+}
+.rank {
+  color: #7c8877;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.score {
+  font-size: 11px;
+  color: #656e60;
+  white-space: nowrap;
+}
+.score strong {
+  color: #334a2e;
+  margin-left: 4px;
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+}
+.evidenceCounts {
+  grid-column: 1;
+  color: #6a7265;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.candidateBody {
+  padding: 0 13px 13px;
+  min-width: 0;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.button {
+  min-height: 40px;
+  max-width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccd6c7;
+  border-radius: 7px;
+  background: #fff;
+  font-size: 12px;
+  color: #284d28;
+  text-align: left;
+}
+.button[data-primary="true"] {
+  background: #245d2c;
+  border-color: #245d2c;
+  color: #fff;
+}
+.button:hover:not(:disabled) {
+  border-color: #245d2c;
+}
+.button:disabled,
+.geneButton:disabled {
+  opacity: 0.5;
+}
+.evidence {
+  margin-top: 13px;
+  font-size: 12px;
+}
+.evidence > summary,
+.missing > summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #3c5138;
+}
+.tableWrap {
+  max-height: 320px;
+  max-width: 100%;
+  overflow: auto;
+  margin: 10px 0;
+  border: 1px solid #e5e9e0;
+  border-radius: 6px;
+}
+.table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.table td,
+.table th {
+  padding: 10px;
+  border-bottom: 1px solid #e8ece3;
+  text-align: left;
+  vertical-align: top;
+  font-weight: 400;
+}
+.table thead th {
+  background: #f6f8f3;
+  font-weight: 600;
+  color: #57624e;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.table td {
+  white-space: nowrap;
+}
+.table th:first-child {
+  min-width: 170px;
+  max-width: 240px;
+}
+.geneButton {
+  border: 0;
+  padding: 2px 0 5px;
+  background: none;
+  font-size: 11px;
+  font-family: monospace;
+  color: #285d28;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.geneDetails {
+  margin-top: 4px;
+  font-size: 10px;
+  max-width: 220px;
+  line-height: 1.6;
+}
+.geneDetails summary {
+  cursor: pointer;
+  color: #626b5d;
+}
+.geneDetails dl {
+  margin: 8px 0;
+}
+.geneDetails dt {
+  font-weight: 600;
+}
+.geneDetails dd {
+  margin: 2px 0 7px;
+}
+.geneDetails a {
+  text-decoration: underline;
+}
+.missing {
+  margin: 14px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.missing p {
+  max-height: 120px;
+  overflow-y: auto;
+  color: #62695c;
+}
+.methods {
+  border-top: 1px solid #e5e9e1;
+  padding: 14px 20px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #5b6255;
+}
+.methods summary {
+  color: #394632;
+  cursor: pointer;
+}
+.methods p,
+.methods dl,
+.methods ul {
+  margin-top: 12px;
+}
+.methods dt {
+  font-weight: 600;
+}
+.methods dd {
+  margin: 0 0 9px;
+}
+.methods code {
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.methods ul {
+  padding-left: 18px;
+}
+.methods a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.validation {
+  border-left: 2px solid #b4bcaa;
+  padding-left: 11px;
+}
+.review {
+  border-top: 1px solid #e2e8dc;
+  padding: 20px;
+  background: #fcfdfb;
+}
+.saved {
+  border-left: 3px solid #6b9862;
+  padding: 10px 12px;
+  margin: 14px 0;
+  font-size: 12px;
+  background: #f2f7ef;
+  line-height: 1.6;
+}
+.saved strong {
+  font-weight: 600;
+  color: #36552f;
+}
+.saved p {
+  margin: 5px 0;
+  white-space: pre-wrap;
+}
+.saved small,
+.history small {
+  color: #6b7465;
+  font-size: 10px;
+}
+.history {
+  font-size: 12px;
+  margin: 12px 0;
+}
+.history > div {
+  border-bottom: 1px solid #e6eadf;
+  padding: 12px 0;
+}
+.history p {
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+.reviewForm {
+  font-size: 12px;
+  margin-top: 12px;
+}
+.reviewForm > summary,
+.history > summary {
+  cursor: pointer;
+  color: #365a2d;
+}
+.reviewForm label {
+  display: block;
+  font-size: 12px;
+  margin: 16px 0 7px;
+}
+.reviewForm input,
+.reviewForm textarea,
+.reviewForm select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: 1px solid #cdd5c7;
+  border-radius: 7px;
+  padding: 10px;
+  background: #fff;
+  color: #253021;
+  font-size: 13px;
+}
+.reviewForm textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.error {
+  border: 1px solid #d8cbb6;
+  padding: 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  line-height: 1.6;
+  background: #fffaf2;
+}
+.loading {
+  margin: 0;
+  padding: 24px;
+  font-size: 13px;
+  color: #666f60;
+}
+.card button:focus-visible,
+.card summary:focus-visible,
+.card input:focus-visible,
+.card select:focus-visible,
+.card textarea:focus-visible,
+.tableWrap:focus-visible {
+  outline: 2px solid #254e29;
+  outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .body,
+  .review {
+    padding: 16px;
+  }
+  .header,
+  .methods {
+    padding: 14px 16px;
+  }
+  .body h3 {
+    font-size: 18px;
+  }
+  .clusters {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .clusters button {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+  .clusters button span {
+    font-size: 10px;
+  }
+  .counts {
+    gap: 8px 13px;
+  }
+  .counts strong {
+    font-size: 17px;
+  }
+  .counts span {
+    font-size: 11px;
+  }
+  .candidate > summary {
+    padding: 11px;
+    gap: 7px;
+  }
+  .candidateTitle {
+    font-size: 13px;
+    gap: 5px;
+  }
+  .evidenceCounts {
+    grid-column: 1 / -1;
+  }
+  .candidate > summary::after {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+  .score {
+    font-size: 10px;
+  }
+  .score strong {
+    font-size: 12px;
+  }
+  .candidateBody {
+    padding: 0 11px 11px;
+  }
+  .button {
+    font-size: 11px;
+  }
+}

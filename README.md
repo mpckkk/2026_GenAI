@@ -10,11 +10,13 @@ Sign in, open an experiment, and talk with the agent. Save plant/sample context,
 
 The implemented chat runtime uses Codex CLI inside NVIDIA OpenShell. A real model response has been verified through OpenShell v0.1.5 in a Linux MicroVM on Apple Silicon. Native Linux deployment has not yet been tested; browser acceptance is recorded separately in [verification](docs/verification.md).
 
-Published marker evidence lookup is connected for soybean roots and mature nodules, with exact matching genes, source citations and researcher review. Coverage is a limited versioned reference, not the full Soybean Multi-Omic Atlas. The real root dataset now supports UMAP inspection, descriptive marker ranking, expression overlays and dot plots. A curated literature adapter provides cited context with explicit genome compatibility. Validated automatic annotation, H-MEM, Zetaris, Nemotron, NeMo Files and NVIDIA tracing remain pending. See [reference scope and examples](docs/soybean-reference.md).
+The real soybean root dataset supports UMAP inspection, marker ranking, expression overlays, dot plots and provisional cell-type annotation. Annotation compares measured expression with 41 exact Wm82v4 marker genes from the atlas authors' published root reference. Cards show candidates, supporting and conflicting evidence, missing markers and unresolved cases. Researchers save their own labels separately. The method has not been independently validated; see [annotation methods and limits](docs/annotation-method.md).
+
+Published marker lookup for roots and mature nodules and curated literature retrieval provide additional cited context with explicit genome compatibility. Coverage is a limited versioned reference, not the full atlas. H-MEM, Zetaris, Nemotron, NeMo Files and NVIDIA tracing remain pending. See [reference scope and examples](docs/soybean-reference.md).
 
 ## Research workflow
 
-Start with **Explore soybean root demo**: 7,496 real nuclei, 12 source clusters and suggested next actions in chat. Select a cluster, compare enriched genes, inspect expression, retrieve cited evidence and save your interpretation. No prompt-writing knowledge is required. Dataset import instructions are in [dataset import](docs/dataset-import.md); the source scope is in [literature](docs/literature.md).
+Start with **Explore soybean root demo**: 7,496 real nuclei, 12 source clusters and suggested next actions in chat. Choose **Annotate all clusters**, inspect a candidate's measured marker evidence and alternatives, then accept, correct, reject or leave its label unresolved with your rationale. You can also select a cluster, inspect expression, retrieve cited evidence and save an interpretation. Dataset import instructions are in [dataset import](docs/dataset-import.md); the walkthrough is in [the demo guide](docs/demo.md).
 
 For the earlier marker-reference examples, use the [demo guide](docs/demo.md). `npm run demo:prepare` signs in with supplied local credentials and prepares root and nodule examples through the real agent; it can resume without duplicating completed runs.
 
@@ -29,7 +31,7 @@ On mobile, **Study context** opens a separate view and **Back to chat** returns 
 
 The agent receives bounded owned conversation/research history and the latest sample context. Researcher-supplied evidence remains unverified. Replies combine Markdown with predefined **sample context**, **marker-set**, and **published evidence cards**. Save context/markers in Study context, then ask **“Show my saved sample and markers as cards.”** Cards show actual saved records, retain the data used for that reply, and expose expandable details. **Ask about this** adds a follow-up to your draft without sending or replacing it.
 
-The server validates card types and resolves record IDs within the owned experiment; the model does not supply card data or executable markup. Existing Markdown history still renders. Raw HTML is disabled and image references are links. Scientific plots resolve saved real tool results through an authenticated endpoint. Descriptive rankings are not calibrated annotation results or differential-expression significance tests.
+The server validates card types and resolves record IDs within the owned experiment; the model does not supply card data or executable markup. Existing Markdown history still renders. Raw HTML is disabled and image references are links. Scientific plots and annotation cards resolve saved real tool results through an authenticated endpoint. Descriptive scores are not probabilities or differential-expression significance tests.
 
 A turn shows queued/running/completed/failed/cancelled status. Repeating the same submission returns its saved result; changed content requires a new submission. Each experiment permits one active turn. Cancellation targets that turn's sandbox. A failed or interrupted execution is not automatically repeated, and another turn cannot start while sandbox cleanup is outstanding.
 
@@ -103,7 +105,7 @@ npm run test:e2e
 
 Browser tests use local Google Chrome, real Keycloak users and persisted test records. Keep the local services running; do not point the suite at production. Screenshots are ignored and authentication traces are disabled. `verify:storage` uses uniquely named temporary local databases and removes only those databases.
 
-`/api/health/live` reports process liveness. `/api/health/ready` checks schema, Keycloak and the bundled marker reference. `/app/health` separately shows worker availability and pending integrations. New chat turns require a ready worker heartbeat within 30 seconds; existing records remain accessible when it is offline. The legacy scientific `/api/chat` still authorizes ownership and returns `503 INTEGRATION_PENDING`.
+`/api/health/live` reports process liveness. `/api/health/ready` checks schema, Keycloak and the bundled references. `/app/health` separately shows worker availability and pending integrations. New chat turns require a ready worker heartbeat within 30 seconds; existing records remain accessible when it is offline. The scientific `/api/chat` authorizes ownership and queues the same annotation action using `projectId`, `submissionId`, `datasetId` and an optional `cluster`; unsupported gene-only requests return 400.
 
 See [architecture](docs/architecture.md), [configuration](docs/configuration.md), [verification](docs/verification.md), [implementation plan](PLAN.md) and the [Amigospace project](https://space.heyamigo.org/items/6223ea67-f6b0-4dfd-b8f5-0325f391d4e0).
 
@@ -111,6 +113,6 @@ See [architecture](docs/architecture.md), [configuration](docs/configuration.md)
 
 Public deployment: https://celloras.com (login on https://auth.celloras.com), run by Dokploy from this branch with `compose.yaml` + `compose.prod.yaml`. A new commit on `celloras.com` is deployed automatically within about a minute.
 
-Compose is local development configuration, including Keycloak `start-dev`. A Linux server needs deployment overrides for public domains, TLS, production Keycloak, secret delivery, SMTP, backups and retention. This repository does not yet establish a production deployment. Local email verification/password recovery are disabled, and app sessions expire after one hour without centralized backchannel revocation.
+Base Compose is local development configuration, including Keycloak `start-dev`. The public deployment uses `compose.prod.yaml` for production Keycloak, HTTPS origins and proxy routing. The scientific dataset, gateway workload and operator credentials still require setup on the deployment host; a public landing alone does not establish agent readiness. SMTP, backups, retention and native Linux agent acceptance remain separate operational work. Local email verification/password recovery are disabled, and app sessions expire after one hour without centralized backchannel revocation.
 
 Realm import creates missing realms but does not update existing ones. Apply future auth changes through explicit configuration/migrations. SQL migrations are checksummed; add a migration instead of editing an applied file.

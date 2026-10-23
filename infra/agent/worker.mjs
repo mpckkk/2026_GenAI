@@ -1,7 +1,8 @@
 import { LocalScientificData } from "../../app/adapters/scientific-data.mjs";
+import { MarkerAnnotationEngine } from "../../app/adapters/annotation-engine.mjs";
 import { CuratedLiterature } from "../../app/adapters/literature.mjs";
 import { runAnalysis } from "../../app/services/analysis-tools.mjs";
-import { analysisRun } from "../../app/core/analysis.mjs";
+import { analysisRun, analysisCardType } from "../../app/core/analysis.mjs";
 import { randomUUID } from "node:crypto";
 import { Pool } from "pg";
 import {
@@ -27,6 +28,7 @@ const runtime = new OpenShellCodex();
 const markerReference = new PublishedMarkerReference();
 const scientific = new LocalScientificData();
 const literature = new CuratedLiterature();
+const annotation = new MarkerAnnotationEngine({ scientificData: scientific });
 let stopping = false,
   activeController;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -208,18 +210,32 @@ async function claim() {
     } catch {
       snapshot.literature = { status: "unavailable" };
     }
+    // A card can be older than the four latest plots. Resolve only bounded,
+    // explicitly referenced owned annotation runs; a prompt never grants access.
+    const referencedRuns = [
+      ...turn.prompt.matchAll(
+        /Saved annotation run:\s*([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/gi,
+      ),
+    ]
+      .slice(0, 2)
+      .map((match) => match[1].toLowerCase());
     const analyses = await client.query(
-      `SELECT a.id,a.project_id,a.turn_id,a.dataset_id,a.created_at,a.result-'payload' AS result,a.operation FROM analysis_runs a JOIN agent_turns t ON t.id=a.turn_id
-      WHERE a.project_id=$1 AND a.owner_id=$2 AND t.owner_id=$2 AND t.status='completed' AND NOT t.cancel_requested ORDER BY a.created_at DESC LIMIT 4`,
-      [turn.project_id, turn.owner_id],
+      `WITH owned AS (
+        SELECT a.id,a.project_id,a.turn_id,a.dataset_id,a.created_at,a.result-'payload' AS result,a.operation
+        FROM analysis_runs a JOIN agent_turns t ON t.id=a.turn_id JOIN projects p ON p.id=a.project_id
+        WHERE a.project_id=$1 AND a.owner_id=$2 AND p.owner_id=$2 AND t.project_id=$1 AND t.owner_id=$2
+          AND t.status='completed' AND NOT t.cancel_requested
+      ) SELECT * FROM owned WHERE id IN (
+        (SELECT id FROM owned ORDER BY created_at DESC LIMIT 4)
+        UNION (SELECT id FROM owned WHERE operation='annotation' ORDER BY created_at DESC LIMIT 1)
+        UNION (SELECT id FROM owned WHERE operation='annotation' AND id=ANY($3::uuid[]))
+      ) ORDER BY created_at DESC`,
+      [turn.project_id, turn.owner_id, referencedRuns],
     );
     snapshot.analysisResults = analyses.rows.map((row) => analysisRun(row));
     snapshot.availableCards.push(
       ...analyses.rows.map((row) => ({
-        type:
-          row.operation === "literature"
-            ? "literature_result"
-            : "scientific_result",
+        type: analysisCardType(row.operation),
         entryId: row.id,
       })),
     );
@@ -228,6 +244,26 @@ async function claim() {
       [turn.project_id, turn.owner_id],
     );
     snapshot.researcherReviews = reviews.rows;
+    const annotationReviews = await client.query(
+      `SELECT * FROM (
+         SELECT DISTINCT ON(run_id,cluster) run_id,cluster,decision,cell_type,left(note,500) AS note,length(note)>500 AS note_truncated,created_at
+         FROM annotation_reviews WHERE project_id=$1 AND owner_id=$2 AND run_id=ANY($3::uuid[])
+         ORDER BY run_id,cluster,created_at DESC,id DESC
+       ) latest ORDER BY created_at DESC LIMIT 48`,
+      [
+        turn.project_id,
+        turn.owner_id,
+        analyses.rows
+          .filter((row) => row.operation === "annotation")
+          .map((row) => row.id),
+      ],
+    );
+    snapshot.annotationReviews = annotationReviews.rows;
+    try {
+      snapshot.annotation = await annotation.health();
+    } catch {
+      snapshot.annotation = { status: "unavailable" };
+    }
 
     const name = sandboxName(turn.id);
     await client.query(
@@ -323,19 +359,22 @@ async function execute(turn) {
           ? "Finding cited evidence"
           : `Computing ${action.operation}`;
       log("tool.started", { turnId: turn.id, tool: action.operation });
-      const result = await runAnalysis(pool, scientific, literature, {
-        projectId: turn.project_id,
-        ownerId: turn.owner_id,
-        turnId: turn.id,
-        action,
-        step: steps++,
-        signal: controller.signal,
-      });
+      const result = await runAnalysis(
+        pool,
+        scientific,
+        literature,
+        annotation,
+        {
+          projectId: turn.project_id,
+          ownerId: turn.owner_id,
+          turnId: turn.id,
+          action,
+          step: steps++,
+          signal: controller.signal,
+        },
+      );
       const card = {
-        type:
-          action.operation === "literature"
-            ? "literature_result"
-            : "scientific_result",
+        type: analysisCardType(action.operation),
         entryId: result.id,
       };
       snapshot.analysisResults.push(result);

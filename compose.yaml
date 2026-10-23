@@ -50,7 +50,7 @@ services:
       XDG_CACHE_HOME: /tmp/celloras-cache
       OPENSHELL_GATEWAY: celloras
       CELLORAS_AGENT_METADATA_FILE: /run/celloras/metadata.json
-      CELLORAS_AGENT_IMAGE: ${CELLORAS_AGENT_IMAGE:-celloras-codex:0.163.0-science1}
+      CELLORAS_AGENT_IMAGE: ${CELLORAS_AGENT_IMAGE:-celloras-codex:0.163.0-annotation1}
       CELLORAS_AGENT_PROVIDER: ${CELLORAS_AGENT_PROVIDER:-celloras-codex}
       CELLORAS_AGENT_MODEL: ${CELLORAS_AGENT_MODEL:-}
       CELLORAS_DATASET_DIR: /datasets

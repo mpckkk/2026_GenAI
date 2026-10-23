@@ -1,5 +1,14 @@
 # Engineering notes
 
+- A marker reference and published cluster labels from the same study can check consistency, but cannot establish independent annotation accuracy. Keep benchmark labels out of runtime scoring, preserve disagreements and expose exploratory thresholds.
+- Annotation-card selection and composer selection must agree before any follow-up. Sync only explicit interactions; a lazily loaded card must not silently replace the researcher's current context.
+- A latest-results limit can discard the annotation behind a follow-up after several new plots. Carry the latest annotation and a bounded set of explicitly referenced run IDs, independently checking project ownership for each.
+- Next standalone output does not automatically ship public image/data files. Copy `public/` into the runtime image and verify actual asset URLs after deployment.
+- OpenShell's MicroVM bootstrap image is separate from a sandbox's requested image. Updating the worker image left the running gateway trying a removed default tag before Codex could start. Write the matching bootstrap image, restart when TOML changes and require a real model probe before resuming the worker.
+- A deployment system can replace a checkout directory while an unchanged container retains the old directory inode through a bind mount. Production Keycloak then missed files that existed at the same host path. Bake the theme and realm into its image; keep bind mounts for local development.
+- Document overflow alone can miss a clipped grid child. Measure the chat pane itself at narrow widths; explicit `minmax(0, 1fr)` prevents content from expanding an implicit track beyond the viewport.
+- An SSR button can look enabled before its handler is ready. Keep the demo action disabled until hydration, then let browser tests wait for its real enabled state instead of adding sleeps.
+
 - Keep public demo sign-in hints in Keycloak's theme footer, configured for the existing account. Fill the real form and keep authentication unchanged; render the panel only on login, not registration. Use ignored local configuration for the displayed values.
 
 - A near-bottom autoscroll threshold can exceed the entire scroll range. With 56px of overflow, an 80px threshold treated scrolling to the top as following the latest message. Use only a pixel-rounding tolerance at the actual bottom and preserve scroll during polling.

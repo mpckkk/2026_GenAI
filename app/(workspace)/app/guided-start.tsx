@@ -1,11 +1,20 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { WorkspaceIcon } from "./workspace-icons";
 import styles from "./workspace.module.css";
 
+const subscribeToHydration = () => () => {};
+const clientReady = () => true;
+const serverReady = () => false;
+
 export function GuidedStart() {
+  const hydrated = useSyncExternalStore(
+    subscribeToHydration,
+    clientReady,
+    serverReady,
+  );
   const router = useRouter();
   const busy = useRef(false);
   const [pending, setPending] = useState(false);
@@ -78,7 +87,7 @@ export function GuidedStart() {
         type="button"
         className={styles.primaryButton}
         onClick={() => void start()}
-        disabled={pending}
+        disabled={!hydrated || pending}
       >
         {pending ? "Opening your soybean demo…" : "Explore soybean root demo"}
         {!pending && <span aria-hidden="true"> →</span>}

@@ -2,6 +2,7 @@ import type {
   ScientificAction,
   ScientificRun,
   LiteratureRun,
+  AnnotationRun,
 } from "./analysis";
 import type { MarkerEvidenceRun } from "./evidence";
 import type { ContextEntry, MarkerEntry } from "./research";
@@ -14,6 +15,7 @@ export type CardReference = {
     | "marker_evidence"
     | "scientific_result"
     | "literature_result"
+    | "annotation_result"
     | "lookup_marker_evidence";
   entryId: string;
 };
@@ -40,6 +42,7 @@ export type ResponseDocument = {
     | { type: "marker_evidence"; result: MarkerEvidenceRun }
     | { type: "scientific_result"; result: ScientificRun }
     | { type: "literature_result"; result: LiteratureRun }
+    | { type: "annotation_result"; result: AnnotationRun }
   )[];
 };
 export class AgentResponseError extends Error {

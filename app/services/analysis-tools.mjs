@@ -9,6 +9,7 @@ export async function runAnalysis(
   connection,
   scientific,
   literature,
+  annotation,
   { projectId, ownerId, turnId, action, step, signal },
 ) {
   const input = parseScientificAction(action);
@@ -30,16 +31,22 @@ export async function runAnalysis(
   );
   if (!dataset) throw new AnalysisError("scientific_data_unavailable");
   const result =
-    input.operation === "literature"
-      ? await literature.search({
-          query: input.query,
-          speciesId: dataset.speciesId,
-          tissue: dataset.tissue,
-          genomeVersion: dataset.genomeBuild,
-          genes: input.genes,
-          limit: 6,
+    input.operation === "annotation"
+      ? await annotation.run({
+          datasetId: input.datasetId,
+          ...(input.cluster ? { cluster: input.cluster } : {}),
+          signal,
         })
-      : await scientific.run({ ...input, signal });
+      : input.operation === "literature"
+        ? await literature.search({
+            query: input.query,
+            speciesId: dataset.speciesId,
+            tissue: dataset.tissue,
+            genomeVersion: dataset.genomeBuild,
+            genes: input.genes,
+            limit: 6,
+          })
+        : await scientific.run({ ...input, signal });
   if (signal?.aborted) throw new AnalysisError("cancelled");
   const saved = await connection.query(
     `INSERT INTO analysis_runs(project_id,owner_id,turn_id,dataset_id,artifact_version,step,operation,input,result)

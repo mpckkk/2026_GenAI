@@ -13,9 +13,14 @@ export function parseScientificAction(value) {
       (k) =>
         !["operation", "datasetId", "cluster", "genes", "query"].includes(k),
     ) ||
-    !["inspect", "markers", "expression", "dotplot", "literature"].includes(
-      value.operation,
-    ) ||
+    ![
+      "inspect",
+      "markers",
+      "expression",
+      "dotplot",
+      "literature",
+      "annotation",
+    ].includes(value.operation) ||
     typeof value.datasetId !== "string" ||
     !/^[a-z0-9][a-z0-9-]{0,79}$/.test(value.datasetId)
   )
@@ -57,11 +62,18 @@ export function parseScientificAction(value) {
     (result.operation === "dotplot" && !result.genes?.length) ||
     (result.operation === "literature" && !result.query) ||
     (result.operation !== "literature" && result.query !== undefined) ||
-    (result.operation !== "markers" && result.cluster !== undefined) ||
-    (["inspect", "markers"].includes(result.operation) && result.genes?.length)
+    (!["markers", "annotation"].includes(result.operation) &&
+      result.cluster !== undefined) ||
+    (["inspect", "markers", "annotation"].includes(result.operation) &&
+      result.genes?.length)
   )
     throw new AnalysisError("analysis_input_invalid");
   return result;
+}
+export function analysisCardType(operation) {
+  if (operation === "literature") return "literature_result";
+  if (operation === "annotation") return "annotation_result";
+  return "scientific_result";
 }
 export function analysisRun(row, full = false) {
   const result = { ...row.result };

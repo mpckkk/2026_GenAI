@@ -25,6 +25,9 @@ export function apiError(error: unknown) {
         "scientific_data_unavailable",
         "scientific_dataset_missing",
         "literature_unavailable",
+        "annotation_reference_unavailable",
+        "annotation_reference_incompatible",
+        "annotation_data_invalid",
       ].includes(String(error.code)))
   )
     return Response.json(

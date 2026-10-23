@@ -179,8 +179,8 @@ export function AgentChat({
   const [selection, setSelection] = useState<ScientificSelection | null>(() => {
     const previous = initial.turns.findLast(
       (turn) =>
-        turn.action?.operation === "markers" &&
-        turn.action.datasetId === science.dataset?.id,
+        ["markers", "annotation"].includes(turn.action?.operation ?? "") &&
+        turn.action?.datasetId === science.dataset?.id,
     );
     return previous?.action?.cluster
       ? {
@@ -652,6 +652,26 @@ export function AgentChat({
   ) {
     nextActions = [];
   }
+  if (
+    dataset &&
+    !latestAnswer?.responseDocument?.blocks.some(
+      (block) => block.type === "annotation_result",
+    )
+  ) {
+    const annotationAction: GuidedAction = {
+      label: cluster ? `Annotate cluster ${cluster}` : "Annotate all clusters",
+      prompt: `Annotate ${cluster ? `source cluster ${cluster}` : "all source clusters"} in ${dataset.title} using the compatible published marker reference. Show candidate cell types, supporting and conflicting genes, uncertainty and citations. Keep unresolved groups explicit and leave final label decisions to me.`,
+      action: {
+        operation: "annotation",
+        datasetId: dataset.id,
+        ...(cluster ? { cluster } : {}),
+      },
+    };
+    nextActions = [annotationAction, ...nextActions].slice(0, 3);
+    nextDescription = cluster
+      ? `Get evidence-backed cell-type candidates for cluster ${cluster}, then review the genes and decide on a label.`
+      : "Start with cell-type candidates for the soybean root groups, or explore the cell map first.";
+  }
 
   return (
     <section className={styles.agentChat} aria-labelledby="agent-chat-heading">
@@ -890,32 +910,16 @@ export function AgentChat({
               )}
             </div>
           )}
-          {dataset && (
-            <NextActions
-              description={nextDescription}
-              actions={nextActions}
-              onRun={runAction}
-              disabled={!canRun || !science.available}
-            />
-          )}
         </div>
       </div>
       <div className={styles.composerDock}>
         {dataset && (
-          <div className={styles.datasetContext}>
-            <span>{dataset.title}</span>
-            {cluster && (
-              <button
-                type="button"
-                onClick={() =>
-                  selectScience({ datasetId: dataset.id, cluster: null })
-                }
-                aria-label={`Clear selected cluster ${cluster}`}
-              >
-                Cluster {cluster} ×
-              </button>
-            )}
-          </div>
+          <NextActions
+            description={nextDescription}
+            actions={nextActions}
+            onRun={runAction}
+            disabled={!canRun || !science.available}
+          />
         )}
         <form
           onSubmit={submit}
@@ -984,16 +988,30 @@ export function AgentChat({
             </div>
           )}
           <div className={styles.chatComposerFooter}>
-            <button
-              type="button"
-              className={styles.composerContext}
-              onClick={onOpenContext}
-              aria-label="Open study context"
-              title="Open study context"
-            >
-              <WorkspaceIcon name="plus" size={18} />
-              <span>{contextLabel}</span>
-            </button>
+            <div className={styles.composerTools}>
+              <button
+                type="button"
+                className={styles.composerContext}
+                onClick={onOpenContext}
+                aria-label="Open study context"
+                title={dataset?.title || "Open study context"}
+              >
+                <WorkspaceIcon name="plus" size={18} />
+                <span>{contextLabel}</span>
+              </button>
+              {dataset && cluster && (
+                <button
+                  type="button"
+                  className={styles.clusterContext}
+                  onClick={() =>
+                    selectScience({ datasetId: dataset.id, cluster: null })
+                  }
+                  aria-label={`Clear selected cluster ${cluster}`}
+                >
+                  Cluster {cluster} ×
+                </button>
+              )}
+            </div>
             <button
               type="submit"
               className={styles.sendButton}
@@ -1005,16 +1023,12 @@ export function AgentChat({
             </button>
           </div>
         </form>
-        <p id="chat-input-help" className={styles.composerHelp}>
+        <p id="chat-input-help" className={styles.srOnly}>
           {activeTurn
             ? "Let this response finish, or cancel it to send another message."
             : "Enter to send · Shift + Enter for a new line"}
         </p>
-        <p className={styles.chatScope}>
-          {dataset
-            ? "Published dataset · Source clusters are not new annotations · Interpretations remain yours to review."
-            : "Published marker lookup: soybean root and nodule. Results need researcher review."}
-        </p>
+        <p className={styles.chatScope}>Interpretations need your review.</p>
       </div>
     </section>
   );

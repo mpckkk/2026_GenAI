@@ -1,6 +1,8 @@
 import { services } from "@/app/bootstrap";
 import { assertSameOrigin } from "@/app/config";
 import { apiError } from "../responses";
+import { readJsonBody } from "../read-body";
+import type { AnnotationRequest } from "@/app/core/agent";
 
 export async function POST(request: Request) {
   try {
@@ -10,23 +12,31 @@ export async function POST(request: Request) {
     } catch {
       return Response.json({ error: "Invalid origin" }, { status: 403 });
     }
-    const body = await request.json().catch(() => null);
+    const parsed = await readJsonBody(request);
+    if (!parsed.ok) return parsed.response;
+    const body = parsed.value;
     if (
-      typeof body?.projectId !== "string" ||
-      !Array.isArray(body.genes) ||
-      body.genes.length < 1 ||
-      body.genes.length > 200 ||
-      !body.genes.every(
-        (gene: unknown) =>
-          typeof gene === "string" && gene.length > 0 && gene.length <= 100,
-      )
+      !body ||
+      typeof body !== "object" ||
+      Array.isArray(body) ||
+      !("projectId" in body) ||
+      typeof body.projectId !== "string"
     ) {
       return Response.json(
-        { error: "Provide a project ID and 1–200 marker genes" },
+        {
+          error:
+            "Provide an owned project, submission ID and attached dataset ID.",
+        },
         { status: 400 },
       );
     }
-    return Response.json(await services.annotation.run(user.id, body));
+    return Response.json(
+      await services.annotation.run(user.id, body as AnnotationRequest),
+      {
+        status: 202,
+        headers: { "Cache-Control": "no-store" },
+      },
+    );
   } catch (error) {
     return apiError(error);
   }

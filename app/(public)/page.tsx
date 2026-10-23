@@ -58,9 +58,8 @@ export default function Landing() {
               <span>Follow the evidence.</span>
             </h1>
             <p className={styles.heroDescription}>
-              Turn questions into plots, marker comparisons and cited evidence.
-              Celloras brings your research into one conversation, with the
-              reasoning in view and you in control.
+              Spend less time naming cell groups by hand. Celloras suggests cell
+              types in one click and shows the evidence behind each suggestion.
             </p>
             <div className={styles.actions}>
               <a className={styles.primaryButton} href="/login">
@@ -131,9 +130,8 @@ export default function Landing() {
               <span className={styles.kicker}>From overview to detail</span>
               <h3>Your next question is already within reach.</h3>
               <p>
-                Start with the cell map, select a cluster, then follow the genes
-                that make it different. Suggested actions keep the investigation
-                moving without making you learn a new set of commands.
+                Choose a cell group, compare its markers and follow the
+                evidence. Suggested actions guide you to the next useful check.
               </p>
               <ol className={styles.questionTrail}>
                 <li>

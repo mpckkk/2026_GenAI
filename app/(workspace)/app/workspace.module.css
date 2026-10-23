@@ -327,14 +327,16 @@
 .agentChat {
   height: 100%;
   min-height: 0;
+  min-width: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr) auto;
 }
 .chatHeading {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 28px 8px;
+  padding: 12px 28px 6px;
   gap: 16px;
 }
 .chatHeading h2 {
@@ -360,6 +362,7 @@
 }
 .chatScroll {
   min-height: 0;
+  min-width: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -372,7 +375,7 @@
   max-width: 800px;
   min-height: 100%;
   margin: 0 auto;
-  padding: 28px 32px 24px;
+  padding: 40px 32px 48px;
 }
 .chatContent[data-empty="true"] {
   display: flex;
@@ -553,20 +556,20 @@
   width: 100%;
   max-width: 848px;
   margin: 0 auto;
-  padding: 12px 28px 14px;
+  padding: 8px 28px 12px;
   background: #fff;
 }
 .chatComposer {
   border: 1px solid #cfd6d0;
   border-radius: 10px;
-  padding: 14px;
+  padding: 12px 14px;
   background: #fff;
 }
 .chatComposer:focus-within {
   border-color: #8caa95;
 }
 .chatComposer .field textarea {
-  min-height: 52px;
+  min-height: 44px;
   max-height: 160px;
   border: 0;
   padding: 0 2px;
@@ -592,13 +595,21 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding-top: 12px;
+  padding-top: 6px;
+}
+.composerTools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
 }
 .composerContext {
   display: flex;
   align-items: center;
   gap: 8px;
-  max-width: calc(100% - 50px);
+  min-width: 0;
+  max-width: 100%;
   padding: 6px 8px;
   margin-left: -4px;
   background: #fff;
@@ -639,18 +650,12 @@
   background: #e7eae7;
   color: #939a94;
 }
-.composerHelp {
-  text-align: center;
-  color: #899089;
-  font-size: 10px;
-  margin-top: 8px;
-}
 .chatScope {
   text-align: center;
   color: #858b85;
   font-size: 10px;
   line-height: 1.5;
-  margin-top: 3px;
+  margin-top: 6px;
 }
 .eyebrow {
   font-size: 13px;
@@ -1223,7 +1228,7 @@
     padding: 12px 18px 6px;
   }
   .chatContent {
-    padding: 20px 18px;
+    padding: 28px 18px 36px;
   }
   .chatWelcome {
     padding: 16px 0 24px;
@@ -1262,14 +1267,14 @@
     flex-direction: column;
   }
   .composerDock {
-    padding: 8px 14px 10px;
+    padding: 6px 14px 8px;
   }
   .chatComposer {
-    padding: 12px;
+    padding: 10px 12px;
   }
   .chatComposer .field textarea {
     font-size: 16px;
-    min-height: 48px;
+    min-height: 42px;
   }
   .studyInspector {
     padding: 20px;
@@ -1398,68 +1403,40 @@
   }
 }
 .nextActions {
-  margin: 24px 0 8px;
-  padding: 20px;
-  border: 1px solid #e3e6e3;
-  border-radius: 8px;
-  background: #fafbf9;
-}
-.nextActions h3 {
-  font-size: 13px;
-  font-weight: 600;
-  margin: 0 0 8px;
-}
-.nextActions p {
-  font-size: 13px;
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 16px;
+  margin: 0 0 10px;
 }
 .nextActions > div {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
-.nextActions small {
-  display: block;
-  color: #666;
-  font-size: 11px;
-  line-height: 1.6;
-  margin-top: 12px;
-}
-.nextPrimary,
-.nextSecondary {
-  min-height: 40px;
-  border: 1px solid #d7d7d7;
+.nextSuggestion {
+  min-height: 32px;
+  border: 1px solid #e1e6e1;
   border-radius: 8px;
-  background: #fff;
-  color: #222;
-  padding: 10px 12px;
-  font-size: 12px;
+  background: #fafbf9;
+  color: #5b655c;
+  padding: 6px 10px;
+  font-size: 11px;
+  line-height: 1.4;
   text-align: left;
 }
-.nextPrimary {
-  background: #111;
-  color: #fff;
-  border-color: #111;
+.nextSuggestion:hover:not(:disabled) {
+  color: #1b5e20;
+  border-color: #b6cbb5;
+  background: #f3f7f0;
 }
-.nextPrimary:disabled,
-.nextSecondary:disabled {
+.nextSuggestion:disabled {
   opacity: 0.5;
 }
-.datasetContext {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  font-size: 11px;
-  color: #555;
-  padding-bottom: 12px;
-}
-.datasetContext button {
+.clusterContext {
   background: #f4f6f3;
-  border: 1px solid #ddd;
+  border: 1px solid #e1e6e1;
   border-radius: 6px;
   padding: 5px 8px;
-  color: #444;
+  min-height: 30px;
+  color: #4e5c4f;
   font-size: 11px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }

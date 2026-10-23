@@ -263,6 +263,7 @@ export function ScientificCard({
             if (
               body.id !== run.id ||
               !("operation" in body.result) ||
+              body.result.operation === "annotation" ||
               !("payload" in body.result)
             )
               throw new Error(

@@ -11,6 +11,7 @@ import { WorkspaceIcon, type IconName } from "./workspace-icons";
 import type { EvidenceReviewReceipt } from "@/app/core/evidence";
 import { EvidenceCard } from "./evidence-card";
 import { ScientificCard, type ScientificSelection } from "./scientific-card";
+import { AnnotationCard } from "./annotation-card";
 import { LiteratureCard } from "./literature-card";
 import type { ScientificResult } from "@/app/core/scientific-data";
 import type { GuidedAction } from "./next-actions";
@@ -69,6 +70,18 @@ export function AgentResponse({
               review={reviews[block.result.id]}
               onAsk={onAsk}
               actionsDisabled={actionsDisabled}
+            />
+          );
+        if (block.type === "annotation_result")
+          return (
+            <AnnotationCard
+              key={block.result.id}
+              run={block.result}
+              selection={selection}
+              onSelect={onSelect}
+              onRun={onRun}
+              onAsk={onAsk}
+              actionsDisabled={scientificActionsDisabled}
             />
           );
         if (block.type === "scientific_result")

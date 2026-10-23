@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.16 — 2026-10-23
+
+- Added provisional soybean root annotation from actual expression and a compatible published marker reference, with candidates, conflicts, missing evidence and unresolved cases.
+- Added inspectable annotation cards and separate researcher label decisions with correction, history, ownership checks and safe submission retries.
+- Connected annotation to guided actions and the real OpenShell tool contract; retained selected cluster and older annotation context in follow-up questions.
+- Made chat suggestions compact and gave the conversation more room around the anchored composer.
+- Fixed OpenShell setup retaining a stale MicroVM bootstrap image after a workload upgrade.
+- Prevented early demo-button clicks before hydration and narrow-screen chat clipping.
+- Simplified landing copy around one-click suggestions and replaced the technical preview caption with a source-study link.
+
 ## 0.1.15 — 2026-10-23
 
 - Show the authors’ published cell-type names first in the landing preview, retaining source group IDs and exact nucleus counts.

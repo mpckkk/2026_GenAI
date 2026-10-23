@@ -6,13 +6,13 @@ The local Keycloak login can show a **Demo login** panel with email, password an
 
 Sign in and choose **Explore soybean root demo** on the experiments page. It creates or resumes your own saved workspace. The source is the GSE270392 root RNA dataset: 7,496 nuclei, 40,127 genes and 12 original source clusters. Import it once using [the dataset guide](dataset-import.md).
 
-1. Choose **Explore cell groups** to show the published UMAP.
-2. Select a cluster in the plot or its keyboard-accessible cluster buttons. Choose **Find markers** to see descriptive enrichment against the rest.
-3. Click a gene to inspect actual expression, or compare the top genes in a dot plot. Suggestions execute in the conversation and preserve an unfinished draft.
-4. Ask for papers about the atlas annotation methods, or use **Find relevant papers** for the current genes. The evidence card links to actual passages and explains compatibility. Gene-specific searches may honestly return no compatible curated evidence: the existing marker table uses an older genome build.
-5. Open **Save my interpretation**, write your rationale and save it as uncertain, supported or rejected. Reload to show that the result and explicit researcher decision persist separately.
+1. Choose **Annotate all clusters**. The agent runs the actual marker comparison and returns an annotation card with proposed, ambiguous and unresolved results.
+2. Select cluster **6**. Inspect the Root hair candidate, the two supporting markers and the source rows. Expand alternatives, conflicts and methods to see why a label remains provisional. Cluster **8_2** is a useful caution: only 25 nuclei, and the suggested label disagrees with the authors' published label in the separate same-study comparison.
+3. Ask the agent to explain the selected result, or inspect a supporting gene's expression and compare markers in a dot plot. These actions retain the selected cluster and preserve an unfinished draft.
+4. Review the label explicitly: accept a returned candidate, enter a correction, keep it unresolved or reject it. Add your rationale and save. Reload to show that the evidence remains unchanged and researcher decisions have their own history.
+5. Use the published UMAP to explore other clusters, find enriched genes or search for relevant papers. The curated literature corpus is separate from the new Wm82v4 annotation reference; gene-specific literature searches can still return no compatible passages. Earlier root/nodule marker-list examples use an older genome build.
 
-The existing UMAP and clusters are preserved, not recomputed. Ranking uses mean differences in log1p counts per 10,000, not statistical significance or cell-type confidence. Source cluster IDs do not establish cell identities. The agent can request these same tools in freeform chat, with bounded execution and canonical cards. See [literature coverage](literature.md).
+The existing UMAP and clusters are preserved, not recomputed. Marker ranking uses mean differences in log1p counts per 10,000. Annotation uses explicit exploratory expression rules against a compatible published reference; scores are not calibrated confidence, statistical significance or independent validation. Source cluster IDs do not establish cell identities. The agent can request these tools in freeform chat, with bounded execution and canonical cards. See [annotation methods](annotation-method.md) and [literature coverage](literature.md).
 
 ## Earlier curated-marker examples
 

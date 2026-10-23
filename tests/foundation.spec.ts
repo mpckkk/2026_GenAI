@@ -8,24 +8,31 @@ test("public landing, mobile layout and anonymous access", async ({
   await page.goto("/");
   await expect(
     page.getByRole("heading", {
-      name: "Your single-cell research, in conversation.",
+      name: /Know your cells\.\s*Follow the evidence\./,
     }),
   ).toBeVisible();
+  await expect(page.getByLabel("Explore a published cell group")).toBeEnabled();
+  await expect(page.getByText("388 nuclei", { exact: true })).toBeVisible();
+  await page.getByLabel("Explore a published cell group").selectOption("0");
+  await expect(page.getByText("2,027 nuclei", { exact: true })).toBeVisible();
   await expect(
-    page.getByText("Example layout; no analysis has run."),
-  ).toBeVisible();
-  await page
-    .getByRole("img", { name: "Celloras", exact: true })
-    .evaluateAll((images) =>
-      Promise.all(images.map((image) => (image as HTMLImageElement).decode())),
-    );
+    page.getByRole("img", { name: /Published soybean root UMAP/ }),
+  ).toHaveAttribute("aria-label", /7,496 nuclei.*2,027|7,496 nuclei.*2027/);
+  await page.locator("img").evaluateAll((images) =>
+    Promise.all(
+      images.map((image) => {
+        (image as HTMLImageElement).loading = "eager";
+        return (image as HTMLImageElement).decode();
+      }),
+    ),
+  );
   await page.screenshot({
     path: testInfo.outputPath("landing-desktop.png"),
     fullPage: true,
   });
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(
-    page.getByRole("link", { name: /Start an experiment/ }),
+    page.getByRole("link", { name: /Explore the demo/ }).first(),
   ).toBeVisible();
   const overflow = await page.evaluate(() =>
     [...document.querySelectorAll("body *")]
@@ -95,8 +102,8 @@ test("real Keycloak accounts, project ownership and logout", async ({
     headers: { origin: "http://localhost:3100" },
     data: { projectId, genes: ["NIN"] },
   });
-  expect(ownResult.status()).toBe(503);
-  expect((await ownResult.json()).code).toBe("INTEGRATION_PENDING");
+  // Gene-only legacy requests cannot claim to annotate without an attached dataset.
+  expect(ownResult.status()).toBe(400);
   expect(
     (
       await page.request.post("/api/projects", {

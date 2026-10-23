@@ -1,0 +1,3511 @@
+{
+  "version": 1,
+  "reference": {
+    "id": "soybean-root-atlas-literature-v1",
+    "version": "cell-2024.10.050-table-s2-root-v1",
+    "sha256": "18de89ddb0a729738e061df52f1966b952ecc0d03fa86243f500d5775233a616",
+    "title": "Soybean root literature-derived marker panel · Zhang et al., Table S2",
+    "url": "https://ars.els-cdn.com/content/image/1-s2.0-S009286742401273X-mmc2.xlsx",
+    "doi": "10.1016/j.cell.2024.10.050",
+    "speciesId": "glycine-max",
+    "tissue": "root",
+    "genomeBuild": "Wm82v4",
+    "coverage": "41 distinct genes, 9 root cell types; authors' Root-column assignments from the literature-derived panel. Contains soybean evidence and Arabidopsis orthology-derived markers; not an independently validated classifier.",
+    "markerGeneCount": 41,
+    "cellTypeCount": 9
+  },
+  "provenance": {
+    "retrievedAt": "2026-10-23",
+    "sheet": "Sheet1",
+    "columns": "A:R; root assignment H",
+    "genomeBuildEvidenceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/#P64",
+    "annotationMethodUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/#P69",
+    "genomeBuildEvidence": "Source Methods P64 reports Williams 82 v4. Table S2 was compiled and applied by these authors to that analysis. This imports their exact gene IDs and root assignments; it does not establish a universal cross-build mapping.",
+    "sourceBytes": 517637,
+    "extraction": "Exact spreadsheet rows; underscores converted to spaces only in displayed cell-type names. Duplicate gene/type associations count once. Full source workbooks remain in ignored local storage.",
+    "rights": "Factual marker associations and numerical data extracted; article prose and full workbooks are not redistributed."
+  },
+  "records": [
+    {
+      "row": 5,
+      "geneId": "Glyma.14G047200",
+      "cellType": "Cortex",
+      "sourceLabel": "Cortex",
+      "expectedCellType": "Cortex",
+      "markerName": "GmNPF6-4",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT3G21670",
+      "originalReference": "10.1016/j.molp.2021.01.001"
+    },
+    {
+      "row": 68,
+      "geneId": "Glyma.01G128700",
+      "cellType": "Epidermis",
+      "sourceLabel": "Epidermis",
+      "expectedCellType": "Trichome",
+      "markerName": "AT2G38440",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT2G38440",
+      "originalReference": "https://www.biorxiv.org/content/10.1101/2023.03.23.533992v1"
+    },
+    {
+      "row": 71,
+      "geneId": "Glyma.01G224900",
+      "cellType": "Root hair",
+      "sourceLabel": "Root_hair",
+      "expectedCellType": "Trichome_Epidermis",
+      "markerName": "GmCAPRICE",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT2G46410",
+      "originalReference": "https://www.biorxiv.org/content/10.1101/2023.03.23.533992v1"
+    },
+    {
+      "row": 81,
+      "geneId": "Glyma.03G007500",
+      "cellType": "Endodermis",
+      "sourceLabel": "Endodermis",
+      "expectedCellType": "Quiescent-Center_Endodermis",
+      "markerName": "MYB56",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT5G17800",
+      "originalReference": "https://www.biorxiv.org/content/10.1101/2023.03.23.533992v1"
+    },
+    {
+      "row": 108,
+      "geneId": "Glyma.07G102500",
+      "cellType": "Procambium",
+      "sourceLabel": "Procambium",
+      "expectedCellType": "Meristematic-cortex_Pericycle_Phloem_Xylem",
+      "markerName": "PIN1",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT1G73590",
+      "originalReference": "https://www.biorxiv.org/content/10.1101/2023.03.23.533992v1"
+    },
+    {
+      "row": 124,
+      "geneId": "Glyma.09G255200",
+      "cellType": "Xylem",
+      "sourceLabel": "Xylem",
+      "expectedCellType": "Trichome",
+      "markerName": "ANGUSTIFOLIA",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT1G01510",
+      "originalReference": "https://www.biorxiv.org/content/10.1101/2023.03.23.533992v1"
+    },
+    {
+      "row": 179,
+      "geneId": "Glyma.20G032500",
+      "cellType": "Root hair",
+      "sourceLabel": "Root_hair",
+      "expectedCellType": "Trichome",
+      "markerName": "PHO1_H8",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "O",
+      "orthologId": "AT1G35350",
+      "originalReference": "https://www.biorxiv.org/content/10.1101/2023.03.23.533992v1"
+    },
+    {
+      "row": 181,
+      "geneId": "Glyma.20G061100",
+      "cellType": "Root hair",
+      "sourceLabel": "Root_hair",
+      "expectedCellType": "Trichome",
+      "markerName": "GmKORRIGIAN-2",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT1G65610",
+      "originalReference": "https://www.biorxiv.org/content/10.1101/2023.03.23.533992v1"
+    },
+    {
+      "row": 192,
+      "geneId": "Glyma.01G203400",
+      "cellType": "Cortex",
+      "sourceLabel": "Cortex",
+      "expectedCellType": "uninfected_cell_11",
+      "markerName": "BMY3-2",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.nature.com/articles/s41477-023-01387-z"
+    },
+    {
+      "row": 219,
+      "geneId": "Glyma.15G274600",
+      "cellType": "Pericycle",
+      "sourceLabel": "Pericycle",
+      "expectedCellType": "Vascular_bundle",
+      "markerName": "MATE87",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.nature.com/articles/s41477-023-01387-z"
+    },
+    {
+      "row": 237,
+      "geneId": "Glyma.01G156200",
+      "cellType": "Epidermis",
+      "sourceLabel": "Epidermis",
+      "expectedCellType": "Epidermis_Nodule-cortex",
+      "markerName": "Glyma.01G156200",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 239,
+      "geneId": "Glyma.02G003700",
+      "cellType": "Pericycle",
+      "sourceLabel": "Pericycle",
+      "expectedCellType": "Pericycle_Stele_Vascular-bundle",
+      "markerName": "Glyma.02G003700",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 240,
+      "geneId": "Glyma.02G003700",
+      "cellType": "Pericycle",
+      "sourceLabel": "Pericycle",
+      "expectedCellType": "Pericycle",
+      "markerName": "Glyma.02G003700",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 247,
+      "geneId": "Glyma.04G227200",
+      "cellType": "Endodermis",
+      "sourceLabel": "Endodermis",
+      "expectedCellType": "Endodermis",
+      "markerName": "Glyma.04G227200",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 251,
+      "geneId": "Glyma.05G216000",
+      "cellType": "Phloem",
+      "sourceLabel": "Phloem",
+      "expectedCellType": "Phloem_Infected-cell",
+      "markerName": "Glyma.05G216000",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 252,
+      "geneId": "Glyma.06G002000",
+      "cellType": "Procambium",
+      "sourceLabel": "Procambium",
+      "expectedCellType": "Cambium",
+      "markerName": "Glyma.06G002000",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 255,
+      "geneId": "Glyma.06G235500",
+      "cellType": "Cortex",
+      "sourceLabel": "Cortex",
+      "expectedCellType": "Cortex_Uninfected_cell",
+      "markerName": "Glyma.06G235500",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 256,
+      "geneId": "Glyma.06G256000",
+      "cellType": "Procambium",
+      "sourceLabel": "Procambium",
+      "expectedCellType": "Cambium",
+      "markerName": "Glyma.06G256000",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 261,
+      "geneId": "Glyma.07G231500",
+      "cellType": "Pericycle",
+      "sourceLabel": "Pericycle",
+      "expectedCellType": "Vascular_Bundle",
+      "markerName": "Glyma.07G231500",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 264,
+      "geneId": "Glyma.08G125800",
+      "cellType": "Pericycle",
+      "sourceLabel": "Pericycle",
+      "expectedCellType": "Pericycle_Stele-Vascular-bundle",
+      "markerName": "Glyma.08G125800",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 268,
+      "geneId": "Glyma.09G099900",
+      "cellType": "Epidermis",
+      "sourceLabel": "Epidermis",
+      "expectedCellType": "Epidermis",
+      "markerName": "Glyma.09G099900",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 269,
+      "geneId": "Glyma.09G127000",
+      "cellType": "Pericycle",
+      "sourceLabel": "Pericycle",
+      "expectedCellType": "Pericycle_Stele-Vascular-bundle",
+      "markerName": "Glyma.09G127000",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 270,
+      "geneId": "Glyma.09G216800",
+      "cellType": "Cortex",
+      "sourceLabel": "Cortex",
+      "expectedCellType": "Cortex",
+      "markerName": "Glyma.09G216800",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 272,
+      "geneId": "Glyma.10G004800",
+      "cellType": "Pericycle",
+      "sourceLabel": "Pericycle",
+      "expectedCellType": "Pericycle",
+      "markerName": "Glyma.10G004800",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 281,
+      "geneId": "Glyma.11G078300",
+      "cellType": "Pericycle",
+      "sourceLabel": "Pericycle",
+      "expectedCellType": "Pericycle_Stele_Vascular-bundle",
+      "markerName": "Glyma.11G078300",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 288,
+      "geneId": "Glyma.12G154300",
+      "cellType": "Phloem",
+      "sourceLabel": "Phloem",
+      "expectedCellType": "Phloem",
+      "markerName": "Glyma.12G154300",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 293,
+      "geneId": "Glyma.13G334500",
+      "cellType": "Xylem",
+      "sourceLabel": "Xylem",
+      "expectedCellType": "Xylem_Nodule-Screreid-layer",
+      "markerName": "Glyma.13G334500",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 298,
+      "geneId": "Glyma.15G040000",
+      "cellType": "Xylem",
+      "sourceLabel": "Xylem",
+      "expectedCellType": "Xylem_Nodule-Screreid-layer",
+      "markerName": "Glyma.15G040000",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 299,
+      "geneId": "Glyma.15G068600",
+      "cellType": "Root cap",
+      "sourceLabel": "Root_cap",
+      "expectedCellType": "Root_cap",
+      "markerName": "Glyma.15G068600",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 304,
+      "geneId": "Glyma.15G266500",
+      "cellType": "Root cap",
+      "sourceLabel": "Root_cap",
+      "expectedCellType": "Root_cap",
+      "markerName": "Glyma.15G266500",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 308,
+      "geneId": "Glyma.16G106800",
+      "cellType": "Endodermis",
+      "sourceLabel": "Endodermis",
+      "expectedCellType": "Endodermis",
+      "markerName": "Glyma.16G106800",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 309,
+      "geneId": "Glyma.17G030700",
+      "cellType": "Root hair",
+      "sourceLabel": "Root_hair",
+      "expectedCellType": "Epidermis",
+      "markerName": "Glyma.17G030700",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 319,
+      "geneId": "Glyma.19G126400",
+      "cellType": "Pericycle",
+      "sourceLabel": "Pericycle",
+      "expectedCellType": "Pericycle",
+      "markerName": "Glyma.19G126400",
+      "sourceSpecies": "soybean",
+      "orthologyType": null,
+      "orthologId": null,
+      "originalReference": "https://www.researchsquare.com/article/rs-2833917/v1"
+    },
+    {
+      "row": 325,
+      "geneId": "Glyma.10G246000",
+      "cellType": "Procambium",
+      "sourceLabel": "Procambium",
+      "expectedCellType": "Pholem-SE-precurors",
+      "markerName": "GmCVP2",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "O",
+      "orthologId": "AT1G05470",
+      "originalReference": "https://doi.org/10.1242/dev.200403"
+    },
+    {
+      "row": 326,
+      "geneId": "Glyma.11G007800",
+      "cellType": "Procambium",
+      "sourceLabel": "Procambium",
+      "expectedCellType": "phloem-sieve-element-precursors-provascular",
+      "markerName": "GmCVP2",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "O",
+      "orthologId": "AT1G05470",
+      "originalReference": "https://doi.org/10.1242/dev.200403"
+    },
+    {
+      "row": 343,
+      "geneId": "Glyma.08G257600",
+      "cellType": "Procambium",
+      "sourceLabel": "Procambium",
+      "expectedCellType": "Procambium-leaf",
+      "markerName": "GmSFC_VAN3",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT5G13300",
+      "originalReference": "https://www.nature.com/articles/nrm.2015.6"
+    },
+    {
+      "row": 346,
+      "geneId": "Glyma.11G145800",
+      "cellType": "Procambium",
+      "sourceLabel": "Procambium",
+      "expectedCellType": "Xylem_Pericycle_SAM_provascular",
+      "markerName": "GmREV",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT5G60690",
+      "originalReference": "https://www.nature.com/articles/nrm.2015.6"
+    },
+    {
+      "row": 360,
+      "geneId": "Glyma.02G198000",
+      "cellType": "Phloem",
+      "sourceLabel": "Phloem",
+      "expectedCellType": "Procambium_Phloem",
+      "markerName": "GmSMXL3a",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT3G52490",
+      "originalReference": "https://doi.org/10.1016/j.devcel.2022.01.008"
+    },
+    {
+      "row": 373,
+      "geneId": "Glyma.08G014900",
+      "cellType": "Epidermis",
+      "sourceLabel": "Epidermis",
+      "expectedCellType": "Epidermis_Trichome",
+      "markerName": "GmBHLH2",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT1G63650",
+      "originalReference": "https://www.science.org/doi/10.1126/science.aay4970"
+    },
+    {
+      "row": 378,
+      "geneId": "Glyma.14G178000",
+      "cellType": "Cortex",
+      "sourceLabel": "Cortex",
+      "expectedCellType": "Cortex",
+      "markerName": "GmBHLH96",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT1G72210",
+      "originalReference": "https://www.science.org/doi/10.1126/science.aay4970"
+    },
+    {
+      "row": 395,
+      "geneId": "Glyma.10G212400",
+      "cellType": "Phloem",
+      "sourceLabel": "Phloem",
+      "expectedCellType": "Vasculature_phloem",
+      "markerName": "GmTET6",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT3G12090",
+      "originalReference": "https://doi.org/10.1016/j.devcel.2021.02.021"
+    },
+    {
+      "row": 405,
+      "geneId": "Glyma.20G178700",
+      "cellType": "Phloem",
+      "sourceLabel": "Phloem",
+      "expectedCellType": "Vasculature_phloem",
+      "markerName": "GmTET6",
+      "sourceSpecies": "Arabidopsis",
+      "orthologyType": "LDO",
+      "orthologId": "AT3G12090",
+      "originalReference": "https://doi.org/10.1016/j.devcel.2021.02.021"
+    }
+  ],
+  "corroboration": {
+    "purpose": "Same-study de-novo marker corroboration only; excluded from annotation scoring and not independent validation.",
+    "columns": "S:Z; root tissue Z",
+    "records": [
+      {
+        "row": 3007,
+        "geneId": "Glyma.20G205800",
+        "cellType": "Cortex",
+        "averageLog2FC": 4.13757444999941,
+        "detectionFraction": 0.146,
+        "otherDetectionFraction": 0.085,
+        "adjustedPValue": 2.47109838540129e-15
+      },
+      {
+        "row": 3008,
+        "geneId": "Glyma.06G235500",
+        "cellType": "Cortex",
+        "averageLog2FC": 2.7221007640929,
+        "detectionFraction": 0.201,
+        "otherDetectionFraction": 0.065,
+        "adjustedPValue": 2.93109811423476e-71
+      },
+      {
+        "row": 3009,
+        "geneId": "Glyma.10G207000",
+        "cellType": "Cortex",
+        "averageLog2FC": 2.72141319181642,
+        "detectionFraction": 0.151,
+        "otherDetectionFraction": 0.057,
+        "adjustedPValue": 3.93475775345694e-40
+      },
+      {
+        "row": 3010,
+        "geneId": "Glyma.10G214500",
+        "cellType": "Cortex",
+        "averageLog2FC": 2.69176575215446,
+        "detectionFraction": 0.337,
+        "otherDetectionFraction": 0.258,
+        "adjustedPValue": 1.17174609610632e-14
+      },
+      {
+        "row": 3011,
+        "geneId": "Glyma.20G183866",
+        "cellType": "Cortex",
+        "averageLog2FC": 2.48085064391206,
+        "detectionFraction": 0.165,
+        "otherDetectionFraction": 0.06,
+        "adjustedPValue": 3.34507322369094e-47
+      },
+      {
+        "row": 3012,
+        "geneId": "Glyma.13G213300",
+        "cellType": "Cortex",
+        "averageLog2FC": 2.44564728648596,
+        "detectionFraction": 0.158,
+        "otherDetectionFraction": 0.038,
+        "adjustedPValue": 1.07471326509585e-70
+      },
+      {
+        "row": 3013,
+        "geneId": "Glyma.12G234700",
+        "cellType": "Cortex",
+        "averageLog2FC": 2.33613914956966,
+        "detectionFraction": 0.18,
+        "otherDetectionFraction": 0.097,
+        "adjustedPValue": 2.05773504677496e-24
+      },
+      {
+        "row": 3014,
+        "geneId": "Glyma.18G061300",
+        "cellType": "Cortex",
+        "averageLog2FC": 2.32179734629614,
+        "detectionFraction": 0.172,
+        "otherDetectionFraction": 0.045,
+        "adjustedPValue": 9.35892996154172e-72
+      },
+      {
+        "row": 3015,
+        "geneId": "Glyma.08G341400",
+        "cellType": "Cortex",
+        "averageLog2FC": 2.27449163151779,
+        "detectionFraction": 0.223,
+        "otherDetectionFraction": 0.099,
+        "adjustedPValue": 2.53861871722218e-50
+      },
+      {
+        "row": 3016,
+        "geneId": "Glyma.05G103600",
+        "cellType": "Cortex",
+        "averageLog2FC": 2.14398960728366,
+        "detectionFraction": 0.117,
+        "otherDetectionFraction": 0.033,
+        "adjustedPValue": 2.95395285379725e-43
+      },
+      {
+        "row": 3017,
+        "geneId": "Glyma.12G217300",
+        "cellType": "Cortex",
+        "averageLog2FC": 2.00800442377848,
+        "detectionFraction": 0.126,
+        "otherDetectionFraction": 0.064,
+        "adjustedPValue": 5.86928286941611e-17
+      },
+      {
+        "row": 3018,
+        "geneId": "Glyma.06G028000",
+        "cellType": "Procambium",
+        "averageLog2FC": 3.05422730661555,
+        "detectionFraction": 0.24,
+        "otherDetectionFraction": 0.038,
+        "adjustedPValue": 4.33594439926228e-132
+      },
+      {
+        "row": 3019,
+        "geneId": "Glyma.06G256000",
+        "cellType": "Procambium",
+        "averageLog2FC": 3.0370712659926,
+        "detectionFraction": 0.149,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 1.89416554622285e-80
+      },
+      {
+        "row": 3020,
+        "geneId": "Glyma.16G031600",
+        "cellType": "Procambium",
+        "averageLog2FC": 3.02834958284806,
+        "detectionFraction": 0.178,
+        "otherDetectionFraction": 0.025,
+        "adjustedPValue": 8.27977184817165e-105
+      },
+      {
+        "row": 3021,
+        "geneId": "Glyma.10G003400",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.71787869598201,
+        "detectionFraction": 0.1,
+        "otherDetectionFraction": 0.019,
+        "adjustedPValue": 2.48366145467099e-43
+      },
+      {
+        "row": 3022,
+        "geneId": "Glyma.03G145800",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.67180822036699,
+        "detectionFraction": 0.107,
+        "otherDetectionFraction": 0.017,
+        "adjustedPValue": 4.42248158105326e-53
+      },
+      {
+        "row": 3023,
+        "geneId": "Glyma.03G063600",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.62469807201008,
+        "detectionFraction": 0.19,
+        "otherDetectionFraction": 0.035,
+        "adjustedPValue": 3.01817527305321e-90
+      },
+      {
+        "row": 3024,
+        "geneId": "Glyma.15G064500",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.60629040885245,
+        "detectionFraction": 0.118,
+        "otherDetectionFraction": 0.027,
+        "adjustedPValue": 7.98359959209599e-43
+      },
+      {
+        "row": 3025,
+        "geneId": "Glyma.06G275000",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.60616318145779,
+        "detectionFraction": 0.342,
+        "otherDetectionFraction": 0.074,
+        "adjustedPValue": 7.80581198705638e-151
+      },
+      {
+        "row": 3026,
+        "geneId": "Glyma.19G219500",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.47019623793713,
+        "detectionFraction": 0.106,
+        "otherDetectionFraction": 0.024,
+        "adjustedPValue": 6.30756267465806e-37
+      },
+      {
+        "row": 3027,
+        "geneId": "Glyma.15G214400",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.38384455337682,
+        "detectionFraction": 0.146,
+        "otherDetectionFraction": 0.031,
+        "adjustedPValue": 4.27075754668044e-58
+      },
+      {
+        "row": 3028,
+        "geneId": "Glyma.06G002000",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.34497247560768,
+        "detectionFraction": 0.118,
+        "otherDetectionFraction": 0.029,
+        "adjustedPValue": 2.73924111295836e-39
+      },
+      {
+        "row": 3029,
+        "geneId": "Glyma.04G017300",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.31320542978903,
+        "detectionFraction": 0.137,
+        "otherDetectionFraction": 0.045,
+        "adjustedPValue": 1.01781675559723e-30
+      },
+      {
+        "row": 3030,
+        "geneId": "Glyma.06G263500",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.29195188739733,
+        "detectionFraction": 0.124,
+        "otherDetectionFraction": 0.03,
+        "adjustedPValue": 2.80832316133071e-41
+      },
+      {
+        "row": 3031,
+        "geneId": "Glyma.13G249800",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.28846983620104,
+        "detectionFraction": 0.139,
+        "otherDetectionFraction": 0.038,
+        "adjustedPValue": 3.39896899102189e-40
+      },
+      {
+        "row": 3032,
+        "geneId": "Glyma.04G089900",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.25602947098661,
+        "detectionFraction": 0.138,
+        "otherDetectionFraction": 0.035,
+        "adjustedPValue": 1.0823339007312e-43
+      },
+      {
+        "row": 3033,
+        "geneId": "Glyma.04G085000",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.25191113621732,
+        "detectionFraction": 0.106,
+        "otherDetectionFraction": 0.022,
+        "adjustedPValue": 1.1259111570973e-40
+      },
+      {
+        "row": 3034,
+        "geneId": "Glyma.05G203700",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.18080387099292,
+        "detectionFraction": 0.106,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 4.54754864903762e-39
+      },
+      {
+        "row": 3035,
+        "geneId": "Glyma.15G192700",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.16350660906879,
+        "detectionFraction": 0.104,
+        "otherDetectionFraction": 0.028,
+        "adjustedPValue": 2.13309836103363e-29
+      },
+      {
+        "row": 3036,
+        "geneId": "Glyma.15G245800",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.14595924428023,
+        "detectionFraction": 0.137,
+        "otherDetectionFraction": 0.034,
+        "adjustedPValue": 1.18179539737671e-44
+      },
+      {
+        "row": 3037,
+        "geneId": "Glyma.08G125800",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.12282461616107,
+        "detectionFraction": 0.157,
+        "otherDetectionFraction": 0.043,
+        "adjustedPValue": 2.10744893095327e-45
+      },
+      {
+        "row": 3038,
+        "geneId": "Glyma.13G261000",
+        "cellType": "Procambium",
+        "averageLog2FC": 2.05082899479677,
+        "detectionFraction": 0.102,
+        "otherDetectionFraction": 0.027,
+        "adjustedPValue": 9.75456298592818e-29
+      },
+      {
+        "row": 3039,
+        "geneId": "Glyma.11G042000",
+        "cellType": "Pericycle",
+        "averageLog2FC": 6.77337846868916,
+        "detectionFraction": 0.241,
+        "otherDetectionFraction": 0.009,
+        "adjustedPValue": 3.32947655466268e-185
+      },
+      {
+        "row": 3040,
+        "geneId": "Glyma.01G200100",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.94332821130673,
+        "detectionFraction": 0.244,
+        "otherDetectionFraction": 0.01,
+        "adjustedPValue": 7.738266640184e-183
+      },
+      {
+        "row": 3041,
+        "geneId": "Glyma.14G148100",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.8005294514004,
+        "detectionFraction": 0.277,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 1.66003553956789e-191
+      },
+      {
+        "row": 3042,
+        "geneId": "Glyma.10G183300",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.6855090682407,
+        "detectionFraction": 0.607,
+        "otherDetectionFraction": 0.029,
+        "adjustedPValue": 0
+      },
+      {
+        "row": 3043,
+        "geneId": "Glyma.15G274600",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.66406309163538,
+        "detectionFraction": 0.228,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 1.57132639060701e-152
+      },
+      {
+        "row": 3044,
+        "geneId": "Glyma.17G053000",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.59285517335859,
+        "detectionFraction": 0.314,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 9.30247387668201e-229
+      },
+      {
+        "row": 3045,
+        "geneId": "Glyma.08G122167",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.54765612462558,
+        "detectionFraction": 0.495,
+        "otherDetectionFraction": 0.039,
+        "adjustedPValue": 6.59180780433622e-254
+      },
+      {
+        "row": 3046,
+        "geneId": "Glyma.20G214200",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.47757342982837,
+        "detectionFraction": 0.208,
+        "otherDetectionFraction": 0.008,
+        "adjustedPValue": 8.86238429548545e-161
+      },
+      {
+        "row": 3047,
+        "geneId": "Glyma.08G182700",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.38129986034278,
+        "detectionFraction": 0.498,
+        "otherDetectionFraction": 0.025,
+        "adjustedPValue": 0
+      },
+      {
+        "row": 3048,
+        "geneId": "Glyma.05G070600",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.36806403318609,
+        "detectionFraction": 0.188,
+        "otherDetectionFraction": 0.009,
+        "adjustedPValue": 9.43585881492966e-123
+      },
+      {
+        "row": 3049,
+        "geneId": "Glyma.02G003700",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.17311669975646,
+        "detectionFraction": 0.558,
+        "otherDetectionFraction": 0.048,
+        "adjustedPValue": 6.28023314979755e-271
+      },
+      {
+        "row": 3050,
+        "geneId": "Glyma.02G135200",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.13108279290206,
+        "detectionFraction": 0.211,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 5.51356131097803e-133
+      },
+      {
+        "row": 3051,
+        "geneId": "Glyma.18G213300",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.11121426083055,
+        "detectionFraction": 0.366,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 1.08994923036939e-283
+      },
+      {
+        "row": 3052,
+        "geneId": "Glyma.14G160100",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.0837770781237,
+        "detectionFraction": 0.403,
+        "otherDetectionFraction": 0.024,
+        "adjustedPValue": 3.77847092882759e-243
+      },
+      {
+        "row": 3053,
+        "geneId": "Glyma.06G125800",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.06224391657406,
+        "detectionFraction": 0.449,
+        "otherDetectionFraction": 0.026,
+        "adjustedPValue": 6.31250756213942e-280
+      },
+      {
+        "row": 3054,
+        "geneId": "Glyma.09G274200",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.06180238786644,
+        "detectionFraction": 0.248,
+        "otherDetectionFraction": 0.01,
+        "adjustedPValue": 8.90062392816461e-187
+      },
+      {
+        "row": 3055,
+        "geneId": "Glyma.19G016600",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.04261975336694,
+        "detectionFraction": 0.449,
+        "otherDetectionFraction": 0.025,
+        "adjustedPValue": 3.53523946883676e-286
+      },
+      {
+        "row": 3056,
+        "geneId": "Glyma.20G206900",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.02962130807679,
+        "detectionFraction": 0.383,
+        "otherDetectionFraction": 0.017,
+        "adjustedPValue": 6.10829289561703e-273
+      },
+      {
+        "row": 3057,
+        "geneId": "Glyma.17G052900",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.01243829640344,
+        "detectionFraction": 0.231,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 1.17451983929e-138
+      },
+      {
+        "row": 3058,
+        "geneId": "Glyma.10G139400",
+        "cellType": "Pericycle",
+        "averageLog2FC": 5.0031004318241,
+        "detectionFraction": 0.281,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 2.70698972747383e-185
+      },
+      {
+        "row": 3059,
+        "geneId": "Glyma.16G216500",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.97072026491917,
+        "detectionFraction": 0.323,
+        "otherDetectionFraction": 0.015,
+        "adjustedPValue": 2.5869335555417e-223
+      },
+      {
+        "row": 3060,
+        "geneId": "Glyma.13G099600",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.92517948100898,
+        "detectionFraction": 0.439,
+        "otherDetectionFraction": 0.03,
+        "adjustedPValue": 8.58021017813218e-242
+      },
+      {
+        "row": 3061,
+        "geneId": "Glyma.20G184300",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.8911320001813,
+        "detectionFraction": 0.149,
+        "otherDetectionFraction": 0.006,
+        "adjustedPValue": 6.02600883399806e-110
+      },
+      {
+        "row": 3062,
+        "geneId": "Glyma.03G205900",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.85097487370932,
+        "detectionFraction": 0.475,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 0
+      },
+      {
+        "row": 3063,
+        "geneId": "Glyma.04G022300",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.84337886873294,
+        "detectionFraction": 0.215,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 2.07935819987451e-98
+      },
+      {
+        "row": 3064,
+        "geneId": "Glyma.15G049800",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.8427689786199,
+        "detectionFraction": 0.211,
+        "otherDetectionFraction": 0.01,
+        "adjustedPValue": 2.46366479015438e-138
+      },
+      {
+        "row": 3065,
+        "geneId": "Glyma.10G044800",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.84050592711134,
+        "detectionFraction": 0.234,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 7.24633491672841e-138
+      },
+      {
+        "row": 3066,
+        "geneId": "Glyma.10G206300",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.81536449256334,
+        "detectionFraction": 0.129,
+        "otherDetectionFraction": 0.005,
+        "adjustedPValue": 3.87609589771495e-91
+      },
+      {
+        "row": 3067,
+        "geneId": "Glyma.14G139400",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.81021200479774,
+        "detectionFraction": 0.106,
+        "otherDetectionFraction": 0.004,
+        "adjustedPValue": 5.51977186183512e-77
+      },
+      {
+        "row": 3068,
+        "geneId": "Glyma.13G081000",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.80676470317927,
+        "detectionFraction": 0.452,
+        "otherDetectionFraction": 0.038,
+        "adjustedPValue": 1.80421782203882e-218
+      },
+      {
+        "row": 3069,
+        "geneId": "Glyma.02G063600",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.75648247348652,
+        "detectionFraction": 0.178,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 8.45399759536126e-103
+      },
+      {
+        "row": 3070,
+        "geneId": "Glyma.16G078100",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.74790979227846,
+        "detectionFraction": 0.248,
+        "otherDetectionFraction": 0.019,
+        "adjustedPValue": 6.7692903054079e-119
+      },
+      {
+        "row": 3071,
+        "geneId": "Glyma.02G046600",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.67263349494935,
+        "detectionFraction": 0.36,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 1.30954601160808e-239
+      },
+      {
+        "row": 3072,
+        "geneId": "Glyma.11G078300",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.67199122358778,
+        "detectionFraction": 0.571,
+        "otherDetectionFraction": 0.038,
+        "adjustedPValue": 0
+      },
+      {
+        "row": 3073,
+        "geneId": "Glyma.10G004800",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.62022790831841,
+        "detectionFraction": 0.287,
+        "otherDetectionFraction": 0.024,
+        "adjustedPValue": 4.00473503064808e-131
+      },
+      {
+        "row": 3074,
+        "geneId": "Glyma.19G015800",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.56920390529394,
+        "detectionFraction": 0.109,
+        "otherDetectionFraction": 0.006,
+        "adjustedPValue": 1.18080688969913e-66
+      },
+      {
+        "row": 3075,
+        "geneId": "Glyma.02G064200",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.56920390529394,
+        "detectionFraction": 0.102,
+        "otherDetectionFraction": 0.005,
+        "adjustedPValue": 7.0736411356258e-62
+      },
+      {
+        "row": 3076,
+        "geneId": "Glyma.11G058100",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.48097672228221,
+        "detectionFraction": 0.479,
+        "otherDetectionFraction": 0.038,
+        "adjustedPValue": 7.60731790642982e-237
+      },
+      {
+        "row": 3077,
+        "geneId": "Glyma.04G251000",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.47508172792939,
+        "detectionFraction": 0.492,
+        "otherDetectionFraction": 0.047,
+        "adjustedPValue": 5.83457029187369e-214
+      },
+      {
+        "row": 3078,
+        "geneId": "Glyma.20G174800",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.4581725929052,
+        "detectionFraction": 0.182,
+        "otherDetectionFraction": 0.012,
+        "adjustedPValue": 2.01224265571036e-97
+      },
+      {
+        "row": 3079,
+        "geneId": "Glyma.16G189700",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.43795937201569,
+        "detectionFraction": 0.165,
+        "otherDetectionFraction": 0.008,
+        "adjustedPValue": 5.13737404715464e-104
+      },
+      {
+        "row": 3080,
+        "geneId": "Glyma.18G236700",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.40774048259983,
+        "detectionFraction": 0.135,
+        "otherDetectionFraction": 0.01,
+        "adjustedPValue": 4.47840330565046e-67
+      },
+      {
+        "row": 3081,
+        "geneId": "Glyma.03G171600",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.39927890385163,
+        "detectionFraction": 0.248,
+        "otherDetectionFraction": 0.021,
+        "adjustedPValue": 4.17098466886543e-109
+      },
+      {
+        "row": 3082,
+        "geneId": "Glyma.06G111702",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.34202642139212,
+        "detectionFraction": 0.125,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 1.9794197128892e-35
+      },
+      {
+        "row": 3083,
+        "geneId": "Glyma.07G209900",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.28743293687856,
+        "detectionFraction": 0.211,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 1.43824031259997e-118
+      },
+      {
+        "row": 3084,
+        "geneId": "Glyma.11G090200",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.27337956434248,
+        "detectionFraction": 0.271,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 2.92150575224212e-144
+      },
+      {
+        "row": 3085,
+        "geneId": "Glyma.17G188500",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.23866268010187,
+        "detectionFraction": 0.347,
+        "otherDetectionFraction": 0.022,
+        "adjustedPValue": 2.55612007601462e-198
+      },
+      {
+        "row": 3086,
+        "geneId": "Glyma.02G135100",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.22857971669668,
+        "detectionFraction": 0.366,
+        "otherDetectionFraction": 0.022,
+        "adjustedPValue": 2.10811610341596e-218
+      },
+      {
+        "row": 3087,
+        "geneId": "Glyma.09G115100",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.2230282641599,
+        "detectionFraction": 0.145,
+        "otherDetectionFraction": 0.008,
+        "adjustedPValue": 2.37931126829966e-84
+      },
+      {
+        "row": 3088,
+        "geneId": "Glyma.14G139700",
+        "cellType": "Pericycle",
+        "averageLog2FC": 4.20663382590923,
+        "detectionFraction": 0.442,
+        "otherDetectionFraction": 0.032,
+        "adjustedPValue": 5.87272206091293e-232
+      },
+      {
+        "row": 3089,
+        "geneId": "Glyma.04G102700",
+        "cellType": "Epidermis",
+        "averageLog2FC": 4.97877141613186,
+        "detectionFraction": 0.196,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 1.9013087363678e-189
+      },
+      {
+        "row": 3090,
+        "geneId": "Glyma.15G214700",
+        "cellType": "Epidermis",
+        "averageLog2FC": 4.51162580036247,
+        "detectionFraction": 0.11,
+        "otherDetectionFraction": 0.007,
+        "adjustedPValue": 9.85877621594888e-99
+      },
+      {
+        "row": 3091,
+        "geneId": "Glyma.15G266400",
+        "cellType": "Epidermis",
+        "averageLog2FC": 4.23444443825097,
+        "detectionFraction": 0.108,
+        "otherDetectionFraction": 0.006,
+        "adjustedPValue": 2.96025713774005e-101
+      },
+      {
+        "row": 3092,
+        "geneId": "Glyma.01G219100",
+        "cellType": "Epidermis",
+        "averageLog2FC": 4.2157398393131,
+        "detectionFraction": 0.1,
+        "otherDetectionFraction": 0.007,
+        "adjustedPValue": 1.47976010162839e-87
+      },
+      {
+        "row": 3093,
+        "geneId": "Glyma.15G124900",
+        "cellType": "Epidermis",
+        "averageLog2FC": 4.12969671047307,
+        "detectionFraction": 0.129,
+        "otherDetectionFraction": 0.007,
+        "adjustedPValue": 1.88329670892336e-120
+      },
+      {
+        "row": 3094,
+        "geneId": "Glyma.10G114600",
+        "cellType": "Epidermis",
+        "averageLog2FC": 4.04426639051878,
+        "detectionFraction": 0.208,
+        "otherDetectionFraction": 0.035,
+        "adjustedPValue": 2.20073021196319e-129
+      },
+      {
+        "row": 3095,
+        "geneId": "Glyma.04G102600",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.69093877380872,
+        "detectionFraction": 0.171,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 1.33700174068145e-140
+      },
+      {
+        "row": 3096,
+        "geneId": "Glyma.20G043400",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.68291125677608,
+        "detectionFraction": 0.234,
+        "otherDetectionFraction": 0.021,
+        "adjustedPValue": 2.78760983264396e-199
+      },
+      {
+        "row": 3097,
+        "geneId": "Glyma.08G119200",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.55367464191877,
+        "detectionFraction": 0.211,
+        "otherDetectionFraction": 0.022,
+        "adjustedPValue": 7.2614358815541e-168
+      },
+      {
+        "row": 3098,
+        "geneId": "Glyma.06G237900",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.45994563877595,
+        "detectionFraction": 0.12,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 8.27899165281126e-96
+      },
+      {
+        "row": 3099,
+        "geneId": "Glyma.05G169100",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.44866292814172,
+        "detectionFraction": 0.167,
+        "otherDetectionFraction": 0.017,
+        "adjustedPValue": 3.59792332785319e-131
+      },
+      {
+        "row": 3100,
+        "geneId": "Glyma.01G108200",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.42346913515474,
+        "detectionFraction": 0.269,
+        "otherDetectionFraction": 0.035,
+        "adjustedPValue": 2.47402908718538e-200
+      },
+      {
+        "row": 3101,
+        "geneId": "Glyma.18G280300",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.40022538528374,
+        "detectionFraction": 0.191,
+        "otherDetectionFraction": 0.024,
+        "adjustedPValue": 3.43966325435933e-140
+      },
+      {
+        "row": 3102,
+        "geneId": "Glyma.15G219400",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.32853782206773,
+        "detectionFraction": 0.291,
+        "otherDetectionFraction": 0.076,
+        "adjustedPValue": 2.41091750223511e-136
+      },
+      {
+        "row": 3103,
+        "geneId": "Glyma.07G253500",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.29333565110411,
+        "detectionFraction": 0.112,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 1.96065738206508e-81
+      },
+      {
+        "row": 3104,
+        "geneId": "Glyma.13G352800",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.2345033586341,
+        "detectionFraction": 0.204,
+        "otherDetectionFraction": 0.027,
+        "adjustedPValue": 5.67057574483839e-145
+      },
+      {
+        "row": 3105,
+        "geneId": "Glyma.10G138300",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.23347847646006,
+        "detectionFraction": 0.189,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 1.07077152354424e-137
+      },
+      {
+        "row": 3106,
+        "geneId": "Glyma.06G181900",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.21542453059348,
+        "detectionFraction": 0.115,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 1.56812809024816e-83
+      },
+      {
+        "row": 3107,
+        "geneId": "Glyma.09G029800",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.20240950890062,
+        "detectionFraction": 0.161,
+        "otherDetectionFraction": 0.019,
+        "adjustedPValue": 1.08382428614062e-118
+      },
+      {
+        "row": 3108,
+        "geneId": "Glyma.18G018200",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.19979829544408,
+        "detectionFraction": 0.129,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 3.16549566209226e-86
+      },
+      {
+        "row": 3109,
+        "geneId": "Glyma.14G038400",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.1738557582768,
+        "detectionFraction": 0.127,
+        "otherDetectionFraction": 0.024,
+        "adjustedPValue": 7.89855518443685e-68
+      },
+      {
+        "row": 3110,
+        "geneId": "Glyma.15G129100",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.08821251385175,
+        "detectionFraction": 0.707,
+        "otherDetectionFraction": 0.223,
+        "adjustedPValue": 0
+      },
+      {
+        "row": 3111,
+        "geneId": "Glyma.05G029000",
+        "cellType": "Epidermis",
+        "averageLog2FC": 3.03140076374836,
+        "detectionFraction": 0.14,
+        "otherDetectionFraction": 0.02,
+        "adjustedPValue": 9.70090089628088e-92
+      },
+      {
+        "row": 3112,
+        "geneId": "Glyma.01G083300",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.97644221430232,
+        "detectionFraction": 0.257,
+        "otherDetectionFraction": 0.041,
+        "adjustedPValue": 1.83071605553295e-167
+      },
+      {
+        "row": 3113,
+        "geneId": "Glyma.12G017900",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.95824361702074,
+        "detectionFraction": 0.154,
+        "otherDetectionFraction": 0.024,
+        "adjustedPValue": 4.4779540053785e-97
+      },
+      {
+        "row": 3114,
+        "geneId": "Glyma.09G118300",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.91861654290003,
+        "detectionFraction": 0.181,
+        "otherDetectionFraction": 0.027,
+        "adjustedPValue": 1.49709039970545e-116
+      },
+      {
+        "row": 3115,
+        "geneId": "Glyma.20G240600",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.89530428251192,
+        "detectionFraction": 0.318,
+        "otherDetectionFraction": 0.053,
+        "adjustedPValue": 1.64498581889202e-207
+      },
+      {
+        "row": 3116,
+        "geneId": "Glyma.02G166800",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.8898696958006,
+        "detectionFraction": 0.211,
+        "otherDetectionFraction": 0.035,
+        "adjustedPValue": 5.30901689875842e-130
+      },
+      {
+        "row": 3117,
+        "geneId": "Glyma.15G135600",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.88785428912934,
+        "detectionFraction": 0.102,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 1.96755064112678e-66
+      },
+      {
+        "row": 3118,
+        "geneId": "Glyma.14G158200",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.83559897247472,
+        "detectionFraction": 0.223,
+        "otherDetectionFraction": 0.052,
+        "adjustedPValue": 7.13439520229144e-108
+      },
+      {
+        "row": 3119,
+        "geneId": "Glyma.07G065500",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.83263364198212,
+        "detectionFraction": 0.609,
+        "otherDetectionFraction": 0.137,
+        "adjustedPValue": 0
+      },
+      {
+        "row": 3120,
+        "geneId": "Glyma.01G084000",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.77633343653306,
+        "detectionFraction": 0.326,
+        "otherDetectionFraction": 0.065,
+        "adjustedPValue": 4.19871537803868e-190
+      },
+      {
+        "row": 3121,
+        "geneId": "Glyma.03G021200",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.7692893874028,
+        "detectionFraction": 0.12,
+        "otherDetectionFraction": 0.02,
+        "adjustedPValue": 1.24177105776322e-69
+      },
+      {
+        "row": 3122,
+        "geneId": "Glyma.03G259900",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.76903644387222,
+        "detectionFraction": 0.235,
+        "otherDetectionFraction": 0.042,
+        "adjustedPValue": 4.22481088789525e-139
+      },
+      {
+        "row": 3123,
+        "geneId": "Glyma.17G062300",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.75024491446473,
+        "detectionFraction": 0.142,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 1.33390936953671e-85
+      },
+      {
+        "row": 3124,
+        "geneId": "Glyma.16G061800",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.7475910035747,
+        "detectionFraction": 0.173,
+        "otherDetectionFraction": 0.029,
+        "adjustedPValue": 9.29616553409265e-103
+      },
+      {
+        "row": 3125,
+        "geneId": "Glyma.03G116300",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.67942727807621,
+        "detectionFraction": 0.122,
+        "otherDetectionFraction": 0.028,
+        "adjustedPValue": 4.60980719693081e-55
+      },
+      {
+        "row": 3126,
+        "geneId": "Glyma.08G352400",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.56817002259781,
+        "detectionFraction": 0.104,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 4.33657712104017e-57
+      },
+      {
+        "row": 3127,
+        "geneId": "Glyma.09G239900",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.54735833686048,
+        "detectionFraction": 0.222,
+        "otherDetectionFraction": 0.043,
+        "adjustedPValue": 6.63118755369039e-124
+      },
+      {
+        "row": 3128,
+        "geneId": "Glyma.03G079500",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.53737037927709,
+        "detectionFraction": 0.297,
+        "otherDetectionFraction": 0.056,
+        "adjustedPValue": 1.59397182297649e-174
+      },
+      {
+        "row": 3129,
+        "geneId": "Glyma.17G034700",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.53679383842039,
+        "detectionFraction": 0.107,
+        "otherDetectionFraction": 0.02,
+        "adjustedPValue": 7.42465598572956e-56
+      },
+      {
+        "row": 3130,
+        "geneId": "Glyma.13G355000",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.48063698916409,
+        "detectionFraction": 0.288,
+        "otherDetectionFraction": 0.061,
+        "adjustedPValue": 1.16799053506721e-155
+      },
+      {
+        "row": 3131,
+        "geneId": "Glyma.18G082300",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.47618560642126,
+        "detectionFraction": 0.292,
+        "otherDetectionFraction": 0.069,
+        "adjustedPValue": 1.00352304716404e-144
+      },
+      {
+        "row": 3132,
+        "geneId": "Glyma.08G328800",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.47596197322151,
+        "detectionFraction": 0.177,
+        "otherDetectionFraction": 0.037,
+        "adjustedPValue": 3.57812695195742e-89
+      },
+      {
+        "row": 3133,
+        "geneId": "Glyma.05G184500",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.450886149781,
+        "detectionFraction": 0.104,
+        "otherDetectionFraction": 0.032,
+        "adjustedPValue": 1.4563073803672e-32
+      },
+      {
+        "row": 3134,
+        "geneId": "Glyma.19G263100",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.439574632288,
+        "detectionFraction": 0.71,
+        "otherDetectionFraction": 0.251,
+        "adjustedPValue": 0
+      },
+      {
+        "row": 3135,
+        "geneId": "Glyma.03G142400",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.4316510460296,
+        "detectionFraction": 0.284,
+        "otherDetectionFraction": 0.061,
+        "adjustedPValue": 1.18844376548809e-149
+      },
+      {
+        "row": 3136,
+        "geneId": "Glyma.05G147000",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.41305392220841,
+        "detectionFraction": 0.112,
+        "otherDetectionFraction": 0.037,
+        "adjustedPValue": 9.00985000325724e-32
+      },
+      {
+        "row": 3137,
+        "geneId": "Glyma.01G173800",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.40518429147484,
+        "detectionFraction": 0.11,
+        "otherDetectionFraction": 0.021,
+        "adjustedPValue": 6.88775005208106e-56
+      },
+      {
+        "row": 3138,
+        "geneId": "Glyma.11G170300",
+        "cellType": "Epidermis",
+        "averageLog2FC": 2.40151714851578,
+        "detectionFraction": 0.108,
+        "otherDetectionFraction": 0.027,
+        "adjustedPValue": 4.65955732778454e-43
+      },
+      {
+        "row": 3139,
+        "geneId": "Glyma.01G081900",
+        "cellType": "Endodermis",
+        "averageLog2FC": 5.69142415519378,
+        "detectionFraction": 0.215,
+        "otherDetectionFraction": 0.006,
+        "adjustedPValue": 1.17907458536659e-230
+      },
+      {
+        "row": 3140,
+        "geneId": "Glyma.16G106800",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.98650984260384,
+        "detectionFraction": 0.41,
+        "otherDetectionFraction": 0.022,
+        "adjustedPValue": 0
+      },
+      {
+        "row": 3141,
+        "geneId": "Glyma.04G227200",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.86022998272434,
+        "detectionFraction": 0.169,
+        "otherDetectionFraction": 0.007,
+        "adjustedPValue": 9.85638473054173e-147
+      },
+      {
+        "row": 3142,
+        "geneId": "Glyma.16G202200",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.85480631076932,
+        "detectionFraction": 0.197,
+        "otherDetectionFraction": 0.008,
+        "adjustedPValue": 4.55138132409948e-174
+      },
+      {
+        "row": 3143,
+        "geneId": "Glyma.01G016600",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.69171726674312,
+        "detectionFraction": 0.386,
+        "otherDetectionFraction": 0.025,
+        "adjustedPValue": 1.00525086230424e-288
+      },
+      {
+        "row": 3144,
+        "geneId": "Glyma.09G206200",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.62176122329018,
+        "detectionFraction": 0.203,
+        "otherDetectionFraction": 0.009,
+        "adjustedPValue": 1.81574095858764e-172
+      },
+      {
+        "row": 3145,
+        "geneId": "Glyma.02G091800",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.59910031849984,
+        "detectionFraction": 0.243,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 2.43980843116751e-196
+      },
+      {
+        "row": 3146,
+        "geneId": "Glyma.11G072000",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.58561967795393,
+        "detectionFraction": 0.359,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 1.97644014828672e-268
+      },
+      {
+        "row": 3147,
+        "geneId": "Glyma.08G220800",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.58534563577609,
+        "detectionFraction": 0.191,
+        "otherDetectionFraction": 0.009,
+        "adjustedPValue": 1.03794351754792e-164
+      },
+      {
+        "row": 3148,
+        "geneId": "Glyma.01G171100",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.58210583577142,
+        "detectionFraction": 0.311,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 1.93287332611683e-210
+      },
+      {
+        "row": 3149,
+        "geneId": "Glyma.16G092100",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.55444829870436,
+        "detectionFraction": 0.167,
+        "otherDetectionFraction": 0.008,
+        "adjustedPValue": 2.47122576127027e-141
+      },
+      {
+        "row": 3150,
+        "geneId": "Glyma.13G306900",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.5301183511803,
+        "detectionFraction": 0.357,
+        "otherDetectionFraction": 0.032,
+        "adjustedPValue": 1.00327068786469e-215
+      },
+      {
+        "row": 3151,
+        "geneId": "Glyma.12G195600",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.52525128861258,
+        "detectionFraction": 0.311,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 7.06818458859271e-210
+      },
+      {
+        "row": 3152,
+        "geneId": "Glyma.18G291000",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.46662112956995,
+        "detectionFraction": 0.343,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 6.5219538872476e-279
+      },
+      {
+        "row": 3153,
+        "geneId": "Glyma.02G052700",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.41702988719544,
+        "detectionFraction": 0.201,
+        "otherDetectionFraction": 0.015,
+        "adjustedPValue": 9.18225319732298e-132
+      },
+      {
+        "row": 3154,
+        "geneId": "Glyma.09G216100",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.4133354036377,
+        "detectionFraction": 0.229,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 3.03595525938643e-178
+      },
+      {
+        "row": 3155,
+        "geneId": "Glyma.11G007900",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.37293730301227,
+        "detectionFraction": 0.317,
+        "otherDetectionFraction": 0.025,
+        "adjustedPValue": 2.28490845071744e-207
+      },
+      {
+        "row": 3156,
+        "geneId": "Glyma.14G218700",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.32013685870796,
+        "detectionFraction": 0.183,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 3.46542756661933e-138
+      },
+      {
+        "row": 3157,
+        "geneId": "Glyma.01G234900",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.2395329319073,
+        "detectionFraction": 0.299,
+        "otherDetectionFraction": 0.019,
+        "adjustedPValue": 6.72338014482156e-220
+      },
+      {
+        "row": 3158,
+        "geneId": "Glyma.11G008000",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.21000276725557,
+        "detectionFraction": 0.219,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 9.63662857554128e-143
+      },
+      {
+        "row": 3159,
+        "geneId": "Glyma.09G073200",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.07687616194436,
+        "detectionFraction": 0.114,
+        "otherDetectionFraction": 0.009,
+        "adjustedPValue": 1.19315693252684e-67
+      },
+      {
+        "row": 3160,
+        "geneId": "Glyma.13G140900",
+        "cellType": "Endodermis",
+        "averageLog2FC": 4.06011780054788,
+        "detectionFraction": 0.273,
+        "otherDetectionFraction": 0.019,
+        "adjustedPValue": 1.19224998894013e-189
+      },
+      {
+        "row": 3161,
+        "geneId": "Glyma.20G220900",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.99150001409895,
+        "detectionFraction": 0.163,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 6.63562810568253e-88
+      },
+      {
+        "row": 3162,
+        "geneId": "Glyma.17G078300",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.97523274416099,
+        "detectionFraction": 0.171,
+        "otherDetectionFraction": 0.024,
+        "adjustedPValue": 2.35344558536951e-65
+      },
+      {
+        "row": 3163,
+        "geneId": "Glyma.02G176800",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.95983674075414,
+        "detectionFraction": 0.139,
+        "otherDetectionFraction": 0.01,
+        "adjustedPValue": 5.4318089763074e-90
+      },
+      {
+        "row": 3164,
+        "geneId": "Glyma.09G196800",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.91507018562364,
+        "detectionFraction": 0.438,
+        "otherDetectionFraction": 0.047,
+        "adjustedPValue": 6.20704626201772e-235
+      },
+      {
+        "row": 3165,
+        "geneId": "Glyma.10G075800",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.860900068682,
+        "detectionFraction": 0.108,
+        "otherDetectionFraction": 0.009,
+        "adjustedPValue": 8.59424572797943e-63
+      },
+      {
+        "row": 3166,
+        "geneId": "Glyma.05G021100",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.72710954471631,
+        "detectionFraction": 0.129,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 3.61724918047517e-66
+      },
+      {
+        "row": 3167,
+        "geneId": "Glyma.07G123100",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.61749446959713,
+        "detectionFraction": 0.135,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 1.73965210408992e-81
+      },
+      {
+        "row": 3168,
+        "geneId": "Glyma.05G075100",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.60771344880455,
+        "detectionFraction": 0.183,
+        "otherDetectionFraction": 0.036,
+        "adjustedPValue": 1.49577862064569e-49
+      },
+      {
+        "row": 3169,
+        "geneId": "Glyma.10G209800",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.5573817732544,
+        "detectionFraction": 0.114,
+        "otherDetectionFraction": 0.019,
+        "adjustedPValue": 2.95608057488672e-35
+      },
+      {
+        "row": 3170,
+        "geneId": "Glyma.15G084200",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.52237377944718,
+        "detectionFraction": 0.129,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 8.26426592004516e-67
+      },
+      {
+        "row": 3171,
+        "geneId": "Glyma.06G324300",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.5044682927611,
+        "detectionFraction": 0.127,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 1.74542974922463e-47
+      },
+      {
+        "row": 3172,
+        "geneId": "Glyma.01G116700",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.37202420485464,
+        "detectionFraction": 0.112,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 1.74278571612706e-46
+      },
+      {
+        "row": 3173,
+        "geneId": "Glyma.13G307000",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.35632115574555,
+        "detectionFraction": 0.191,
+        "otherDetectionFraction": 0.028,
+        "adjustedPValue": 1.3550552884076e-71
+      },
+      {
+        "row": 3174,
+        "geneId": "Glyma.12G195500",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.28762435358097,
+        "detectionFraction": 0.149,
+        "otherDetectionFraction": 0.02,
+        "adjustedPValue": 1.60695750305275e-58
+      },
+      {
+        "row": 3175,
+        "geneId": "Glyma.06G296102",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.24186823738698,
+        "detectionFraction": 0.209,
+        "otherDetectionFraction": 0.031,
+        "adjustedPValue": 1.63019156030733e-76
+      },
+      {
+        "row": 3176,
+        "geneId": "Glyma.10G282267",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.23776383905424,
+        "detectionFraction": 0.1,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 1.46914234481212e-39
+      },
+      {
+        "row": 3177,
+        "geneId": "Glyma.11G250500",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.20767811286495,
+        "detectionFraction": 0.331,
+        "otherDetectionFraction": 0.074,
+        "adjustedPValue": 2.16512434830328e-84
+      },
+      {
+        "row": 3178,
+        "geneId": "Glyma.11G108000",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.17805987475282,
+        "detectionFraction": 0.145,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 5.88891683558721e-61
+      },
+      {
+        "row": 3179,
+        "geneId": "Glyma.01G028700",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.08860349537802,
+        "detectionFraction": 0.193,
+        "otherDetectionFraction": 0.028,
+        "adjustedPValue": 4.8287271629852e-72
+      },
+      {
+        "row": 3180,
+        "geneId": "Glyma.05G212300",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.06339293258074,
+        "detectionFraction": 0.165,
+        "otherDetectionFraction": 0.024,
+        "adjustedPValue": 4.24214389313396e-62
+      },
+      {
+        "row": 3181,
+        "geneId": "Glyma.17G257700",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.04136662625074,
+        "detectionFraction": 0.125,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 1.29649025723352e-45
+      },
+      {
+        "row": 3182,
+        "geneId": "Glyma.20G109400",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.03124240897703,
+        "detectionFraction": 0.231,
+        "otherDetectionFraction": 0.03,
+        "adjustedPValue": 1.45199593917388e-96
+      },
+      {
+        "row": 3183,
+        "geneId": "Glyma.02G124600",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.02663438257062,
+        "detectionFraction": 0.112,
+        "otherDetectionFraction": 0.015,
+        "adjustedPValue": 1.16947686640696e-43
+      },
+      {
+        "row": 3184,
+        "geneId": "Glyma.04G082800",
+        "cellType": "Endodermis",
+        "averageLog2FC": 3.01290316212705,
+        "detectionFraction": 0.102,
+        "otherDetectionFraction": 0.015,
+        "adjustedPValue": 7.09154072910049e-36
+      },
+      {
+        "row": 3185,
+        "geneId": "Glyma.17G006300",
+        "cellType": "Endodermis",
+        "averageLog2FC": 2.94690719009989,
+        "detectionFraction": 0.145,
+        "otherDetectionFraction": 0.021,
+        "adjustedPValue": 6.9745227948148e-54
+      },
+      {
+        "row": 3186,
+        "geneId": "Glyma.17G065000",
+        "cellType": "Endodermis",
+        "averageLog2FC": 2.94409400420839,
+        "detectionFraction": 0.175,
+        "otherDetectionFraction": 0.025,
+        "adjustedPValue": 7.38991933919201e-65
+      },
+      {
+        "row": 3187,
+        "geneId": "Glyma.07G010400",
+        "cellType": "Endodermis",
+        "averageLog2FC": 2.92715105739471,
+        "detectionFraction": 0.261,
+        "otherDetectionFraction": 0.043,
+        "adjustedPValue": 1.06243651072967e-88
+      },
+      {
+        "row": 3188,
+        "geneId": "Glyma.09G099500",
+        "cellType": "Endodermis",
+        "averageLog2FC": 2.8945738683646,
+        "detectionFraction": 0.267,
+        "otherDetectionFraction": 0.044,
+        "adjustedPValue": 8.64577525306002e-90
+      },
+      {
+        "row": 3189,
+        "geneId": "Glyma.19G052700",
+        "cellType": "Root hair",
+        "averageLog2FC": 6.47824908711305,
+        "detectionFraction": 0.253,
+        "otherDetectionFraction": 0.005,
+        "adjustedPValue": 1.02302643638806e-277
+      },
+      {
+        "row": 3190,
+        "geneId": "Glyma.03G247500",
+        "cellType": "Root hair",
+        "averageLog2FC": 6.39421461540252,
+        "detectionFraction": 0.353,
+        "otherDetectionFraction": 0.046,
+        "adjustedPValue": 1.34899021841128e-138
+      },
+      {
+        "row": 3191,
+        "geneId": "Glyma.15G272200",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.99440242991555,
+        "detectionFraction": 0.101,
+        "otherDetectionFraction": 0.003,
+        "adjustedPValue": 1.22373388166284e-95
+      },
+      {
+        "row": 3192,
+        "geneId": "Glyma.13G234400",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.90901093868491,
+        "detectionFraction": 0.106,
+        "otherDetectionFraction": 0.003,
+        "adjustedPValue": 4.42598406439912e-97
+      },
+      {
+        "row": 3193,
+        "geneId": "Glyma.09G131500",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.73136802408176,
+        "detectionFraction": 0.227,
+        "otherDetectionFraction": 0.009,
+        "adjustedPValue": 1.0404045580294e-185
+      },
+      {
+        "row": 3194,
+        "geneId": "Glyma.15G256000",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.70310976404025,
+        "detectionFraction": 0.209,
+        "otherDetectionFraction": 0.015,
+        "adjustedPValue": 3.52657300214676e-121
+      },
+      {
+        "row": 3195,
+        "geneId": "Glyma.10G061800",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.68835513512167,
+        "detectionFraction": 0.108,
+        "otherDetectionFraction": 0.003,
+        "adjustedPValue": 2.62786205911746e-102
+      },
+      {
+        "row": 3196,
+        "geneId": "Glyma.07G139700",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.65971870044137,
+        "detectionFraction": 0.606,
+        "otherDetectionFraction": 0.033,
+        "adjustedPValue": 0
+      },
+      {
+        "row": 3197,
+        "geneId": "Glyma.10G253700",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.64669447018411,
+        "detectionFraction": 0.242,
+        "otherDetectionFraction": 0.012,
+        "adjustedPValue": 7.99476326153512e-186
+      },
+      {
+        "row": 3198,
+        "geneId": "Glyma.03G201100",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.56414419369794,
+        "detectionFraction": 0.33,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 6.44832048358597e-270
+      },
+      {
+        "row": 3199,
+        "geneId": "Glyma.20G130000",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.5605995879233,
+        "detectionFraction": 0.157,
+        "otherDetectionFraction": 0.007,
+        "adjustedPValue": 2.8595959519687e-118
+      },
+      {
+        "row": 3200,
+        "geneId": "Glyma.08G171400",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.45834952967534,
+        "detectionFraction": 0.332,
+        "otherDetectionFraction": 0.024,
+        "adjustedPValue": 6.27762637740625e-199
+      },
+      {
+        "row": 3201,
+        "geneId": "Glyma.16G059300",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.44829586501142,
+        "detectionFraction": 0.178,
+        "otherDetectionFraction": 0.007,
+        "adjustedPValue": 3.4551855423864e-146
+      },
+      {
+        "row": 3202,
+        "geneId": "Glyma.05G114800",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.44175301914465,
+        "detectionFraction": 0.284,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 8.09974657735822e-222
+      },
+      {
+        "row": 3203,
+        "geneId": "Glyma.16G178800",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.33970503317673,
+        "detectionFraction": 0.162,
+        "otherDetectionFraction": 0.009,
+        "adjustedPValue": 1.04634090918374e-112
+      },
+      {
+        "row": 3204,
+        "geneId": "Glyma.15G040700",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.31964325884375,
+        "detectionFraction": 0.137,
+        "otherDetectionFraction": 0.006,
+        "adjustedPValue": 5.57354319310775e-106
+      },
+      {
+        "row": 3205,
+        "geneId": "Glyma.07G139800",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.21180324663012,
+        "detectionFraction": 0.299,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 1.19101410238941e-264
+      },
+      {
+        "row": 3206,
+        "geneId": "Glyma.10G051100",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.11844636045728,
+        "detectionFraction": 0.443,
+        "otherDetectionFraction": 0.026,
+        "adjustedPValue": 0
+      },
+      {
+        "row": 3207,
+        "geneId": "Glyma.20G224200",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.06156373495272,
+        "detectionFraction": 0.204,
+        "otherDetectionFraction": 0.012,
+        "adjustedPValue": 1.42362452561186e-136
+      },
+      {
+        "row": 3208,
+        "geneId": "Glyma.11G097300",
+        "cellType": "Root hair",
+        "averageLog2FC": 5.02820513800629,
+        "detectionFraction": 0.131,
+        "otherDetectionFraction": 0.007,
+        "adjustedPValue": 3.06162451027641e-90
+      },
+      {
+        "row": 3209,
+        "geneId": "Glyma.15G062400",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.9297975934001,
+        "detectionFraction": 0.361,
+        "otherDetectionFraction": 0.077,
+        "adjustedPValue": 5.26183800478372e-87
+      },
+      {
+        "row": 3210,
+        "geneId": "Glyma.16G173000",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.8713892972144,
+        "detectionFraction": 0.353,
+        "otherDetectionFraction": 0.031,
+        "adjustedPValue": 4.11207649376196e-186
+      },
+      {
+        "row": 3211,
+        "geneId": "Glyma.08G175200",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.85047305486079,
+        "detectionFraction": 0.433,
+        "otherDetectionFraction": 0.08,
+        "adjustedPValue": 4.26148903129709e-122
+      },
+      {
+        "row": 3212,
+        "geneId": "Glyma.04G178500",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.8059877436686,
+        "detectionFraction": 0.541,
+        "otherDetectionFraction": 0.054,
+        "adjustedPValue": 1.21663433325966e-275
+      },
+      {
+        "row": 3213,
+        "geneId": "Glyma.11G157200",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.79797962629617,
+        "detectionFraction": 0.253,
+        "otherDetectionFraction": 0.022,
+        "adjustedPValue": 2.36945813430899e-129
+      },
+      {
+        "row": 3214,
+        "geneId": "Glyma.10G161500",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.77921798805463,
+        "detectionFraction": 0.412,
+        "otherDetectionFraction": 0.068,
+        "adjustedPValue": 2.78328348052484e-132
+      },
+      {
+        "row": 3215,
+        "geneId": "Glyma.02G002100",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.75719401144967,
+        "detectionFraction": 0.201,
+        "otherDetectionFraction": 0.013,
+        "adjustedPValue": 4.13134789910514e-127
+      },
+      {
+        "row": 3216,
+        "geneId": "Glyma.04G086300",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.66077053010662,
+        "detectionFraction": 0.358,
+        "otherDetectionFraction": 0.026,
+        "adjustedPValue": 9.21990847029974e-218
+      },
+      {
+        "row": 3217,
+        "geneId": "Glyma.11G124500",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.64211518550518,
+        "detectionFraction": 0.196,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 7.09138550963161e-97
+      },
+      {
+        "row": 3218,
+        "geneId": "Glyma.19G151200",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.61871609605502,
+        "detectionFraction": 0.173,
+        "otherDetectionFraction": 0.015,
+        "adjustedPValue": 9.85332491275721e-87
+      },
+      {
+        "row": 3219,
+        "geneId": "Glyma.12G103600",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.5974135674129,
+        "detectionFraction": 0.242,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 3.59451557278964e-142
+      },
+      {
+        "row": 3220,
+        "geneId": "Glyma.15G211500",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.58338557552012,
+        "detectionFraction": 0.451,
+        "otherDetectionFraction": 0.091,
+        "adjustedPValue": 6.57146576740918e-118
+      },
+      {
+        "row": 3221,
+        "geneId": "Glyma.04G075800",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.54750605744626,
+        "detectionFraction": 0.289,
+        "otherDetectionFraction": 0.028,
+        "adjustedPValue": 9.62561044797941e-141
+      },
+      {
+        "row": 3222,
+        "geneId": "Glyma.03G201550",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.52415158807109,
+        "detectionFraction": 0.173,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 1.79864750746662e-90
+      },
+      {
+        "row": 3223,
+        "geneId": "Glyma.07G243600",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.51781221697762,
+        "detectionFraction": 0.307,
+        "otherDetectionFraction": 0.055,
+        "adjustedPValue": 6.01752503943367e-83
+      },
+      {
+        "row": 3224,
+        "geneId": "Glyma.07G243500",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.50924681151402,
+        "detectionFraction": 0.451,
+        "otherDetectionFraction": 0.11,
+        "adjustedPValue": 2.09461927570833e-97
+      },
+      {
+        "row": 3225,
+        "geneId": "Glyma.07G098700",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.49077100736772,
+        "detectionFraction": 0.121,
+        "otherDetectionFraction": 0.008,
+        "adjustedPValue": 4.91263562257515e-71
+      },
+      {
+        "row": 3226,
+        "geneId": "Glyma.05G142900",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.4885115001856,
+        "detectionFraction": 0.139,
+        "otherDetectionFraction": 0.009,
+        "adjustedPValue": 1.49676596805209e-85
+      },
+      {
+        "row": 3227,
+        "geneId": "Glyma.20G211700",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.48691868187212,
+        "detectionFraction": 0.198,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 2.93795506368802e-119
+      },
+      {
+        "row": 3228,
+        "geneId": "Glyma.11G247500",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.45991004366296,
+        "detectionFraction": 0.255,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 7.02302111126832e-154
+      },
+      {
+        "row": 3229,
+        "geneId": "Glyma.04G136600",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.44892011675541,
+        "detectionFraction": 0.196,
+        "otherDetectionFraction": 0.033,
+        "adjustedPValue": 3.29562235061476e-54
+      },
+      {
+        "row": 3230,
+        "geneId": "Glyma.08G320200",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.43842883555208,
+        "detectionFraction": 0.198,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 1.81080713738578e-96
+      },
+      {
+        "row": 3231,
+        "geneId": "Glyma.19G162200",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.43138248207507,
+        "detectionFraction": 0.155,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 5.05282224959598e-88
+      },
+      {
+        "row": 3232,
+        "geneId": "Glyma.15G055800",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.43014464841622,
+        "detectionFraction": 0.222,
+        "otherDetectionFraction": 0.02,
+        "adjustedPValue": 3.72970453107553e-111
+      },
+      {
+        "row": 3233,
+        "geneId": "Glyma.01G162900",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.42413381433743,
+        "detectionFraction": 0.113,
+        "otherDetectionFraction": 0.009,
+        "adjustedPValue": 1.33655817215193e-61
+      },
+      {
+        "row": 3234,
+        "geneId": "Glyma.13G138600",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.42097525901191,
+        "detectionFraction": 0.459,
+        "otherDetectionFraction": 0.046,
+        "adjustedPValue": 3.51408665216244e-223
+      },
+      {
+        "row": 3235,
+        "geneId": "Glyma.13G119000",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.39257682985432,
+        "detectionFraction": 0.193,
+        "otherDetectionFraction": 0.026,
+        "adjustedPValue": 8.81358192754657e-65
+      },
+      {
+        "row": 3236,
+        "geneId": "Glyma.04G018600",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.38407676729672,
+        "detectionFraction": 0.18,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 1.24765053263666e-119
+      },
+      {
+        "row": 3237,
+        "geneId": "Glyma.10G002200",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.37497456018947,
+        "detectionFraction": 0.353,
+        "otherDetectionFraction": 0.032,
+        "adjustedPValue": 2.86088317803172e-180
+      },
+      {
+        "row": 3238,
+        "geneId": "Glyma.02G042500",
+        "cellType": "Root hair",
+        "averageLog2FC": 4.33441073350721,
+        "detectionFraction": 0.224,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 3.78427121989325e-100
+      },
+      {
+        "row": 3239,
+        "geneId": "Glyma.17G011600",
+        "cellType": "Phloem",
+        "averageLog2FC": 6.28855651373101,
+        "detectionFraction": 0.135,
+        "otherDetectionFraction": 0.005,
+        "adjustedPValue": 9.33859689486091e-80
+      },
+      {
+        "row": 3240,
+        "geneId": "Glyma.16G055200",
+        "cellType": "Phloem",
+        "averageLog2FC": 6.25949404812855,
+        "detectionFraction": 0.124,
+        "otherDetectionFraction": 0.004,
+        "adjustedPValue": 1.56856193696579e-72
+      },
+      {
+        "row": 3241,
+        "geneId": "Glyma.15G228200",
+        "cellType": "Phloem",
+        "averageLog2FC": 6.19899825447848,
+        "detectionFraction": 0.9,
+        "otherDetectionFraction": 0.078,
+        "adjustedPValue": 0
+      },
+      {
+        "row": 3242,
+        "geneId": "Glyma.07G262500",
+        "cellType": "Phloem",
+        "averageLog2FC": 5.99432389795076,
+        "detectionFraction": 0.294,
+        "otherDetectionFraction": 0.018,
+        "adjustedPValue": 4.08306707762666e-119
+      },
+      {
+        "row": 3243,
+        "geneId": "Glyma.19G246900",
+        "cellType": "Phloem",
+        "averageLog2FC": 5.9769068448733496,
+        "detectionFraction": 0.129,
+        "otherDetectionFraction": 0.003,
+        "adjustedPValue": 4.43614132913965e-92
+      },
+      {
+        "row": 3244,
+        "geneId": "Glyma.10G164400",
+        "cellType": "Phloem",
+        "averageLog2FC": 5.74492087529879,
+        "detectionFraction": 0.394,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 3.2702687107765e-275
+      },
+      {
+        "row": 3245,
+        "geneId": "Glyma.11G123900",
+        "cellType": "Phloem",
+        "averageLog2FC": 5.3850249302124,
+        "detectionFraction": 0.124,
+        "otherDetectionFraction": 0.004,
+        "adjustedPValue": 1.6184822042595e-77
+      },
+      {
+        "row": 3246,
+        "geneId": "Glyma.02G020000",
+        "cellType": "Phloem",
+        "averageLog2FC": 5.31777369374195,
+        "detectionFraction": 0.247,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 1.10305050607466e-125
+      },
+      {
+        "row": 3247,
+        "geneId": "Glyma.08G125900",
+        "cellType": "Phloem",
+        "averageLog2FC": 5.19237985227001,
+        "detectionFraction": 0.553,
+        "otherDetectionFraction": 0.033,
+        "adjustedPValue": 4.34780792825093e-235
+      },
+      {
+        "row": 3248,
+        "geneId": "Glyma.09G181100",
+        "cellType": "Phloem",
+        "averageLog2FC": 5.18549346668477,
+        "detectionFraction": 0.306,
+        "otherDetectionFraction": 0.028,
+        "adjustedPValue": 1.08295992952316e-85
+      },
+      {
+        "row": 3249,
+        "geneId": "Glyma.15G228300",
+        "cellType": "Phloem",
+        "averageLog2FC": 5.17788028257489,
+        "detectionFraction": 0.918,
+        "otherDetectionFraction": 0.134,
+        "adjustedPValue": 6.45392228084449e-214
+      },
+      {
+        "row": 3250,
+        "geneId": "Glyma.03G212400",
+        "cellType": "Phloem",
+        "averageLog2FC": 5.1352359451664,
+        "detectionFraction": 0.276,
+        "otherDetectionFraction": 0.012,
+        "adjustedPValue": 6.43096721460127e-140
+      },
+      {
+        "row": 3251,
+        "geneId": "Glyma.05G202700",
+        "cellType": "Phloem",
+        "averageLog2FC": 5.02030638424912,
+        "detectionFraction": 0.106,
+        "otherDetectionFraction": 0.008,
+        "adjustedPValue": 3.15057559819027e-31
+      },
+      {
+        "row": 3252,
+        "geneId": "Glyma.15G152000",
+        "cellType": "Phloem",
+        "averageLog2FC": 5.01992398907521,
+        "detectionFraction": 0.565,
+        "otherDetectionFraction": 0.043,
+        "adjustedPValue": 2.43130989370898e-196
+      },
+      {
+        "row": 3253,
+        "geneId": "Glyma.05G169900",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.89837344232666,
+        "detectionFraction": 0.318,
+        "otherDetectionFraction": 0.025,
+        "adjustedPValue": 3.57971175615106e-100
+      },
+      {
+        "row": 3254,
+        "geneId": "Glyma.19G224802",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.82173647234962,
+        "detectionFraction": 0.124,
+        "otherDetectionFraction": 0.007,
+        "adjustedPValue": 2.3389115644796e-49
+      },
+      {
+        "row": 3255,
+        "geneId": "Glyma.06G293450",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.81798433748851,
+        "detectionFraction": 0.229,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 5.58122440802663e-88
+      },
+      {
+        "row": 3256,
+        "geneId": "Glyma.15G218900",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.73655255113457,
+        "detectionFraction": 0.524,
+        "otherDetectionFraction": 0.092,
+        "adjustedPValue": 1.19814252445267e-82
+      },
+      {
+        "row": 3257,
+        "geneId": "Glyma.18G144900",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.62206412751325,
+        "detectionFraction": 0.247,
+        "otherDetectionFraction": 0.012,
+        "adjustedPValue": 3.23535205178938e-115
+      },
+      {
+        "row": 3258,
+        "geneId": "Glyma.09G203200",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.5531544179931,
+        "detectionFraction": 0.282,
+        "otherDetectionFraction": 0.015,
+        "adjustedPValue": 1.53103223474069e-120
+      },
+      {
+        "row": 3259,
+        "geneId": "Glyma.18G294200",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.54359006949017,
+        "detectionFraction": 0.1,
+        "otherDetectionFraction": 0.005,
+        "adjustedPValue": 4.29708397453633e-44
+      },
+      {
+        "row": 3260,
+        "geneId": "Glyma.08G010000",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.53005141267735,
+        "detectionFraction": 0.2,
+        "otherDetectionFraction": 0.022,
+        "adjustedPValue": 7.23787614273995e-43
+      },
+      {
+        "row": 3261,
+        "geneId": "Glyma.02G064100",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.48797123192597,
+        "detectionFraction": 0.112,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 2.54814505326013e-16
+      },
+      {
+        "row": 3262,
+        "geneId": "Glyma.13G201100",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.47266585997561,
+        "detectionFraction": 0.741,
+        "otherDetectionFraction": 0.093,
+        "adjustedPValue": 2.11884218691265e-174
+      },
+      {
+        "row": 3263,
+        "geneId": "Glyma.06G121100",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.38294461977136,
+        "detectionFraction": 0.371,
+        "otherDetectionFraction": 0.029,
+        "adjustedPValue": 1.28471246889407e-119
+      },
+      {
+        "row": 3264,
+        "geneId": "Glyma.19G209500",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.36801850490671,
+        "detectionFraction": 0.212,
+        "otherDetectionFraction": 0.012,
+        "adjustedPValue": 4.22982341705965e-84
+      },
+      {
+        "row": 3265,
+        "geneId": "Glyma.15G228500",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.21642532623666,
+        "detectionFraction": 0.147,
+        "otherDetectionFraction": 0.035,
+        "adjustedPValue": 8.4947310753899e-11
+      },
+      {
+        "row": 3266,
+        "geneId": "Glyma.08G173700",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.13606010688027,
+        "detectionFraction": 0.182,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 4.59807873678385e-50
+      },
+      {
+        "row": 3267,
+        "geneId": "Glyma.01G211300",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.04694941274844,
+        "detectionFraction": 0.206,
+        "otherDetectionFraction": 0.019,
+        "adjustedPValue": 5.21496540491516e-55
+      },
+      {
+        "row": 3268,
+        "geneId": "Glyma.16G100400",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.04641537793173,
+        "detectionFraction": 0.347,
+        "otherDetectionFraction": 0.03,
+        "adjustedPValue": 7.16885995530783e-101
+      },
+      {
+        "row": 3269,
+        "geneId": "Glyma.13G090700",
+        "cellType": "Phloem",
+        "averageLog2FC": 4.02207594208201,
+        "detectionFraction": 0.129,
+        "otherDetectionFraction": 0.03,
+        "adjustedPValue": 4.14874556579111e-9
+      },
+      {
+        "row": 3270,
+        "geneId": "Glyma.08G034400",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.98581239809524,
+        "detectionFraction": 0.224,
+        "otherDetectionFraction": 0.024,
+        "adjustedPValue": 4.00373576736433e-50
+      },
+      {
+        "row": 3271,
+        "geneId": "Glyma.05G168400",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.98011164820727,
+        "detectionFraction": 0.124,
+        "otherDetectionFraction": 0.009,
+        "adjustedPValue": 7.16421953579942e-39
+      },
+      {
+        "row": 3272,
+        "geneId": "Glyma.13G112400",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.96998743093356,
+        "detectionFraction": 0.141,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 3.68833099021344e-32
+      },
+      {
+        "row": 3273,
+        "geneId": "Glyma.07G140200",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.90719230419766,
+        "detectionFraction": 0.182,
+        "otherDetectionFraction": 0.017,
+        "adjustedPValue": 1.60904160037399e-47
+      },
+      {
+        "row": 3274,
+        "geneId": "Glyma.06G112200",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.85775337146316,
+        "detectionFraction": 0.147,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 1.4070917363788e-20
+      },
+      {
+        "row": 3275,
+        "geneId": "Glyma.05G204400",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.77734235299116,
+        "detectionFraction": 0.171,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 8.98416476051369e-51
+      },
+      {
+        "row": 3276,
+        "geneId": "Glyma.09G040600",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.76981774795695,
+        "detectionFraction": 0.6,
+        "otherDetectionFraction": 0.136,
+        "adjustedPValue": 1.5501188156765e-69
+      },
+      {
+        "row": 3277,
+        "geneId": "Glyma.12G058200",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.71670100165133,
+        "detectionFraction": 0.247,
+        "otherDetectionFraction": 0.021,
+        "adjustedPValue": 1.04923371797149e-70
+      },
+      {
+        "row": 3278,
+        "geneId": "Glyma.15G046700",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.71321201557145,
+        "detectionFraction": 0.147,
+        "otherDetectionFraction": 0.014,
+        "adjustedPValue": 1.12872653225508e-34
+      },
+      {
+        "row": 3279,
+        "geneId": "Glyma.20G008400",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.6834646721774,
+        "detectionFraction": 0.371,
+        "otherDetectionFraction": 0.051,
+        "adjustedPValue": 9.6600153755168e-67
+      },
+      {
+        "row": 3280,
+        "geneId": "Glyma.02G293700",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.66908946233914,
+        "detectionFraction": 0.182,
+        "otherDetectionFraction": 0.021,
+        "adjustedPValue": 4.47948973434824e-37
+      },
+      {
+        "row": 3281,
+        "geneId": "Glyma.02G135100",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.64861754655457,
+        "detectionFraction": 0.2,
+        "otherDetectionFraction": 0.032,
+        "adjustedPValue": 1.22985227346827e-28
+      },
+      {
+        "row": 3282,
+        "geneId": "Glyma.17G105600",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.610659364241,
+        "detectionFraction": 0.129,
+        "otherDetectionFraction": 0.015,
+        "adjustedPValue": 3.2198618480175e-24
+      },
+      {
+        "row": 3283,
+        "geneId": "Glyma.15G180000",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.5999534259075,
+        "detectionFraction": 0.229,
+        "otherDetectionFraction": 0.031,
+        "adjustedPValue": 2.03997795555758e-39
+      },
+      {
+        "row": 3284,
+        "geneId": "Glyma.12G092900",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.58458942209459,
+        "detectionFraction": 0.265,
+        "otherDetectionFraction": 0.033,
+        "adjustedPValue": 1.2974835906414e-50
+      },
+      {
+        "row": 3285,
+        "geneId": "Glyma.04G007700",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.57632358244728,
+        "detectionFraction": 0.424,
+        "otherDetectionFraction": 0.077,
+        "adjustedPValue": 2.50604522903381e-58
+      },
+      {
+        "row": 3286,
+        "geneId": "Glyma.19G032500",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.50565463539794,
+        "detectionFraction": 0.129,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 3.21184721034777e-23
+      },
+      {
+        "row": 3287,
+        "geneId": "Glyma.10G242600",
+        "cellType": "Phloem",
+        "averageLog2FC": 3.46692984447035,
+        "detectionFraction": 0.559,
+        "otherDetectionFraction": 0.107,
+        "adjustedPValue": 1.28130635355499e-77
+      },
+      {
+        "row": 3288,
+        "geneId": "Glyma.04G242300",
+        "cellType": "Xylem",
+        "averageLog2FC": 6.36476001047553,
+        "detectionFraction": 0.134,
+        "otherDetectionFraction": 0.003,
+        "adjustedPValue": 3.25797962777037e-79
+      },
+      {
+        "row": 3289,
+        "geneId": "Glyma.04G104600",
+        "cellType": "Xylem",
+        "averageLog2FC": 5.49663898503159,
+        "detectionFraction": 0.357,
+        "otherDetectionFraction": 0.029,
+        "adjustedPValue": 9.41080146954886e-79
+      },
+      {
+        "row": 3290,
+        "geneId": "Glyma.18G294200",
+        "cellType": "Xylem",
+        "averageLog2FC": 5.48535015128912,
+        "detectionFraction": 0.134,
+        "otherDetectionFraction": 0.005,
+        "adjustedPValue": 1.94028821079718e-54
+      },
+      {
+        "row": 3291,
+        "geneId": "Glyma.07G096700",
+        "cellType": "Xylem",
+        "averageLog2FC": 5.27987111288902,
+        "detectionFraction": 0.116,
+        "otherDetectionFraction": 0.006,
+        "adjustedPValue": 9.51593848040116e-38
+      },
+      {
+        "row": 3292,
+        "geneId": "Glyma.06G121100",
+        "cellType": "Xylem",
+        "averageLog2FC": 4.64954721483761,
+        "detectionFraction": 0.348,
+        "otherDetectionFraction": 0.032,
+        "adjustedPValue": 2.12550261428258e-67
+      },
+      {
+        "row": 3293,
+        "geneId": "Glyma.09G181100",
+        "cellType": "Xylem",
+        "averageLog2FC": 4.57152619666258,
+        "detectionFraction": 0.295,
+        "otherDetectionFraction": 0.03,
+        "adjustedPValue": 8.65145413005558e-51
+      },
+      {
+        "row": 3294,
+        "geneId": "Glyma.13G333800",
+        "cellType": "Xylem",
+        "averageLog2FC": 4.50309866886001,
+        "detectionFraction": 0.152,
+        "otherDetectionFraction": 0.017,
+        "adjustedPValue": 9.13388528645864e-21
+      },
+      {
+        "row": 3295,
+        "geneId": "Glyma.16G040400",
+        "cellType": "Xylem",
+        "averageLog2FC": 4.401913008893,
+        "detectionFraction": 0.214,
+        "otherDetectionFraction": 0.019,
+        "adjustedPValue": 2.84734188246882e-41
+      },
+      {
+        "row": 3296,
+        "geneId": "Glyma.05G169900",
+        "cellType": "Xylem",
+        "averageLog2FC": 4.35436483911315,
+        "detectionFraction": 0.33,
+        "otherDetectionFraction": 0.027,
+        "adjustedPValue": 3.93909883772012e-70
+      },
+      {
+        "row": 3297,
+        "geneId": "Glyma.06G105700",
+        "cellType": "Xylem",
+        "averageLog2FC": 4.20958546039854,
+        "detectionFraction": 0.438,
+        "otherDetectionFraction": 0.053,
+        "adjustedPValue": 1.14192619648719e-64
+      },
+      {
+        "row": 3298,
+        "geneId": "Glyma.16G100400",
+        "cellType": "Xylem",
+        "averageLog2FC": 4.19345377863486,
+        "detectionFraction": 0.321,
+        "otherDetectionFraction": 0.033,
+        "adjustedPValue": 2.75073039852902e-54
+      },
+      {
+        "row": 3299,
+        "geneId": "Glyma.13G178700",
+        "cellType": "Xylem",
+        "averageLog2FC": 4.14411525142535,
+        "detectionFraction": 0.196,
+        "otherDetectionFraction": 0.02,
+        "adjustedPValue": 7.81624032603274e-32
+      },
+      {
+        "row": 3300,
+        "geneId": "Glyma.07G201100",
+        "cellType": "Xylem",
+        "averageLog2FC": 4.06707946183485,
+        "detectionFraction": 0.17,
+        "otherDetectionFraction": 0.015,
+        "adjustedPValue": 2.49796528027306e-31
+      },
+      {
+        "row": 3301,
+        "geneId": "Glyma.14G190800",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.95536907433783,
+        "detectionFraction": 0.107,
+        "otherDetectionFraction": 0.015,
+        "adjustedPValue": 7.0767545688367e-10
+      },
+      {
+        "row": 3302,
+        "geneId": "Glyma.09G023700",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.8959905272589,
+        "detectionFraction": 0.161,
+        "otherDetectionFraction": 0.012,
+        "adjustedPValue": 1.7942217443827e-34
+      },
+      {
+        "row": 3303,
+        "geneId": "Glyma.10G179200",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.85018683764577,
+        "detectionFraction": 0.116,
+        "otherDetectionFraction": 0.008,
+        "adjustedPValue": 1.975325899732e-26
+      },
+      {
+        "row": 3304,
+        "geneId": "Glyma.04G088500",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.81253429616638,
+        "detectionFraction": 0.134,
+        "otherDetectionFraction": 0.012,
+        "adjustedPValue": 1.38773559919595e-23
+      },
+      {
+        "row": 3305,
+        "geneId": "Glyma.06G064100",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.78218016106537,
+        "detectionFraction": 0.402,
+        "otherDetectionFraction": 0.057,
+        "adjustedPValue": 7.25661942157124e-50
+      },
+      {
+        "row": 3306,
+        "geneId": "Glyma.11G002400",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.77535160472318,
+        "detectionFraction": 0.161,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 3.3230995688969e-25
+      },
+      {
+        "row": 3307,
+        "geneId": "Glyma.09G070000",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.76484716828841,
+        "detectionFraction": 0.134,
+        "otherDetectionFraction": 0.011,
+        "adjustedPValue": 7.48742021398025e-26
+      },
+      {
+        "row": 3308,
+        "geneId": "Glyma.20G145000",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.68453143103585,
+        "detectionFraction": 0.152,
+        "otherDetectionFraction": 0.02,
+        "adjustedPValue": 1.26660937712784e-17
+      },
+      {
+        "row": 3309,
+        "geneId": "Glyma.08G344200",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.68293597050179,
+        "detectionFraction": 0.161,
+        "otherDetectionFraction": 0.019,
+        "adjustedPValue": 1.19265946156037e-20
+      },
+      {
+        "row": 3310,
+        "geneId": "Glyma.14G092500",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.64891770787508,
+        "detectionFraction": 0.188,
+        "otherDetectionFraction": 0.021,
+        "adjustedPValue": 3.49691843683008e-27
+      },
+      {
+        "row": 3311,
+        "geneId": "Glyma.20G236400",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.63910972953716,
+        "detectionFraction": 0.116,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 2.47865127600284e-11
+      },
+      {
+        "row": 3312,
+        "geneId": "Glyma.01G026100",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.61962048486363,
+        "detectionFraction": 0.196,
+        "otherDetectionFraction": 0.022,
+        "adjustedPValue": 9.1410493594923e-28
+      },
+      {
+        "row": 3313,
+        "geneId": "Glyma.20G136000",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.61566066067347,
+        "detectionFraction": 0.196,
+        "otherDetectionFraction": 0.024,
+        "adjustedPValue": 4.16183780382595e-25
+      },
+      {
+        "row": 3314,
+        "geneId": "Glyma.13G221500",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.60852040414478,
+        "detectionFraction": 0.411,
+        "otherDetectionFraction": 0.052,
+        "adjustedPValue": 3.22821414914861e-57
+      },
+      {
+        "row": 3315,
+        "geneId": "Glyma.08G061200",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.55516661622193,
+        "detectionFraction": 0.107,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 5.27804355257138e-9
+      },
+      {
+        "row": 3316,
+        "geneId": "Glyma.05G040900",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.53503727538947,
+        "detectionFraction": 0.241,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 4.55432577374921e-43
+      },
+      {
+        "row": 3317,
+        "geneId": "Glyma.09G232700",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.51926995953116,
+        "detectionFraction": 0.143,
+        "otherDetectionFraction": 0.017,
+        "adjustedPValue": 9.58929983268173e-19
+      },
+      {
+        "row": 3318,
+        "geneId": "Glyma.17G164800",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.51676310392058,
+        "detectionFraction": 0.143,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 9.20607466247438e-20
+      },
+      {
+        "row": 3319,
+        "geneId": "Glyma.12G065100",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.50309866886001,
+        "detectionFraction": 0.107,
+        "otherDetectionFraction": 0.019,
+        "adjustedPValue": 7.95498224638118e-7
+      },
+      {
+        "row": 3320,
+        "geneId": "Glyma.06G319300",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.47723473973395,
+        "detectionFraction": 0.223,
+        "otherDetectionFraction": 0.03,
+        "adjustedPValue": 8.42341138171062e-26
+      },
+      {
+        "row": 3321,
+        "geneId": "Glyma.08G354000",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.44945717505081,
+        "detectionFraction": 0.295,
+        "otherDetectionFraction": 0.043,
+        "adjustedPValue": 4.90784045734376e-33
+      },
+      {
+        "row": 3322,
+        "geneId": "Glyma.11G141600",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.44406361534198,
+        "detectionFraction": 0.188,
+        "otherDetectionFraction": 0.033,
+        "adjustedPValue": 1.21071037973978e-14
+      },
+      {
+        "row": 3323,
+        "geneId": "Glyma.12G065200",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.43711085470022,
+        "detectionFraction": 0.107,
+        "otherDetectionFraction": 0.016,
+        "adjustedPValue": 1.05677823578447e-8
+      },
+      {
+        "row": 3324,
+        "geneId": "Glyma.06G150100",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.43402267291265,
+        "detectionFraction": 0.143,
+        "otherDetectionFraction": 0.022,
+        "adjustedPValue": 1.58000384508851e-12
+      },
+      {
+        "row": 3325,
+        "geneId": "Glyma.09G052100",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.41480069297513,
+        "detectionFraction": 0.232,
+        "otherDetectionFraction": 0.026,
+        "adjustedPValue": 4.97040773014837e-34
+      },
+      {
+        "row": 3326,
+        "geneId": "Glyma.03G142200",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.37888111872019,
+        "detectionFraction": 0.393,
+        "otherDetectionFraction": 0.056,
+        "adjustedPValue": 6.46759312344901e-47
+      },
+      {
+        "row": 3327,
+        "geneId": "Glyma.10G053100",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.37481367513946,
+        "detectionFraction": 0.223,
+        "otherDetectionFraction": 0.035,
+        "adjustedPValue": 1.0504969996486e-21
+      },
+      {
+        "row": 3328,
+        "geneId": "Glyma.13G345600",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.36906014790916,
+        "detectionFraction": 0.232,
+        "otherDetectionFraction": 0.035,
+        "adjustedPValue": 8.43456285807678e-24
+      },
+      {
+        "row": 3329,
+        "geneId": "Glyma.13G334300",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.35726547392861,
+        "detectionFraction": 0.116,
+        "otherDetectionFraction": 0.023,
+        "adjustedPValue": 0.00000421737103047433
+      },
+      {
+        "row": 3330,
+        "geneId": "Glyma.10G235100",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.34239219744708,
+        "detectionFraction": 0.205,
+        "otherDetectionFraction": 0.022,
+        "adjustedPValue": 1.45540448317007e-31
+      },
+      {
+        "row": 3331,
+        "geneId": "Glyma.12G030800",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.33525012820306,
+        "detectionFraction": 0.339,
+        "otherDetectionFraction": 0.047,
+        "adjustedPValue": 9.44019315298163e-41
+      },
+      {
+        "row": 3332,
+        "geneId": "Glyma.15G040300",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.33011386766864,
+        "detectionFraction": 0.125,
+        "otherDetectionFraction": 0.021,
+        "adjustedPValue": 3.77507442699507e-9
+      },
+      {
+        "row": 3333,
+        "geneId": "Glyma.04G111500",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.31243897534545,
+        "detectionFraction": 0.143,
+        "otherDetectionFraction": 0.019,
+        "adjustedPValue": 1.37147177832639e-15
+      },
+      {
+        "row": 3334,
+        "geneId": "Glyma.05G102100",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.30106533515814,
+        "detectionFraction": 0.179,
+        "otherDetectionFraction": 0.028,
+        "adjustedPValue": 1.47393034423458e-16
+      },
+      {
+        "row": 3335,
+        "geneId": "Glyma.03G197100",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.30032813788053,
+        "detectionFraction": 0.241,
+        "otherDetectionFraction": 0.031,
+        "adjustedPValue": 3.0646495484489e-30
+      },
+      {
+        "row": 3336,
+        "geneId": "Glyma.17G231000",
+        "cellType": "Xylem",
+        "averageLog2FC": 3.2879444134247,
+        "detectionFraction": 0.277,
+        "otherDetectionFraction": 0.05,
+        "adjustedPValue": 1.17539097050791e-22
+      }
+    ]
+  },
+  "contentSha256": "0aee9d9a7eba874fdcf1e6edfefc970fa651f4fc516f6f249d02dafeab535485"
+}

@@ -27,4 +27,13 @@ export class AnalysisService {
     await this.access.requireProject(userId, projectId);
     return this.repository.review(userId, projectId, runId, input);
   }
+  async reviewAnnotation(
+    userId: string,
+    projectId: string,
+    runId: string,
+    input: unknown,
+  ) {
+    await this.access.requireProject(userId, projectId);
+    return this.repository.reviewAnnotation(userId, projectId, runId, input);
+  }
 }

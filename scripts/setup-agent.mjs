@@ -70,7 +70,7 @@ try {
 }
 if (!run(bin, ["--version"], cliEnv, true).includes(version))
   throw new Error("Unexpected OpenShell version");
-const toml = `[openshell]\nversion = 2\n[openshell.gateway]\nbind_address = "0.0.0.0:17670"\nhealth_bind_address = "0.0.0.0:17671"\ncompute_driver = "docker"\nlog_level = "info"\n[openshell.gateway.gateway_jwt]\nsigning_key_path = ${JSON.stringify(join(state, "tls/jwt/signing.pem"))}\npublic_key_path = ${JSON.stringify(join(state, "tls/jwt/public.pem"))}\nkid_path = ${JSON.stringify(join(state, "tls/jwt/kid"))}\ngateway_id = "celloras"\n[openshell.drivers.docker]\ndefault_image = "celloras-codex:0.163.0-science1"\nsandbox_runtime_image = "ghcr.io/nvidia/openshell/sandbox:0.1.5"\nsupervisor_image = "ghcr.io/nvidia/openshell/supervisor:0.1.5"\nimage_pull_policy = "if_not_present"\nsandbox_label = "celloras"\napp_armor_profile = "Unconfined"\n`;
+const toml = `[openshell]\nversion = 2\n[openshell.gateway]\nbind_address = "0.0.0.0:17670"\nhealth_bind_address = "0.0.0.0:17671"\ncompute_driver = "docker"\nlog_level = "info"\n[openshell.gateway.gateway_jwt]\nsigning_key_path = ${JSON.stringify(join(state, "tls/jwt/signing.pem"))}\npublic_key_path = ${JSON.stringify(join(state, "tls/jwt/public.pem"))}\nkid_path = ${JSON.stringify(join(state, "tls/jwt/kid"))}\ngateway_id = "celloras"\n[openshell.drivers.docker]\ndefault_image = "celloras-codex:0.163.0-annotation1"\nsandbox_runtime_image = "ghcr.io/nvidia/openshell/sandbox:0.1.5"\nsupervisor_image = "ghcr.io/nvidia/openshell/supervisor:0.1.5"\nimage_pull_policy = "if_not_present"\nsandbox_label = "celloras"\napp_armor_profile = "Unconfined"\n`;
 let gatewayConfig = toml.replace(
   'health_bind_address = "0.0.0.0:17671"',
   'health_bind_address = "127.0.0.1:17671"',
@@ -89,13 +89,21 @@ if (runtime === "vm") {
       0,
       gatewayConfig.indexOf("[openshell.drivers.docker]"),
     ) +
-    `[openshell.drivers.vm]\ndefault_image = "celloras-codex:0.163.0-science1"\nvcpus = 2\nmem_mib = 2048\nstate_dir = ${JSON.stringify(join(state, "vm-driver"))}\n`;
+    `[openshell.drivers.vm]\ndefault_image = "celloras-codex:0.163.0-annotation1"\nbootstrap_image = "celloras-codex:0.163.0-annotation1"\nvcpus = 2\nmem_mib = 2048\nstate_dir = ${JSON.stringify(join(state, "vm-driver"))}\n`;
 } else {
   gatewayConfig =
     gatewayConfig.replace('app_armor_profile = "Unconfined"\n', "") +
     'supervisor_network_mode = "host"\ngrpc_endpoint = "https://127.0.0.1:17670"\n';
 }
-await writeFile(join(state, "gateway.toml"), gatewayConfig, { mode: 0o600 });
+const gatewayConfigPath = join(state, "gateway.toml");
+let previousGatewayConfig;
+try {
+  previousGatewayConfig = await readFile(gatewayConfigPath, "utf8");
+} catch (error) {
+  if (error.code !== "ENOENT") throw error;
+}
+const gatewayConfigChanged = previousGatewayConfig !== gatewayConfig;
+await writeFile(gatewayConfigPath, gatewayConfig, { mode: 0o600 });
 const envPath = join(root, ".env");
 let localEnv = await readFile(envPath, "utf8");
 const identity = userInfo();
@@ -112,8 +120,22 @@ for (const [key, value] of Object.entries({
     `\n${key}=${value}\n`;
 }
 await writeFile(envPath, localEnv, { mode: 0o600 });
-if (runtime === "docker") run("docker", ["compose", "up", "-d", "openshell"]);
-else run(process.execPath, ["scripts/agent-gateway.mjs", "start"]);
+// A running gateway does not reload TOML. In particular, the VM bootstrap
+// image must advance with the workload revision even when --from names the
+// new image. Keep its existing database, TLS and encryption state intact.
+if (runtime === "docker")
+  run("docker", [
+    "compose",
+    "up",
+    "-d",
+    ...(gatewayConfigChanged ? ["--force-recreate"] : []),
+    "openshell",
+  ]);
+else {
+  if (gatewayConfigChanged)
+    run(process.execPath, ["scripts/agent-gateway.mjs", "stop"]);
+  run(process.execPath, ["scripts/agent-gateway.mjs", "start"]);
+}
 for (const configDir of [configuration, join(dir, "worker-config")]) {
   const mtls = join(configDir, "openshell/gateways/celloras/mtls");
   await mkdir(mtls, { recursive: true, mode: 0o700 });
@@ -263,7 +285,7 @@ await writeFile(
 run("docker", [
   "build",
   "-t",
-  "celloras-codex:0.163.0-science1",
+  "celloras-codex:0.163.0-annotation1",
   "-f",
   "infra/agent/codex.Dockerfile",
   ".",

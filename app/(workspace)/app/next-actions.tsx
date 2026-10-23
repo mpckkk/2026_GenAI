@@ -10,13 +10,11 @@ export interface GuidedAction {
 }
 
 export function NextActions({
-  heading = "Suggested next step",
   description,
   actions,
   onRun,
   disabled,
 }: {
-  heading?: string;
   description: string;
   actions: GuidedAction[];
   onRun: (action: GuidedAction) => void;
@@ -25,14 +23,15 @@ export function NextActions({
   if (!actions.length) return null;
   return (
     <section className={styles.nextActions} aria-label="Suggested next actions">
-      <h3>{heading}</h3>
-      <p>{description}</p>
+      <p className={styles.srOnly}>
+        {description} Choose an action to run it in this conversation.
+      </p>
       <div>
-        {actions.map((action, index) => (
+        {actions.map((action) => (
           <button
             type="button"
             key={action.label}
-            className={index === 0 ? styles.nextPrimary : styles.nextSecondary}
+            className={styles.nextSuggestion}
             onClick={() => onRun(action)}
             disabled={disabled}
           >
@@ -41,7 +40,6 @@ export function NextActions({
           </button>
         ))}
       </div>
-      <small>Runs in this conversation. Or ask your own question below.</small>
     </section>
   );
 }

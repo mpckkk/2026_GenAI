@@ -3,6 +3,7 @@ import type {
   AnalysisRun,
   ScientificRun,
   LiteratureRun,
+  AnnotationRun,
 } from "./analysis";
 export class AnalysisError extends Error {
   constructor(code: string);
@@ -12,9 +13,12 @@ export function parseScientificAction(value: unknown): ScientificAction;
 export function analysisRun(
   row: Record<string, unknown>,
   full?: boolean,
-): AnalysisRun | ScientificRun | LiteratureRun;
+): AnalysisRun | ScientificRun | LiteratureRun | AnnotationRun;
 
 export function analysisRun(
   row: Record<string, unknown>,
   full: true,
 ): AnalysisRun;
+export function analysisCardType(
+  operation: string,
+): "literature_result" | "annotation_result" | "scientific_result";

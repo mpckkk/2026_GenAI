@@ -46,6 +46,8 @@ try {
     const { client, url } = await connect(name);
     let originalProjectId;
     let originalTurn;
+    let originalAnalysis;
+    let originalReview;
     if (mode === "populated") {
       await client.query(
         "CREATE TABLE schema_migrations (name text PRIMARY KEY, checksum text NOT NULL, applied_at timestamptz NOT NULL DEFAULT now())",
@@ -56,6 +58,7 @@ try {
         "003_agent_chat.sql",
         "004_agent_response_document.sql",
         "005_marker_evidence.sql",
+        "006_scientific_analysis.sql",
       ]) {
         const sql = await readFile(
           new URL(`../db/migrations/${name}`, import.meta.url),
@@ -81,8 +84,27 @@ try {
           [originalProjectId, user.rows[0].id, randomUUID()],
         )
       ).rows[0];
+      originalAnalysis = (
+        await client.query(
+          `INSERT INTO analysis_runs(project_id,owner_id,turn_id,dataset_id,artifact_version,step,operation,input,result)
+         VALUES($1,$2,$3,'migration-fixture','prior-version',0,'inspect','{}','{"version":1,"operation":"inspect","payload":{"clusters":[]}}') RETURNING *`,
+          [originalProjectId, user.rows[0].id, originalTurn.id],
+        )
+      ).rows[0];
+      originalReview = (
+        await client.query(
+          `INSERT INTO analysis_reviews(project_id,owner_id,run_id,submission_id,decision,note)
+         VALUES($1,$2,$3,$4,'uncertain','Existing researcher interpretation') RETURNING *`,
+          [
+            originalProjectId,
+            user.rows[0].id,
+            originalAnalysis.id,
+            randomUUID(),
+          ],
+        )
+      ).rows[0];
       await assert.rejects(
-        client.query("SELECT id FROM analysis_runs LIMIT 0"),
+        client.query("SELECT id FROM annotation_reviews LIMIT 0"),
         { code: "42P01" },
       );
     }
@@ -93,7 +115,28 @@ try {
     const first = await client.query(
       "SELECT name,checksum FROM schema_migrations ORDER BY name",
     );
-    assert.equal(first.rowCount, 6);
+    assert.equal(first.rowCount, 7);
+    if (originalAnalysis) {
+      assert.deepEqual(
+        (
+          await client.query("SELECT * FROM analysis_runs WHERE id=$1", [
+            originalAnalysis.id,
+          ])
+        ).rows[0],
+        originalAnalysis,
+      );
+      assert.deepEqual(
+        (
+          await client.query("SELECT * FROM analysis_reviews WHERE id=$1", [
+            originalReview.id,
+          ])
+        ).rows[0],
+        originalReview,
+      );
+    }
+    await client.query(
+      "SELECT run_id,cluster,cell_type FROM annotation_reviews LIMIT 0",
+    );
     await client.query("SELECT id,input,result FROM analysis_runs LIMIT 0");
     await client.query(
       "SELECT submission_id,note FROM analysis_reviews LIMIT 0",

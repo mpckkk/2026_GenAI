@@ -1,4 +1,4 @@
-import { analysisRun } from "../core/analysis.mjs";
+import { analysisRun, analysisCardType } from "../core/analysis.mjs";
 import {
   AgentResponseError,
   parseAgentResponse,
@@ -57,7 +57,11 @@ export async function resolveAgentResponse(
       ownerId,
       references
         .filter((r) =>
-          ["scientific_result", "literature_result"].includes(r.type),
+          [
+            "scientific_result",
+            "literature_result",
+            "annotation_result",
+          ].includes(r.type),
         )
         .map((r) => r.entryId),
     ],
@@ -65,13 +69,13 @@ export async function resolveAgentResponse(
   const analysis = new Map(analyses.rows.map((row) => [row.id, row]));
   const blocks = parsed.blocks.map((block) => {
     if (block.type === "markdown") return block;
-    if (["scientific_result", "literature_result"].includes(block.type)) {
-      const row = analysis.get(block.entryId);
-      if (
-        !row ||
-        (row.operation === "literature") !==
-          (block.type === "literature_result")
+    if (
+      ["scientific_result", "literature_result", "annotation_result"].includes(
+        block.type,
       )
+    ) {
+      const row = analysis.get(block.entryId);
+      if (!row || analysisCardType(row.operation) !== block.type)
         throw new AgentResponseError("agent_card_unavailable");
       return { type: block.type, result: analysisRun(row) };
     }
