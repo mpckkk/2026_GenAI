@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.13 — 2026-10-23
+
+- Redesigned the landing with green accents, original botanical artwork and an interactive preview of all 7,496 published root nuclei.
+- Included public images and source-data assets in the standalone deployment.
+
 ## 0.1.12 — 2026-10-23
 
 - Added an optional demo login panel beneath the Keycloak form, with visible credentials and a button to fill the existing form.

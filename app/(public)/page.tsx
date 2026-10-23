@@ -1,106 +1,250 @@
-import Link from "next/link";
+import Image from "next/image";
 import { Brand } from "@/app/components/brand";
-import { AnnotationExample } from "@/app/components/annotation-card";
+import { RootMapPreview } from "./root-map-preview";
+import styles from "./landing.module.css";
+
+const steps = [
+  {
+    number: "01",
+    title: "Start with a question.",
+    description:
+      "Open the soybean demo and follow a suggested next step. No blank canvas, no guessing what to ask.",
+    example: "“Show me the cell groups in this root.”",
+  },
+  {
+    number: "02",
+    title: "Look at the evidence.",
+    description:
+      "Move from a cluster to its marker genes, expression patterns and relevant papers in the same conversation.",
+    example: "“Which genes distinguish cluster 6?”",
+  },
+  {
+    number: "03",
+    title: "Keep your reasoning.",
+    description:
+      "Record what the evidence supports, what remains uncertain and why. Return to the result and your review together.",
+    example: "“What evidence supports this interpretation?”",
+  },
+];
 
 export default function Landing() {
   return (
-    <div className="landing">
-      <header className="site-header shell">
+    <div className={styles.landing}>
+      <header className={`${styles.header} ${styles.shell}`}>
         <Brand />
         <nav aria-label="Main navigation">
-          <a className="nav-process" href="#workflow">
+          <a className={styles.navSection} href="#inside">
+            Inside Celloras
+          </a>
+          <a className={styles.navSection} href="#workflow">
             How it works
           </a>
           <a href="/login">Log in</a>
-          <a className="button button-small" href="/register">
+          <a className={styles.smallButton} href="/register">
             Get started <span aria-hidden="true">↗</span>
           </a>
         </nav>
       </header>
       <main id="main">
-        <section className="hero shell">
-          <div className="hero-copy">
-            <p className="eyebrow">
-              Plant single-cell research · Soybean first
+        <section className={`${styles.hero} ${styles.shell}`}>
+          <div className={styles.heroCopy}>
+            <p className={styles.eyebrow}>
+              <span className={styles.dot} aria-hidden="true" />A research
+              partner for plant single-cell biology
             </p>
-            <h1>Your single-cell research, in conversation.</h1>
-            <p className="hero-description">
-              Keep tissue context, cluster markers and research notes together
-              in a conversation you can return to.
+            <h1>
+              Know your cells.
+              <br />
+              <span>Follow the evidence.</span>
+            </h1>
+            <p className={styles.heroDescription}>
+              Turn questions into plots, marker comparisons and cited evidence.
+              Celloras brings your research into one conversation, with the
+              reasoning in view and you in control.
             </p>
-            <div className="hero-actions">
-              <a className="button" href="/register">
-                Start an experiment <span aria-hidden="true">↗</span>
+            <div className={styles.actions}>
+              <a className={styles.primaryButton} href="/login">
+                Explore the demo <span aria-hidden="true">↗</span>
               </a>
-              <a className="text-link" href="#workflow">
-                See the workflow <span aria-hidden="true">↓</span>
+              <a className={styles.textLink} href="#inside">
+                Take a closer look <span aria-hidden="true">↓</span>
               </a>
             </div>
-            <p className="hero-note">
-              Early access. Reference-based cell-type suggestions are in
-              development.
+            <p className={styles.demoNote}>
+              A real soybean dataset, ready to explore.
+              <br />
+              Demo login details are on the sign-in screen.
             </p>
           </div>
-          <div className="hero-visual">
-            <AnnotationExample />
-          </div>
+          <figure className={styles.botanical}>
+            <Image
+              src="/images/soybean-root-editorial-v1.webp"
+              alt="Illustrative soybean plant with green leaves and branching roots."
+              width={1122}
+              height={1402}
+              sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1200px) 45vw, 520px"
+              priority
+              className={styles.botanicalImage}
+            />
+            <figcaption className={styles.botanicalCaption}>
+              <div>
+                <span className={styles.figureNumber}>Starting with</span>
+                <strong>Soybean</strong>
+                <span>Glycine max</span>
+              </div>
+            </figcaption>
+          </figure>
         </section>
-        <section id="workflow" className="workflow shell">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">Inside your experiment</p>
-              <h2>Keep the context with the conversation.</h2>
-            </div>
-            <p>
-              Start with soybean. Keep each cluster and its open questions in a
-              research record of its own.
-            </p>
-          </div>
-          <div className="steps">
-            {[
-              [
-                "01",
-                "Add context",
-                "Tell Celloras which tissue and cluster you’re studying. Add genome details when you have them.",
-              ],
-              [
-                "02",
-                "Bring your markers",
-                "Paste the genes for your cluster and keep the original list with your experiment.",
-              ],
-              [
-                "03",
-                "Keep your notes",
-                "Record the questions and observations that guide your analysis, directly in the conversation.",
-              ],
-              [
-                "04",
-                "Return later",
-                "Reopen the experiment with its saved context and conversation when you’re ready to continue.",
-              ],
-            ].map(([number, title, description]) => (
-              <article key={number}>
-                <span className="step-number">{number}</span>
-                <h3>{title}</h3>
-                <p>{description}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-        <section className="research-note shell">
-          <h2>Built toward evidence-backed annotation</h2>
+        <div className={`${styles.facts} ${styles.shell}`}>
           <p>
-            The next scientific step is to connect marker genes to reference
-            evidence, show competing cell-type interpretations and make
-            uncertainty visible. Soybean comes first; other plants will follow
-            as their references and methods are validated.
+            <span className={styles.factLabel}>Inside the demo</span>Published
+            soybean root data
           </p>
+          <p>
+            <strong>7,496</strong> nuclei
+          </p>
+          <p>
+            <strong>12</strong> source clusters
+          </p>
+          <p>
+            <strong>40,127</strong> RNA genes
+          </p>
+          <a
+            href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE270392"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GSE270392 <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <section id="inside" className={`${styles.inside} ${styles.shell}`}>
+          <div className={styles.sectionHeading}>
+            <p className={styles.eyebrow}>
+              Less clicking between tools. More discovery.
+            </p>
+            <h2>A conversation that gives you something to work with.</h2>
+            <p>Ask a question. Inspect the result. Choose where to go next.</p>
+          </div>
+          <div className={styles.productGrid}>
+            <RootMapPreview />
+            <div className={styles.productCopy}>
+              <span className={styles.kicker}>From overview to detail</span>
+              <h3>Your next question is already within reach.</h3>
+              <p>
+                Start with the cell map, select a cluster, then follow the genes
+                that make it different. Suggested actions keep the investigation
+                moving without making you learn a new set of commands.
+              </p>
+              <ol className={styles.questionTrail}>
+                <li>
+                  <span aria-hidden="true">01</span>
+                  <div>
+                    <strong>Explore the cell groups</strong>
+                    <p>See the full dataset and select a cluster.</p>
+                  </div>
+                </li>
+                <li>
+                  <span aria-hidden="true">02</span>
+                  <div>
+                    <strong>Compare marker expression</strong>
+                    <p>
+                      Check a gene on the map or compare several in a dot plot.
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <span aria-hidden="true">03</span>
+                  <div>
+                    <strong>Follow the source</strong>
+                    <p>Read the cited evidence and save your interpretation.</p>
+                  </div>
+                </li>
+              </ol>
+              <a className={styles.textLink} href="/login">
+                Try it with the soybean demo <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section id="workflow" className={styles.workflow}>
+          <div className={styles.shell}>
+            <div className={styles.workflowHeading}>
+              <div>
+                <p className={styles.eyebrow}>Built around how you think</p>
+                <h2>
+                  Bring the question.
+                  <br />
+                  Keep the scientific judgment.
+                </h2>
+              </div>
+              <p>
+                The agent helps with the work between a question and an answer.
+                You decide what the evidence means.
+              </p>
+            </div>
+            <div className={styles.steps}>
+              {steps.map((step) => (
+                <article key={step.number}>
+                  <span className={styles.stepNumber}>{step.number}</span>
+                  <h3>{step.title}</h3>
+                  <p>{step.description}</p>
+                  <div className={styles.exampleQuestion}>{step.example}</div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section className={`${styles.evidence} ${styles.shell}`}>
+          <div>
+            <p className={styles.eyebrow}>Evidence stays attached</p>
+            <h2>A useful answer needs a traceable reason.</h2>
+            <p>
+              A promising marker is a starting point. Keep its expression,
+              biological context and source together, so you can challenge an
+              interpretation as easily as you can follow it.
+            </p>
+          </div>
+          <dl className={styles.evidenceList}>
+            <div>
+              <dt>Inspect the result</dt>
+              <dd>
+                Plots and marker tables come from the dataset, with methods and
+                source details.
+              </dd>
+            </div>
+            <div>
+              <dt>Check the fit</dt>
+              <dd>
+                Species, tissue and genome version matter. Incompatible evidence
+                is kept out of matching results.
+              </dd>
+            </div>
+            <div>
+              <dt>Make uncertainty visible</dt>
+              <dd>
+                Save supported, uncertain or rejected interpretations with your
+                own reasoning.
+              </dd>
+            </div>
+          </dl>
+        </section>
+        <section className={`${styles.start} ${styles.shell}`}>
+          <div>
+            <p className={styles.eyebrow}>Soybean first. More plants ahead.</p>
+            <h2>Your next discovery starts with a question.</h2>
+            <p>Open a prepared dataset and see where the evidence takes you.</p>
+          </div>
+          <a className={styles.primaryButton} href="/login">
+            Explore the demo <span aria-hidden="true">↗</span>
+          </a>
         </section>
       </main>
-      <footer className="site-footer shell">
+      <footer className={`${styles.footer} ${styles.shell}`}>
         <Brand />
-        <span>Plant single-cell research · Soybean first</span>
-        <Link href="/login">Open workspace ↗</Link>
+        <span>Plant single-cell research, in conversation.</span>
+        <a href="/login">
+          Open workspace <span aria-hidden="true">↗</span>
+        </a>
       </footer>
     </div>
   );
