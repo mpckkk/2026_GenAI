@@ -33,6 +33,9 @@ The landing page's UMAP preview is derived from the real public soybean-root dat
 - Source artifact: `.artifacts/scientific-data/gse270392-root-rna-v1/embedding.json`.
 - Source embedding SHA-256: `6ae97d470aff45ee4cb4145d878322b7f2beda2610ab5de32e98acf0b7499e9c`.
 - All 7,496 source nuclei and all 12 source clusters are retained. Source UMAP coordinates are rounded to six decimal places; cell identifiers are omitted. The projection is not recomputed or sampled.
-- Colors and interactive highlighting distinguish source clusters, not validated biological cell identities. The preview must not imply an annotation result.
+- Cell-type names are the authors’ published annotations from Table S1, joined to all 7,496 exact source barcodes. The dropdown places the published name first and retains the source group ID to distinguish repeated names such as Cortex and Epidermis.
+- Label source: [Zhang et al., Table S1](https://ars.els-cdn.com/content/image/1-s2.0-S009286742401273X-mmc1.xlsx), DOI `10.1016/j.cell.2024.10.050`, Sheet1 root metadata (columns S:AD). Original workbook SHA-256: `83f86cdeda3b566968ec84f6caf7be4ee133e5e445b1d16845b79ebbff6d7287`.
+- The reviewed mapping in `data/references/soybean-root-label-benchmark-v1.json` supplies the 12 display names and exact cluster counts. Matched cell-membership SHA-256: `6b4630369947932c3c80a42e71e604ee32c08e0f36c75ddc2be9bb2c3ad86e11`. Its public display metadata is baked into the UMAP delivery JSON; no benchmark import is added to the annotation engine.
+- Colors and interactive highlighting distinguish published source groups. These names are not predictions from Celloras, and the display makes no independent validation claim.
 
 For the dataset import, expression transformations, limitations and artifact verification, see [dataset-import.md](dataset-import.md).

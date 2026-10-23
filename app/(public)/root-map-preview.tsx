@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./landing.module.css";
 
 type PreviewData = {
-  clusters: { id: string; nCells: number }[];
+  clusters: { id: string; nCells: number; publishedLabel: string }[];
   points: [number, number, number][];
 };
 
@@ -94,7 +94,7 @@ export function RootMapPreview() {
         <span className={styles.mapBadge}>UMAP</span>
       </div>
       <div className={styles.mapControls}>
-        <label htmlFor="landing-cluster">Highlight a source cluster</label>
+        <label htmlFor="landing-cluster">Explore a published cell group</label>
         <select
           id="landing-cluster"
           value={cluster}
@@ -104,18 +104,18 @@ export function RootMapPreview() {
           {data ? (
             data.clusters.map((item) => (
               <option key={item.id} value={item.id}>
-                Cluster {item.id}
+                {item.publishedLabel} · group {item.id}
               </option>
             ))
           ) : (
-            <option value="6">Cluster 6</option>
+            <option value="6">Loading cell groups…</option>
           )}
         </select>
       </div>
       <div className={styles.plot}>
         <canvas
           ref={canvas}
-          aria-label={`Published soybean root UMAP with 7,496 nuclei. ${selected ? `${selected.nCells} nuclei in cluster ${cluster} are highlighted green.` : "Loading data."}`}
+          aria-label={`Published soybean root UMAP with 7,496 nuclei. ${selected ? `${selected.nCells} nuclei in ${selected.publishedLabel}, source group ${cluster}, are highlighted green. Cell-type names are the authors’ published annotations.` : "Loading data."}`}
           role="img"
         />
         {!data && (
@@ -131,15 +131,18 @@ export function RootMapPreview() {
       <div className={styles.mapSummary} aria-live="polite">
         <span>
           <span className={styles.dot} aria-hidden="true" />
-          Cluster {cluster}
+          <span className={styles.mapGroupName}>
+            {selected?.publishedLabel ?? "Loading…"}
+            <small>Source group {cluster}</small>
+          </span>
         </span>
         <strong>
           {selected ? `${selected.nCells.toLocaleString("en-US")} nuclei` : "—"}
         </strong>
       </div>
       <figcaption>
-        All 7,496 nuclei from GSE270392. Original author UMAP; cluster IDs are
-        groups to investigate, not cell-type labels.
+        Cell-type names are the authors’ published annotations. All 7,496 nuclei
+        from GSE270392; original author UMAP.
       </figcaption>
     </figure>
   );

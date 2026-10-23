@@ -264,6 +264,8 @@
   color: var(--secondary);
 }
 .mapControls select {
+  width: min(100%, 240px);
+  min-width: 0;
   min-height: 40px;
   max-width: 100%;
   padding: 8px 32px 8px 12px;
@@ -322,6 +324,17 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+.mapGroupName {
+  display: grid;
+  gap: 3px;
+}
+.mapGroupName small {
+  font-size: 10px;
+  color: var(--secondary);
+}
+.mapSummary > strong {
+  white-space: nowrap;
 }
 .mapCard figcaption {
   margin-top: 12px;

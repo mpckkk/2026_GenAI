@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.15 — 2026-10-23
+
+- Show the authors’ published cell-type names first in the landing preview, retaining source group IDs and exact nucleus counts.
+- Bake the production Keycloak theme and realm into its image so checkout replacement cannot leave the login using a stale directory mount.
+
 ## 0.1.14 — 2026-10-23
 
 - Redesigned the landing with green accents, original botanical artwork and an interactive preview of all 7,496 published root nuclei.

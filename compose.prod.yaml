@@ -7,6 +7,9 @@ services:
     restart: unless-stopped
     ports: !reset []
   keycloak:
+    image: celloras-keycloak:26.7.5
+    build: { context: ., dockerfile: infra/keycloak/Dockerfile }
+    pull_policy: build
     command: ["start", "--import-realm"]
     restart: unless-stopped
     environment:
@@ -15,6 +18,7 @@ services:
       KC_PROXY_HEADERS: xforwarded
       CELLORAS_APP_URL: https://celloras.com
     ports: !reset []
+    volumes: !reset []
   app:
     restart: unless-stopped
     environment:

@@ -3,18 +3,66 @@
   "sourceEmbeddingSha256": "6ae97d470aff45ee4cb4145d878322b7f2beda2610ab5de32e98acf0b7499e9c",
   "coordinates": "Original author UMAP; x/y rounded to six decimals for display. No sampling or recomputation.",
   "clusters": [
-    { "id": "0", "nCells": 2027 },
-    { "id": "1_0", "nCells": 1115 },
-    { "id": "1_1", "nCells": 303 },
-    { "id": "2", "nCells": 1333 },
-    { "id": "3", "nCells": 704 },
-    { "id": "4", "nCells": 502 },
-    { "id": "5", "nCells": 493 },
-    { "id": "6", "nCells": 388 },
-    { "id": "7", "nCells": 349 },
-    { "id": "8_0", "nCells": 145 },
-    { "id": "8_1", "nCells": 112 },
-    { "id": "8_2", "nCells": 25 }
+    {
+      "id": "0",
+      "nCells": 2027,
+      "publishedLabel": "Cortex"
+    },
+    {
+      "id": "1_0",
+      "nCells": 1115,
+      "publishedLabel": "Procambium"
+    },
+    {
+      "id": "1_1",
+      "nCells": 303,
+      "publishedLabel": "Pericycle"
+    },
+    {
+      "id": "2",
+      "nCells": 1333,
+      "publishedLabel": "Epidermis"
+    },
+    {
+      "id": "3",
+      "nCells": 704,
+      "publishedLabel": "Epidermis"
+    },
+    {
+      "id": "4",
+      "nCells": 502,
+      "publishedLabel": "Endodermis"
+    },
+    {
+      "id": "5",
+      "nCells": 493,
+      "publishedLabel": "Cortex"
+    },
+    {
+      "id": "6",
+      "nCells": 388,
+      "publishedLabel": "Root hair"
+    },
+    {
+      "id": "7",
+      "nCells": 349,
+      "publishedLabel": "Cortex"
+    },
+    {
+      "id": "8_0",
+      "nCells": 145,
+      "publishedLabel": "Phloem"
+    },
+    {
+      "id": "8_1",
+      "nCells": 112,
+      "publishedLabel": "Xylem"
+    },
+    {
+      "id": "8_2",
+      "nCells": 25,
+      "publishedLabel": "Phloem"
+    }
   ],
   "points": [
     [-3.300667, -6.122091, 9],
@@ -7513,5 +7561,15 @@
     [-6.202561, -0.239267, 1],
     [5.533688, 3.848365, 3],
     [3.409619, 1.344128, 0]
-  ]
+  ],
+  "publishedLabels": {
+    "sourceTitle": "Published root barcode metadata · Zhang et al., Table S1",
+    "url": "https://ars.els-cdn.com/content/image/1-s2.0-S009286742401273X-mmc1.xlsx",
+    "doi": "10.1016/j.cell.2024.10.050",
+    "sha256": "83f86cdeda3b566968ec84f6caf7be4ee133e5e445b1d16845b79ebbff6d7287",
+    "sheet": "Sheet1",
+    "matchedCellCount": 7496,
+    "cellMembershipSha256": "6b4630369947932c3c80a42e71e604ee32c08e0f36c75ddc2be9bb2c3ad86e11",
+    "attribution": "Cell-type names are the authors’ published annotations."
+  }
 }
