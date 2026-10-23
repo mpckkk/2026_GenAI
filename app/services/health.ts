@@ -20,7 +20,7 @@ export async function foundationHealth(): Promise<ServiceHealth[]> {
             "SELECT id, project_id, author_id, submission_id, fingerprint, position, kind, payload, reference_entry_id, created_at FROM research_entries LIMIT 0",
           );
           await database().query(
-            "SELECT id, project_id, owner_id, submission_id, position, prompt, response_text, status, progress, error_code, cancel_requested, worker_id, sandbox_name, heartbeat_at, context_snapshot, created_at, updated_at, started_at, finished_at FROM agent_turns LIMIT 0",
+            "SELECT id, project_id, owner_id, submission_id, position, prompt, response_text, response_document, status, progress, error_code, cancel_requested, worker_id, sandbox_name, heartbeat_at, context_snapshot, created_at, updated_at, started_at, finished_at FROM agent_turns LIMIT 0",
           );
           await database().query(
             "SELECT worker_id, status, detail, heartbeat_at FROM agent_workers LIMIT 0",

@@ -7,6 +7,7 @@ export interface ChatTurn {
   position: string;
   prompt: string;
   response: string | null;
+  responseDocument: ResponseDocument | null;
   status: ChatStatus;
   progress: string;
   errorCode: string | null;
@@ -38,7 +39,7 @@ export interface AgentRuntime {
     prompt: string;
     signal?: AbortSignal;
     progress: (message: string) => void;
-  }): Promise<string>;
+  }): Promise<AgentResponse>;
   remove(name: string): Promise<void>;
 }
 
@@ -102,3 +103,4 @@ export class ChatTurnNotFoundError extends Error {
     this.name = "ChatTurnNotFoundError";
   }
 }
+import type { AgentResponse, ResponseDocument } from "./agent-response.mjs";

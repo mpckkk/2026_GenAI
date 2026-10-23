@@ -2,6 +2,18 @@
 
 Status is updated from actual runs, not inferred from configuration.
 
+## Agent-rendered cards — 2026-10-23
+
+- A real schema-constrained Codex response through OpenShell passed the updated runtime probe. Built workload revision `celloras-codex:0.163.0-ui1` and the app/worker images, then activated them against the existing local gateway. Lint, TypeScript and full formatting checks passed.
+- Migration 004 passed in fresh and populated disposable PostgreSQL databases, including an unchanged rerun and preservation of a legacy chat reply. On the development database, all preexisting fields in 16 chat turns and all 1,023 research records retained identical canonical JSON checksums across migration. No row or volume was replaced.
+- The real card journey registered an account, saved sample/marker records, requested visual cards through OpenShell and confirmed that rendered IDs/data matched the canonical saved entries. The original Root cards stayed unchanged after saving Leaf context and reloading. Expandable source details and original marker text worked; follow-up actions preserved an existing draft, did not auto-send, and produced a real subsequent agent reply after submission.
+- Resolver checks used the actual worker module against real PostgreSQL records. Independent database predicates rejected other-owner, other-project, absent and wrong-kind references even when the test supplied a forged offered catalog. Missing catalog entries, unknown block types/versions, injected card payloads, malformed IDs/JSON and excessive block counts were rejected. Another signed-in account received 404 for chat history. A real test-owned legacy text row still rendered without a document.
+- Inspected desktop and 390px mobile screenshots, then compacted the sample card to key facts with expandable full metadata. The final card journey passed again in 51.4 seconds. Page width fits the viewport and the composer remains visible. [Actual implemented screenshot](https://space.heyamigo.org/items/d4e52d2b-aa89-4bea-a42a-f1797f0d8a8d) is saved in the design kit.
+- The Markdown/security browser journey also passed through the new structured runtime. It retained semantic rendering and blocked unsafe URLs, raw HTML and automatic image loads. Logs and screenshots are ignored under `.artifacts/agent-cards/`, `.artifacts/agent-cards-e2e/` and `.artifacts/agent-cards-final-e2e/`.
+- Final regression run: all eight card/chat/research/layout browser tests passed in 2.9 minutes. Together with the Markdown check, nine distinct browser tests passed. Forced worker interruption did not replay inference; cancellation and offline draft behavior remained correct. Final inspection found no unfinished turns, pending sandbox cleanup or response documents on failed/cancelled turns; the worker returned to ready.
+
+Scope: agent-selected views of existing researcher-authored records. Scientific plots, reference evidence, validated annotations, file widgets and automatic research edits are not implemented. Card availability is bounded by the current research context, with the latest sample included independently. Additional CLI/API adapters and native Linux server acceptance remain pending.
+
 ## Markdown replies — 2026-10-23
 
 - Replaced plain assistant paragraphs with a reusable `react-markdown`/`remark-gfm` component and scoped typography. Stored replies and user prompts are unchanged. Existing conversation history renders through the same component after reload.

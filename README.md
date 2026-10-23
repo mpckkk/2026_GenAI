@@ -22,7 +22,9 @@ Atlas retrieval, scientific annotation/scoring, H-MEM, Zetaris, Nemotron, NeMo F
 
 On mobile, **Study context** opens a separate view and **Back to chat** returns to the conversation. The menu contains experiments, service health and logout. The workspace follows the accepted [chat mockup](docs/mockups/celloras-chat-v1.png); its illustrative annotation card is not a connected scientific feature.
 
-The agent receives bounded owned conversation/research history and the latest sample context. Researcher-supplied evidence remains unverified. Replies render Markdown headings, lists, links, quotes, code and tables, including existing saved replies. Raw HTML is disabled; image references are links. Structured research elements use predefined frontend components. Tool-driven annotation cards require the future scientific integration.
+The agent receives bounded owned conversation/research history and the latest sample context. Researcher-supplied evidence remains unverified. Replies combine Markdown with predefined **sample context** and **marker-set cards**. Save context/markers in Study context, then ask **“Show my saved sample and markers as cards.”** Cards show actual saved records, retain the data used for that reply, and expose expandable details. **Ask about this** adds a follow-up to your draft without sending or replacing it.
+
+The server validates card types and resolves record IDs within the owned experiment; the model does not supply card data or executable markup. Existing Markdown history still renders. Raw HTML is disabled and image references are links. Scientific result cards and plots require the future analysis/reference integrations.
 
 A turn shows queued/running/completed/failed/cancelled status. Repeating the same submission returns its saved result; changed content requires a new submission. Each experiment permits one active turn. Cancellation targets that turn's sandbox. A failed or interrupted execution is not automatically repeated, and another turn cannot start while sandbox cleanup is outstanding.
 

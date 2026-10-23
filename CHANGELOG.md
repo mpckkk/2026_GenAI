@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.8 — 2026-10-23
+
+- Connected agent-selected sample context and marker-set cards inside chat, alongside Markdown, with compact summaries, expandable source details and follow-up draft actions.
+- Added a versioned provider-neutral response contract, schema-constrained Codex output, strict validation and independent owner/project checks when resolving saved records.
+- Persisted resolved card snapshots with each completed reply through an additive migration. Existing Markdown history, cancellation and retry behavior remain supported; scientific plots and annotation results still require real integrations.
+
 ## 0.1.7 — 2026-10-23
 
 - Render assistant Markdown with proper headings, bold/italic text, nested lists, links, quotes, code, tables and footnotes, including saved conversation history.

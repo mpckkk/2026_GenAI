@@ -1,5 +1,8 @@
 # Engineering notes
 
+- Let model output select predefined card types and record IDs; resolve values from canonical owned records on the server. Validate both the offered catalog and database ownership, and persist the resolved snapshot so later context changes cannot rewrite an earlier answer.
+- Codex's output schema applies to the final assistant message. Parse the last completed message after a successful turn, not concatenated intermediate commentary. Ship schema changes with an explicit workload image revision so cached runtimes and workers cannot silently disagree.
+- Reusing a full research table inside chat can make a mobile card taller than the conversation viewport. Show compact sample facts first and put full metadata behind an expandable section.
 - Assistant text needs a Markdown renderer rather than `white-space: pre-wrap`. Keep stored text unchanged; parse it only at the presentation boundary with raw HTML disabled and safe URL handling. Scope typography to messages, contain wide tables/code, and give footnote references and labels unique IDs per reply.
 - Check Docker's guest filesystem when writes fail even if macOS has free space. A successful image build exhausted the guest disk and the next auth callback failed; unused build-cache cleanup restored the real registration/chat path without changing authentication code or touching volumes.
 

@@ -12,6 +12,8 @@ import {
 import type { ChatTurn, ChatWorkspace } from "@/app/core/chat";
 import { BrandMark } from "@/app/components/brand";
 import { MarkdownMessage } from "@/app/components/markdown-message";
+import type { PlantDefinition } from "@/app/core/plants";
+import { AgentResponse } from "./agent-response";
 import { WorkspaceIcon } from "./workspace-icons";
 import styles from "./workspace.module.css";
 
@@ -86,6 +88,10 @@ function failedTurnMessage(code: string | null) {
       return "The agent could not complete this response. Your message is saved; you can retry.";
     case "agent_output_limit":
       return "The response reached its output limit. Try a shorter or more focused request.";
+    case "agent_response_invalid":
+      return "The agent returned a response format we could not display. Please retry.";
+    case "agent_card_unavailable":
+      return "The agent referenced a saved record that is unavailable for this conversation. Please retry or check your study context.";
     case "runtime_unavailable":
       return "The agent runtime is unavailable. Check service status before retrying.";
     case "agent_login_expired":
@@ -116,11 +122,13 @@ export function AgentChat({
   initial,
   contextLabel,
   onOpenContext,
+  plants,
 }: {
   projectId: string;
   initial: ChatWorkspace;
   contextLabel: string;
   onOpenContext: () => void;
+  plants: PlantDefinition[];
 }) {
   const endpoint = `/api/projects/${projectId}/chat`;
   const [turns, setTurns] = useState(initial.turns);
@@ -150,6 +158,20 @@ export function AgentChat({
     !posting &&
     (!activeTurn || activeTurn.submissionId === draftSubmissionId) &&
     (runtime.status === "ready" || Boolean(draftSubmissionId));
+
+  function askAboutCard(question: string) {
+    if (postingRef.current || draftSubmissionId) return;
+    const next = draft.trim() ? `${draft}\n\n${question}` : question;
+    if (next.length > 12000) {
+      setRequestError({
+        operation: "draft",
+        message: "Shorten your draft before adding this question.",
+      });
+      return;
+    }
+    setDraft(next);
+    inputRef.current?.focus();
+  }
 
   const refresh = useCallback(async () => {
     if (refreshingRef.current) return;
@@ -460,7 +482,18 @@ export function AgentChat({
                       <BrandMark size={30} />
                       <div className={styles.assistantContent}>
                         <p className={styles.chatSpeaker}>Celloras</p>
-                        <MarkdownMessage>{turn.response}</MarkdownMessage>
+                        {turn.responseDocument ? (
+                          <AgentResponse
+                            document={turn.responseDocument}
+                            plants={plants}
+                            onAsk={askAboutCard}
+                            actionsDisabled={
+                              posting || Boolean(draftSubmissionId)
+                            }
+                          />
+                        ) : (
+                          <MarkdownMessage>{turn.response}</MarkdownMessage>
+                        )}
                       </div>
                     </article>
                   ) : (

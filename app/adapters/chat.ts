@@ -18,17 +18,19 @@ import {
 } from "@/app/core/chat";
 import { ProjectNotFoundError, logFailure } from "@/app/core/errors";
 import { database } from "./database";
+import type { ResponseDocument } from "@/app/core/agent-response.mjs";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const MAX_POSITION = "9223372036854775807";
 const COLUMNS =
-  "t.id, t.submission_id, t.position::text AS position, t.prompt, t.response_text, t.status, t.progress, t.error_code, t.created_at, t.updated_at";
+  "t.id, t.submission_id, t.position::text AS position, t.prompt, t.response_text, t.response_document, t.status, t.progress, t.error_code, t.created_at, t.updated_at";
 type Row = {
   id: string;
   submission_id: string;
   position: string;
   prompt: string;
   response_text: string | null;
+  response_document: ResponseDocument | null;
   status: ChatStatus;
   progress: string;
   error_code: string | null;
@@ -43,6 +45,7 @@ function turn(row: Row): ChatTurn {
     position: row.position,
     prompt: row.prompt,
     response: row.response_text,
+    responseDocument: row.response_document,
     status: row.status,
     progress: row.progress,
     errorCode: row.error_code,

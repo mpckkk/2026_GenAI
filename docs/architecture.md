@@ -29,6 +29,18 @@ The append-only submission identity is `(project_id, submission_id)`. Identical 
 
 The worker records real progress and terminal state. Queued cancellation is immediate; running cancellation signals the adapter and removes the exact turn sandbox. Interrupted execution becomes an explicit failure, without automatically repeating the model call. Cleanup is retried separately, and an experiment stays blocked until outstanding sandbox deletion is confirmed. These boundaries allow other execution implementations later; alternative CLIs, direct APIs, OpenRouter and Vercel routes are not currently working chat adapters.
 
+## Visual response contract
+
+`app/core/agent-response.schema.json` defines v1 model output: an ordered list of Markdown blocks and `sample_context` / `marker_set` references. `agent-response.d.mts` supplies provider-neutral types; `agent-response.mjs` strictly checks object keys, versions, supported types, UUIDs, duplicate references, block count and text limits. The first runtime uses Codex's [schema-constrained output](https://learn.chatgpt.com/docs/non-interactive-mode); future CLI/API adapters return the same `AgentResponse` contract.
+
+The worker includes exact IDs in bounded research context and offers an explicit card catalog. Models select only a type and entry ID. `app/services/agent-response.mjs` checks that selection against the catalog and independently queries canonical research rows with project, author and owner predicates. Wrong-kind, absent, foreign-project and foreign-owner references fail with `agent_card_unavailable`; malformed output fails with `agent_response_invalid`. No partial card output or invented data is substituted.
+
+Resolved `ResponseDocument` blocks contain saved research snapshots and source metadata. The terminal worker update commits the document and its Markdown text projection atomically; cancellation and failure store neither. Migration 004 adds nullable `response_document`, preserving old replies. Existing null-document rows use their original Markdown; new documents use the finite component registry in `agent-response.tsx`. The text projection keeps older readers usable.
+
+Cards reuse the research components and configured plant catalog. Compact sample fields and expandable metadata, marker chips/original input and source details are predefined React UI. Card follow-up actions append an editable question to the composer without sending or discarding existing text; actions are disabled during an uncertain submission. Research content remains researcher-authored and unverified. The bounded catalog includes recent records and the latest sample, not every historical record. Scientific plots, evidence and annotation cards require real tools and new validated block contracts before they join the registry.
+
+Workload revision `celloras-codex:0.163.0-ui1` includes the canonical schema. Upgrade the workload and worker together after migration; the new adapter rejects old free-text output. Stop the worker before changing its image, retain the additive column on rollback, and use the prior worker with its matching prior workload if reverting execution.
+
 ## Runtime and credential boundary
 
 The application and worker are Linux Docker images. The worker reaches the OpenShell gateway using its own mTLS client configuration. The default gateway uses Docker; an explicit Apple Silicon helper can run the gateway outside Compose with the Linux MicroVM driver. The Mac launcher is not an application dependency for Linux deployment. Both use the same agent image and execution adapter.

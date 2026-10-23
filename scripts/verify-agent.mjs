@@ -5,6 +5,7 @@ import {
   OpenShellCodex,
   sandboxName,
 } from "../app/adapters/agent-openshell.mjs";
+import { responseText } from "../app/core/agent-response.mjs";
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const dir = join(root, ".artifacts/openshell");
 process.env.OPENSHELL_BIN = join(dir, "bin/openshell");
@@ -19,7 +20,10 @@ try {
     prompt: "Reply with exactly: CELLORAS_OPEN_SHELL_OK",
     progress: console.log,
   });
-  if (reply !== "CELLORAS_OPEN_SHELL_OK")
+  if (
+    responseText(reply) !== "CELLORAS_OPEN_SHELL_OK" ||
+    reply.blocks.length !== 1
+  )
     throw new Error("Unexpected probe response");
   console.log(
     "Real Codex reply through OpenShell verified; probe sandbox deleted.",

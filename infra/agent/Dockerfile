@@ -14,5 +14,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 COPY infra/agent/ ./infra/agent/
 COPY app/adapters/agent-openshell.mjs ./app/adapters/agent-openshell.mjs
+COPY app/core/agent-response.mjs ./app/core/agent-response.mjs
+COPY app/services/agent-response.mjs ./app/services/agent-response.mjs
 USER node
 CMD ["node", "infra/agent/worker.mjs"]

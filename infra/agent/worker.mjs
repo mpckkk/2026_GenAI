@@ -4,6 +4,8 @@ import {
   OpenShellCodex,
   sandboxName,
 } from "../../app/adapters/agent-openshell.mjs";
+import { responseText } from "../../app/core/agent-response.mjs";
+import { resolveAgentResponse } from "../../app/services/agent-response.mjs";
 
 const workerId = randomUUID();
 const pool = new Pool({
@@ -53,7 +55,13 @@ function boundedContext(previous, research) {
   let chars = 0;
   const conversation = [];
   for (const row of previous) {
-    const turn = { user: row.prompt, assistant: row.response_text };
+    const turn = {
+      user: row.prompt,
+      assistant: row.response_text,
+      cards: row.response_document?.blocks
+        .filter((block) => block.type !== "markdown")
+        .map((block) => ({ type: block.type, entryId: block.entry.id })),
+    };
     const size = JSON.stringify(turn).length;
     if (chars + size > 90000) break;
     chars += size;
@@ -63,6 +71,7 @@ function boundedContext(previous, research) {
   const records = [];
   for (const row of research) {
     const record = {
+      entryId: row.id,
       kind: row.kind,
       payload: row.payload,
       createdAt: row.created_at,
@@ -97,13 +106,13 @@ async function claim() {
       return null;
     }
     const previous = await client.query(
-      `SELECT prompt,response_text FROM agent_turns
+      `SELECT prompt,response_text,response_document FROM agent_turns
       WHERE project_id=$1 AND owner_id=$2 AND status='completed' AND position < $3
       ORDER BY position DESC LIMIT 24`,
       [turn.project_id, turn.owner_id, turn.position],
     );
     const research = await client.query(
-      `SELECT kind,payload,created_at FROM research_entries
+      `SELECT id,kind,payload,created_at FROM research_entries
       WHERE project_id=$1 AND author_id=$2 ORDER BY position DESC LIMIT 30`,
       [turn.project_id, turn.owner_id],
     );
@@ -122,6 +131,23 @@ async function claim() {
           createdAt: sample.rows[0].created_at,
         }
       : null;
+    snapshot.availableCards = snapshot.records
+      .filter((record) => ["context", "markers"].includes(record.kind))
+      .map((record) => ({
+        type: record.kind === "context" ? "sample_context" : "marker_set",
+        entryId: record.entryId,
+      }));
+    if (
+      snapshot.sampleContext &&
+      !snapshot.availableCards.some(
+        (card) => card.entryId === snapshot.sampleContext.entryId,
+      )
+    ) {
+      snapshot.availableCards.push({
+        type: "sample_context",
+        entryId: snapshot.sampleContext.entryId,
+      });
+    }
     const name = sandboxName(turn.id);
     await client.query(
       `UPDATE agent_turns SET status='running',progress='Starting agent',
@@ -192,10 +218,11 @@ async function execute(turn) {
   };
   const timer = setInterval(pulse, 3000);
   let response = null,
+    document = null,
     code = null;
   log("turn.started", { turnId: turn.id });
   try {
-    response = await runtime.run({
+    const output = await runtime.run({
       name: turn.sandbox_name,
       prompt: JSON.stringify({
         experiment: turn.context_snapshot,
@@ -206,6 +233,13 @@ async function execute(turn) {
         progress = value;
       },
     });
+    document = await resolveAgentResponse(pool, {
+      response: output,
+      projectId: turn.project_id,
+      ownerId: turn.owner_id,
+      availableCards: turn.context_snapshot.availableCards,
+    });
+    response = responseText(document);
   } catch (error) {
     code =
       error.code === "sandbox_cleanup_failed"
@@ -221,12 +255,19 @@ async function execute(turn) {
     `UPDATE agent_turns SET
     status=CASE WHEN cancel_requested THEN 'cancelled' WHEN $3::text IS NULL THEN 'completed' ELSE 'failed' END,
     response_text=CASE WHEN cancel_requested OR $3::text IS NOT NULL THEN NULL ELSE $4 END,
+    response_document=CASE WHEN cancel_requested OR $3::text IS NOT NULL THEN NULL ELSE $5::jsonb END,
     error_code=CASE WHEN cancel_requested THEN NULL ELSE $3 END,
     sandbox_name=CASE WHEN $3::text='sandbox_cleanup_failed' THEN sandbox_name ELSE NULL END,
     progress=CASE WHEN cancel_requested THEN 'Cancelled' WHEN $3::text IS NULL THEN 'Complete' ELSE 'Agent stopped' END,
     finished_at=now(),updated_at=now(),heartbeat_at=now()
     WHERE id=$1 AND worker_id=$2 AND status='running' RETURNING status`,
-    [turn.id, workerId, code, response],
+    [
+      turn.id,
+      workerId,
+      code,
+      response,
+      document ? JSON.stringify(document) : null,
+    ],
   );
   log("turn.finished", {
     turnId: turn.id,

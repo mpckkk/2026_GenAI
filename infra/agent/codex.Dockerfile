@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
     && npm install --global @openai/codex@0.163.0 \
     && mkdir -p /sandbox && chown node:node /sandbox
 COPY --chmod=755 infra/agent/run-codex.mjs /usr/local/bin/celloras-codex
+COPY app/core/agent-response.schema.json /usr/local/share/celloras/agent-response.schema.json
 ENV HOME=/sandbox
 USER node
 WORKDIR /sandbox

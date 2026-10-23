@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
 import { readFile } from "node:fs/promises";
+import { parseAgentResponse } from "../core/agent-response.mjs";
 
 // OpenShell limits sandbox names to 19 characters.
 export function sandboxName(turnId) {
@@ -22,7 +23,8 @@ export class AgentExecutionError extends Error {
 export class OpenShellCodex {
   constructor() {
     this.bin = process.env.OPENSHELL_BIN || "openshell";
-    this.image = process.env.CELLORAS_AGENT_IMAGE || "celloras-codex:0.163.0";
+    this.image =
+      process.env.CELLORAS_AGENT_IMAGE || "celloras-codex:0.163.0-ui1";
     this.provider = process.env.CELLORAS_AGENT_PROVIDER || "celloras-codex";
     this.model = process.env.CELLORAS_AGENT_MODEL || "";
     this.metadataPath = process.env.CELLORAS_AGENT_METADATA_FILE;
@@ -167,12 +169,13 @@ export class OpenShellCodex {
           },
         },
       );
-      const response = answer.join("\n\n").trim();
+      // The schema applies to the final message, not interim agent commentary.
+      const response = answer.at(-1)?.trim();
       if (!completed || failed || !response)
         throw new AgentExecutionError("agent_execution_failed");
       if (response.length > 64000)
         throw new AgentExecutionError("agent_output_limit");
-      return response;
+      return parseAgentResponse(response);
     } finally {
       // A disconnected exec client does not prove the remote process stopped.
       // Always remove this exact turn's sandbox; caller records cleanup failure.

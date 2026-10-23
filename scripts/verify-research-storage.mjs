@@ -45,19 +45,26 @@ try {
     databases.push(name);
     const { client, url } = await connect(name);
     let originalProjectId;
+    let originalTurn;
     if (mode === "populated") {
-      const sql = await readFile(
-        new URL("../db/migrations/001_foundation.sql", import.meta.url),
-        "utf8",
-      );
-      await client.query(sql);
       await client.query(
         "CREATE TABLE schema_migrations (name text PRIMARY KEY, checksum text NOT NULL, applied_at timestamptz NOT NULL DEFAULT now())",
       );
-      await client.query(
-        "INSERT INTO schema_migrations(name,checksum) VALUES ($1,$2)",
-        ["001_foundation.sql", createHash("sha256").update(sql).digest("hex")],
-      );
+      for (const name of [
+        "001_foundation.sql",
+        "002_research_conversation.sql",
+        "003_agent_chat.sql",
+      ]) {
+        const sql = await readFile(
+          new URL(`../db/migrations/${name}`, import.meta.url),
+          "utf8",
+        );
+        await client.query(sql);
+        await client.query(
+          "INSERT INTO schema_migrations(name,checksum) VALUES ($1,$2)",
+          [name, createHash("sha256").update(sql).digest("hex")],
+        );
+      }
       const user = await client.query(
         "INSERT INTO app_users(issuer,subject,display_name) VALUES ('https://example.test','migration-rehearsal','Migration rehearsal') RETURNING id",
       );
@@ -66,9 +73,15 @@ try {
         [user.rows[0].id],
       );
       originalProjectId = project.rows[0].id;
+      originalTurn = (
+        await client.query(
+          "INSERT INTO agent_turns(project_id,owner_id,submission_id,prompt,response_text,status) VALUES ($1,$2,$3,'Existing prompt','**Existing reply**','completed') RETURNING *",
+          [originalProjectId, user.rows[0].id, randomUUID()],
+        )
+      ).rows[0];
       await assert.rejects(
-        client.query("SELECT id FROM research_entries LIMIT 0"),
-        { code: "42P01" },
+        client.query("SELECT response_document FROM agent_turns LIMIT 0"),
+        { code: "42703" },
       );
     }
     await migrate(url);
@@ -78,7 +91,8 @@ try {
     const first = await client.query(
       "SELECT name,checksum FROM schema_migrations ORDER BY name",
     );
-    assert.equal(first.rowCount, 2);
+    assert.equal(first.rowCount, 4);
+    await client.query("SELECT response_document FROM agent_turns LIMIT 0");
     await migrate(url);
     assert.deepEqual(
       (
@@ -88,6 +102,16 @@ try {
       ).rows,
       first.rows,
     );
+    if (originalTurn) {
+      const stored = (
+        await client.query("SELECT * FROM agent_turns WHERE id=$1", [
+          originalTurn.id,
+        ])
+      ).rows[0];
+      assert.equal(stored.response_document, null);
+      delete stored.response_document;
+      assert.deepEqual(stored, originalTurn);
+    }
     if (originalProjectId) {
       assert.deepEqual(
         (await client.query("SELECT id,name FROM projects")).rows,

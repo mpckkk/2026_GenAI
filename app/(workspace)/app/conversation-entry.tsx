@@ -40,7 +40,7 @@ export function ContextDetails({
   );
 }
 
-function EntryContent({
+export function ResearchEntryContent({
   entry,
   plants,
   markers,
@@ -167,7 +167,7 @@ export function ConversationEntry({
             : styles.structuredCard
         }
       >
-        <EntryContent entry={entry} plants={plants} markers={markers} />
+        <ResearchEntryContent entry={entry} plants={plants} markers={markers} />
       </article>
     </li>
   );

@@ -257,3 +257,53 @@ The assistant response currently uses a plain paragraph, so Markdown syntax appe
 Verify a real OpenShell reply through the browser, persisted history after reload, mobile overflow and unsafe markup handling. Record screenshots and observed results, update README/changelog/engineering notes, and publish on the existing `celloras.com` branch.
 
 Completed: production build activated, lint/typecheck/format checks passed, and the real registration → OpenShell reply → saved-history browser journey passed in 23.6 seconds. Inspected desktop/mobile screenshots and confirmed unsafe URL/HTML handling plus local table/code scrolling. Initial Docker disk exhaustion was resolved by clearing unused build cache; application data and runtime containers were preserved.
+
+## Visual agent cards — 2026-10-23
+
+Outcome: real agent replies combine Markdown with saved sample-context and marker-set cards in the same conversation. Cards use existing research components, show their source, preserve snapshots across reloads and offer an explicit follow-up action. Remain on `celloras.com`. No fabricated scientific results, arbitrary HTML/widgets, new provider, or automatic research writes.
+
+Current path: owned queue → OpenShell/Codex → string → PostgreSQL → Markdown. Target: same path → versioned response blocks → strict validation and owned record resolution → persisted document → known React card components. Codex uses its supported `--output-schema`; the schema and response types are provider-neutral. Models request card types and entry IDs only; data is fetched from canonical owned research records. Unknown kinds, malformed output and unavailable/foreign references fail visibly. Existing null-document rows keep their Markdown presentation.
+
+| Action | Path                                            | Purpose                                                    | Package |
+| ------ | ----------------------------------------------- | ---------------------------------------------------------- | ------- |
+| CREATE | `app/core/agent-response.schema.json`           | Versioned model-output schema, text plus record references | 1       |
+| CREATE | `app/core/agent-response.mjs`                   | Strict bounded response parser and text projection         | 1       |
+| CREATE | `app/core/agent-response.d.mts`                 | Provider-neutral request/document/block contracts          | 1       |
+| UPDATE | `app/core/chat.ts`                              | Structured runtime result and persisted document           | 1       |
+| CREATE | `db/migrations/004_agent_response_document.sql` | Add nullable response JSON without rewriting history       | 1       |
+| CREATE | `app/services/agent-response.mjs`               | Resolve permitted references with owner/project checks     | 2       |
+| UPDATE | `infra/agent/worker.mjs`                        | Available card catalog, resolution, atomic persistence     | 2       |
+| UPDATE | `app/adapters/agent-openshell.mjs`              | Parse final structured output; new workload revision       | 2       |
+| UPDATE | `infra/agent/run-codex.mjs`                     | Apply response schema and card instructions                | 2       |
+| UPDATE | `infra/agent/codex.Dockerfile`                  | Include canonical schema in workload                       | 2       |
+| UPDATE | `infra/agent/Dockerfile`                        | Include shared response contracts and resolver             | 2       |
+| UPDATE | `compose.yaml`                                  | Select revised workload image                              | 2       |
+| UPDATE | `scripts/setup-agent.mjs`                       | Build/select revised workload image                        | 2       |
+| UPDATE | `.env.example`                                  | Document revised workload image                            | 2       |
+| UPDATE | `scripts/verify-research-storage.mjs`           | Rehearse v3→v4 and preserve legacy replies                 | 1       |
+| UPDATE | `scripts/verify-agent.mjs`                      | Verify structured live response                            | 2       |
+| UPDATE | `app/adapters/chat.ts`                          | Return saved response document                             | 3       |
+| UPDATE | `app/services/health.ts`                        | Require additive document column                           | 3       |
+| UPDATE | `app/(workspace)/app/conversation-entry.tsx`    | Export reusable research content                           | 3       |
+| CREATE | `app/(workspace)/app/agent-response.tsx`        | Known card rendering and follow-up actions                 | 3       |
+| CREATE | `app/(workspace)/app/agent-response.module.css` | Responsive card presentation                               | 3       |
+| UPDATE | `app/(workspace)/app/agent-chat.tsx`            | Render blocks, safe follow-up drafts, explicit failures    | 3       |
+| UPDATE | `app/(workspace)/app/experiment-workspace.tsx`  | Pass configured plant catalog                              | 3       |
+| CREATE | `tests/agent-cards.spec.ts`                     | Real chat/cards/history/action/ownership journey           | 4       |
+| UPDATE | `README.md`                                     | Usage and scope                                            | 4       |
+| UPDATE | `docs/architecture.md`                          | Protocol, trust and extension boundaries                   | 4       |
+| UPDATE | `docs/verification.md`                          | Actual acceptance and migration evidence                   | 4       |
+| UPDATE | `learned.md`                                    | Findings and operational constraints                       | 4       |
+| UPDATE | `CHANGELOG.md`                                  | Delivered behavior                                         | 4       |
+| UPDATE | `PLAN.md`                                       | This ledger and acceptance status                          | 1–4     |
+
+Deleted files: none. Renamed files: none.
+
+1. Define bounded v1 output and additive storage. Verify repository checks and migration preservation/rerun against real PostgreSQL before activation. Exit: contracts agree and existing history survives.
+2. Connect the runtime and resolver. Depends on 1. Include canonical record IDs in bounded prompt context; permit only those IDs and correct types, then independently check database ownership. Persist resolved snapshots with Markdown in one terminal update; cancelled/failed turns keep neither. Exit: actual OpenShell structured probe and real-database valid/invalid/foreign reference checks pass.
+3. Render predefined cards and follow-up drafts. Depends on 1–2. Reuse research content and plant configuration. Preserve existing unsent text when adding a card question; do not auto-submit. Exit: real browser shows both card types and reload, source details, expansion, mobile layout and follow-up behavior work.
+4. Verify and publish. Real registration/project/context/markers → model-selected cards → owned persisted document → browser; update context and prove earlier cards stay unchanged; reject cross-owner/project references at resolver/API; verify Markdown-only and legacy history, cancellation/recovery. Inspect screenshots, lint/typecheck/build, document observed limits, push the shared branch and update Amigospace.
+
+Activation: stop worker only after active runs finish; apply additive migration; build versioned workload and new app/worker; start and check readiness. Keep existing research and chat data. On failure stop the new worker; prior app/worker can still read `response_text` and ignore the nullable new column. Never roll back by dropping stored documents. Docker guest space is limited; inspect before builds and clear only already-authorized unused build cache if needed.
+
+Accepted: real schema-constrained OpenShell probe; fresh/populated migration rehearsals and unchanged reruns; preserved checksums for 16 existing chat turns and 1,023 research records. Nine distinct real browser checks passed, with the final eight card/chat/research/layout checks passing in 2.9 minutes. Verified canonical card data, stale-context snapshot preservation, explicit follow-ups, legacy history, strict format and independent owner/project denial, cancellation and crash/offline recovery. Production workload/app/worker builds, lint/typecheck/format passed; inspected final desktop/mobile screenshots and saved the actual PNG in Amigospace. The local stack is running the new implementation.

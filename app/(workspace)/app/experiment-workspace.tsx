@@ -95,6 +95,7 @@ export function ExperimentWorkspace({
             initial={chat}
             contextLabel={contextLabel}
             onOpenContext={openContext}
+            plants={plants}
           />
         </div>
         <aside
