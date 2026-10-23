@@ -1,3 +1,4 @@
+import { parseScientificAction } from "../core/analysis.mjs";
 import "server-only";
 import type { Pool, PoolClient } from "pg";
 import type {
@@ -23,12 +24,13 @@ import type { ResponseDocument } from "@/app/core/agent-response.mjs";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const MAX_POSITION = "9223372036854775807";
 const COLUMNS =
-  "t.id, t.submission_id, t.position::text AS position, t.prompt, t.response_text, t.response_document, t.status, t.progress, t.error_code, t.created_at, t.updated_at";
+  "t.id, t.submission_id, t.position::text AS position, t.prompt, t.requested_action, t.response_text, t.response_document, t.status, t.progress, t.error_code, t.created_at, t.updated_at";
 type Row = {
   id: string;
   submission_id: string;
   position: string;
   prompt: string;
+  requested_action: SubmitChatInput["action"] | null;
   response_text: string | null;
   response_document: ResponseDocument | null;
   status: ChatStatus;
@@ -44,6 +46,7 @@ function turn(row: Row): ChatTurn {
     submissionId: row.submission_id,
     position: row.position,
     prompt: row.prompt,
+    action: row.requested_action,
     response: row.response_text,
     responseDocument: row.response_document,
     status: row.status,
@@ -212,9 +215,26 @@ export class PostgresChat implements ChatRepository {
         [projectId, userId, input.submissionId],
       );
       if (existing.rows[0]) {
-        if (existing.rows[0].prompt !== input.prompt)
+        if (
+          existing.rows[0].prompt !== input.prompt ||
+          JSON.stringify(
+            existing.rows[0].requested_action
+              ? parseScientificAction(existing.rows[0].requested_action)
+              : null,
+          ) !== JSON.stringify(input.action ?? null)
+        )
           throw new ChatSubmissionConflictError();
         return turn(existing.rows[0]);
+      }
+      if (input.action) {
+        const bound = await connection.query(
+          "SELECT dataset_id FROM project_datasets WHERE project_id=$1",
+          [projectId],
+        );
+        if (bound.rows[0]?.dataset_id !== input.action.datasetId)
+          throw new ChatValidationError({
+            action: "Choose a dataset attached to this experiment.",
+          });
       }
       if ((await chatRuntime(connection)).status !== "ready")
         throw new ChatRuntimeUnavailableError();
@@ -235,11 +255,17 @@ export class PostgresChat implements ChatRepository {
         throw new ChatCleanupPendingError();
       }
       const inserted = await connection.query<Row>(
-        `INSERT INTO agent_turns AS t (project_id, owner_id, submission_id, prompt)
-         SELECT p.id, $2::uuid, $3::uuid, $4 FROM projects p
+        `INSERT INTO agent_turns AS t (project_id, owner_id, submission_id, prompt, requested_action)
+         SELECT p.id, $2::uuid, $3::uuid, $4, $5::jsonb FROM projects p
          WHERE p.id=$1 AND p.owner_id=$2
          RETURNING ${COLUMNS}`,
-        [projectId, userId, input.submissionId, input.prompt],
+        [
+          projectId,
+          userId,
+          input.submissionId,
+          input.prompt,
+          input.action ? JSON.stringify(input.action) : null,
+        ],
       );
       if (!inserted.rows[0]) throw new ProjectNotFoundError();
       return turn(inserted.rows[0]);

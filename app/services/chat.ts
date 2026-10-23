@@ -1,3 +1,4 @@
+import { parseScientificAction } from "../core/analysis.mjs";
 import "server-only";
 import { randomUUID } from "node:crypto";
 import type {
@@ -25,7 +26,9 @@ function submitInput(input: unknown): SubmitChatInput {
     });
   const value = input as Record<string, unknown>;
   if (
-    Object.keys(value).some((key) => !["submissionId", "prompt"].includes(key))
+    Object.keys(value).some(
+      (key) => !["submissionId", "prompt", "action"].includes(key),
+    )
   )
     throw new ChatValidationError({
       entry: "This submission contains unsupported fields.",
@@ -43,7 +46,13 @@ function submitInput(input: unknown): SubmitChatInput {
     throw new ChatValidationError({
       prompt: "Remove invalid text characters.",
     });
-  return { submissionId, prompt: value.prompt };
+  return {
+    submissionId,
+    prompt: value.prompt,
+    ...(value.action === undefined
+      ? {}
+      : { action: parseScientificAction(value.action) }),
+  };
 }
 
 function stage(

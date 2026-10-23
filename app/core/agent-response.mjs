@@ -1,3 +1,4 @@
+import { parseScientificAction } from "./analysis.mjs";
 export class AgentResponseError extends Error {
   constructor(code = "agent_response_invalid") {
     super(code);
@@ -44,11 +45,37 @@ export function parseAgentResponse(value) {
       )
         throw new AgentResponseError();
       length += block.text.length;
+    } else if (block?.type === "run_scientific_tool") {
+      if (
+        !objectWith(block, [
+          "type",
+          "datasetId",
+          "operation",
+          "cluster",
+          "genes",
+          "query",
+        ])
+      )
+        throw new AgentResponseError();
+      try {
+        parseScientificAction({
+          datasetId: block.datasetId,
+          operation: block.operation,
+          ...(block.cluster === null ? {} : { cluster: block.cluster }),
+          genes: block.genes,
+          ...(block.query === null ? {} : { query: block.query }),
+        });
+      } catch {
+        throw new AgentResponseError();
+      }
+      lookups++;
     } else if (
       [
         "sample_context",
         "marker_set",
         "marker_evidence",
+        "scientific_result",
+        "literature_result",
         "lookup_marker_evidence",
       ].includes(block?.type)
     ) {
@@ -59,7 +86,8 @@ export function parseAgentResponse(value) {
         references.has(block.entryId.toLowerCase())
       )
         throw new AgentResponseError();
-      references.add(block.entryId.toLowerCase());
+      block.entryId = block.entryId.toLowerCase();
+      references.add(block.entryId);
       if (block.type === "lookup_marker_evidence") lookups++;
     } else throw new AgentResponseError();
   }
@@ -68,7 +96,9 @@ export function parseAgentResponse(value) {
     (lookups &&
       value.blocks.some(
         (block) =>
-          block.type !== "markdown" && block.type !== "lookup_marker_evidence",
+          block.type !== "markdown" &&
+          block.type !== "lookup_marker_evidence" &&
+          block.type !== "run_scientific_tool",
       ))
   )
     throw new AgentResponseError();

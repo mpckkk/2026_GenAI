@@ -10,11 +10,13 @@ Sign in, open an experiment, and talk with the agent. Save plant/sample context,
 
 The implemented chat runtime uses Codex CLI inside NVIDIA OpenShell. A real model response has been verified through OpenShell v0.1.5 in a Linux MicroVM on Apple Silicon. Native Linux deployment has not yet been tested; browser acceptance is recorded separately in [verification](docs/verification.md).
 
-Published marker evidence lookup is connected for soybean roots and mature nodules, with exact matching genes, source citations and researcher review. Coverage is a limited versioned reference, not the full Soybean Multi-Omic Atlas. Validated annotation/scoring, matrix analysis, H-MEM, Zetaris, Nemotron, NeMo Files and NVIDIA tracing remain pending. See [reference scope and examples](docs/soybean-reference.md).
+Published marker evidence lookup is connected for soybean roots and mature nodules, with exact matching genes, source citations and researcher review. Coverage is a limited versioned reference, not the full Soybean Multi-Omic Atlas. The real root dataset now supports UMAP inspection, descriptive marker ranking, expression overlays and dot plots. A curated literature adapter provides cited context with explicit genome compatibility. Validated automatic annotation, H-MEM, Zetaris, Nemotron, NeMo Files and NVIDIA tracing remain pending. See [reference scope and examples](docs/soybean-reference.md).
 
 ## Research workflow
 
-For a ready-to-present local account, use the [guided demo](docs/demo.md). `npm run demo:prepare` signs in with supplied local credentials and prepares root and nodule examples through the real agent; it can resume without duplicating completed runs.
+Start with **Explore soybean root demo**: 7,496 real nuclei, 12 source clusters and suggested next actions in chat. Select a cluster, compare enriched genes, inspect expression, retrieve cited evidence and save your interpretation. No prompt-writing knowledge is required. Dataset import instructions are in [dataset import](docs/dataset-import.md); the source scope is in [literature](docs/literature.md).
+
+For the earlier marker-reference examples, use the [demo guide](docs/demo.md). `npm run demo:prepare` signs in with supplied local credentials and prepares root and nodule examples through the real agent; it can resume without duplicating completed runs.
 
 1. Create or reopen an experiment from the sidebar and send a message to the agent. The composer stays visible while the conversation scrolls.
 2. Open **Study context → Edit context** to save tissue, sample, developmental stage and genome/identifier context. Unknown details can stay empty.
@@ -27,7 +29,7 @@ On mobile, **Study context** opens a separate view and **Back to chat** returns 
 
 The agent receives bounded owned conversation/research history and the latest sample context. Researcher-supplied evidence remains unverified. Replies combine Markdown with predefined **sample context**, **marker-set**, and **published evidence cards**. Save context/markers in Study context, then ask **“Show my saved sample and markers as cards.”** Cards show actual saved records, retain the data used for that reply, and expose expandable details. **Ask about this** adds a follow-up to your draft without sending or replacing it.
 
-The server validates card types and resolves record IDs within the owned experiment; the model does not supply card data or executable markup. Existing Markdown history still renders. Raw HTML is disabled and image references are links. Analytical plots and calibrated annotation results require additional analysis integrations and validation.
+The server validates card types and resolves record IDs within the owned experiment; the model does not supply card data or executable markup. Existing Markdown history still renders. Raw HTML is disabled and image references are links. Scientific plots resolve saved real tool results through an authenticated endpoint. Descriptive rankings are not calibrated annotation results or differential-expression significance tests.
 
 A turn shows queued/running/completed/failed/cancelled status. Repeating the same submission returns its saved result; changed content requires a new submission. Each experiment permits one active turn. Cancellation targets that turn's sandbox. A failed or interrupted execution is not automatically repeated, and another turn cannot start while sandbox cleanup is outstanding.
 
@@ -40,6 +42,14 @@ npm ci
 npm run setup
 docker compose up -d --build app
 ```
+
+To enable the real root demo, download the GEO file linked in the dataset guide and import its verified public source before opening it (requires Docker and the pinned R image described in the import guide):
+
+```sh
+npm run data:import -- --source /absolute/path/GSE270392_Gm_atlas_Root.rna.seurat.obj.rds.gz
+```
+
+Compose mounts only `.artifacts/scientific-data` read-only into the app and worker. It does not mount the private OpenShell directory as scientific data. The curated paper collection is bundled; `npm run literature:import` explicitly refreshes it from verified primary sources. Large dataset bytes remain outside Git.
 
 Open [localhost:3100](http://localhost:3100). Keycloak serves [login](http://localhost:3100/login) and [registration](http://localhost:3100/register), using email/password without first/last name fields. The local Keycloak admin is `admin`; its generated password is `KEYCLOAK_ADMIN_PASSWORD` in `.env`.
 

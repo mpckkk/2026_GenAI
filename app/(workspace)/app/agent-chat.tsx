@@ -13,12 +13,23 @@ import type { ChatTurn, ChatWorkspace } from "@/app/core/chat";
 import { BrandMark } from "@/app/components/brand";
 import { MarkdownMessage } from "@/app/components/markdown-message";
 import type { PlantDefinition } from "@/app/core/plants";
+import type { ScientificAction } from "@/app/core/analysis";
+import type {
+  ScientificDataset,
+  ScientificResult,
+} from "@/app/core/scientific-data";
 import { AgentResponse } from "./agent-response";
+import { NextActions, type GuidedAction } from "./next-actions";
+import type { ScientificSelection } from "./scientific-card";
 import { WorkspaceIcon } from "./workspace-icons";
 import styles from "./workspace.module.css";
 
 type RequestError = { message: string; code?: string; operation: string };
-type Attempt = { submissionId: string; prompt: string };
+type Attempt = {
+  submissionId: string;
+  prompt: string;
+  action?: ScientificAction;
+};
 
 function mergeTurns(existing: ChatTurn[], incoming: ChatTurn[]): ChatTurn[] {
   const byId = new Map(existing.map((turn) => [turn.id, turn]));
@@ -91,7 +102,17 @@ function failedTurnMessage(code: string | null) {
     case "marker_reference_unavailable":
       return "The published marker reference is unavailable. No evidence was substituted; check service status.";
     case "agent_tool_limit":
-      return "The agent requested more than one lookup. Please retry for one marker set.";
+      return "The agent reached this response’s tool limit. Try one analysis or question at a time.";
+    case "scientific_data_unavailable":
+      return "The dataset service could not complete this analysis. Your data and earlier results remain saved; check service status before retrying.";
+    case "scientific_input_invalid":
+      return "This analysis needs a valid source cluster or gene selection. Choose a group on the cell map or a gene in the marker table, then try again.";
+    case "scientific_gene_missing":
+      return "The requested gene was not found in this dataset. Select a gene from its marker table, or check the exact gene ID and genome build.";
+    case "analysis_unavailable":
+      return "This saved analysis is unavailable to this conversation. Open the dataset overview and start a new analysis.";
+    case "literature_unavailable":
+      return "The literature collection could not be searched. Your scientific results remain saved; check service status before retrying.";
     case "agent_response_invalid":
       return "The agent returned a response format we could not display. Please retry.";
     case "agent_card_unavailable":
@@ -127,12 +148,18 @@ export function AgentChat({
   contextLabel,
   onOpenContext,
   plants,
+  science,
 }: {
   projectId: string;
   initial: ChatWorkspace;
   contextLabel: string;
   onOpenContext: () => void;
   plants: PlantDefinition[];
+  science: {
+    dataset: ScientificDataset | null;
+    available: boolean;
+    reason?: string;
+  };
 }) {
   const endpoint = `/api/projects/${projectId}/chat`;
   const [reviews, setReviews] = useState(initial.evidenceReviews);
@@ -149,8 +176,25 @@ export function AgentChat({
   const [requestError, setRequestError] = useState<RequestError | null>(null);
   const [pollError, setPollError] = useState<string | null>(null);
   const [historyError, setHistoryError] = useState<string | null>(null);
+  const [selection, setSelection] = useState<ScientificSelection | null>(() => {
+    const previous = initial.turns.findLast(
+      (turn) =>
+        turn.action?.operation === "markers" &&
+        turn.action.datasetId === science.dataset?.id,
+    );
+    return previous?.action?.cluster
+      ? {
+          datasetId: previous.action.datasetId,
+          cluster: previous.action.cluster,
+        }
+      : null;
+  });
+  const [latestScience, setLatestScience] = useState<ScientificResult | null>(
+    null,
+  );
   const attempts = useRef<Record<string, Attempt>>({});
   const postingRef = useRef(false);
+  const selectionRestoredRef = useRef(false);
   const refreshingRef = useRef(false);
   const loadedOlderRef = useRef(false);
   const mountedRef = useRef(true);
@@ -164,6 +208,62 @@ export function AgentChat({
     !posting &&
     (!activeTurn || activeTurn.submissionId === draftSubmissionId) &&
     (runtime.status === "ready" || Boolean(draftSubmissionId));
+  const canRun =
+    !posting && !activeTurn && !draftSubmissionId && runtime.status === "ready";
+
+  function selectScience(next: ScientificSelection) {
+    selectionRestoredRef.current = true;
+    setSelection(next);
+    try {
+      window.sessionStorage.setItem(
+        `celloras:selection:${projectId}`,
+        JSON.stringify(next),
+      );
+    } catch {
+      /* Selection remains usable when browser storage is disabled. */
+    }
+  }
+
+  const scientificLoaded = useCallback(
+    (result: ScientificResult) => {
+      setLatestScience((current) =>
+        !current || result.generatedAt > current.generatedAt ? result : current,
+      );
+      if (result.operation !== "inspect") return;
+      let restored: ScientificSelection | null = null;
+      if (!selectionRestoredRef.current) {
+        try {
+          const saved = JSON.parse(
+            window.sessionStorage.getItem(`celloras:selection:${projectId}`) ||
+              "null",
+          );
+          if (
+            saved?.datasetId === result.dataset.id &&
+            (saved.cluster === null ||
+              result.payload.clusters.some(
+                (cluster) => cluster.id === saved.cluster,
+              ))
+          )
+            restored = { datasetId: result.dataset.id, cluster: saved.cluster };
+        } catch {
+          /* A browser preference never supplies scientific data. */
+        }
+      }
+      selectionRestoredRef.current = true;
+      setSelection(
+        (current) =>
+          restored ??
+          (current?.datasetId === result.dataset.id &&
+          (current.cluster === null ||
+            result.payload.clusters.some(
+              (cluster) => cluster.id === current.cluster,
+            ))
+            ? current
+            : { datasetId: result.dataset.id, cluster: null }),
+      );
+    },
+    [projectId],
+  );
 
   function askAboutCard(question: string) {
     if (postingRef.current || draftSubmissionId) return;
@@ -262,7 +362,12 @@ export function AgentChat({
     return () => observer.disconnect();
   }, []);
 
-  async function sendPrompt(prompt: string, operation: string, asNew = false) {
+  async function sendPrompt(
+    prompt: string,
+    operation: string,
+    asNew = false,
+    action?: ScientificAction,
+  ) {
     if (postingRef.current || !prompt.trim()) return;
     const existing = attempts.current[operation];
     if (
@@ -278,12 +383,16 @@ export function AgentChat({
       const submissionId =
         !asNew && existing ? existing.submissionId : crypto.randomUUID();
       // Retain the ID through lost replies. A changed prompt needs explicit conflict recovery.
-      attempts.current[operation] = { submissionId, prompt };
+      attempts.current[operation] = { submissionId, prompt, action };
       if (operation === "draft") setDraftSubmissionId(submissionId);
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ submissionId, prompt }),
+        body: JSON.stringify({
+          submissionId,
+          prompt,
+          ...(action ? { action } : {}),
+        }),
       });
       if (!response.ok) {
         setRequestError(await responseError(response, operation));
@@ -312,6 +421,17 @@ export function AgentChat({
     }
   }
 
+  function runAction(suggestion: GuidedAction) {
+    if (!canRun || (suggestion.action && !science.available)) return;
+    if (suggestion.action?.cluster)
+      selectScience({
+        datasetId: suggestion.action.datasetId,
+        cluster: suggestion.action.cluster,
+      });
+    const operation = `suggestion:${JSON.stringify(suggestion.action ?? suggestion.prompt)}`;
+    void sendPrompt(suggestion.prompt, operation, false, suggestion.action);
+  }
+
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const submitter = (event.nativeEvent as SubmitEvent).submitter;
@@ -326,7 +446,18 @@ export function AgentChat({
     )
       return;
     if (!canSend || (asNew && activeTurn)) return;
-    void sendPrompt(draft, "draft", asNew);
+    const prompt = selection?.cluster
+      ? `${draft}\n\nSelected source cluster: ${selection.cluster} in ${science.dataset?.title || "dataset"} (${selection.datasetId}).`
+      : draft;
+    if (prompt.length > 12000) {
+      setRequestError({
+        operation: "draft",
+        message:
+          "Shorten your message slightly so the selected dataset and cluster can be included.",
+      });
+      return;
+    }
+    void sendPrompt(prompt, "draft", asNew);
   }
 
   function inputKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
@@ -418,6 +549,109 @@ export function AgentChat({
       icon: "chat" as const,
     },
   ];
+  const dataset = science.dataset;
+  const cluster =
+    selection?.datasetId === dataset?.id ? selection?.cluster : null;
+  let nextDescription =
+    "Start with the published cell map. Then choose a group to investigate its genes.";
+  let nextActions: GuidedAction[] = dataset
+    ? [
+        {
+          label: "Explore cell groups",
+          prompt: `Show the published UMAP and source clusters for ${dataset.title}. Help me choose a group to investigate and distinguish source cluster IDs from biological annotations.`,
+          action: { operation: "inspect", datasetId: dataset.id },
+        },
+      ]
+    : [];
+  if (dataset && latestScience?.dataset.id === dataset.id) {
+    const genes =
+      latestScience.operation === "markers"
+        ? latestScience.payload.markers.slice(0, 6).map((gene) => gene.geneId)
+        : latestScience.operation === "expression"
+          ? [latestScience.payload.gene.geneId]
+          : latestScience.operation === "dotplot"
+            ? latestScience.payload.genes.map((gene) => gene.geneId)
+            : [];
+    const literature: GuidedAction = {
+      label: "Find relevant papers",
+      prompt: `Find compatible published evidence for this soybean root analysis${cluster ? ` of source cluster ${cluster}` : ""}${genes.length ? ` and genes ${genes.join(", ")}` : ""}. Distinguish study context from evidence supporting a cell identity, and explain gaps.`,
+      action: {
+        operation: "literature",
+        datasetId: dataset.id,
+        ...(genes.length ? { genes } : {}),
+        query: genes.length
+          ? `soybean root markers annotation ${genes.join(" ")}`
+          : "soybean root single cell atlas annotation methods",
+      },
+    };
+    if (latestScience.operation === "dotplot") {
+      nextDescription =
+        "Now check what the literature actually supports. Evidence may remain insufficient for a cell-type label.";
+      nextActions = [literature];
+    } else if (
+      (latestScience.operation === "markers" &&
+        (!cluster || cluster === latestScience.payload.cluster)) ||
+      latestScience.operation === "expression"
+    ) {
+      nextDescription =
+        "Check whether these genes are specific to one group, then compare the result with published evidence.";
+      nextActions = genes.length
+        ? [
+            {
+              label:
+                latestScience.operation === "expression"
+                  ? "Compare this gene across groups"
+                  : "Compare top genes across groups",
+              prompt: `Show a dot plot of ${genes.join(", ")} across the source clusters in ${dataset.title}. Explain detection and expression without assigning an unsupported cell type.`,
+              action: { operation: "dotplot", datasetId: dataset.id, genes },
+            },
+            literature,
+          ]
+        : [literature];
+    } else if (cluster) {
+      nextDescription = `Cluster ${cluster} is selected. Find genes enriched in this group before exploring possible identities.`;
+      nextActions = [
+        {
+          label: `Find markers for cluster ${cluster}`,
+          prompt: `Find genes enriched in source cluster ${cluster} of ${dataset.title}. Explain the comparison and limits; do not assign a cell identity without evidence.`,
+          action: { operation: "markers", datasetId: dataset.id, cluster },
+        },
+        literature,
+      ];
+    } else {
+      const largest =
+        latestScience.operation === "inspect"
+          ? [...latestScience.payload.clusters].sort(
+              (a, b) => b.nCells - a.nCells,
+            )[0]
+          : null;
+      nextDescription = largest
+        ? `Start with cluster ${largest.id}, the largest group (${largest.nCells.toLocaleString("en-GB")} nuclei), or choose another group on the cell map.`
+        : "Choose a cluster on the cell map or with its numbered buttons. We’ll keep that selection for your next analysis.";
+      nextActions = largest
+        ? [
+            {
+              label: `Explore cluster ${largest.id} markers`,
+              prompt: `Find genes enriched in source cluster ${largest.id} of ${dataset.title}. Explain the comparison and limits; do not assign a cell identity without evidence.`,
+              action: {
+                operation: "markers",
+                datasetId: dataset.id,
+                cluster: largest.id,
+              },
+            },
+            literature,
+          ]
+        : [literature];
+    }
+  }
+  const latestAnswer = turns.findLast((turn) => turn.status === "completed");
+  if (
+    latestAnswer?.responseDocument?.blocks.some(
+      (block) => block.type === "literature_result",
+    )
+  ) {
+    nextActions = [];
+  }
 
   return (
     <section className={styles.agentChat} aria-labelledby="agent-chat-heading">
@@ -438,15 +672,24 @@ export function AgentChat({
         aria-label="Conversation messages"
         onScroll={(event) => {
           const element = event.currentTarget;
+          // A reader can scroll upward even when the whole overflow is short.
+          // Follow only at the bottom, allowing one pixel for layout rounding.
           followingRef.current =
-            element.scrollHeight - element.scrollTop - element.clientHeight <
-            80;
+            element.scrollHeight - element.scrollTop - element.clientHeight < 1;
         }}
       >
         <div className={styles.chatContent} data-empty={turns.length === 0}>
           {runtime.status === "unavailable" && (
             <div className={styles.chatNotice} role="status">
               {runtime.detail} <a href="/app/health">Check service status</a>
+            </div>
+          )}
+          {!science.available && science.reason && (
+            <div className={styles.chatNotice} role="status">
+              {science.reason ||
+                "The dataset service is currently unavailable."}{" "}
+              Earlier results remain saved.{" "}
+              <a href="/app/health">Check service status</a>
             </div>
           )}
           {pollError && (
@@ -519,6 +762,13 @@ export function AgentChat({
                             actionsDisabled={
                               posting || Boolean(draftSubmissionId)
                             }
+                            selection={selection}
+                            onSelect={selectScience}
+                            onRun={runAction}
+                            onScientificLoaded={scientificLoaded}
+                            scientificActionsDisabled={
+                              !canRun || !science.available
+                            }
                           />
                         ) : (
                           <MarkdownMessage>{turn.response}</MarkdownMessage>
@@ -581,7 +831,12 @@ export function AgentChat({
                             runtime.status !== "ready"
                           }
                           onClick={() => {
-                            void sendPrompt(turn.prompt, `retry:${turn.id}`);
+                            void sendPrompt(
+                              turn.prompt,
+                              `retry:${turn.id}`,
+                              false,
+                              turn.action ?? undefined,
+                            );
                           }}
                         >
                           Retry message
@@ -598,33 +853,70 @@ export function AgentChat({
               <p className={styles.welcomeEyebrow}>
                 Your research, in conversation
               </p>
-              <h3>What are you working on?</h3>
+              <h3>
+                {dataset
+                  ? "Your soybean root dataset is ready."
+                  : "Let’s give your research some context."}
+              </h3>
               <p>
-                Explore a question, discuss your markers, or plan the next step
-                in your single-cell research.
+                {dataset
+                  ? "Start with a map of the published nuclei. Choose a group, explore its genes, and follow the evidence. No prompt needed."
+                  : "Record your plant and sample, then add a marker list or discuss a question with Celloras."}
               </p>
-              <div className={styles.chatSuggestions}>
-                {suggestions.map((suggestion) => (
-                  <button
-                    key={suggestion.label}
-                    type="button"
-                    disabled={posting}
-                    onClick={() => {
-                      setDraft(suggestion.prompt);
-                      inputRef.current?.focus();
-                    }}
-                  >
-                    <WorkspaceIcon name={suggestion.icon} size={18} />
-                    <span>{suggestion.label}</span>
+              {!dataset && (
+                <div className={styles.chatSuggestions}>
+                  <button type="button" onClick={onOpenContext}>
+                    <WorkspaceIcon name="plus" size={18} />
+                    <span>Add sample context</span>
                     <WorkspaceIcon name="chevron" size={15} />
                   </button>
-                ))}
-              </div>
+                  {suggestions.map((suggestion) => (
+                    <button
+                      key={suggestion.label}
+                      type="button"
+                      disabled={posting || Boolean(draftSubmissionId)}
+                      onClick={() => {
+                        askAboutCard(suggestion.prompt);
+                      }}
+                    >
+                      <WorkspaceIcon name={suggestion.icon} size={18} />
+                      <span>
+                        {suggestion.label} <small>· Draft a question</small>
+                      </span>
+                      <WorkspaceIcon name="chevron" size={15} />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
+          )}
+          {dataset && (
+            <NextActions
+              description={nextDescription}
+              actions={nextActions}
+              onRun={runAction}
+              disabled={!canRun || !science.available}
+            />
           )}
         </div>
       </div>
       <div className={styles.composerDock}>
+        {dataset && (
+          <div className={styles.datasetContext}>
+            <span>{dataset.title}</span>
+            {cluster && (
+              <button
+                type="button"
+                onClick={() =>
+                  selectScience({ datasetId: dataset.id, cluster: null })
+                }
+                aria-label={`Clear selected cluster ${cluster}`}
+              >
+                Cluster {cluster} ×
+              </button>
+            )}
+          </div>
+        )}
         <form
           onSubmit={submit}
           className={styles.chatComposer}
@@ -647,12 +939,35 @@ export function AgentChat({
               onChange={(event) => setDraft(event.target.value)}
               onKeyDown={inputKeyDown}
               aria-describedby="chat-input-help"
-              placeholder="Ask about your single-cell data…"
+              placeholder={
+                cluster
+                  ? `Ask about cluster ${cluster}, or choose a suggested step…`
+                  : "Ask a question, or choose a suggested step…"
+              }
             />
           </div>
           {requestError && (
             <div className={styles.errorBox} role="alert">
               <p>{requestError.message}</p>
+              {requestError.operation.startsWith("suggestion:") && (
+                <button
+                  type="button"
+                  className={styles.chatSecondaryButton}
+                  disabled={posting}
+                  onClick={() => {
+                    const attempt = attempts.current[requestError.operation];
+                    if (attempt)
+                      void sendPrompt(
+                        attempt.prompt,
+                        requestError.operation,
+                        false,
+                        attempt.action,
+                      );
+                  }}
+                >
+                  Retry suggested action
+                </button>
+              )}
               {requestError.code === "SUBMISSION_CONFLICT" &&
                 requestError.operation === "draft" && (
                   <div className={styles.reviewSection}>
@@ -696,8 +1011,9 @@ export function AgentChat({
             : "Enter to send · Shift + Enter for a new line"}
         </p>
         <p className={styles.chatScope}>
-          Published marker lookup: soybean root and nodule. Results need
-          researcher review.
+          {dataset
+            ? "Published dataset · Source clusters are not new annotations · Interpretations remain yours to review."
+            : "Published marker lookup: soybean root and nodule. Results need researcher review."}
         </p>
       </div>
     </section>

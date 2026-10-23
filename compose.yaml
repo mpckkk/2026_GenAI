@@ -50,10 +50,12 @@ services:
       XDG_CACHE_HOME: /tmp/celloras-cache
       OPENSHELL_GATEWAY: celloras
       CELLORAS_AGENT_METADATA_FILE: /run/celloras/metadata.json
-      CELLORAS_AGENT_IMAGE: ${CELLORAS_AGENT_IMAGE:-celloras-codex:0.163.0-evidence1}
+      CELLORAS_AGENT_IMAGE: ${CELLORAS_AGENT_IMAGE:-celloras-codex:0.163.0-science1}
       CELLORAS_AGENT_PROVIDER: ${CELLORAS_AGENT_PROVIDER:-celloras-codex}
       CELLORAS_AGENT_MODEL: ${CELLORAS_AGENT_MODEL:-}
+      CELLORAS_DATASET_DIR: /datasets
     volumes:
+      - ${CELLORAS_DATASET_DIR:-./.artifacts/scientific-data}:/datasets:ro
       - ${OPENSHELL_CONFIG_DIR:-./.artifacts/openshell/worker-config}:/config
       - ${CELLORAS_AGENT_METADATA_FILE:-./.artifacts/openshell/agent-metadata.json}:/run/celloras/metadata.json:ro
     extra_hosts: ["host.docker.internal:host-gateway"]
@@ -126,6 +128,7 @@ services:
   app:
     build: { context: ., target: runtime }
     environment:
+      CELLORAS_DATASET_DIR: /datasets
       APP_ENV: local
       APP_URL: http://localhost:3100
       DATABASE_URL: postgresql://celloras:${APP_DB_PASSWORD:?Required}@postgres:5432/celloras
@@ -133,6 +136,8 @@ services:
       KEYCLOAK_INTERNAL_ISSUER: http://keycloak:8080/realms/celloras
       KEYCLOAK_CLIENT_ID: celloras
       KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET:?Required}
+    volumes:
+      - ${CELLORAS_DATASET_DIR:-./.artifacts/scientific-data}:/datasets:ro
     ports: ["127.0.0.1:3100:3100"]
     depends_on:
       migrate: { condition: service_completed_successfully }

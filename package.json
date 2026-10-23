@@ -24,7 +24,9 @@
     "agent:gateway:stop": "node scripts/agent-gateway.mjs stop",
     "test:e2e": "playwright test",
     "auth:configure": "node --env-file=.env scripts/keycloak-configure.mjs",
-    "verify:storage": "node --env-file=.env scripts/verify-research-storage.mjs"
+    "verify:storage": "node --env-file=.env scripts/verify-research-storage.mjs",
+    "data:import": "node scripts/import-dataset.mjs",
+    "literature:import": "node scripts/import-literature.mjs"
   },
   "dependencies": {
     "next": "16.4.2",

@@ -55,6 +55,7 @@ try {
         "002_research_conversation.sql",
         "003_agent_chat.sql",
         "004_agent_response_document.sql",
+        "005_marker_evidence.sql",
       ]) {
         const sql = await readFile(
           new URL(`../db/migrations/${name}`, import.meta.url),
@@ -81,7 +82,7 @@ try {
         )
       ).rows[0];
       await assert.rejects(
-        client.query("SELECT id FROM marker_evidence_runs LIMIT 0"),
+        client.query("SELECT id FROM analysis_runs LIMIT 0"),
         { code: "42P01" },
       );
     }
@@ -92,7 +93,15 @@ try {
     const first = await client.query(
       "SELECT name,checksum FROM schema_migrations ORDER BY name",
     );
-    assert.equal(first.rowCount, 5);
+    assert.equal(first.rowCount, 6);
+    await client.query("SELECT id,input,result FROM analysis_runs LIMIT 0");
+    await client.query(
+      "SELECT submission_id,note FROM analysis_reviews LIMIT 0",
+    );
+    await client.query(
+      "SELECT dataset_id,artifact_version FROM project_datasets LIMIT 0",
+    );
+    await client.query("SELECT owner_id,demo_key FROM demo_projects LIMIT 0");
     await client.query("SELECT id,result FROM marker_evidence_runs LIMIT 0");
     await client.query("SELECT evidence_run_id FROM research_entries LIMIT 0");
     await client.query("SELECT response_document FROM agent_turns LIMIT 0");
@@ -112,7 +121,7 @@ try {
         ])
       ).rows[0];
       assert.equal(stored.response_document, null);
-      assert.deepEqual(stored, originalTurn);
+      assert.deepEqual(stored, { ...originalTurn, requested_action: null });
     }
     if (originalProjectId) {
       assert.deepEqual(

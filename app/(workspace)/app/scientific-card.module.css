@@ -1,0 +1,337 @@
+.card {
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+  margin: 16px 0;
+  min-width: 0;
+}
+.header {
+  padding: 16px 20px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ededed;
+  font-size: 12px;
+  color: #666;
+}
+.header strong {
+  font-weight: 600;
+  color: #333;
+}
+.body {
+  padding: 20px;
+}
+.body h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  letter-spacing: -0.3px;
+}
+.caption {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+  margin: 20px 0;
+}
+.facts div {
+  display: grid;
+  gap: 4px;
+}
+.facts strong {
+  font-size: 22px;
+  font-weight: 600;
+}
+.facts span {
+  font-size: 12px;
+  color: #666;
+}
+.plot {
+  position: relative;
+  margin: 16px 0;
+}
+.canvas {
+  width: 100%;
+  height: 300px;
+  display: block;
+  cursor: crosshair;
+}
+.axisX {
+  text-align: center;
+  font-size: 11px;
+  color: #666;
+}
+.axisY {
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  transform: rotate(-90deg);
+  font-size: 11px;
+  color: #666;
+}
+.plotReadout {
+  min-height: 22px;
+  margin: 8px 0;
+  font-size: 12px;
+  color: #555;
+}
+.clusterGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 16px 0;
+}
+.clusterGrid button {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px;
+  background: #fff;
+  text-align: left;
+  color: #333;
+  font-size: 12px;
+  min-height: 48px;
+}
+.clusterGrid button span {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  color: #666;
+}
+.clusterGrid button[aria-pressed="true"] {
+  border-color: #1b5e20;
+  background: #f2f7f2;
+  color: #1b5e20;
+}
+.clusterGrid button:focus-visible,
+.button:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 3px;
+}
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.button {
+  border: 1px solid #d3d3d3;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  color: #222;
+  font-size: 12px;
+  min-height: 40px;
+}
+.button:hover:not(:disabled) {
+  border-color: #333;
+}
+.button[data-primary="true"] {
+  background: #111;
+  border-color: #111;
+  color: #fff;
+}
+.button:disabled {
+  opacity: 0.5;
+}
+.tableWrap {
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.table th {
+  font-weight: 600;
+  text-align: left;
+  color: #555;
+}
+.table td,
+.table th {
+  padding: 10px 8px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+.table th:first-child,
+.table td:first-child {
+  padding-left: 0;
+}
+.table td:not(:first-child) {
+  font-variant-numeric: tabular-nums;
+}
+.geneButton {
+  background: none;
+  padding: 4px 0;
+  border: 0;
+  text-align: left;
+  font-family: monospace;
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.geneButton:disabled {
+  text-decoration: none;
+  color: #666;
+}
+.details {
+  border-top: 1px solid #ededed;
+  padding: 14px 20px;
+  font-size: 12px;
+  color: #555;
+}
+.details summary {
+  cursor: pointer;
+  color: #333;
+}
+.details p,
+.details ul,
+.details dl {
+  margin-top: 12px;
+  line-height: 1.7;
+}
+.details ul {
+  padding-left: 18px;
+}
+.details code {
+  overflow-wrap: anywhere;
+  font-size: 11px;
+}
+.details a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.details dt {
+  font-weight: 600;
+}
+.details dd {
+  margin: 0 0 8px;
+}
+.error {
+  border: 1px solid #d9c9c9;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.loading {
+  padding: 24px;
+  color: #666;
+  font-size: 13px;
+}
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 11px;
+}
+.legendScale {
+  width: 80px;
+  height: 8px;
+  background: linear-gradient(90deg, #edf1ed, #1b5e20);
+  border-radius: 2px;
+}
+.dotplot {
+  display: block;
+  min-width: 360px;
+  width: 100%;
+}
+.sources {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+.source {
+  padding: 16px;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+}
+.source h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 8px 0;
+  line-height: 1.5;
+}
+.source p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #444;
+  margin: 8px 0;
+}
+.source a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 12px;
+}
+.sourceTag {
+  font-size: 11px;
+  color: #666;
+}
+.review {
+  padding: 20px;
+  border-top: 1px solid #ededed;
+}
+.review h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.review label {
+  display: block;
+  font-size: 12px;
+  margin: 16px 0 8px;
+}
+.review input,
+.review textarea,
+.review select {
+  width: 100%;
+  padding: 10px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  color: #111;
+}
+.review textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+@media (max-width: 560px) {
+  .body {
+    padding: 16px;
+  }
+  .header,
+  .details,
+  .review {
+    padding: 14px 16px;
+  }
+  .header {
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .clusterGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .canvas {
+    height: 240px;
+  }
+  .body h3 {
+    font-size: 18px;
+  }
+  .facts {
+    gap: 16px;
+  }
+  .facts strong {
+    font-size: 20px;
+  }
+}

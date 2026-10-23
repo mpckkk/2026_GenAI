@@ -70,7 +70,7 @@ try {
 }
 if (!run(bin, ["--version"], cliEnv, true).includes(version))
   throw new Error("Unexpected OpenShell version");
-const toml = `[openshell]\nversion = 2\n[openshell.gateway]\nbind_address = "0.0.0.0:17670"\nhealth_bind_address = "0.0.0.0:17671"\ncompute_driver = "docker"\nlog_level = "info"\n[openshell.gateway.gateway_jwt]\nsigning_key_path = ${JSON.stringify(join(state, "tls/jwt/signing.pem"))}\npublic_key_path = ${JSON.stringify(join(state, "tls/jwt/public.pem"))}\nkid_path = ${JSON.stringify(join(state, "tls/jwt/kid"))}\ngateway_id = "celloras"\n[openshell.drivers.docker]\ndefault_image = "celloras-codex:0.163.0-evidence1"\nsandbox_runtime_image = "ghcr.io/nvidia/openshell/sandbox:0.1.5"\nsupervisor_image = "ghcr.io/nvidia/openshell/supervisor:0.1.5"\nimage_pull_policy = "if_not_present"\nsandbox_label = "celloras"\napp_armor_profile = "Unconfined"\n`;
+const toml = `[openshell]\nversion = 2\n[openshell.gateway]\nbind_address = "0.0.0.0:17670"\nhealth_bind_address = "0.0.0.0:17671"\ncompute_driver = "docker"\nlog_level = "info"\n[openshell.gateway.gateway_jwt]\nsigning_key_path = ${JSON.stringify(join(state, "tls/jwt/signing.pem"))}\npublic_key_path = ${JSON.stringify(join(state, "tls/jwt/public.pem"))}\nkid_path = ${JSON.stringify(join(state, "tls/jwt/kid"))}\ngateway_id = "celloras"\n[openshell.drivers.docker]\ndefault_image = "celloras-codex:0.163.0-science1"\nsandbox_runtime_image = "ghcr.io/nvidia/openshell/sandbox:0.1.5"\nsupervisor_image = "ghcr.io/nvidia/openshell/supervisor:0.1.5"\nimage_pull_policy = "if_not_present"\nsandbox_label = "celloras"\napp_armor_profile = "Unconfined"\n`;
 let gatewayConfig = toml.replace(
   'health_bind_address = "0.0.0.0:17671"',
   'health_bind_address = "127.0.0.1:17671"',
@@ -89,7 +89,7 @@ if (runtime === "vm") {
       0,
       gatewayConfig.indexOf("[openshell.drivers.docker]"),
     ) +
-    `[openshell.drivers.vm]\ndefault_image = "celloras-codex:0.163.0-evidence1"\nvcpus = 2\nmem_mib = 2048\nstate_dir = ${JSON.stringify(join(state, "vm-driver"))}\n`;
+    `[openshell.drivers.vm]\ndefault_image = "celloras-codex:0.163.0-science1"\nvcpus = 2\nmem_mib = 2048\nstate_dir = ${JSON.stringify(join(state, "vm-driver"))}\n`;
 } else {
   gatewayConfig =
     gatewayConfig.replace('app_armor_profile = "Unconfined"\n', "") +
@@ -263,7 +263,7 @@ await writeFile(
 run("docker", [
   "build",
   "-t",
-  "celloras-codex:0.163.0-evidence1",
+  "celloras-codex:0.163.0-science1",
   "-f",
   "infra/agent/codex.Dockerfile",
   ".",

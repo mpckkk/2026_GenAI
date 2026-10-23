@@ -1,5 +1,13 @@
 # Engineering notes
 
+- A near-bottom autoscroll threshold can exceed the entire scroll range. With 56px of overflow, an 80px threshold treated scrolling to the top as following the latest message. Use only a pixel-rounding tolerance at the actual bottom and preserve scroll during polling.
+
+- Inspect the actual expression layer: this root Seurat object stores raw counts in both RNA.counts and RNA.data. Derive and name normalization explicitly; preserve SCT on its own feature axis. Compare values against an independent R calculation before plotting.
+- A useful first-use experience executes a real next step and preserves the researcher’s unfinished draft. Persist selected context visibly in messages and bind suggested actions to retry identity.
+- Keep full plot arrays out of model context and chat-history snapshots. Store canonical results once, resolve cards through owned endpoints and load them near the viewport.
+- Treat curated literature coverage honestly. Preserve primary-source bytes locally, stable paragraph hashes and exact anchors; dynamic PMC page metadata can change its whole-page hash. An incompatible gene build is excluded evidence, not an invitation to relabel IDs.
+- External data path resolution needs an explicit Turbopack tracing boundary; otherwise a dynamic filesystem path can trace the whole repository. Exclude secrets/artifacts from standalone output as well as Docker context.
+
 - A demo login is not a prepared demo. Populate owned sample/marker records through the real application, obtain actual model/tool results, and give the presenter a short route through evidence, uncertainty and saved review. Label selected example genes as illustrative inputs rather than an analyzed sample.
 - Demo preparation must resume existing submissions instead of generating another set of records and inference calls. Reconcile uniquely named owned projects before creating, preserve subsequent user decisions, and stop on failed turns or uncertain non-idempotent creation.
 

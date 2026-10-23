@@ -6,6 +6,7 @@ import type { Project } from "@/app/core/types";
 import type { ChatWorkspace } from "@/app/core/chat";
 import type { ResearchWorkspace } from "@/app/core/research";
 import type { PlantDefinition } from "@/app/core/plants";
+import type { ScientificDataset } from "@/app/core/scientific-data";
 import { AgentChat } from "./agent-chat";
 import { ResearchPanel } from "./research-panel";
 import { WorkspaceIcon } from "./workspace-icons";
@@ -25,12 +26,18 @@ export function ExperimentWorkspace({
   chat,
   research,
   plants,
+  science,
   before,
 }: {
   project: Project;
   chat: ChatWorkspace;
   research: ResearchWorkspace;
   plants: PlantDefinition[];
+  science: {
+    dataset: ScientificDataset | null;
+    available: boolean;
+    reason?: string;
+  };
   before?: string;
 }) {
   const compact = useSyncExternalStore(
@@ -47,7 +54,14 @@ export function ExperimentWorkspace({
     ? [plant?.commonName ?? context.speciesId, context.tissue]
         .filter(Boolean)
         .join(" · ")
-    : "Add sample context";
+    : science.dataset
+      ? [
+          plants.find((item) => item.id === science.dataset?.speciesId)
+            ?.commonName ?? science.dataset.species,
+          science.dataset.tissue,
+          "Published dataset",
+        ].join(" · ")
+      : "Add sample context";
 
   function openContext() {
     setContextChoice(true);
@@ -96,6 +110,7 @@ export function ExperimentWorkspace({
             contextLabel={contextLabel}
             onOpenContext={openContext}
             plants={plants}
+            science={science}
           />
         </div>
         <aside
@@ -122,6 +137,7 @@ export function ExperimentWorkspace({
             workspace={research}
             plants={plants}
             before={before}
+            dataset={science.dataset}
           />
         </aside>
       </div>

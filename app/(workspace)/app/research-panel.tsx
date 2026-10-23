@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import type { PlantDefinition } from "@/app/core/plants";
+import type { ScientificDataset } from "@/app/core/scientific-data";
 import type {
   ContextEntry,
   MarkerEntry,
@@ -38,11 +39,13 @@ export function ResearchPanel({
   workspace,
   plants,
   before,
+  dataset,
 }: {
   projectId: string;
   workspace: ResearchWorkspace;
   plants: PlantDefinition[];
   before?: string;
+  dataset?: ScientificDataset | null;
 }) {
   const hydrated = useSyncExternalStore(
     subscribeHydration,
@@ -132,42 +135,94 @@ export function ResearchPanel({
 
   return (
     <div className={styles.panel}>
+      {dataset && (
+        <section
+          className={styles.panelSection}
+          aria-label="Published dataset context"
+        >
+          <h3>Published dataset</h3>
+          <p className={styles.scopeNote}>
+            Source metadata · {dataset.source.accession}
+          </p>
+          <dl className={styles.contextList}>
+            <div>
+              <dt>Plant</dt>
+              <dd>
+                {plants.find((item) => item.id === dataset.speciesId)
+                  ?.commonName ?? dataset.species}
+              </dd>
+            </div>
+            <div>
+              <dt>Tissue</dt>
+              <dd>{dataset.tissue}</dd>
+            </div>
+            <div>
+              <dt>Nuclei</dt>
+              <dd>{dataset.nCells.toLocaleString("en-GB")}</dd>
+            </div>
+            <div>
+              <dt>Genome</dt>
+              <dd>{dataset.genomeBuild}</dd>
+            </div>
+          </dl>
+          <a
+            className={styles.textAction}
+            href={dataset.source.paperUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Read atlas paper ↗
+          </a>
+          <p className={styles.scopeNote}>
+            Published research data. Source cluster IDs are group identifiers,
+            not new cell-type annotations.
+          </p>
+        </section>
+      )}
       <section
         className={styles.panelSection}
         aria-label="Latest sample context"
       >
-        <dl className={styles.contextList}>
-          <div>
-            <dt>Plant</dt>
-            <dd>{plant?.commonName ?? context?.speciesId ?? "Not set"}</dd>
-          </div>
-          <div>
-            <dt>Tissue</dt>
-            <dd>{context?.tissue ?? "Not set"}</dd>
-          </div>
-          <div>
-            <dt>Sample</dt>
-            <dd>{context?.sampleLabel ?? "Not set"}</dd>
-          </div>
-          {context?.developmentalStage && (
+        {dataset && <h3>Your sample context</h3>}
+        {context || !dataset ? (
+          <dl className={styles.contextList}>
             <div>
-              <dt>Stage</dt>
-              <dd>{context.developmentalStage}</dd>
+              <dt>Plant</dt>
+              <dd>{plant?.commonName ?? context?.speciesId ?? "Not set"}</dd>
             </div>
-          )}
-          {context?.genomeVersion && (
             <div>
-              <dt>Genome</dt>
-              <dd>{context.genomeVersion}</dd>
+              <dt>Tissue</dt>
+              <dd>{context?.tissue ?? "Not set"}</dd>
             </div>
-          )}
-        </dl>
+            <div>
+              <dt>Sample</dt>
+              <dd>{context?.sampleLabel ?? "Not set"}</dd>
+            </div>
+            {context?.developmentalStage && (
+              <div>
+                <dt>Stage</dt>
+                <dd>{context.developmentalStage}</dd>
+              </div>
+            )}
+            {context?.genomeVersion && (
+              <div>
+                <dt>Genome</dt>
+                <dd>{context.genomeVersion}</dd>
+              </div>
+            )}
+          </dl>
+        ) : (
+          <p className={styles.emptyText}>
+            No additional context recorded by you. Dataset metadata is shown
+            above.
+          </p>
+        )}
         <button
           type="button"
           className={styles.textAction}
           onClick={() => showEditor("context")}
         >
-          Edit context
+          {dataset && !context ? "Add research context" : "Edit context"}
         </button>
       </section>
       <section
@@ -175,7 +230,9 @@ export function ResearchPanel({
         aria-labelledby="panel-markers-heading"
       >
         <div className={styles.sectionHeading}>
-          <h3 id="panel-markers-heading">Recent markers</h3>
+          <h3 id="panel-markers-heading">
+            {dataset ? "Your marker lists" : "Recent markers"}
+          </h3>
         </div>
         {markers.length ? (
           <ul className={styles.summaryList}>
@@ -201,7 +258,11 @@ export function ResearchPanel({
             ))}
           </ul>
         ) : (
-          <p className={styles.emptyText}>No saved marker sets.</p>
+          <p className={styles.emptyText}>
+            {dataset
+              ? "No marker lists added by you. Computed markers are saved in the conversation."
+              : "No saved marker sets."}
+          </p>
         )}
         <button
           type="button"
@@ -256,8 +317,9 @@ export function ResearchPanel({
         Research records <span aria-hidden="true">↗</span>
       </button>
       <p className={styles.footnote}>
-        Your saved context, markers and manual reviews. Scientific annotation
-        tools are not connected yet.
+        Your saved context, marker lists and manual reviews. Computed results
+        and their interpretations stay with the conversation cards. Cell-type
+        interpretations require evidence and your review.
       </p>
 
       {hydrated &&

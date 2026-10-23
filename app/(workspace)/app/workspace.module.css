@@ -1322,3 +1322,144 @@
     font-size: 16px;
   }
 }
+
+/* Guided entry: one clear first action before the research setup form. */
+.guidedStart {
+  position: relative;
+  padding: 32px;
+  margin-bottom: 32px;
+  border: 1px solid #d5d9d6;
+  border-radius: 12px;
+  background: #fafbf9;
+}
+.guidedStartIcon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 24px;
+  border: 1px solid #e0e5de;
+  border-radius: 12px;
+  background: #fff;
+}
+.guidedStart h2 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.6px;
+  line-height: 1.3;
+  margin: 8px 0 16px;
+}
+.guidedStartDescription {
+  max-width: 540px;
+  color: #555;
+  font-size: 15px;
+  line-height: 1.65;
+}
+.guidedStartFacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 24px 0;
+  font-size: 13px;
+  color: #555;
+}
+.guidedStartFacts strong {
+  font-weight: 600;
+  color: #111;
+}
+.guidedStartCaption {
+  margin-top: 16px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #666;
+}
+.guidedStart .errorBox {
+  margin-top: 16px;
+}
+.createDescription {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #666;
+}
+.savedHeading {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+@media (max-width: 600px) {
+  .guidedStart {
+    padding: 24px;
+  }
+  .guidedStart h2 {
+    font-size: 24px;
+  }
+  .guidedStart .primaryButton {
+    width: 100%;
+  }
+}
+.nextActions {
+  margin: 24px 0 8px;
+  padding: 20px;
+  border: 1px solid #e3e6e3;
+  border-radius: 8px;
+  background: #fafbf9;
+}
+.nextActions h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.nextActions p {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.nextActions > div {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.nextActions small {
+  display: block;
+  color: #666;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+.nextPrimary,
+.nextSecondary {
+  min-height: 40px;
+  border: 1px solid #d7d7d7;
+  border-radius: 8px;
+  background: #fff;
+  color: #222;
+  padding: 10px 12px;
+  font-size: 12px;
+  text-align: left;
+}
+.nextPrimary {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+.nextPrimary:disabled,
+.nextSecondary:disabled {
+  opacity: 0.5;
+}
+.datasetContext {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: #555;
+  padding-bottom: 12px;
+}
+.datasetContext button {
+  background: #f4f6f3;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 5px 8px;
+  color: #444;
+  font-size: 11px;
+}

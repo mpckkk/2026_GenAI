@@ -6,6 +6,7 @@ export interface ChatTurn {
   submissionId: string;
   position: string;
   prompt: string;
+  action?: import("./analysis").ScientificAction | null;
   response: string | null;
   responseDocument: ResponseDocument | null;
   status: ChatStatus;
@@ -30,6 +31,7 @@ export interface ChatWorkspace {
 export interface SubmitChatInput {
   submissionId: string;
   prompt: string;
+  action?: import("./analysis").ScientificAction;
 }
 
 /** Execution boundary implemented by worker-side provider adapters. */

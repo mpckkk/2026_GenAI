@@ -54,6 +54,7 @@ export default async function ExperimentPage({
     );
   }
   const plants = services.plants.list();
+  const science = await services.analysis.workspace(user.id, projectId);
   return (
     <ExperimentWorkspace
       key={`${projectId}:${chatBefore ?? "latest"}`}
@@ -61,6 +62,7 @@ export default async function ExperimentPage({
       chat={chat}
       research={workspace}
       plants={plants}
+      science={science}
       before={before}
     />
   );

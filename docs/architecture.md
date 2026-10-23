@@ -105,3 +105,13 @@ The legacy `/api/chat` is the scientific annotation endpoint and still returns `
 - [Keycloak hostname configuration](https://www.keycloak.org/server/hostname)
 - [Keycloak realm imports](https://www.keycloak.org/server/importExport)
 - [Saved Celloras architecture](https://space.heyamigo.org/items/aa82709a-dc23-4686-8718-c08a743fdae3)
+
+## Guided real-data analysis
+
+Migration 006 adds owned dataset attachments, an idempotent per-user demo mapping, immutable analysis runs and append-only researcher reviews. A chat submission may contain a validated suggested action; that action is part of retry identity. The worker executes it before asking the model for an explanation. Freeform chat can request the same `run_scientific_tool` contract. A turn executes at most four tools, and the older saved-marker lookup remains limited to one. The server binds each scientific action to the project's exact dataset artifact version and literature filters to that dataset's species, tissue and genome. It checks ownership/cancellation before execution and again before persistence.
+
+Model responses only reference offered result IDs. Full plot arrays live once in `analysis_runs`; chat snapshots and model context contain compact summaries. Authenticated result endpoints resolve only completed, uncancelled owned runs. Cards lazily fetch data near the viewport. All executed tools remain visible even when the model omits a card. Reviews have separate submission IDs and content conflicts; they cannot rewrite numerical results or supply model-generated evidence.
+
+The current data provider is explicitly local sparse CPU analysis. It preserves original RNA/SCT features and arrays separately and derives an indexed raw-RNA projection plus aggregates. Numerical operations are deterministic and documented in `docs/dataset-import.md`. Literature uses a curated lexical backend with exact compatibility and source/paragraph provenance; source snippets are evidence data, never agent instructions. There is no silent fallback from an unconfigured sponsor provider.
+
+Deploy migration 006, app, worker and `celloras-codex:0.163.0-science1` together. Import the dataset on the deployment host and bind-mount its verified directory read-only. Never mount all of `.artifacts`, which also contains private runtime configuration. Preserve additive database structures on rollback; an older app cannot render new result types. No automatic model replay occurs after worker interruption.

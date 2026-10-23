@@ -1,0 +1,204 @@
+{
+  "version": "soybean-literature-2026-10-v1",
+  "sources": [
+    {
+      "id": "soybean-atlas-2025",
+      "file": "atlas.html",
+      "format": "html",
+      "title": "A spatially resolved multiomic single-cell atlas of soybean development",
+      "citation": "Zhang et al., Cell (2025)",
+      "doi": "10.1016/j.cell.2024.10.050",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/",
+      "retrievalUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/",
+      "license": "PMC author manuscript; article text is not redistributed. Curated factual summaries only.",
+      "coverage": "Selected RNA processing, annotation and atlas coverage paragraphs; supplementary marker table S2 has not been imported.",
+      "passages": [
+        {
+          "id": "atlas:coverage",
+          "title": "RNA and chromatin assays cover different nuclei",
+          "anchor": "P10",
+          "contains": ["115,626", "200,732"],
+          "summary": "The atlas reports RNA profiles from seven tissues and chromatin profiles from ten. Root is included. RNA and ATAC are separate measurements; accessibility is not measured transcript abundance.",
+          "kind": "study_context",
+          "speciesId": "glycine-max",
+          "tissues": [],
+          "genomeVersion": "Wm82v4",
+          "genes": [],
+          "locator": "Results, atlas generation; paragraph P10",
+          "excerpt": null,
+          "applicability": "Study context, not evidence that any particular cluster has a specific identity.",
+          "keywords": [
+            "root",
+            "nodule",
+            "soybean",
+            "rna",
+            "atac",
+            "dataset",
+            "atlas",
+            "nuclei"
+          ]
+        },
+        {
+          "id": "atlas:rna-processing",
+          "title": "Published RNA processing and genome build",
+          "anchor": "P64",
+          "contains": ["William 82 v4", "SCTransform", "Harmony"],
+          "summary": "RNA reads were mapped to Williams 82 v4. The workflow removes low-quality nuclei and doublets, normalizes with SCTransform, integrates replicates with Harmony, then computes UMAP and clusters in Seurat. These are published processing steps, not operations newly performed by Celloras.",
+          "kind": "method",
+          "speciesId": "glycine-max",
+          "tissues": [],
+          "genomeVersion": "Wm82v4",
+          "genes": [],
+          "locator": "STAR Methods, snRNA-seq data processing; paragraph P64",
+          "excerpt": null,
+          "applicability": "Check the imported assay and layer before calculating expression; this paragraph does not prove what any exported matrix layer contains.",
+          "keywords": [
+            "root",
+            "nodule",
+            "normalization",
+            "umap",
+            "clusters",
+            "replicates",
+            "doublets",
+            "qc",
+            "methods",
+            "build",
+            "genome"
+          ]
+        },
+        {
+          "id": "atlas:annotation",
+          "title": "How the atlas assigned biological labels",
+          "anchor": "P69",
+          "contains": [
+            "Table S2",
+            "least diverged ortholog",
+            "Ambiguous clusters"
+          ],
+          "summary": "Atlas labels combine published markers, ortholog relationships and gene-set enrichment. Ambiguous clusters with similar marker patterns may share a broader label.",
+          "kind": "method",
+          "speciesId": "glycine-max",
+          "tissues": [],
+          "genomeVersion": "Wm82v4",
+          "genes": [],
+          "locator": "STAR Methods, cell type annotation; paragraph P69 and cited Table S2",
+          "excerpt": null,
+          "applicability": "Cluster numbers are dataset-specific group identifiers, not transferable biological names. This collection has not imported the cited v4 marker table; review it before transferring labels.",
+          "keywords": [
+            "root",
+            "nodule",
+            "annotation",
+            "markers",
+            "identity",
+            "labels",
+            "uncertainty",
+            "evidence",
+            "ortholog",
+            "cell",
+            "types"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "soybean-root-nodule-cervantes-perez-2024",
+      "file": "markers.html",
+      "format": "html",
+      "title": "Single-cell transcriptome atlases of soybean root and mature nodule reveal new regulatory programs that control the nodulation process",
+      "citation": "Cervantes-Pérez et al., Plant Communications (2024)",
+      "doi": "10.1016/j.xplc.2024.100984",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/",
+      "retrievalUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/",
+      "license": "CC BY-NC-ND 4.0; factual associations and original summaries only, article text not redistributed.",
+      "coverage": "Methods p0220, p0230 and p0235 plus the previously curated 62 explicit marker associations. Not the complete supplementary marker tables.",
+      "passages": [
+        {
+          "id": "root-nodule:build",
+          "title": "A different reference build from the multiomic atlas",
+          "anchor": "p0220",
+          "contains": ["Glycine_max_v2.1.52"],
+          "summary": "This study aligned RNA reads to Glycine_max_v2.1.52, then processed background contamination, doublets, normalization, integration and clustering.",
+          "kind": "method",
+          "speciesId": "glycine-max",
+          "tissues": ["root", "nodule"],
+          "genomeVersion": "Glycine_max_v2.1.52",
+          "genes": [],
+          "locator": "Methods, processing sNucRNA-seq datasets; paragraph p0220",
+          "excerpt": null,
+          "applicability": "Celloras requires a verified mapping before transferring gene associations to the v4 atlas, even when Glyma identifiers look alike. A build mismatch is not evidence against a biological identity.",
+          "keywords": [
+            "genome",
+            "build",
+            "root",
+            "nodule",
+            "markers",
+            "compatibility"
+          ]
+        },
+        {
+          "id": "root-nodule:validation",
+          "title": "Spatial validation and orthology have different evidence strength",
+          "anchor": "p0030",
+          "contains": ["Molecular Cartography", "orthologous"],
+          "summary": "The study localized selected root markers using Molecular Cartography. Some identities outside the sampled cross-section were inferred using marker orthology. Evidence obtained in soybean tissue and evidence transferred from related species should remain distinguishable.",
+          "kind": "study_context",
+          "speciesId": "glycine-max",
+          "tissues": ["root"],
+          "genomeVersion": "Glycine_max_v2.1.52",
+          "genes": [],
+          "locator": "Results, soybean root atlas annotation; paragraph p0030",
+          "excerpt": null,
+          "applicability": "Study-level validation context. It does not experimentally validate an annotation of the user's cells.",
+          "keywords": [
+            "root",
+            "validation",
+            "markers",
+            "annotation",
+            "spatial",
+            "orthology",
+            "evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plant-single-cell-roadmap-2026",
+      "file": "guide-crossref.json",
+      "format": "crossref-abstract",
+      "title": "Cross-species plant single-cell analysis: community challenges and shared solutions",
+      "citation": "Haghani et al., Journal of Experimental Botany (2026)",
+      "doi": "10.1093/jxb/erag218",
+      "url": "https://academic.oup.com/jxb/advance-article/doi/10.1093/jxb/erag218/8672764",
+      "retrievalUrl": "https://api.crossref.org/works/10.1093/jxb/erag218",
+      "license": "Crossref publisher-deposited abstract metadata; CC BY-NC-ND 4.0 listed for accepted manuscript. Only factual summary redistributed.",
+      "coverage": "Publisher-deposited abstract only. The full guide and its tables have not been ingested.",
+      "passages": [
+        {
+          "id": "roadmap:annotation-agents",
+          "title": "A roadmap for tools coordinated with literature",
+          "anchor": "abstract",
+          "contains": ["phylogenetically aware", "AI scientist agents"],
+          "summary": "The community roadmap calls for evolutionary context in annotation and agents that coordinate analysis tools with literature. It describes priorities and proposed approaches, not a benchmark validating Celloras predictions.",
+          "kind": "study_context",
+          "speciesId": null,
+          "tissues": [],
+          "genomeVersion": null,
+          "genes": [],
+          "locator": "Abstract, publisher-deposited Crossref record",
+          "excerpt": null,
+          "applicability": "General plant research context; no soybean gene association or cell identity is established by this passage.",
+          "keywords": [
+            "plant",
+            "annotation",
+            "evidence",
+            "literature",
+            "agent",
+            "cross-species",
+            "workflow",
+            "methods"
+          ]
+        }
+      ]
+    }
+  ]
+}

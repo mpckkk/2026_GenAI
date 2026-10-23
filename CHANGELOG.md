@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.11 — 2026-10-23
+
+- Added a guided real soybean root demo with contextual next actions, interactive UMAP/cluster selection, descriptive marker rankings, expression overlays and dot plots.
+- Added verified sparse dataset import and CPU analysis interfaces, with preserved original assays and independent R comparisons.
+- Connected cited literature retrieval with source provenance and genome compatibility; incompatible marker evidence remains unresolved.
+- Extended the real OpenShell agent with bounded scientific tool requests, canonical persisted result cards and separate retry-safe researcher interpretations.
+
 ## 0.1.10 — 2026-10-23
 
 - Added authenticated local demo preparation with published soybean root and ambiguous-nodule examples, real agent evidence cards, an explicitly illustrative saved root review and a two-minute presentation guide.

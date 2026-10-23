@@ -10,6 +10,10 @@ import { ContextDetails, ResearchEntryContent } from "./conversation-entry";
 import { WorkspaceIcon, type IconName } from "./workspace-icons";
 import type { EvidenceReviewReceipt } from "@/app/core/evidence";
 import { EvidenceCard } from "./evidence-card";
+import { ScientificCard, type ScientificSelection } from "./scientific-card";
+import { LiteratureCard } from "./literature-card";
+import type { ScientificResult } from "@/app/core/scientific-data";
+import type { GuidedAction } from "./next-actions";
 import styles from "./agent-response.module.css";
 
 // New visual types join this finite registry after their contracts/tools exist.
@@ -27,12 +31,22 @@ export function AgentResponse({
   plants,
   onAsk,
   actionsDisabled,
+  selection,
+  onSelect,
+  onRun,
+  onScientificLoaded,
+  scientificActionsDisabled,
 }: {
   document: ResponseDocument;
   reviews: Record<string, EvidenceReviewReceipt>;
   plants: PlantDefinition[];
   onAsk: (question: string) => void;
   actionsDisabled: boolean;
+  selection: ScientificSelection | null;
+  onSelect: (selection: ScientificSelection) => void;
+  onRun: (action: GuidedAction) => void;
+  onScientificLoaded: (result: ScientificResult) => void;
+  scientificActionsDisabled: boolean;
 }) {
   if (document.version !== 1) {
     return (
@@ -53,6 +67,27 @@ export function AgentResponse({
               key={block.result.id}
               result={block.result}
               review={reviews[block.result.id]}
+              onAsk={onAsk}
+              actionsDisabled={actionsDisabled}
+            />
+          );
+        if (block.type === "scientific_result")
+          return (
+            <ScientificCard
+              key={block.result.id}
+              run={block.result}
+              selection={selection}
+              onSelect={onSelect}
+              onRun={onRun}
+              onLoaded={onScientificLoaded}
+              actionsDisabled={scientificActionsDisabled}
+            />
+          );
+        if (block.type === "literature_result")
+          return (
+            <LiteratureCard
+              key={block.result.id}
+              run={block.result}
               onAsk={onAsk}
               actionsDisabled={actionsDisabled}
             />

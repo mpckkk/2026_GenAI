@@ -1,0 +1,27 @@
+{
+  "id": "gse270392-root-rna-v1",
+  "title": "Soybean root · published single-nucleus RNA atlas",
+  "speciesId": "glycine-max",
+  "species": "Glycine max",
+  "tissue": "root",
+  "genomeBuild": "Wm82v4",
+  "genomeBuildEvidence": "Williams 82 v4 reported by the source paper; source feature IDs retain the ann1. prefix. No cross-build gene mapping is performed.",
+  "nCells": 7496,
+  "nGenes": 40127,
+  "source": {
+    "accession": "GSE270392",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE270nnn/GSE270392/suppl/GSE270392_Gm_atlas_Root.rna.seurat.obj.rds.gz",
+    "paperUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/",
+    "sha256": "7d30e826e09ef7d1b1cedeca04272caccfa75d49cabfbe0899f0dbfbb900fdd7",
+    "bytes": 297427600
+  },
+  "geneAliasRule": "Only remove the literal ann1. prefix, retaining the original sourceGeneId alongside the alias; case-sensitive and no cross-build or symbol matching.",
+  "clusterField": "seurat_clusters",
+  "publishedLabelField": "celltype",
+  "warnings": [
+    "Published celltype values are RNA cluster identifiers, not biological cell-type annotations.",
+    "This is a processed root reference from two sample IDs (rt3 and rt4), not a newly uploaded experimental dataset.",
+    "Existing UMAP and clusters were computed by the authors. Celloras does not recompute them during import.",
+    "The current marker-evidence collection uses a different genome build; it cannot automatically validate this atlas's gene identities."
+  ]
+}

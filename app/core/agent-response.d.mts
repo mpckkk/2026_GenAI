@@ -1,3 +1,8 @@
+import type {
+  ScientificAction,
+  ScientificRun,
+  LiteratureRun,
+} from "./analysis";
 import type { MarkerEvidenceRun } from "./evidence";
 import type { ContextEntry, MarkerEntry } from "./research";
 
@@ -7,12 +12,22 @@ export type CardReference = {
     | "sample_context"
     | "marker_set"
     | "marker_evidence"
+    | "scientific_result"
+    | "literature_result"
     | "lookup_marker_evidence";
   entryId: string;
 };
+export type ScientificToolRequest = {
+  type: "run_scientific_tool";
+  datasetId: string;
+  operation: ScientificAction["operation"];
+  cluster: string | null;
+  genes: string[];
+  query: string | null;
+};
 export type AgentResponse = {
   version: 1;
-  blocks: (MarkdownBlock | CardReference)[];
+  blocks: (MarkdownBlock | CardReference | ScientificToolRequest)[];
 };
 export type ResearchCardBlock =
   | { type: "sample_context"; entry: ContextEntry }
@@ -23,6 +38,8 @@ export type ResponseDocument = {
     | MarkdownBlock
     | ResearchCardBlock
     | { type: "marker_evidence"; result: MarkerEvidenceRun }
+    | { type: "scientific_result"; result: ScientificRun }
+    | { type: "literature_result"; result: LiteratureRun }
   )[];
 };
 export class AgentResponseError extends Error {

@@ -1,3 +1,4 @@
+import { analysisRun } from "../core/analysis.mjs";
 import {
   AgentResponseError,
   parseAgentResponse,
@@ -11,7 +12,9 @@ export async function resolveAgentResponse(
   const parsed = parseAgentResponse(response);
   const references = parsed.blocks.filter((block) => block.type !== "markdown");
   for (const reference of references) {
-    if (reference.type === "lookup_marker_evidence")
+    if (
+      ["lookup_marker_evidence", "run_scientific_tool"].includes(reference.type)
+    )
       throw new AgentResponseError();
     if (
       !availableCards.some(
@@ -44,8 +47,34 @@ export async function resolveAgentResponse(
     ],
   );
   const runs = new Map(evidence.rows.map((row) => [row.id, row]));
+  const analyses = await connection.query(
+    `SELECT a.* FROM analysis_runs a
+    JOIN projects p ON p.id=a.project_id JOIN agent_turns t ON t.id=a.turn_id
+    WHERE a.project_id=$1 AND a.owner_id=$2 AND p.owner_id=$2 AND t.project_id=$1 AND t.owner_id=$2
+      AND t.status IN ('running','completed') AND NOT t.cancel_requested AND a.id=ANY($3::uuid[])`,
+    [
+      projectId,
+      ownerId,
+      references
+        .filter((r) =>
+          ["scientific_result", "literature_result"].includes(r.type),
+        )
+        .map((r) => r.entryId),
+    ],
+  );
+  const analysis = new Map(analyses.rows.map((row) => [row.id, row]));
   const blocks = parsed.blocks.map((block) => {
     if (block.type === "markdown") return block;
+    if (["scientific_result", "literature_result"].includes(block.type)) {
+      const row = analysis.get(block.entryId);
+      if (
+        !row ||
+        (row.operation === "literature") !==
+          (block.type === "literature_result")
+      )
+        throw new AgentResponseError("agent_card_unavailable");
+      return { type: block.type, result: analysisRun(row) };
+    }
     if (block.type === "marker_evidence") {
       const row = runs.get(block.entryId);
       if (!row) throw new AgentResponseError("agent_card_unavailable");

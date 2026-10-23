@@ -1,3 +1,7 @@
+import { LocalScientificData } from "../../app/adapters/scientific-data.mjs";
+import { CuratedLiterature } from "../../app/adapters/literature.mjs";
+import { runAnalysis } from "../../app/services/analysis-tools.mjs";
+import { analysisRun } from "../../app/core/analysis.mjs";
 import { randomUUID } from "node:crypto";
 import { Pool } from "pg";
 import {
@@ -21,6 +25,8 @@ const pool = new Pool({
 });
 const runtime = new OpenShellCodex();
 const markerReference = new PublishedMarkerReference();
+const scientific = new LocalScientificData();
+const literature = new CuratedLiterature();
 let stopping = false,
   activeController;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -68,8 +74,7 @@ function boundedContext(previous, research) {
         .filter((block) => block.type !== "markdown")
         .map((block) => ({
           type: block.type,
-          entryId:
-            block.type === "marker_evidence" ? block.result.id : block.entry.id,
+          entryId: block.result ? block.result.id : block.entry.id,
         })),
     };
     const size = JSON.stringify(turn).length;
@@ -179,6 +184,51 @@ async function claim() {
       })),
     );
     snapshot.evidenceReference = (await markerReference.health()).source;
+    const binding = await client.query(
+      "SELECT dataset_id,artifact_version FROM project_datasets WHERE project_id=$1",
+      [turn.project_id],
+    );
+    snapshot.dataset = null;
+    snapshot.scientificStatus = "not_attached";
+    if (binding.rows[0]) {
+      try {
+        snapshot.dataset =
+          (await scientific.catalog()).find(
+            (d) =>
+              d.id === binding.rows[0].dataset_id &&
+              d.artifactVersion === binding.rows[0].artifact_version,
+          ) || null;
+        snapshot.scientificStatus = snapshot.dataset ? "ready" : "unavailable";
+      } catch {
+        snapshot.scientificStatus = "unavailable";
+      }
+    }
+    try {
+      snapshot.literature = await literature.health();
+    } catch {
+      snapshot.literature = { status: "unavailable" };
+    }
+    const analyses = await client.query(
+      `SELECT a.id,a.project_id,a.turn_id,a.dataset_id,a.created_at,a.result-'payload' AS result,a.operation FROM analysis_runs a JOIN agent_turns t ON t.id=a.turn_id
+      WHERE a.project_id=$1 AND a.owner_id=$2 AND t.owner_id=$2 AND t.status='completed' AND NOT t.cancel_requested ORDER BY a.created_at DESC LIMIT 4`,
+      [turn.project_id, turn.owner_id],
+    );
+    snapshot.analysisResults = analyses.rows.map((row) => analysisRun(row));
+    snapshot.availableCards.push(
+      ...analyses.rows.map((row) => ({
+        type:
+          row.operation === "literature"
+            ? "literature_result"
+            : "scientific_result",
+        entryId: row.id,
+      })),
+    );
+    const reviews = await client.query(
+      "SELECT run_id,decision,note,cluster,created_at FROM analysis_reviews WHERE project_id=$1 AND owner_id=$2 ORDER BY created_at DESC LIMIT 6",
+      [turn.project_id, turn.owner_id],
+    );
+    snapshot.researcherReviews = reviews.rows;
+
     const name = sandboxName(turn.id);
     await client.query(
       `UPDATE agent_turns SET status='running',progress='Starting agent',
@@ -263,57 +313,109 @@ async function execute(turn) {
         },
       });
     const snapshot = turn.context_snapshot;
-    let output = await run(snapshot, turn.prompt);
-    const lookup = output.blocks.find(
-      (block) => block.type === "lookup_marker_evidence",
-    );
-    let evidence;
-    if (lookup) {
-      progress = "Looking up published marker evidence";
-      log("tool.started", { turnId: turn.id, tool: "lookup_marker_evidence" });
-      evidence = await runMarkerEvidence(pool, markerReference, {
+    const completedCards = [];
+    let steps = 0,
+      lookedUp = false;
+    const invoke = async (action) => {
+      if (steps >= 4) throw new AgentResponseError("agent_tool_limit");
+      progress =
+        action.operation === "literature"
+          ? "Finding cited evidence"
+          : `Computing ${action.operation}`;
+      log("tool.started", { turnId: turn.id, tool: action.operation });
+      const result = await runAnalysis(pool, scientific, literature, {
         projectId: turn.project_id,
         ownerId: turn.owner_id,
         turnId: turn.id,
-        markerEntryId: lookup.entryId,
-        availableCards: snapshot.availableCards,
+        action,
+        step: steps++,
         signal: controller.signal,
       });
+      const card = {
+        type:
+          action.operation === "literature"
+            ? "literature_result"
+            : "scientific_result",
+        entryId: result.id,
+      };
+      snapshot.analysisResults.push(result);
+      snapshot.availableCards.push(card);
+      completedCards.push(card);
       log("tool.completed", {
         turnId: turn.id,
-        tool: "lookup_marker_evidence",
-        evidenceId: evidence.id,
-        status: evidence.status,
-        candidates: evidence.candidates.length,
+        tool: action.operation,
+        resultId: result.id,
       });
-      snapshot.evidenceResults = [evidence];
-      snapshot.availableCards.push({
-        type: "marker_evidence",
-        entryId: evidence.id,
-      });
-      snapshot.completedLookup = {
-        markerEntryId: lookup.entryId,
-        evidenceId: evidence.id,
-      };
+    };
+    if (turn.requested_action) await invoke(turn.requested_action);
+    let output;
+    for (;;) {
+      snapshot.remainingToolCalls = 4 - steps;
       await pool.query(
-        `UPDATE agent_turns SET context_snapshot=$3,progress='Explaining evidence',updated_at=now() WHERE id=$1 AND worker_id=$2 AND status='running'`,
+        `UPDATE agent_turns SET context_snapshot=$3,progress='Explaining results',updated_at=now() WHERE id=$1 AND worker_id=$2 AND status='running'`,
         [turn.id, workerId, JSON.stringify(snapshot)],
       );
       if (controller.signal.aborted) throw new AgentResponseError("cancelled");
       output = await run(snapshot, turn.prompt);
-      if (
-        output.blocks.some((block) => block.type === "lookup_marker_evidence")
-      )
-        throw new AgentResponseError("agent_tool_limit");
-      // A real lookup must remain inspectable even when the model omits its card.
+      const lookup = output.blocks.find(
+        (b) => b.type === "lookup_marker_evidence",
+      );
+      const analysis = output.blocks.find(
+        (b) => b.type === "run_scientific_tool",
+      );
+      if (!lookup && !analysis) break;
+      if (steps >= 4) throw new AgentResponseError("agent_tool_limit");
+      if (analysis) {
+        await invoke({
+          datasetId: analysis.datasetId,
+          operation: analysis.operation,
+          ...(analysis.cluster === null ? {} : { cluster: analysis.cluster }),
+          genes: analysis.genes,
+          ...(analysis.query === null ? {} : { query: analysis.query }),
+        });
+      } else {
+        if (lookedUp) throw new AgentResponseError("agent_tool_limit");
+        lookedUp = true;
+        steps++;
+        progress = "Looking up published marker evidence";
+        log("tool.started", {
+          turnId: turn.id,
+          tool: "lookup_marker_evidence",
+        });
+        const evidence = await runMarkerEvidence(pool, markerReference, {
+          projectId: turn.project_id,
+          ownerId: turn.owner_id,
+          turnId: turn.id,
+          markerEntryId: lookup.entryId,
+          availableCards: snapshot.availableCards,
+          signal: controller.signal,
+        });
+        snapshot.evidenceResults = [evidence];
+        const card = { type: "marker_evidence", entryId: evidence.id };
+        snapshot.availableCards.push(card);
+        completedCards.push(card);
+        snapshot.completedLookup = {
+          markerEntryId: lookup.entryId,
+          evidenceId: evidence.id,
+        };
+        log("tool.completed", {
+          turnId: turn.id,
+          tool: "lookup_marker_evidence",
+          evidenceId: evidence.id,
+          status: evidence.status,
+          candidates: evidence.candidates.length,
+        });
+      }
+    }
+    // Every executed tool stays inspectable even if the model forgets its card.
+    for (const card of completedCards) {
       if (
         !output.blocks.some(
-          (block) =>
-            block.type === "marker_evidence" && block.entryId === evidence.id,
+          (b) => b.type === card.type && b.entryId === card.entryId,
         )
       ) {
         if (output.blocks.length >= 12) throw new AgentResponseError();
-        output.blocks.push({ type: "marker_evidence", entryId: evidence.id });
+        output.blocks.push(card);
       }
     }
     document = await resolveAgentResponse(pool, {

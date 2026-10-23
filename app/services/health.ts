@@ -1,3 +1,5 @@
+import { LocalScientificData } from "../adapters/scientific-data.mjs";
+import { CuratedLiterature } from "../adapters/literature.mjs";
 import "server-only";
 import { PublishedMarkerReference } from "@/app/adapters/marker-reference.mjs";
 import { database } from "@/app/adapters/database";
@@ -25,6 +27,21 @@ export async function foundationHealth(): Promise<ServiceHealth[]> {
           );
           await database().query(
             "SELECT worker_id, status, detail, heartbeat_at FROM agent_workers LIMIT 0",
+          );
+        },
+      },
+      {
+        name: "Analysis storage",
+        check: async () => {
+          await database().query(
+            "SELECT requested_action FROM agent_turns LIMIT 0",
+          );
+          await database().query("SELECT id,result FROM analysis_runs LIMIT 0");
+          await database().query(
+            "SELECT submission_id,note FROM analysis_reviews LIMIT 0",
+          );
+          await database().query(
+            "SELECT dataset_id FROM project_datasets LIMIT 0",
           );
         },
       },
@@ -74,10 +91,42 @@ async function agentHealth(): Promise<ServiceHealth> {
     };
   }
 }
+const scientific = new LocalScientificData();
+async function researchHealth(): Promise<ServiceHealth[]> {
+  return Promise.all(
+    [
+      {
+        name: "Scientific dataset",
+        check: async () => {
+          const h = await scientific.health();
+          return `${h.datasetCount} verified dataset · local sparse CPU analysis`;
+        },
+      },
+      {
+        name: "Literature evidence",
+        check: async () => {
+          const h = await new CuratedLiterature().health();
+          return `${h.sources} curated sources · ${h.passages} passages · lexical search`;
+        },
+      },
+    ].map(async ({ name, check }): Promise<ServiceHealth> => {
+      try {
+        return { name, status: "ready", detail: await check() };
+      } catch {
+        return {
+          name,
+          status: "unavailable",
+          detail: "Source verification or configuration is required.",
+        };
+      }
+    }),
+  );
+}
 export async function serviceHealth(): Promise<ServiceHealth[]> {
   return [
     ...(await foundationHealth()),
     await agentHealth(),
+    ...(await researchHealth()),
     {
       name: "Zetaris",
       status: "pending",

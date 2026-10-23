@@ -1,3 +1,4 @@
+import { AnalysisError } from "@/app/core/analysis.mjs";
 import {
   AuthenticationRequiredError,
   ProjectNotFoundError,
@@ -16,6 +17,33 @@ import {
 } from "@/app/core/chat";
 
 export function apiError(error: unknown) {
+  if (
+    error instanceof AnalysisError ||
+    (error instanceof Error &&
+      "code" in error &&
+      [
+        "scientific_data_unavailable",
+        "scientific_dataset_missing",
+        "literature_unavailable",
+      ].includes(String(error.code)))
+  )
+    return Response.json(
+      {
+        error:
+          error instanceof AnalysisError &&
+          error.code === "analysis_input_invalid"
+            ? "Check the selected analysis and try again."
+            : "The dataset or evidence source is temporarily unavailable.",
+        code: String((error as Error & { code: string }).code),
+      },
+      {
+        status:
+          error instanceof AnalysisError &&
+          error.code === "analysis_input_invalid"
+            ? 400
+            : 503,
+      },
+    );
   if (error instanceof AuthenticationRequiredError)
     return Response.json({ error: "Sign in required" }, { status: 401 });
   if (error instanceof ProjectNotFoundError)

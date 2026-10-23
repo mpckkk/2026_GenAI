@@ -1,3 +1,6 @@
+import { PostgresAnalysis } from "./adapters/analysis";
+import { LocalScientificData } from "./adapters/scientific-data.mjs";
+import { AnalysisService } from "./services/analysis";
 import "server-only";
 import { KeycloakAuth } from "./adapters/auth";
 import { PostgresProjects } from "./adapters/projects";
@@ -24,6 +27,10 @@ export const services = {
   access,
   plants,
   research: new ResearchService(access, new PostgresResearch(), plants),
+  analysis: new AnalysisService(
+    access,
+    new PostgresAnalysis(new LocalScientificData()),
+  ),
   chat: new ChatService(access, new PostgresChat()),
   annotation: new AnnotationService(access),
   memory: new HmemMemory(),
