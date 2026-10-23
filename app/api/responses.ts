@@ -6,12 +6,50 @@ import {
   ResearchConflictError,
   logFailure,
 } from "@/app/core/errors";
+import {
+  ChatActiveTurnError,
+  ChatCleanupPendingError,
+  ChatRuntimeUnavailableError,
+  ChatSubmissionConflictError,
+  ChatTurnNotFoundError,
+  ChatValidationError,
+} from "@/app/core/chat";
 
 export function apiError(error: unknown) {
   if (error instanceof AuthenticationRequiredError)
     return Response.json({ error: "Sign in required" }, { status: 401 });
   if (error instanceof ProjectNotFoundError)
     return Response.json({ error: "Project not found" }, { status: 404 });
+  if (error instanceof ChatValidationError)
+    return Response.json(
+      { error: error.message, fields: error.fields },
+      { status: 400 },
+    );
+  if (error instanceof ChatSubmissionConflictError)
+    return Response.json(
+      { error: error.message, code: "SUBMISSION_CONFLICT" },
+      { status: 409 },
+    );
+  if (error instanceof ChatActiveTurnError)
+    return Response.json(
+      { error: error.message, code: "TURN_ACTIVE" },
+      { status: 409 },
+    );
+  if (error instanceof ChatRuntimeUnavailableError)
+    return Response.json(
+      { error: error.message, code: "AGENT_UNAVAILABLE" },
+      { status: 503 },
+    );
+  if (error instanceof ChatCleanupPendingError)
+    return Response.json(
+      { error: error.message, code: "AGENT_CLEANUP_PENDING" },
+      { status: 503 },
+    );
+  if (error instanceof ChatTurnNotFoundError)
+    return Response.json(
+      { error: error.message, code: "CHAT_TURN_NOT_FOUND" },
+      { status: 404 },
+    );
   if (error instanceof ResearchValidationError)
     return Response.json(
       { error: "Check the research entry fields.", fields: error.fields },

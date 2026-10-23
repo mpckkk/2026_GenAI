@@ -1,0 +1,38 @@
+# Adapted from NVIDIA/OpenShell v0.1.5 examples/codex-app-server/codex.yaml
+# Apache-2.0. Import an access token from the local login without taking over
+# its refresh token. Re-run agent:setup to sync a renewed local login.
+id: celloras-codex
+display_name: Celloras Codex
+description: Server-side Codex with gateway-held credentials
+category: agent
+inference_capable: true
+credentials:
+  - name: access_token
+    env_vars: [CODEX_AUTH_ACCESS_TOKEN]
+    required: true
+    auth_style: bearer
+    header_name: authorization
+  - name: account_id
+    env_vars: [CODEX_AUTH_ACCOUNT_ID]
+    required: true
+discovery:
+  credentials: [access_token, account_id]
+endpoints:
+  - host: chatgpt.com
+    port: 443
+    protocol: rest
+    access: read-write
+    enforcement: enforce
+  - host: api.openai.com
+    port: 443
+    protocol: rest
+    access: read-write
+    enforcement: enforce
+  - host: ab.chatgpt.com
+    port: 443
+    protocol: rest
+    access: read-write
+    enforcement: enforce
+binaries:
+  - /usr/local/bin/codex
+  - /usr/local/lib/node_modules/@openai/**

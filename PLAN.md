@@ -1,6 +1,8 @@
-# Initial Celloras structure
+# Celloras implementation record
 
-## Active wave: persistent conversational research — 2026-10-23
+Current wave: connected OpenShell agent chat, documented in the final section below. Linux deployment portability is required; local Mac runtime setup is separate from application and worker contracts.
+
+## Completed wave: persistent conversational research — 2026-10-23
 
 User authorized implementation, parallel work, unattended verification and publishing on `celloras.com`. This section supersedes the earlier proposed form-first research slice. The target is a real persistent conversation with predefined context/marker/review elements, a configurable plant catalog (soybean enabled first), and the supplied branding. Real scientific model/reference integrations are not configured locally; this wave must not manufacture assistant answers or annotations.
 
@@ -148,3 +150,59 @@ Apply the [Celloras Design Kit](https://space.heyamigo.org/items/337333f2-4a2c-4
 ## Simplify signup — 2026-10-23
 
 User correction: registration is too tight; first/last name do not belong in the first step. Widen the registration card and increase its internal spacing. Configure first/last name as optional administrative attributes in Keycloak, so signup contains email/password/confirmation without a follow-up name requirement. Preserve existing account data. Keep the profile configuration in realm import and apply it explicitly to the running realm through the existing configuration script. Verify real signup without names, subsequent login and mobile/desktop screenshots, then commit on `celloras.com`.
+
+# Connected agent chat — 2026-10-23
+
+User correction: this wave must connect NVIDIA OpenShell and produce real CLI-agent replies, not only a frontend shell. Keep the single `celloras.com` branch. First prove a real Codex run inside OpenShell, then connect durable owned conversations and the UI. Existing sample/marker/review records remain intact. Scientific retrieval integrations remain explicitly unavailable.
+
+## Integration and file ledger
+
+Target: browser → authenticated experiment chat API → PostgreSQL turn queue → agent worker → OpenShell sandbox → Codex CLI → persisted reply → browser. The worker owns execution; Celloras owns conversation history. Request IDs prevent duplicate turns, and only one turn per experiment runs at a time. Credentials remain outside source control and browser responses.
+
+Portability requirement: Linux server deployment is required. Use NVIDIA's official multi-architecture Docker gateway and standard OCI workload images as the primary deployment path. Containers still require a compatible Linux kernel (Landlock ABI 3+ and required seccomp operations). The installed Docker Desktop kernel failed Landlock qualification. A separately selected native MicroVM gateway is being checked for local macOS development; application and worker contracts must not depend on macOS. Never automatically switch runtimes or silently execute the CLI on the host.
+
+| Action | Path                                                | Purpose                                                              | Package |
+| ------ | --------------------------------------------------- | -------------------------------------------------------------------- | ------- |
+| CREATE | `infra/agent/Dockerfile`                            | Pinned OpenShell CLI worker image                                    | 1       |
+| CREATE | `infra/agent/codex.Dockerfile`                      | Isolated Codex workload image                                        | 1       |
+| CREATE | `infra/agent/codex-provider.yaml`                   | Gateway-held Codex credential handles and allowed endpoints          | 1       |
+| CREATE | `infra/agent/run-codex.mjs`                         | Headless Codex entry point inside the sandbox                        | 1       |
+| CREATE | `app/adapters/agent-openshell.mjs`                  | Runtime adapter shared by the worker and real runtime probe          | 1       |
+| CREATE | `scripts/agent-gateway.mjs`                         | Explicit optional local MicroVM gateway launcher                     | 1       |
+| CREATE | `scripts/verify-agent.mjs`                          | Real isolated agent execution probe                                  | 1       |
+| CREATE | `infra/agent/worker.mjs`                            | Durable queue execution, cancellation, lifecycle, sanitized progress | 2       |
+| CREATE | `scripts/setup-agent.mjs`                           | Reproducible local runtime/credential preparation                    | 1       |
+| UPDATE | `compose.yaml`                                      | OpenShell gateway and worker                                         | 1       |
+| CREATE | `db/migrations/003_agent_chat.sql`                  | Owned durable turns and statuses                                     | 2       |
+| CREATE | `app/core/chat.ts`                                  | Provider-neutral chat/run contracts                                  | 2       |
+| CREATE | `app/adapters/chat.ts`                              | PostgreSQL ownership/idempotency boundary                            | 2       |
+| CREATE | `app/services/chat.ts`                              | Input validation and conversation service                            | 2       |
+| CREATE | `app/api/projects/[projectId]/chat/route.ts`        | Authenticated submit/read/cancel boundary                            | 2       |
+| UPDATE | `app/bootstrap.ts`                                  | Wire chat service                                                    | 2       |
+| UPDATE | `app/api/responses.ts`                              | Safe chat validation/conflict/runtime responses                      | 2       |
+| CREATE | `app/(workspace)/app/agent-chat.tsx`                | Live conversation, progress, retry/cancel and drafts                 | 3       |
+| UPDATE | `app/(workspace)/app/projects/[projectId]/page.tsx` | Chat-first experiment with existing research tools                   | 3       |
+| UPDATE | `app/(workspace)/app/workspace.module.css`          | Design-kit chat layout, responsive states                            | 3       |
+| UPDATE | `app/(workspace)/app/conversation-composer.tsx`     | Distinguish research notes from agent messages                       | 3       |
+| UPDATE | `app/services/health.ts`                            | Actual agent-worker/OpenShell health                                 | 2       |
+| UPDATE | `.env.example`                                      | Runtime configuration                                                | 2       |
+| UPDATE | `package.json`                                      | Agent setup command                                                  | 1       |
+| CREATE | `tests/agent-chat.spec.ts`                          | Real live-agent conversation, persistence and isolation              | 4       |
+| UPDATE | `README.md`                                         | Run instructions and current capabilities                            | 4       |
+| UPDATE | `docs/architecture.md`                              | Runtime and provider boundaries                                      | 4       |
+| UPDATE | `docs/configuration.md`                             | Secrets and agent configuration ownership                            | 4       |
+| UPDATE | `docs/verification.md`                              | Observed integration/browser evidence                                | 4       |
+| UPDATE | `learned.md`                                        | Runtime findings                                                     | 4       |
+| UPDATE | `CHANGELOG.md`                                      | Delivered behavior                                                   | 4       |
+| UPDATE | `PLAN.md`                                           | Plan and final evidence                                              | 4       |
+
+Deleted files: none. Renamed files: none. The listed additions are now implemented.
+
+1. Prove the runtime: install pinned CLI, start local OpenShell with authenticated control access, run a real Codex prompt inside its sandbox using explicitly scoped credentials. No host execution substitute. Exit: actual model reply and runtime evidence.
+2. Add durable owned turns and a worker with claim/heartbeat/failure recovery, bounded context, explicit unavailable/error states, cancellation and no duplicate execution on ordinary retries. Exit: real HTTP/SQL/worker run completes and foreign accounts cannot access it.
+3. Connect chat-first UI, preserving existing research forms, showing actual progress and committed replies, handling reload/disconnect and mobile layout. Exit: browser conversation and follow-up remember experiment context.
+4. Verify real model turns, auth/isolation, cancellation/error behavior, reload persistence, desktop/mobile screenshots and existing workflows; run repository checks. Record exact limits and update Amigospace from confirmed results. Do not claim scientific annotation/source lookup is connected merely because general chat works.
+
+Activation is local Compose only. Additive SQL; retain existing data and volumes. Pause worker before runtime changes; do not auto-retry an interrupted model call, because its outcome may be uncertain. Keep provider choice configurable at the runtime boundary; this first proof uses the available Codex authentication, without inventing missing Vercel/OpenRouter keys.
+
+Acceptance: real OpenShell/Codex probe, two live-chat browser tests and seven existing browser tests passed. Forced worker termination recovered without replay; cancellation and gateway sandbox cleanup were confirmed. Desktop/mobile chat screenshots were inspected. Docker app/worker builds, lint and TypeScript checks passed. The native Linux server path is configured but not acceptance-tested on a separate server; the tested local gateway uses NVIDIA MicroVM because this Docker Desktop kernel lacks Landlock. See `docs/verification.md` for observed evidence and remaining scientific scope.

@@ -17,6 +17,10 @@
     "typecheck": "tsc --noEmit",
     "db:migrate": "node --env-file=.env scripts/migrate.mjs",
     "setup": "node scripts/setup.mjs",
+    "agent:setup": "node scripts/setup-agent.mjs",
+    "agent:verify": "node scripts/verify-agent.mjs",
+    "agent:gateway:start": "node scripts/agent-gateway.mjs start",
+    "agent:gateway:stop": "node scripts/agent-gateway.mjs stop",
     "test:e2e": "playwright test",
     "auth:configure": "node --env-file=.env scripts/keycloak-configure.mjs",
     "verify:storage": "node --env-file=.env scripts/verify-research-storage.mjs"

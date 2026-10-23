@@ -4,52 +4,69 @@
   <img src="docs/assets/celloras-logo.png" alt="Celloras — plant cell logo and wordmark" width="560" />
 </p>
 
-A conversational plant single-cell research workspace for the Open Agent Hackathon 2026, starting with soybean.
+An agent-driven workspace for plant single-cell research, starting with soybean. All work lives on [`celloras.com`](https://github.com/mpckkk/2026_GenAI/tree/celloras.com).
 
-All work lives on [`celloras.com`](https://github.com/mpckkk/2026_GenAI/tree/celloras.com). Sign in, open an experiment, and save notes, plant/sample context, marker sets and your annotation reviews in its conversation. Entries persist in PostgreSQL. The shared plant catalog and provider interfaces support extension to other plants as suitable references are added and validated.
+Sign in, open an experiment, and talk with the agent. Save plant/sample context, marker sets, notes and reviewed cell-type decisions as structured conversation entries. PostgreSQL retains the research records and chat history. Generic plant and provider interfaces allow other plants and integrations to be added with appropriate references and validation.
 
-Scientific agent replies, reference retrieval, H-MEM, Zetaris, Nemotron, NeMo Files and NVIDIA tracing remain pending. The conversation currently records researcher input and real storage receipts; it does not manufacture assistant answers or biological results.
+The implemented chat runtime uses Codex CLI inside NVIDIA OpenShell. A real model response has been verified through OpenShell v0.1.5 in a Linux MicroVM on Apple Silicon. Native Linux deployment has not yet been tested; browser acceptance is recorded separately in [verification](docs/verification.md).
+
+Atlas retrieval, scientific annotation/scoring, H-MEM, Zetaris, Nemotron, NeMo Files and NVIDIA tracing remain pending. General assistant responses can help discuss the saved context; they are not validated cell-type annotations or evidence of a completed analysis.
 
 ## Research workflow
 
-1. Create or reopen an experiment.
-2. Add a note, or choose **Plant & sample** to record tissue, sample, developmental stage and genome/identifier context. Unknown details can stay empty.
-3. Choose **Add markers** to save a cluster's gene list. Original text and case are preserved; a separate list removes exact duplicates. Each set accepts 1–200 distinct identifiers.
-4. Choose **Record review** to attach your cell-type interpretation, evidence and uncertainty notes to saved markers. A cell-type decision is optional.
-5. Return later or browse older conversation entries. Marker sets retain their original context even after you update the current sample.
+1. Create or reopen an experiment and send a message to the agent.
+2. Use **Plant & sample** to save tissue, sample, developmental stage and genome/identifier context. Unknown details can stay empty.
+3. Use **Add markers** to save a cluster's gene list: 1–200 distinct identifiers, with original text and case preserved. Exact duplicate tokens are removed only from the separate normalized list.
+4. Use **Record review** to attach your interpretation, evidence and uncertainty notes to saved markers. A cell-type decision is optional.
+5. Return later or browse older entries. Each marker set retains its original context when the current sample changes.
 
-User-authored supporting evidence is labelled as unverified. Tokenizing identifiers is not gene mapping or scientific validation. Annotation and reference access must be implemented before this becomes a working scientific agent.
+The agent receives bounded owned conversation/research history and the latest sample context. Researcher-supplied evidence remains unverified. Replies currently render as text; structured research elements use predefined frontend components. Tool-driven annotation cards require the future scientific integration.
+
+A turn shows queued/running/completed/failed/cancelled status. Repeating the same submission returns its saved result; changed content requires a new submission. Each experiment permits one active turn. Cancellation targets that turn's sandbox. A failed or interrupted execution is not automatically repeated, and another turn cannot start while sandbox cleanup is outstanding.
 
 ## Run locally
 
-Use Node 22.22.0 (see `.nvmrc`), npm and Docker Compose.
+Use Node 22.22.0 (`.nvmrc`), npm, Docker Compose and an installed Codex CLI. Start the workspace first; `setup` creates an ignored `.env` and refuses to overwrite an existing one.
 
 ```sh
 npm ci
 npm run setup
-docker compose up --build -d
+docker compose up -d --build app
 ```
 
-Open http://localhost:3100 and choose **Get started**. Keycloak serves registration at http://localhost:8180. The generated `.env` contains local secrets and is ignored by Git; `npm run setup` refuses to overwrite it. The local admin username is `admin`; its generated password is `KEYCLOAK_ADMIN_PASSWORD` in that file.
+Open [localhost:3100](http://localhost:3100). Keycloak serves [login](http://localhost:3100/login) and [registration](http://localhost:3100/register), using email/password without first/last name fields. The local Keycloak admin is `admin`; its generated password is `KEYCLOAK_ADMIN_PASSWORD` in `.env`.
 
-Direct screens: [Log in](http://localhost:3100/login) and [Create account](http://localhost:3100/register). Both use the Celloras black-and-white theme, following the [design kit](https://space.heyamigo.org/items/337333f2-4a2c-41c1-b09a-3bc8a58e9e79). Keycloak still handles credentials and validation. The supplied [original logo](docs/assets/celloras-logo.png) is used in the app and auth theme. `npm run brand:sync` copies its exact bytes to the theme; app builds run this step automatically.
-
-Registration asks only for email, password and password confirmation. First/last name are optional administrative attributes and are not part of signup.
-
-For an existing local realm, apply the current theme and signup configuration after starting Keycloak:
+The default agent setup uses Docker. Use a dedicated operator account for a server's Codex login; it is separate from researchers' Keycloak accounts.
 
 ```sh
-docker compose up -d --wait keycloak
-npm run auth:configure
+codex login
+npm run agent:setup
+npm run agent:verify
+docker compose up -d --build agent-worker app
 ```
 
-The command applies the theme and name-field permissions, confirms the saved settings, and preserves existing user data and other profile attributes. New realms receive these settings from the import. Theme files are mounted from `infra/keycloak/themes/celloras`; local theme caching is disabled, so CSS changes need no app rebuild.
+`agent:setup` installs the pinned OpenShell CLI, configures its gateway/provider, builds the Codex image and imports the operator's access credential. `agent:verify` performs a real model call and deletes its probe sandbox. The worker runs in a Linux Docker container and reaches the gateway over mTLS. It receives account-routing metadata and expiry, not the provider bearer or refresh token.
 
-Compose runs the app, one migration job, PostgreSQL and Keycloak. Separate database roles own `celloras` and `keycloak`. Data persists in the `celloras_postgres-data` named volume. `docker compose down` stops services without deleting it; do not add `-v` unless intentionally resetting all local accounts and projects.
+The Docker runtime needs Docker Engine/Desktop 28.0+, Landlock ABI 3+ enabled in the Linux kernel (introduced in Linux 6.2), and OpenShell's required seccomp facilities. A kernel version alone is insufficient; sandbox qualification must pass. See the [v0.1.5 support matrix](https://docs.nvidia.com/openshell/v0.1.5/about/support-matrix). Enable Docker Desktop host networking for this project's Docker gateway configuration. [Docker runtime requirements](https://docs.nvidia.com/openshell/v0.1.5/how-it-works/sandboxes/runtimes#docker-driver)
 
-After deliberately restarting PostgreSQL, restart Keycloak and the app too (`docker compose restart keycloak app`), then wait for health and check login. Keycloak can retain stale database connections after a database-only restart.
+On the tested Mac, Docker Desktop's kernel lacked the required Landlock support. An explicit Apple Silicon development option uses OpenShell's Linux MicroVM runtime:
 
-For app development on the host:
+```sh
+brew install e2fsprogs
+npm run agent:setup -- --runtime=vm
+npm run agent:verify
+docker compose up -d --build agent-worker app
+```
+
+Stop any existing Celloras gateway before switching runtime; both use port 17670. The Mac gateway is managed with `npm run agent:gateway:start` and `npm run agent:gateway:stop`. The application, worker and agent image stay portable; this launcher is a separate Mac development helper. Runtime failures never trigger an automatic switch or execution on the host.
+
+When the imported access credential expires, the agent becomes unavailable. Renew `codex login`, rerun `agent:setup` with the **same runtime option**, and run `agent:verify`. Setup does not import refresh tokens or modify the host login file. Keep `.artifacts/openshell` private; its gateway database, encryption key and TLS material must be backed up together. See [configuration](docs/configuration.md).
+
+## Development and checks
+
+Compose persists application data in `celloras_postgres-data`. `docker compose down` preserves it; `down -v` removes local accounts and research data. Gateway state lives separately under `.artifacts/openshell/state`. After a PostgreSQL-only restart, restart Keycloak and the app to replace stale database connections.
+
+For host app development, stop the Compose `app` service and run:
 
 ```sh
 docker compose up -d postgres keycloak
@@ -57,9 +74,7 @@ npm run db:migrate
 npm run dev
 ```
 
-Stop the Compose `app` service first if it is using port 3100. Local endpoints are fixed at app 3100, Keycloak 8180, PostgreSQL 5434. Changing the app port also requires updating the realm's exact callback/logout URLs.
-
-## Checks
+Ports are app 3100, Keycloak 8180 and PostgreSQL 5434. Changing the app URL also requires updating Keycloak's exact callback/logout URLs. For an existing realm, `npm run auth:configure` applies the current theme and signup configuration while preserving user data. `npm run brand:sync` copies the supplied logo into the auth theme; builds run it automatically.
 
 ```sh
 npm run lint
@@ -69,37 +84,14 @@ npm run verify:storage
 npm run test:e2e
 ```
 
-Browser tests use the installed Google Chrome locally, real Keycloak accounts with unique `example.test` email addresses, and real project records. Keep PostgreSQL/Keycloak running and build the app first. Tests start the production app if necessary. They create test users/projects and keep them for inspection; no production environment should be pointed at this test suite. Screenshots stay in ignored `test-results/`; authentication traces are disabled.
+Browser tests use local Google Chrome, real Keycloak users and persisted test records. Keep the local services running; do not point the suite at production. Screenshots are ignored and authentication traces are disabled. `verify:storage` uses uniquely named temporary local databases and removes only those databases.
 
-`verify:storage` rehearses migrations in two uniquely named local PostgreSQL databases, including an existing foundation project, verifies an unchanged second run, and removes only those temporary databases. It uses the local administrator setting and never resets the application database.
+`/api/health/live` reports process liveness. `/api/health/ready` checks schema and Keycloak. `/app/health` separately shows worker availability and pending integrations. New chat turns require a ready worker heartbeat within 30 seconds; existing records remain accessible when it is offline. The legacy scientific `/api/chat` still authorizes ownership and returns `503 INTEGRATION_PENDING`.
 
-`/api/health/live` reports process liveness. `/api/health/ready` checks the workspace foundation (schema + Keycloak), not annotation readiness. The authenticated `/app/health` page lists every integration and its actual state. `/api/chat` authorizes project ownership then returns `503 INTEGRATION_PENDING` while the scientific pipeline is unfinished.
+See [architecture](docs/architecture.md), [configuration](docs/configuration.md), [verification](docs/verification.md), [implementation plan](PLAN.md) and the [Amigospace project](https://space.heyamigo.org/items/6223ea67-f6b0-4dfd-b8f5-0325f391d4e0).
 
-## Structure
+## Deployment status
 
-```text
-app/
-  (public)/          landing page
-  (auth)/            login and registration redirects
-  (workspace)/app/   protected project pages and health view
-  api/               account, project, chat and health boundaries
-  core/              provider-neutral types and contracts
-  adapters/          Keycloak, PostgreSQL and pending sponsor integrations
-  gateway/           model-call boundary
-  services/          ownership, annotation and health logic
-  plant-catalog.ts   reviewed enabled plants and tissue suggestions
-  components/        shared visual components
-  bootstrap.ts       dependency wiring
-db/migrations/       checksummed, transactional schema changes
-infra/               local Keycloak realm and database initialization
-scripts/             secret generation and migration runner
-tests/               real browser journeys
-```
+Compose is local development configuration, including Keycloak `start-dev`. A Linux server needs deployment overrides for public domains, TLS, production Keycloak, secret delivery, SMTP, backups and retention. This repository does not yet establish a production deployment. Local email verification/password recovery are disabled, and app sessions expire after one hour without centralized backchannel revocation.
 
-See [architecture](docs/architecture.md), [configuration ownership](docs/configuration.md), [verification](docs/verification.md), [implementation plan](PLAN.md) and the [Amigospace project](https://space.heyamigo.org/items/6223ea67-f6b0-4dfd-b8f5-0325f391d4e0).
-
-## Before deployment
-
-This Compose configuration is for local development. Configure TLS, public hostnames, SMTP, backups and secret delivery before deploying. Email verification and password recovery are disabled in the local realm until SMTP is available. App sessions expire after one hour; centralized session revocation/backchannel logout and refresh are not implemented yet.
-
-Realm import only creates a missing realm; it does not update an existing one. Apply future client/SMTP changes through Keycloak administration or an explicit migration. App SQL migrations fail if an already-applied file changes; add a new migration instead.
+Realm import creates missing realms but does not update existing ones. Apply future auth changes through explicit configuration/migrations. SQL migrations are checksummed; add a migration instead of editing an applied file.

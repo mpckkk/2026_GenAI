@@ -1,31 +1,68 @@
 # Configuration ownership
 
-Celloras separates reviewed application configuration, deployment secrets and research data.
+Celloras separates reviewed application definitions, operator configuration, credentials and research data.
 
-| Configuration                                                        | Source of truth                                                      | Consumer                                                           |
-| -------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| Enabled plants and suggested tissue labels                           | Versioned `app/plant-catalog.ts`                                     | Validated `ConfiguredPlantCatalog`, injected in `app/bootstrap.ts` |
-| Application URLs, runtime mode and auth/database settings            | Ignored local `.env`; explicit Compose environment mapping           | `app/config.ts`, database/auth adapters                            |
-| Experiment context, genome versions, marker lists and reviewed calls | PostgreSQL research entries                                          | Authorized research service and UI                                 |
-| Provider SDK/endpoint behavior                                       | Provider adapters and model gateway                                  | Core interfaces; never browser components                          |
-| Production credentials                                               | Deployment secret store, supplied to the relevant service at runtime | Server-side adapter configuration                                  |
+| Setting                                    | Source of truth                                        | Consumer                                          |
+| ------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------- |
+| Enabled plants and suggested tissues       | Versioned `app/plant-catalog.ts`                       | Validated `ConfiguredPlantCatalog`                |
+| URLs, database and Keycloak settings       | Ignored `.env`, explicitly mapped by Compose           | Server-side application adapters                  |
+| Sample context, markers and reviewed calls | PostgreSQL research entries                            | Owned research service and agent context snapshot |
+| Chat prompts, replies and execution state  | PostgreSQL `agent_turns` / `agent_workers`             | Chat service and worker                           |
+| Gateway/provider behavior                  | `infra/agent`, generated private gateway configuration | OpenShell execution adapter                       |
+| Provider bearer credential                 | Private OpenShell gateway credential storage           | Gateway/supervisor provider mediation             |
+| Operator account routing ID and expiry     | Private `agent-metadata.json`                          | Worker and sandbox bootstrap                      |
+| Production secrets                         | Operator-managed secret store                          | Only the service that requires them               |
 
-The initial catalog enables soybean (`glycine-max`). Species IDs are stored as data, not a SQL enum or soybean-specific table. Tissue suggestions do not impose a biological ontology; researchers may enter a different tissue. Declared genome versions and identifiers are research context, not verified compatibility claims. Reference adapters must validate compatibility before analytical work is enabled.
+The initial plant ID is `glycine-max`. Species are stored as data, not SQL enums. Tissue suggestions are not a biological ontology. Genome versions and identifier namespaces are declared sample context; future reference adapters must validate compatibility. Adding a plant requires reviewed references/mappings and evaluation alongside the catalog entry.
 
-Adding a plant requires a reviewed catalog entry, suitable reference data/mappings and analytical evaluation. It does not require replacing the chat renderer or experiment storage. Adding a supported plant does not automatically enable cross-species label transfer.
+## Foundation settings
 
-## Local configuration
+`npm run setup` creates local `.env` once. `.env.example` lists names and placeholders; do not overwrite an existing environment or print its secrets. `APP_ENV=local` permits the local HTTP setup. Public URLs, Keycloak callback/logout URLs and issuer configuration must agree.
 
-`npm run setup` creates local development settings; never overwrite existing `.env` values or print their contents. `.env.example` documents variable names and placeholders only. The repository ignores `.env` and browser authentication traces. The Compose file passes only declared variables into each service. Use `APP_ENV=local` only for local HTTP development.
+Research payloads, prompts, logs, screenshots and Git must never contain credentials. `.env`, `.artifacts` and authentication traces are excluded from version control; `.artifacts` is also excluded from Docker build context. The browser receives only catalog metadata and authorized application records.
 
-Secrets must not be stored in the plant catalog, PostgreSQL research payloads, prompts, screenshots, telemetry or Git. Central configuration validation identifies missing/invalid settings without logging their values. The browser receives catalog metadata and owned research records, not provider configuration.
+## Agent setup
+
+`npm run agent:setup` defaults to the Docker runtime. It installs OpenShell 0.1.5 with release checksum verification, configures the gateway and `celloras-codex` provider, builds `celloras-codex:0.163.0`, and writes local paths/profiles to `.env`. It reads the current Codex login from `~/.codex/auth.json`, or from an explicit `CELLORAS_CODEX_AUTH_FILE`.
+
+Use a dedicated operator account for a shared server. Researchers' Keycloak accounts are separate; server chat consumes the configured operator's model access. Setup passes the access token/account ID to the provider-import child process environment, without placing those values in command arguments or logs. It does not import the refresh token or modify the host login file.
+
+| Variable                                      | Meaning                                                                                  |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `OPENSHELL_STATE_DIR`                         | Persistent private gateway state, generated under `.artifacts/openshell/state`           |
+| `OPENSHELL_CONFIG_DIR`                        | Worker mTLS/endpoint configuration, generated under `.artifacts/openshell/worker-config` |
+| `CELLORAS_AGENT_METADATA_FILE`                | File containing account ID and access-token expiry, mounted read-only in the worker      |
+| `COMPOSE_PROFILES`                            | Generated as `agent,agent-docker` for Docker or `agent` for the Mac MicroVM option       |
+| `CELLORAS_WORKER_UID` / `CELLORAS_WORKER_GID` | Host ownership used for generated files and the worker container                         |
+| `CELLORAS_AGENT_IMAGE`                        | Compatible agent image; defaults to `celloras-codex:0.163.0`                             |
+| `CELLORAS_AGENT_PROVIDER`                     | Configured OpenShell provider name; defaults to `celloras-codex`                         |
+| `CELLORAS_AGENT_MODEL`                        | Optional Codex model choice; empty uses the authenticated account's default              |
+| `CELLORAS_CODEX_AUTH_FILE`                    | Optional setup-time source for the operator's existing Codex login                       |
+
+Image/provider/model settings are operator-only. Changing a name does not implement another CLI or API protocol. The current execution adapter is Codex-specific; additional CLI, direct API, OpenRouter or Vercel implementations require their own verified adapters.
+
+`npm run agent:verify` performs a real model request inside an OpenShell sandbox and deletes that sandbox. A ready heartbeat means the worker can reach its gateway and its imported credential has not reached the expiry threshold; the live probe additionally exercises creation, model execution and cleanup.
+
+## Runtime selection and renewal
+
+The portable default is Docker. The host needs Docker Engine/Desktop 28.0+ and a Linux kernel with enabled Landlock ABI 3+ plus the required seccomp facilities. OpenShell actively qualifies the sandbox; a kernel release number alone does not prove support. [Official support matrix](https://docs.nvidia.com/openshell/v0.1.5/about/support-matrix)
+
+The generated Docker configuration uses host networking for supervisors, so Docker Desktop host networking must be enabled. [Docker runtime setup](https://docs.nvidia.com/openshell/v0.1.5/how-it-works/sandboxes/runtimes#docker-driver)
+
+The tested Mac's Docker Desktop kernel lacked Landlock support. Apple Silicon development can explicitly select `npm run agent:setup -- --runtime=vm` after `brew install e2fsprogs`. The helper starts a managed Mac gateway that runs Linux MicroVMs. Use `agent:gateway:start` / `agent:gateway:stop` to manage it; these commands are not part of the Linux application. Stop the existing Celloras gateway before selecting another runtime on the same port. There is no automatic runtime fallback.
+
+A real Codex response was verified in that MicroVM path. The worker remains a Linux Docker container with mTLS gateway access. Native Linux deployment has not yet been exercised; refer to [verification](verification.md) for the current acceptance evidence.
+
+Access-token expiry makes the worker unavailable. Renew the operator's `codex login`, then rerun `agent:setup` with the same `--runtime=docker` or `--runtime=vm` selection and run `agent:verify`. Refresh tokens are never synchronized into the gateway. The worker metadata contains the actual account ID because current Codex workspace discovery requires it; it contains no bearer or refresh token.
+
+## Durable state and deployment
+
+PostgreSQL holds application data in the Compose named volume. OpenShell uses a separate private SQLite database, encryption key material and TLS state under `OPENSHELL_STATE_DIR`; both `XDG_STATE_HOME` and `XDG_DATA_HOME` point there for the gateway. Back up the gateway database **together with its encryption key and TLS state**. A database-only copy is not a complete credential-store backup. Keep the entire directory private and out of source control and shared artifacts.
+
+The queue survives application/worker restarts. Workers claim separate experiments through database locks; each experiment has at most one active turn. Execution failure is explicit, without a substitute provider or automatic model retry. Terminal turns awaiting sandbox cleanup block new execution in that experiment.
+
+Compose remains local configuration, including Keycloak `start-dev`. Production Linux needs deployment overrides for domains/TLS, production Keycloak, credentials, SMTP, backups, retention and operational limits. Gateway Docker-socket access is infrastructure administration and belongs in that deployment boundary, not the web app. No production-ready or native-Linux acceptance claim is made here.
 
 ## Scientific integrations
 
-Nemotron/Vercel model routing, Zetaris reference access, H-MEM, NVIDIA file storage and trace export are still pending. This wave does not invent provider endpoint settings or turn placeholder credentials into a working integration. Their adapters must define and validate the exact required environment variables when their real provider routes are implemented. Record names and setup steps here and in `.env.example` at that time; secret values stay outside version control.
-
-The current chat workspace saves researcher-authored notes, context, markers and manual reviews. It does not generate an assistant answer without a live scientific integration. The service-health page distinguishes working application services from pending providers.
-
-## Deployment and scaling
-
-Keep state in PostgreSQL and large bytes behind the Assets interface. A production deployment needs a chosen secret store, HTTPS, backups and retention configuration; local Compose does not establish those. Long-running analysis can later execute through a durable job/worker boundary, independently of web requests. No queue or worker deployment is claimed in this wave.
+General chat is implemented. Reference retrieval, annotation/scoring, Nemotron/Vercel routing, Zetaris, H-MEM, NVIDIA file storage and trace export remain pending. Their adapters must define and validate actual provider settings when implemented; placeholder credentials do not connect them. The authenticated health page separates the working foundation/worker from pending integrations, and the scientific `/api/chat` endpoint continues to return an explicit unavailable result.

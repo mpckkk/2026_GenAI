@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.5 — 2026-10-23
+
+- Connected real Codex chat through NVIDIA OpenShell, with a Docker worker, an official Docker gateway deployment path and an explicitly selected MicroVM option for local Apple Silicon development.
+- Added owned PostgreSQL chat turns, exact submission retries, bounded context, cancellation, interrupted-worker recovery and cleanup before accepting another turn. Credentials remain in the gateway; the browser receives committed messages and safe status only.
+- Made agent chat the primary experiment UI, retaining sample, marker and review records below it. Added live worker health and real browser acceptance checks. Reference retrieval, annotation and other scientific integrations remain pending.
+
 ## 0.1.4 — 2026-10-23
 
 - Added a persistent conversational workspace for researcher notes, plant/sample context, marker sets and manual annotation reviews.

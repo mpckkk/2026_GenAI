@@ -1,5 +1,64 @@
 name: celloras
 services:
+  openshell-init:
+    profiles: [agent-docker]
+    image: ghcr.io/nvidia/openshell/gateway:0.1.5
+    user: "${CELLORAS_WORKER_UID:-1000}:${CELLORAS_WORKER_GID:-1000}"
+    command:
+      [
+        "generate-certs",
+        "--output-dir",
+        "${OPENSHELL_STATE_DIR:-/var/lib/celloras-openshell}/tls",
+        "--server-san",
+        "openshell",
+        "--server-san",
+        "host.openshell.internal",
+        "--server-san",
+        "host.docker.internal",
+      ]
+    volumes:
+      - ${OPENSHELL_STATE_DIR:-/var/lib/celloras-openshell}:${OPENSHELL_STATE_DIR:-/var/lib/celloras-openshell}
+  openshell:
+    profiles: [agent-docker]
+    image: ghcr.io/nvidia/openshell/gateway:0.1.5
+    user: "0"
+    command: ["--bind-address", "0.0.0.0", "--port", "17670"]
+    restart: unless-stopped
+    ports: ["127.0.0.1:17670:17670"]
+    environment:
+      OPENSHELL_GATEWAY_CONFIG: ${OPENSHELL_STATE_DIR:-/var/lib/celloras-openshell}/gateway.toml
+      OPENSHELL_DB_URL: sqlite:${OPENSHELL_STATE_DIR:-/var/lib/celloras-openshell}/gateway.db?mode=rwc
+      OPENSHELL_LOCAL_TLS_DIR: ${OPENSHELL_STATE_DIR:-/var/lib/celloras-openshell}/tls
+      OPENSHELL_GRPC_ENDPOINT: https://host.openshell.internal:17670
+      XDG_DATA_HOME: ${OPENSHELL_STATE_DIR:-/var/lib/celloras-openshell}
+      XDG_STATE_HOME: ${OPENSHELL_STATE_DIR:-/var/lib/celloras-openshell}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${OPENSHELL_STATE_DIR:-/var/lib/celloras-openshell}:${OPENSHELL_STATE_DIR:-/var/lib/celloras-openshell}
+    depends_on:
+      openshell-init: { condition: service_completed_successfully }
+  agent-worker:
+    profiles: [agent]
+    build: { context: ., dockerfile: infra/agent/Dockerfile }
+    user: "${CELLORAS_WORKER_UID:-1000}:${CELLORAS_WORKER_GID:-1000}"
+    restart: unless-stopped
+    stop_grace_period: 60s
+    environment:
+      DATABASE_URL: postgresql://celloras:${APP_DB_PASSWORD:?Required}@postgres:5432/celloras
+      XDG_CONFIG_HOME: /config
+      XDG_STATE_HOME: /tmp/celloras-state
+      XDG_CACHE_HOME: /tmp/celloras-cache
+      OPENSHELL_GATEWAY: celloras
+      CELLORAS_AGENT_METADATA_FILE: /run/celloras/metadata.json
+      CELLORAS_AGENT_IMAGE: ${CELLORAS_AGENT_IMAGE:-celloras-codex:0.163.0}
+      CELLORAS_AGENT_PROVIDER: ${CELLORAS_AGENT_PROVIDER:-celloras-codex}
+      CELLORAS_AGENT_MODEL: ${CELLORAS_AGENT_MODEL:-}
+    volumes:
+      - ${OPENSHELL_CONFIG_DIR:-./.artifacts/openshell/worker-config}:/config
+      - ${CELLORAS_AGENT_METADATA_FILE:-./.artifacts/openshell/agent-metadata.json}:/run/celloras/metadata.json:ro
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
   postgres:
     image: postgres:17.11-alpine
     environment:

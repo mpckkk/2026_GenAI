@@ -12,6 +12,8 @@ import { ConfiguredPlantCatalog } from "./adapters/plants";
 import { plantDefinitions } from "./plant-catalog";
 import { PostgresResearch } from "./adapters/research";
 import { ResearchService } from "./services/research";
+import { PostgresChat } from "./adapters/chat";
+import { ChatService } from "./services/chat";
 
 const projects = new PostgresProjects();
 const access = new AccessService(projects);
@@ -22,6 +24,7 @@ export const services = {
   access,
   plants,
   research: new ResearchService(access, new PostgresResearch(), plants),
+  chat: new ChatService(access, new PostgresChat()),
   annotation: new AnnotationService(access),
   memory: new HmemMemory(),
   data: new ZetarisData(),

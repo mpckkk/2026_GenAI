@@ -1,55 +1,82 @@
-# Foundation boundaries
+# Celloras architecture
 
-## Conversational research
+Celloras separates the research domain, durable conversation queue and execution runtime. Soybean is the first configured plant; species-specific data does not define the database schema or UI contracts.
 
-Each existing owned project hosts one conversation. The UI calls it an experiment; existing project IDs and APIs remain compatible. `ResearchCommand` is a discriminated union of researcher messages, plant/sample contexts, marker submissions and manual reviews. Fixed React renderers display these entries; the client cannot submit an assistant role, arbitrary executable UI or a generated result.
+## Conversation and execution
 
-`ResearchService` validates commands and biological context through `PlantCatalog`, normalizes marker tokens without changing their raw text/case, and resolves immutable references. `PostgresResearch` independently checks ownership. Its append transaction locks the owning project before checking a submission UUID/fingerprint, validating the reference kind and inserting a row. Identical retries return the original row; different content under the same ID conflicts. Same-project foreign keys prevent cross-experiment references.
+```mermaid
+flowchart LR
+  Browser[Authenticated experiment UI] --> API[Owned chat API]
+  API --> Queue[(PostgreSQL agent_turns)]
+  Worker[Linux Docker worker] --> Queue
+  Worker --> Adapter[OpenShellCodex adapter]
+  Adapter -->|mTLS| Gateway[OpenShell gateway]
+  Gateway --> Sandbox[Per-turn Linux sandbox]
+  Sandbox --> Codex[Codex CLI]
+  Gateway --> Provider[Gateway-held provider credentials]
+  Browser --> Research[Research service]
+  Research --> Records[(Owned research entries)]
+  Worker --> Records
+```
 
-`research_entries` is additive, with a bigint ordering position and keyset pagination. Positions are serialized as strings. A marker entry references a committed context and retains its snapshot; updating current context never rewrites prior records. Manual reviews reference marker entries. The current record actor is always the authenticated researcher. Database commits determine save receipts.
+`app/core/chat.ts` defines `ChatTurn`, `ChatWorkspace` and `ChatRepository`. `ChatService` validates input and ownership; `PostgresChat` independently enforces ownership and serializes admission on the project row. `GET/POST/DELETE /api/projects/:projectId/chat` load history, submit a prompt and request cancellation. Writes check authentication, origin and ownership before reading a bounded JSON body. Browser input cannot choose the runtime, provider, model or sandbox.
 
-`GET /api/projects/:projectId/research?before=...` returns an owned workspace page, current context and marker choices. `POST` accepts a submission UUID and typed command, with same-origin and body-size checks. Server actions share the domain service and never accept caller-supplied ownership. UI drafts survive validation or uncertain transport failures.
+The append-only submission identity is `(project_id, submission_id)`. Identical prompts replay their original turn even when the worker is offline; changed prompts conflict. A partial unique index permits one queued/running turn per experiment. Admission checks active turns and terminal turns awaiting sandbox cleanup in one SQL snapshot. New turns also require a ready worker heartbeat newer than 30 seconds. History uses bigint string cursors and returns at most 50 turns in chronological order.
 
-`app/plant-catalog.ts` contains reviewed species configuration. `ConfiguredPlantCatalog` validates and serves it through `PlantCatalog`; soybean is initially enabled. Contracts/schema/components use generic species IDs and context. Catalog registration alone does not enable reference analysis or cross-species transfer. See [configuration ownership](configuration.md).
+`infra/agent/worker.mjs` claims queued rows with `FOR UPDATE SKIP LOCKED`. It freezes bounded completed chat history, recent owned research entries and the independently queried latest sample context. Context is retained even when more than 30 subsequent research records exist. Missing or truncated history is disclosed to the agent as unknown; saved research content is treated as data, not trusted instructions.
 
-The scientific `Agent`, `MarkerData` and `ModelGateway` seams carry plant context. The legacy `/api/chat` request remains compatible while it returns an explicit unavailable response. A future analytical implementation must validate the context, references and capabilities its tools require before running them.
+`app/adapters/agent-openshell.mjs` is the execution adapter. Its current `OpenShellCodex` implementation creates a per-turn sandbox, executes the pinned Codex CLI and accepts a response only after a completed turn event. `run-codex.mjs` disables shell, browser, external app and other tool capabilities for this conversational increment. No atlas query, dataset analysis or scientific scoring is implemented.
 
-Application metadata stays in PostgreSQL; large input/output bytes belong behind `Assets`. A future durable job boundary can separate long-running analysis from web requests. This wave does not deploy a queue, workers or a live language model.
+The worker records real progress and terminal state. Queued cancellation is immediate; running cancellation signals the adapter and removes the exact turn sandbox. Interrupted execution becomes an explicit failure, without automatically repeating the model call. Cleanup is retried separately, and an experiment stays blocked until outstanding sandbox deletion is confirmed. These boundaries allow other execution implementations later; alternative CLIs, direct APIs, OpenRouter and Vercel routes are not currently working chat adapters.
 
-The saved [architecture](https://space.heyamigo.org/items/aa82709a-dc23-4686-8718-c08a743fdae3) defines the direction. This repository implements the workspace foundation first.
+## Runtime and credential boundary
+
+The application and worker are Linux Docker images. The worker reaches the OpenShell gateway using its own mTLS client configuration. The default gateway uses Docker; an explicit Apple Silicon helper can run the gateway outside Compose with the Linux MicroVM driver. The Mac launcher is not an application dependency for Linux deployment. Both use the same agent image and execution adapter.
+
+`agent:setup` imports the operator's access token and account ID into the gateway through a child process environment. It leaves the host login file untouched and does not import its refresh token. The worker receives only account ID/expiry metadata for the provider; current Codex workspace discovery requires the actual account ID. Inside the sandbox, the bearer credential remains an opaque OpenShell provider handle. The browser never receives provider credentials.
+
+OpenShell v0.1.5 and Codex CLI 0.163.0 are pinned. A real direct response has been verified in a Linux MicroVM on Mac. Native Linux and complete browser acceptance are tracked in [verification](verification.md); implementation alone is not proof of those deployment paths. [Configuration](configuration.md) describes setup, credential renewal and state ownership.
+
+## Structured research
+
+Each owned project is shown as an experiment. Existing project IDs and APIs remain compatible. `ResearchCommand` is a discriminated union of researcher messages, plant/sample contexts, marker submissions and manual reviews. Fixed React components render those records. Agent replies currently use text; arbitrary generated UI is not executed.
+
+`ResearchService` validates plant context through `PlantCatalog`, tokenizes markers without changing original text/case and resolves references. `PostgresResearch` checks ownership, locks the project, validates submission fingerprints and expected reference kinds, then commits. Identical retries return the original entry; changed content conflicts. Same-project foreign keys prevent cross-experiment references.
+
+`research_entries` uses keyset pagination and bigint string positions. Each marker set retains the snapshot of its referenced context; updating the current sample never rewrites prior markers. Manual reviews reference saved marker entries and remain researcher-authored, unverified interpretations. Commit results determine save receipts, and drafts survive validation or uncertain transport failures.
+
+`app/plant-catalog.ts` provides reviewed species configuration through `ConfiguredPlantCatalog`; soybean is initially enabled. Tissue labels are suggestions. Adding another species requires appropriate references, mappings and evaluation as well as configuration. Catalog registration does not enable annotation or cross-species transfer.
 
 ## Identity and ownership
 
-The browser starts at `/login` or `/register`. `KeycloakAuth` uses `openid-client` for authorization code exchange, PKCE, state, nonce, issuer and audience validation. Transaction secrets live in PostgreSQL and expire after ten minutes. An HttpOnly, SameSite=Lax cookie contains only an opaque transaction handle; callbacks atomically consume it.
+Keycloak owns registration and credentials. `KeycloakAuth` uses `openid-client` with authorization-code exchange, PKCE, state, nonce, issuer and audience validation. Short-lived OAuth transactions live in PostgreSQL. Verified issuer/subject pairs identify application users; an HttpOnly session cookie contains an opaque handle whose hash selects the server-side session. Provider identity tokens are retained only for logout, never exposed in browser storage or model context.
 
-Verified `(issuer, subject)` maps to an application user. An opaque random session cookie maps through a SHA-256 hash to a server-side record. Provider tokens never enter browser storage, UI cards, models or telemetry. The ID token stays in the session record solely for provider logout; tokens are not otherwise retained. Sessions expire after one hour. Logout is an origin-checked POST that revokes the app session and ends the Keycloak session.
+Sessions expire after one hour. Logout is an origin-checked POST that revokes the application session and ends the Keycloak session. Every project/research/chat server boundary derives the user from that session. SQL includes owner predicates; foreign and absent projects both return 404.
 
-Project queries include the authenticated owner ID in SQL. Foreign and absent IDs both return 404. API routes and server actions enforce identity and ownership independently of page layouts. POST APIs validate origin; Next.js server actions also enforce their framework origin checks.
-
-The canonical issuer is browser-accessible `http://localhost:8180/realms/celloras`. Inside Compose, a custom OIDC fetch transport resolves only that issuer's requests to the internal Keycloak service. Issuer validation remains against the public canonical URL. HTTP is allowed only under the explicit local configuration; production URLs must be HTTPS.
+Local browser issuer URLs use `localhost:8180`; the app rewrites only transport to the internal Keycloak service while preserving canonical issuer validation. Production configuration requires HTTPS and explicit deployment overrides.
 
 ## Integration ledger
 
-| Boundary                     | Foundation state                                           | Next acceptance                                                               |
-| ---------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| Keycloak auth                | OIDC implementation + imported local realm                 | SMTP verification/recovery and production logout/revocation policy            |
-| PostgreSQL projects          | Owned projects, identities, sessions, migrations           | Retention, backups and deployment migrations                                  |
-| Zetaris marker data          | Contract + adapter raising `UnavailableIntegrationError`   | Actual marker sources, provenance and live query                              |
-| Nemotron / Vercel AI Gateway | Model-call contract + explicit pending adapter             | Confirm model routing and credentials, then bounded live call                 |
-| H-MEM                        | Memory contract + explicit pending adapter                 | Implement retrieval, mining, corrections and provenance in our app            |
-| NVIDIA NeMo Files            | Asset contract + explicit pending adapter                  | Real byte upload/download, durability and project authorization               |
-| NVIDIA Intake / Studio       | Provider-neutral span interface + explicit pending adapter | OTLP/HTTP protobuf exporter, nested trace and failure visibility in Studio    |
-| Annotation service           | Ownership gate, then explicit unavailable result           | Evidence-backed scoring, conflict handling, bounded loop and evaluation cases |
+| Boundary               | Implemented                                                       | Remaining                                                     |
+| ---------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------- |
+| Keycloak               | Local registration, login/logout and owned sessions               | SMTP, production deployment and revocation policy             |
+| PostgreSQL             | Projects, research records, chat queue, identities and migrations | Retention, backups, production operations                     |
+| General chat           | Durable queue, worker, OpenShell/Codex adapter                    | Broader deployment acceptance, additional runtime adapters    |
+| Plant catalog          | Generic validated configuration, soybean enabled                  | Reviewed additions with suitable references and evaluation    |
+| Zetaris                | Reference interface and explicit pending adapter                  | Real sources, provenance and queries                          |
+| Nemotron / Vercel      | Model interface and explicit pending adapter                      | Actual routing, credentials and live acceptance               |
+| H-MEM                  | Memory interface and explicit pending adapter                     | Retrieval, corrections and provenance                         |
+| NeMo Files             | Asset interface and explicit pending adapter                      | Authorized byte storage and durability                        |
+| NVIDIA Intake / Studio | Trace interface and explicit pending adapter                      | Real OTLP export and visible traces                           |
+| Scientific annotation  | Context-bearing interfaces and ownership gate                     | Evidence-backed annotation, conflicts, scoring and evaluation |
 
-Pending adapters do not execute callbacks, return synthetic content, retry through another provider or pretend to export telemetry. Their dependencies will be added when the corresponding integration is implemented. NeMo/ClickHouse and Zetaris containers are deliberately not invented in Compose before their startup contracts are verified.
+The legacy `/api/chat` is the scientific annotation endpoint and still returns `503 INTEGRATION_PENDING`. It is separate from the implemented experiment chat queue. Pending adapters never fabricate a result or silently switch providers. Large files remain a future `Assets` responsibility; application records and execution state stay in PostgreSQL.
 
-Landing-page content demonstrates a result layout and is labelled illustrative. It is not an evaluation example, calibrated confidence score or real biological result. UMAP rendering requires actual source coordinates.
+## References
 
-## Sources
-
-- [Next.js installation](https://nextjs.org/docs/app/getting-started/installation)
+- [OpenShell v0.1.5 support matrix](https://docs.nvidia.com/openshell/v0.1.5/about/support-matrix)
+- [OpenShell sandbox runtimes](https://docs.nvidia.com/openshell/v0.1.5/how-it-works/sandboxes/runtimes)
 - [openid-client authorization-code example](https://github.com/panva/openid-client/blob/main/examples/oidc.ts)
 - [Keycloak hostname configuration](https://www.keycloak.org/server/hostname)
 - [Keycloak realm imports](https://www.keycloak.org/server/importExport)
-- [H-MEM specification](https://github.com/Meterless/H-MEM)
-- [NVIDIA tracing](https://docs.nvidia.com/nemo-helix/latest/documentation/agents/observe-agents)
+- [Saved Celloras architecture](https://space.heyamigo.org/items/aa82709a-dc23-4686-8718-c08a743fdae3)

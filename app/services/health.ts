@@ -2,6 +2,7 @@ import "server-only";
 import { database } from "@/app/adapters/database";
 import { keycloakConfiguration } from "@/app/adapters/auth";
 import { logFailure } from "@/app/core/errors";
+import { chatRuntime } from "@/app/adapters/chat";
 
 export interface ServiceHealth {
   name: string;
@@ -17,6 +18,12 @@ export async function foundationHealth(): Promise<ServiceHealth[]> {
           await database().query("SELECT id FROM projects LIMIT 0");
           await database().query(
             "SELECT id, project_id, author_id, submission_id, fingerprint, position, kind, payload, reference_entry_id, created_at FROM research_entries LIMIT 0",
+          );
+          await database().query(
+            "SELECT id, project_id, owner_id, submission_id, position, prompt, response_text, status, progress, error_code, cancel_requested, worker_id, sandbox_name, heartbeat_at, context_snapshot, created_at, updated_at, started_at, finished_at FROM agent_turns LIMIT 0",
+          );
+          await database().query(
+            "SELECT worker_id, status, detail, heartbeat_at FROM agent_workers LIMIT 0",
           );
         },
       },
@@ -41,9 +48,23 @@ export async function foundationHealth(): Promise<ServiceHealth[]> {
     }),
   );
 }
+async function agentHealth(): Promise<ServiceHealth> {
+  try {
+    const runtime = await chatRuntime();
+    return { name: "Agent worker", ...runtime };
+  } catch (error) {
+    logFailure("health.agent_worker", error);
+    return {
+      name: "Agent worker",
+      status: "unavailable",
+      detail: "Agent worker status could not be verified.",
+    };
+  }
+}
 export async function serviceHealth(): Promise<ServiceHealth[]> {
   return [
     ...(await foundationHealth()),
+    await agentHealth(),
     {
       name: "Zetaris",
       status: "pending",

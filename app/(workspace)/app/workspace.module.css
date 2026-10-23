@@ -642,3 +642,216 @@
     font-size: 16px;
   }
 }
+.agentChat {
+  margin: 32px 0 48px;
+}
+.chatHeading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+.chatHeading h2 {
+  font-size: 22px;
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+}
+.chatHeading p {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #666;
+}
+.chatScope {
+  margin-top: 24px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #555;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.chatScope p + p {
+  margin-top: 8px;
+  color: #111;
+}
+.chatNotice {
+  margin-top: 16px;
+  border: 1px solid #bdbdbd;
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-size: 13px;
+}
+.chatNotice .textButton {
+  margin-top: 8px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.chatOlderButton {
+  width: 100%;
+  margin-top: 24px;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  background: #fff;
+  padding: 12px 16px;
+  color: #555;
+  font-size: 13px;
+}
+.chatOlderButton:hover:not(:disabled) {
+  border-color: #111;
+}
+.chatWelcome {
+  padding: 40px 0;
+}
+.chatWelcome h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.chatWelcome > p {
+  font-size: 14px;
+  color: #666;
+  max-width: 560px;
+}
+.chatSuggestions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 24px;
+}
+.chatSuggestions button {
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  text-align: left;
+  line-height: 1.5;
+}
+.chatSuggestions button:hover:not(:disabled) {
+  border-color: #111;
+}
+.chatTurns {
+  list-style: none;
+  margin: 32px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.chatTurns > li {
+  min-width: 0;
+}
+.chatUserMessage {
+  padding: 20px 24px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  margin-left: 40px;
+}
+.chatUserMessage .entryMeta {
+  margin-bottom: 12px;
+}
+.chatAssistantMessage {
+  padding: 24px 0 0;
+  line-height: 1.7;
+}
+.chatSpeaker {
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.chatTurnStatus {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 24px;
+  border-left: 2px solid #ddd;
+  padding-left: 20px;
+  font-size: 13px;
+}
+.chatTurnStatus > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.chatTurnStatus p {
+  margin-top: 8px;
+  color: #666;
+}
+.chatStatusLink {
+  display: inline-block;
+  margin-top: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.chatSecondaryButton {
+  flex-shrink: 0;
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 1px solid #bdbdbd;
+  border-radius: 8px;
+  background: #fff;
+  color: #111;
+  font-size: 13px;
+}
+.chatSecondaryButton:hover:not(:disabled) {
+  border-color: #111;
+}
+.chatSecondaryButton:disabled {
+  opacity: 0.55;
+}
+.chatComposer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border: 1px solid #bdbdbd;
+  border-radius: 8px;
+  padding: 24px;
+  margin-top: 24px;
+}
+.chatComposer .field textarea {
+  min-height: 120px;
+}
+.researchDisclosure {
+  border-top: 1px solid #e3e3e3;
+  padding-top: 24px;
+}
+.researchDisclosure > summary {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+}
+.researchDisclosureBody {
+  margin-top: 24px;
+}
+@media (max-width: 560px) {
+  .agentChat {
+    margin: 24px 0 40px;
+  }
+  .chatHeading {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .chatWelcome {
+    padding: 32px 0;
+  }
+  .chatScope,
+  .chatNotice {
+    padding: 16px;
+  }
+  .chatSuggestions {
+    align-items: stretch;
+  }
+  .chatUserMessage {
+    margin-left: 16px;
+    padding: 16px;
+  }
+  .chatTurnStatus {
+    flex-direction: column;
+    gap: 16px;
+    padding-left: 16px;
+  }
+  .chatComposer {
+    padding: 20px;
+  }
+}

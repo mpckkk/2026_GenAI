@@ -2,6 +2,21 @@
 
 Status is updated from actual runs, not inferred from configuration.
 
+## Connected OpenShell chat — 2026-10-23
+
+- The pinned Codex 0.163.0 workload returned a real response through NVIDIA OpenShell 0.1.5. The reproducible `npm run agent:verify` command created a Linux sandbox, sent the prompt over gRPC exec, required a completed assistant response, and deleted the sandbox. There is no host-execution substitute.
+- The Next.js production image and Linux agent-worker image built successfully. Migration 003 applied to the existing database without replacing research tables. Lint and TypeScript checks passed.
+- Two real chat browser/service tests passed (1.8 minutes): saved sample context reached the model; a follow-up remembered the previous message after reload; exact retries returned the original turn; changed and concurrent submissions conflicted; cancellation stopped a running turn; another registered account received 404 for read/submit/cancel; cross-origin writes were rejected. The desktop and 390px mobile screenshots were inspected, with no measured horizontal overflow.
+- The second test killed the real worker during a running turn, restarted it, and observed a failed `worker_interrupted` turn without automatic inference replay. After stopping the worker, existing submissions remained replayable, new submissions returned 503, and the unsent browser draft survived polling. The worker was restarted and readiness recovered.
+- All seven existing registration/login, ownership, research-record, pagination and lost-response checks also passed against the rebuilt stack (16.9 seconds). Nine distinct browser tests pass across the two suites.
+- Final SQL inspection found four completed chat turns, two cancelled turns and one interrupted turn; none retained a pending sandbox. OpenShell listed no remaining sandboxes. App, PostgreSQL and Keycloak were healthy; the agent worker was running and connected through mTLS.
+- Stopped and restarted the managed MicroVM gateway, then obtained another real Codex response with the existing encrypted provider state. This confirmed persistence of its credential encryption key and TLS material. The launcher now waits for authenticated readiness; an immediate post-launch probe exposed and reproduced the original startup race before that fix.
+- Evidence is local and ignored: `.artifacts/openshell/` contains setup/build/runtime logs; `.artifacts/chat-e2e/` contains chat desktop/mobile screenshots; `test-results/` contains the existing workflow screenshots. No credentials, raw login files or browser traces are committed.
+
+Portability limit: the worker and workload run in Linux containers/guests, and the default deployment configuration uses NVIDIA's official Docker gateway. A separate native Linux server was not available for acceptance. This Mac's Docker Desktop kernel failed the actual Landlock ABI probe despite reporting Linux 6.10.14; the explicit NVIDIA MicroVM option supplied the compatible Linux guest. Production TLS/hostnames, Keycloak production mode and server operations remain deployment work.
+
+Only the Codex CLI execution adapter is connected in this wave. Vercel/OpenRouter/direct API adapters and other CLI runners remain future integrations. Chat can discuss saved research context; atlas retrieval, validated cell annotations, analysis/scoring and scientific evidence remain unconnected.
+
 ## Conversational research and configuration — 2026-10-23
 
 - The production Compose image builds successfully. Repository lint, TypeScript and formatting checks pass.

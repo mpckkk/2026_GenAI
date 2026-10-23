@@ -243,8 +243,8 @@ export function ConversationComposer({
                 required
               />
               <p className={styles.fieldHint}>
-                Notes are saved as your messages. AI replies are not connected
-                yet.
+                Notes are saved as your research records. Use the chat above for
+                an AI response.
               </p>
             </div>
           )}
