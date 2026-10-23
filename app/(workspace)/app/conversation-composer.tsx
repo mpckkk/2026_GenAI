@@ -8,11 +8,14 @@ import type {
   MarkerEntry,
   ResearchActionState,
   ResearchCommand,
+  ResearchEntry,
 } from "@/app/core/research";
 import { appendResearch } from "./actions";
 import styles from "./workspace.module.css";
 
-type Mode = "message" | "context" | "markers" | "manual_review";
+export type ResearchComposerMode =
+  "message" | "context" | "markers" | "manual_review";
+type Mode = ResearchComposerMode;
 
 function optional(value: string) {
   return value.trim() || null;
@@ -23,17 +26,37 @@ export function ConversationComposer({
   plants,
   context,
   markers,
+  initialMode = "message",
+  mode: controlledMode,
+  onModeChange,
+  onSaved,
+  onViewSavedEntry,
 }: {
   projectId: string;
   plants: PlantDefinition[];
   context: ContextEntry | null;
   markers: MarkerEntry[];
+  initialMode?: Mode;
+  mode?: Mode;
+  onModeChange?: (mode: Mode) => void;
+  onSaved?: (entry: ResearchEntry) => void;
+  onViewSavedEntry?: (entry: ResearchEntry) => void;
 }) {
   const router = useRouter();
   const initialSpecies = context?.context.speciesId ?? plants[0]?.id ?? "";
-  const [mode, setMode] = useState<Mode>("message");
+  const [internalMode, setMode] = useState<Mode>(initialMode);
+  const mode = controlledMode ?? internalMode;
   const [pending, setPending] = useState(false);
-  const [state, setState] = useState<ResearchActionState>({ status: "idle" });
+  const [actionState, setActionState] = useState<ResearchActionState>({
+    status: "idle",
+  });
+  const [actionMode, setActionMode] = useState<Mode>(initialMode);
+  const state: ResearchActionState =
+    actionMode === mode ? actionState : { status: "idle" };
+  function setState(nextState: ResearchActionState) {
+    setActionMode(mode);
+    setActionState(nextState);
+  }
   const submissionIds = useRef<Partial<Record<Mode, string>>>({});
   const [text, setText] = useState("");
   const [contextDraft, setContextDraft] = useState<PlantContext>(
@@ -47,6 +70,11 @@ export function ConversationComposer({
       notes: "",
     },
   );
+  const [contextEdited, setContextEdited] = useState(false);
+  // Follow fresh saved context until the researcher starts an explicit draft.
+  const currentContextDraft = contextEdited
+    ? contextDraft
+    : (context?.context ?? contextDraft);
   const [markerSpecies, setMarkerSpecies] = useState(initialSpecies);
   const [markerLabel, setMarkerLabel] = useState("");
   const [markersRaw, setMarkersRaw] = useState("");
@@ -56,7 +84,7 @@ export function ConversationComposer({
   const [evidenceText, setEvidenceText] = useState("");
   const [notes, setNotes] = useState("");
   const selectedPlant = plants.find(
-    (plant) => plant.id === contextDraft.speciesId,
+    (plant) => plant.id === currentContextDraft.speciesId,
   );
   const compatibleContext =
     context?.context.speciesId === markerSpecies ? context : null;
@@ -64,11 +92,13 @@ export function ConversationComposer({
 
   function selectMode(nextMode: Mode) {
     setMode(nextMode);
+    onModeChange?.(nextMode);
     setState({ status: "idle" });
   }
 
   function updateContext(key: keyof PlantContext, value: string) {
-    setContextDraft((draft) => ({ ...draft, [key]: value }));
+    setContextDraft({ ...currentContextDraft, [key]: value });
+    setContextEdited(true);
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -92,12 +122,16 @@ export function ConversationComposer({
         command = {
           kind: "context",
           context: {
-            ...contextDraft,
-            tissue: optional(contextDraft.tissue ?? ""),
-            sampleLabel: optional(contextDraft.sampleLabel ?? ""),
-            developmentalStage: optional(contextDraft.developmentalStage ?? ""),
-            genomeVersion: optional(contextDraft.genomeVersion ?? ""),
-            geneIdNamespace: optional(contextDraft.geneIdNamespace ?? ""),
+            ...currentContextDraft,
+            tissue: optional(currentContextDraft.tissue ?? ""),
+            sampleLabel: optional(currentContextDraft.sampleLabel ?? ""),
+            developmentalStage: optional(
+              currentContextDraft.developmentalStage ?? "",
+            ),
+            genomeVersion: optional(currentContextDraft.genomeVersion ?? ""),
+            geneIdNamespace: optional(
+              currentContextDraft.geneIdNamespace ?? "",
+            ),
           },
         };
         break;
@@ -140,6 +174,7 @@ export function ConversationComposer({
             break;
           case "context":
             setContextDraft(result.entry.context);
+            setContextEdited(false);
             setMarkerSpecies(result.entry.context.speciesId);
             setAttachContext(true);
             break;
@@ -154,6 +189,7 @@ export function ConversationComposer({
             setNotes("");
             break;
         }
+        onSaved?.(result.entry);
         // Move back to the latest page if this entry was added while reading older history.
         router.replace(`/app/projects/${projectId}`, { scroll: false });
         router.refresh();
@@ -243,7 +279,7 @@ export function ConversationComposer({
                 required
               />
               <p className={styles.fieldHint}>
-                Notes are saved as your research records. Use the chat above for
+                Notes are saved as your research records. Use the agent chat for
                 an AI response.
               </p>
             </div>
@@ -259,7 +295,7 @@ export function ConversationComposer({
                   <label htmlFor="context-species">Plant</label>
                   <select
                     id="context-species"
-                    value={contextDraft.speciesId}
+                    value={currentContextDraft.speciesId}
                     onChange={(event) =>
                       updateContext("speciesId", event.target.value)
                     }
@@ -279,7 +315,7 @@ export function ConversationComposer({
                   <input
                     id="context-tissue"
                     list="tissue-options"
-                    value={contextDraft.tissue ?? ""}
+                    value={currentContextDraft.tissue ?? ""}
                     onChange={(event) =>
                       updateContext("tissue", event.target.value)
                     }
@@ -298,7 +334,7 @@ export function ConversationComposer({
                   </label>
                   <input
                     id="context-sample"
-                    value={contextDraft.sampleLabel ?? ""}
+                    value={currentContextDraft.sampleLabel ?? ""}
                     onChange={(event) =>
                       updateContext("sampleLabel", event.target.value)
                     }
@@ -311,7 +347,7 @@ export function ConversationComposer({
                   </label>
                   <input
                     id="context-stage"
-                    value={contextDraft.developmentalStage ?? ""}
+                    value={currentContextDraft.developmentalStage ?? ""}
                     onChange={(event) =>
                       updateContext("developmentalStage", event.target.value)
                     }
@@ -324,7 +360,7 @@ export function ConversationComposer({
                   </label>
                   <input
                     id="context-genome"
-                    value={contextDraft.genomeVersion ?? ""}
+                    value={currentContextDraft.genomeVersion ?? ""}
                     onChange={(event) =>
                       updateContext("genomeVersion", event.target.value)
                     }
@@ -338,7 +374,7 @@ export function ConversationComposer({
                   </label>
                   <input
                     id="context-namespace"
-                    value={contextDraft.geneIdNamespace ?? ""}
+                    value={currentContextDraft.geneIdNamespace ?? ""}
                     onChange={(event) =>
                       updateContext("geneIdNamespace", event.target.value)
                     }
@@ -354,7 +390,7 @@ export function ConversationComposer({
                 <textarea
                   id="context-notes"
                   rows={3}
-                  value={contextDraft.notes}
+                  value={currentContextDraft.notes}
                   onChange={(event) =>
                     updateContext("notes", event.target.value)
                   }
@@ -579,7 +615,17 @@ export function ConversationComposer({
           <p className={styles.savedReceipt}>
             <strong>System · </strong>
             {savedLabels[state.entry.kind]}{" "}
-            <a href={`#entry-${state.entry.id}`}>View saved entry</a>
+            <a
+              href={`#entry-${state.entry.id}`}
+              onClick={(event) => {
+                if (onViewSavedEntry) {
+                  event.preventDefault();
+                  onViewSavedEntry(state.entry);
+                }
+              }}
+            >
+              View saved entry
+            </a>
           </p>
         )}
       </div>

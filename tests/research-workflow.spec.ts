@@ -28,6 +28,53 @@ async function createExperiment(page: Page, name: string) {
   return (await response.json()).id as string;
 }
 
+function researchDialog(page: Page) {
+  return page.getByRole("dialog", { name: "Research workspace", exact: true });
+}
+
+async function openResearch(page: Page, action = "Research records") {
+  const dialog = researchDialog(page);
+  if (await dialog.isVisible()) {
+    await dialog
+      .getByRole("button", {
+        name:
+          action === "Research records" ? "Research records" : "Edit research",
+        exact: true,
+      })
+      .click();
+  } else {
+    const actionButton = page.getByRole("button", {
+      name: action,
+      exact: true,
+    });
+    if (!(await actionButton.isVisible()))
+      await page
+        .getByRole("button", { name: "Study context", exact: true })
+        .click();
+    await actionButton.click();
+  }
+  await expect(dialog).toBeVisible();
+}
+
+async function editResearch(page: Page) {
+  await researchDialog(page)
+    .getByRole("button", { name: "Edit research", exact: true })
+    .click();
+}
+
+async function viewSavedEntry(page: Page) {
+  await researchDialog(page)
+    .getByRole("link", { name: "View saved entry", exact: true })
+    .click();
+}
+
+async function closeResearch(page: Page) {
+  await researchDialog(page)
+    .getByRole("button", { name: "Close research workspace", exact: true })
+    .click();
+  await expect(researchDialog(page)).not.toBeVisible();
+}
+
 const context = {
   speciesId: "glycine-max",
   tissue: "Root",
@@ -54,16 +101,24 @@ test("conversation forms save real records and survive login, with responsive re
   const projectId = experimentUrl.split("/").at(-1)!;
   const note =
     'Inspect cluster 4. <img src=x onerror="window.cellorasInjected=true">';
+  await openResearch(page, "Add note");
   await page.getByLabel("Add a note to the conversation").fill(note);
+  await closeResearch(page);
+  await openResearch(page, "Add note");
+  await expect(page.getByLabel("Add a note to the conversation")).toHaveValue(
+    note,
+  );
   await page.getByRole("button", { name: "Save note", exact: true }).click();
   await expect(
     page.getByText("Note saved to this experiment.", { exact: false }),
   ).toBeVisible();
+  await viewSavedEntry(page);
   await expect(page.locator('[data-entry-kind="message"]')).toContainText(note);
   expect(
     await page.evaluate(() => Reflect.get(window, "cellorasInjected")),
   ).toBeUndefined();
-  await page
+  await editResearch(page);
+  await researchDialog(page)
     .getByRole("button", { name: "Plant & sample", exact: true })
     .click();
   await page.getByLabel("Tissue", { exact: false }).fill("Root");
@@ -74,7 +129,9 @@ test("conversation forms save real records and survive login, with responsive re
   await expect(
     page.getByText("Sample context saved.", { exact: false }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Add markers", exact: true }).click();
+  await researchDialog(page)
+    .getByRole("button", { name: "Add markers", exact: true })
+    .click();
   const raw = "Glyma.01G000100, Glyma.01G000100;\nglyma.01g000100";
   await page
     .getByLabel("Cluster or marker-set label", { exact: false })
@@ -94,6 +151,7 @@ test("conversation forms save real records and survive login, with responsive re
   await expect(
     page.getByText("Markers saved to this experiment.", { exact: false }),
   ).toBeVisible();
+  await viewSavedEntry(page);
   const markerCard = page.locator('[data-entry-kind="markers"]');
   await expect(
     markerCard
@@ -102,7 +160,8 @@ test("conversation forms save real records and survive login, with responsive re
   ).toHaveCount(2);
   await markerCard.getByText("Original marker text", { exact: true }).click();
   await expect(markerCard.locator("pre")).toHaveText(raw);
-  await page
+  await editResearch(page);
+  await researchDialog(page)
     .getByRole("button", { name: "Record review", exact: true })
     .click();
   await page
@@ -112,14 +171,17 @@ test("conversation forms save real records and survive login, with responsive re
     .getByLabel("Review notes", { exact: false })
     .fill("Cell identity unresolved.");
   await page.getByRole("button", { name: "Save review", exact: true }).click();
+  await viewSavedEntry(page);
   await expect(page.locator('[data-entry-kind="manual_review"]')).toContainText(
     "Cell type undecided",
   );
   await page.reload();
+  await openResearch(page);
   await expect(page.locator('[data-entry-kind="markers"]')).toHaveCount(1);
   await expect(page.locator('[data-entry-kind="manual_review"]')).toHaveCount(
     1,
   );
+  await closeResearch(page);
   const logo = page.getByRole("img", { name: "Celloras", exact: true });
   await expect(logo).toBeVisible();
   expect(
@@ -133,10 +195,8 @@ test("conversation forms save real records and survive login, with responsive re
   });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
-  await expect(page.getByRole("banner")).toHaveCount(1);
-  await expect(
-    page.getByRole("button", { name: "Add markers", exact: true }),
-  ).toBeVisible();
+  await openResearch(page, "Add markers");
+  await expect(page.getByLabel("Marker genes", { exact: true })).toBeVisible();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -146,12 +206,19 @@ test("conversation forms save real records and survive login, with responsive re
     path: testInfo.outputPath("conversation-mobile.png"),
     fullPage: true,
   });
+  await researchDialog(page)
+    .getByRole("button", { name: "Research records", exact: true })
+    .click();
   await page
     .locator('[data-entry-kind="manual_review"]')
     .scrollIntoViewIfNeeded();
   await page.screenshot({
     path: testInfo.outputPath("conversation-mobile-review.png"),
   });
+  await closeResearch(page);
+  await page
+    .getByRole("button", { name: "Open navigation", exact: true })
+    .click();
   await page.getByRole("button", { name: "Log out", exact: true }).click();
   await expect(page).toHaveURL(`${origin}/`);
   expect(
@@ -163,6 +230,7 @@ test("conversation forms save real records and survive login, with responsive re
   await page.getByRole("button", { name: "Log in", exact: true }).click();
   await expect(page).toHaveURL(`${origin}/app`);
   await page.goto(experimentUrl);
+  await openResearch(page);
   await expect(page.locator('[data-entry-kind="message"]')).toContainText(note);
   await expect(page.locator('[data-entry-kind="manual_review"]')).toContainText(
     "Cell identity unresolved.",
@@ -402,8 +470,60 @@ test("older marker sets remain reviewable beyond the recent-marker window", asyn
   expect(
     older.markers.some((entry: { id: string }) => entry.id === first.id),
   ).toBe(true);
-  await page.goto(`/app/projects/${projectId}?before=${before}`);
+  const latestWorkspace: ResearchWorkspace = await (
+    await page.request.get(url)
+  ).json();
+  const newestMarker = latestWorkspace.markers[0];
+  await page.goto(`/app/projects/${projectId}`);
+  await openResearch(page);
+  await closeResearch(page);
   await page
+    .getByRole("button")
+    .filter({
+      has: page.getByText(newestMarker.label!, { exact: true }),
+    })
+    .click();
+  await expect(
+    researchDialog(page).locator('[data-entry-kind="markers"]'),
+  ).toHaveCount(1);
+  await expect(
+    researchDialog(page).locator('[data-entry-kind="markers"]'),
+  ).toHaveAttribute("id", `entry-${newestMarker.id}`);
+  await researchDialog(page)
+    .getByRole("link", { name: "View older entries", exact: true })
+    .click();
+  await expect(page).toHaveURL(/before=/);
+  await expect(researchDialog(page)).toBeVisible();
+  const historyCursor = new URL(page.url()).searchParams.get("before")!;
+  const historyWorkspace: ResearchWorkspace = await (
+    await page.request.get(`${url}?before=${historyCursor}`)
+  ).json();
+  const expectedHistoryIds = historyWorkspace.page.entries.map(
+    (entry) => `entry-${entry.id}`,
+  );
+  await expect(researchDialog(page).locator("[data-entry-kind]")).toHaveCount(
+    expectedHistoryIds.length,
+  );
+  expect(
+    await researchDialog(page)
+      .locator("[data-entry-kind]")
+      .evaluateAll((elements) => elements.map((element) => element.id)),
+  ).toEqual(expectedHistoryIds);
+  await expect(
+    researchDialog(page).locator(`#entry-${newestMarker.id}`),
+  ).toHaveCount(0);
+  // Switching views must not resurrect the previously focused summary record.
+  await editResearch(page);
+  await researchDialog(page)
+    .getByRole("button", { name: "Research records", exact: true })
+    .click();
+  await expect(researchDialog(page).locator("[data-entry-kind]")).toHaveCount(
+    expectedHistoryIds.length,
+  );
+  await page.goto(`/app/projects/${projectId}?before=${before}`);
+  await expect(researchDialog(page)).toBeVisible();
+  await editResearch(page);
+  await researchDialog(page)
     .getByRole("button", { name: "Record review", exact: true })
     .click();
   await page.getByLabel("Marker set", { exact: true }).selectOption(first.id);
@@ -411,6 +531,7 @@ test("older marker sets remain reviewable beyond the recent-marker window", asyn
     .getByLabel("Review notes", { exact: false })
     .fill("Revisited the original cluster.");
   await page.getByRole("button", { name: "Save review", exact: true }).click();
+  await viewSavedEntry(page);
   await expect(page.locator('[data-entry-kind="manual_review"]')).toContainText(
     "Oldest cluster",
   );
@@ -439,6 +560,7 @@ test("a committed save with a lost response can be retried or explicitly replace
       await route.continue();
     }
   });
+  await openResearch(page, "Add note");
   const input = page.getByLabel("Add a note to the conversation");
   await input.fill("Original committed note");
   await page.getByRole("button", { name: "Save note", exact: true }).click();

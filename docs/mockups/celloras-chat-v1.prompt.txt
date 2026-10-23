@@ -1,0 +1,34 @@
+Generated with the built-in image_gen tool. Design exploration; not an implemented screen or validated scientific result.
+
+INITIAL GENERATION PROMPT
+
+Use case: ui-mockup.
+Create ONE polished, high-fidelity desktop web application screenshot for Celloras, an agent-led plant single-cell research workspace. This is a proposed design, not a screenshot of a working product. Landscape 16:10 composition, around 1800 x 1125, full flat screen edge to edge. No laptop, browser chrome, perspective, poster title, explanatory arrows or surrounding mockup background.
+
+Follow the established Celloras design kit precisely: white main surface, very pale neutral-gray sidebar, black typography and primary buttons, thin neutral borders, tiny restrained dark forest-green accents (#1B5E20) only. Inter-like sans-serif, two font weights, sharp readable type, sophisticated spacing based on 8px, restrained 8px corners, no gradients or heavy shadows. Quiet, beautiful, highly usable research software with the refinement of a thoughtfully designed professional chat client. Strong contrast and visual hierarchy. Spacious but not an enormous empty page.
+
+Brand at upper left: black Celloras wordmark with a small outlined hexagonal plant-cell icon containing a nucleus and two organelle shapes. Keep it compact.
+
+Layout: slim 230px left navigation, dominant center conversation approximately 920px, a quiet 290px context inspector at right separated by a thin vertical rule. It must feel chat-first: no dashboard metrics, giant headings, oversized greeting or data-entry forms beneath the conversation.
+
+Left sidebar: logo at top; a restrained outlined '+ New experiment' button; small 'Experiments' heading; selected row 'Soybean root study' with very subtle pale-gray highlight; unselected 'Nodule pilot'. A divider, then 'Conversations' with selected 'Cluster 07 annotation', and two small muted entries 'Dataset overview' and 'Marker review'. At bottom a small circular D avatar, 'Demo workspace', and gear icon. Minimal precise line icons.
+
+Center top bar, about 72px: small breadcrumb 'Experiments / Soybean root study', concise title 'Cluster 07 annotation'. On the right a small outlined label 'Design preview' and an ellipsis. Under it, centered readable conversation width around 720px.
+Show a natural active exchange, not onboarding:
+1. A modest pale-gray right-aligned researcher message: 'Can you help identify cluster 07 from these markers?' Under the message a compact attachment chip 'cluster_07_markers.csv'.
+2. Assistant left aligned with tiny hexagonal cell avatar and 'Celloras' label. Copy: 'I compared the markers with the tissue context. Here is a candidate to review.'
+3. Under this reply, one beautifully composed structured result card. Header small 'Candidate annotation' and an outlined 'Needs review' badge. Main candidate title 'Cortex cell', small context line 'Soybean · Root · Cluster 07'. Short supporting sentence 'Check marker specificity before accepting this label.' A divider, then two compact clean evidence rows with subtle icons and chevrons: 'Marker evidence' / 'Inspect matches', and 'Alternative labels' / 'Compare candidates'. Footer has a black primary button 'Review evidence' and understated secondary action 'Save for review'. Tiny gray bottom caption 'Illustrative result · not a validated annotation'. No invented genes, numerical probabilities, charts or fabricated scientific citations.
+4. Below, an understated assistant follow-up: 'Would you like to inspect the evidence or compare other cell types?' Two light outline suggestion chips 'Inspect evidence' and 'Compare candidates'.
+Leave a useful breathing gap before a permanently anchored, elegantly compact composer at the bottom of the center column. Composer height about 108px with subtle border, text 'Ask about your single-cell data…', attachment plus icon bottom left, small label 'Soybean root study' beside it, and black rounded-square up-arrow send button at bottom right. Beneath the composer tiny text 'Review scientific suggestions before use.' No model vendor names or infrastructure details.
+
+Right inspector: small heading 'Study context' with collapse icon, plenty of spacing. Minimal key/value pairs: 'Plant' / 'Soybean', 'Tissue' / 'Root', 'Cluster' / '07'. Small 'Edit context' link. Divider, 'Files' heading with count '1', a compact file row 'cluster_07_markers.csv' with 'Marker list' secondary text. Another divider, 'Research notes' and a single calm text line 'No notes yet'. Bottom or beneath header a tiny 'Illustrative data' caption so the conceptual state is clear.
+
+All exact interface copy should be spelled correctly, readable and crisp. This should look like a plausible meticulously crafted final product, not a generic wireframe or a marketing landing page. Prioritize the chat, tasteful compact controls, aligned baselines, a single clear result card, and clear separation of navigation, conversation and optional context.
+
+FINAL BRAND CORRECTION PROMPT
+
+Edit the FIRST image, the Celloras desktop research chat UI mockup. The SECOND image is the actual Celloras logo reference.
+
+Change ONLY the branding: replace the incorrect green plant/sprout hexagon logo in the top-left header and the two assistant avatar icons with the actual black hexagonal CELL symbol from the second image: hexagon outline containing a central ring and nucleus dot and two black organelle shapes. The top-left wordmark must match the supplied black Celloras wordmark, scaled to the same compact header position and size. For the two assistant avatars use only the supplied black cell symbol. Do not show a green sprout or leaf icon in any logo position. Do not paste the large white margins from the source logo image; isolate the visible mark visually.
+
+Preserve every other part of the first image exactly: its composition, three-column proportions, all UI text, cards, typography, sizing, white and light-gray palette, green selection accents elsewhere, border treatments, buttons, conversation, preview labels and context inspector. No additional changes. Output one full-resolution flat desktop screenshot with crisp readable UI text.

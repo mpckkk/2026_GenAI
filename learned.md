@@ -1,5 +1,11 @@
 # Engineering notes
 
+- A chat workspace needs its own scroll container and an anchored composer. A long document with research forms below chat made navigation and message entry cumbersome; keep research editing on demand and preserve component state while panels close.
+- Server layouts retain client navigation state. Revalidate the owned workspace layout after creating an experiment so its sidebar includes the new project immediately.
+- Render research dialogs into the document body. A history URL must open its native dialog even when the mobile study inspector is hidden; keep the editor mounted so drafts and retry IDs survive close/reopen.
+- Tie a selected research record to its history cursor, so navigating to an older page cannot retain an unrelated focused record. Untouched context fields should adopt refreshed saved context, while edited drafts stay intact.
+- A compact media query can initially hide chat during hydration. Observe the scroll viewport's real size before following the latest message; initial scrolling while the pane is hidden can leave mobile chat at the wrong position.
+
 - OpenShell's Docker gateway does not remove kernel requirements. This Mac's Docker Desktop Linux 6.10.14 kernel lacks Landlock; the sandbox failed its actual ABI probe. The explicitly selected NVIDIA MicroVM runtime boots a compatible Linux guest. Keep Docker as the Linux deployment path and keep local runtime selection outside application code.
 - Persist OpenShell's `XDG_STATE_HOME` as well as its database/TLS directory. Credential encryption keys default to a state directory, not `XDG_DATA_HOME`. Moving the database without its key produced "encrypted with a different key-encryption key"; preserve the key and database together, never rotate a key to work around that error.
 - A detached gateway process existing is not readiness. An immediate probe after a real restart failed before the listener was ready. The managed local launcher now confirms authenticated OpenShell health before returning, and stop waits for actual process exit.

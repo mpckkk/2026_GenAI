@@ -23,7 +23,11 @@ export default async function ExperimentsPage({
           conversation.
         </p>
       </header>
-      <section className={styles.createPanel} aria-labelledby="create-heading">
+      <section
+        id="create-experiment"
+        className={styles.createPanel}
+        aria-labelledby="create-heading"
+      >
         <h2 id="create-heading">Start an experiment</h2>
         <form action={createProject} className={styles.createForm}>
           <div className={styles.field}>

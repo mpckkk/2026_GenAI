@@ -1,6 +1,49 @@
 # Celloras implementation record
 
-Current wave: connected OpenShell agent chat, documented in the final section below. Linux deployment portability is required; local Mac runtime setup is separate from application and worker contracts.
+Current wave: apply the accepted chat mockup to the working app. OpenShell chat is connected; Linux server acceptance remains separate.
+
+Local implementation and acceptance are complete: the production Compose app is active, ten distinct real browser checks passed, and the six affected research/layout/chat checks passed again after final UI corrections. See `docs/verification.md` for evidence and limits. Publish on the sole `celloras.com` branch.
+
+## Chat workspace redesign — 2026-10-23
+
+User accepted `docs/mockups/celloras-chat-v1.png` as a direction, with room for refinement. Replace the long form-first page with an experiment sidebar, a viewport-sized chat with anchored composer, and a collapsible study inspector. Keep actual owned projects and research records; no invented sub-conversations, files, annotations or evidence. Existing APIs, database, runtime and submission/retry semantics stay unchanged. Scientific tools remain pending.
+
+Current → target: authenticated layout loads owned projects → responsive sidebar; owned project page loads existing chat/research data → client workbench → chat and study inspector; inspector actions open the existing research composer/history on demand. The actual supplied logo is reused without changing its bytes. Small screens switch between chat and context, with a native navigation dialog. Drafts survive opening/closing UI panels.
+
+### File ledger
+
+| Action | File                                                                            | Change / why                                                                    | Package |
+| ------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------- |
+| CREATE | `app/(workspace)/app/workspace-icons.tsx`                                       | Shared small line icons for the workspace                                       | 1       |
+| CREATE | `app/(workspace)/app/workspace-shell.tsx`                                       | Owned experiment sidebar, active navigation and mobile drawer                   | 1       |
+| UPDATE | `app/(workspace)/app/layout.tsx`                                                | Load owned projects and compose the shell                                       | 1       |
+| UPDATE | `app/components/brand.tsx`                                                      | Optional workspace home destination and supplied cell mark                      | 1       |
+| UPDATE | `app/(workspace)/app/page.tsx`                                                  | Match experiment home to shell and new-experiment anchor                        | 1       |
+| UPDATE | `app/(workspace)/app/actions.ts`                                                | Invalidate the owned sidebar after creating an experiment                       | 1       |
+| UPDATE | `app/(workspace)/app/health/page.tsx`                                           | Constrain service view within new shell                                         | 1       |
+| CREATE | `app/(workspace)/app/experiment-workspace.tsx`                                  | Compact project header, responsive chat/context split                           | 2       |
+| CREATE | `app/(workspace)/app/research-panel.tsx`                                        | Actual context, marker/note summaries, on-demand records/editor                 | 2       |
+| CREATE | `app/(workspace)/app/research-panel.module.css`                                 | Inspector and responsive research dialog styles                                 | 2       |
+| UPDATE | `app/(workspace)/app/projects/[projectId]/page.tsx`                             | Wire existing services to workbench; preserve invalid cursor handling           | 2       |
+| UPDATE | `app/(workspace)/app/conversation-composer.tsx`                                 | Accept initial editor mode; keep save/retry behavior                            | 2       |
+| UPDATE | `app/(workspace)/app/agent-chat.tsx`                                            | Anchored composer, scroll-aware thread, compact status, real reply presentation | 2       |
+| UPDATE | `app/(workspace)/app/workspace.module.css`                                      | Replace document layout with responsive workspace; retain record/form styles    | 1–2     |
+| UPDATE | `tests/research-workflow.spec.ts`                                               | Exercise research actions through new panel/dialog and preserve data checks     | 3       |
+| UPDATE | `tests/foundation.spec.ts`                                                      | Adapt workspace navigation where needed; preserve auth/isolation checks         | 3       |
+| UPDATE | `tests/agent-chat.spec.ts`                                                      | Verify composer visibility, scrolling and unchanged real chat behavior          | 3       |
+| CREATE | `tests/workspace-layout.spec.ts`                                                | Desktop/mobile navigation, panel/draft preservation and real record roundtrip   | 3       |
+| UPDATE | `PLAN.md`, `README.md`, `CHANGELOG.md`, `docs/verification.md`, `learned.md`    | Scope, workflow, observed verification and lessons                              | 3       |
+| CREATE | `docs/mockups/celloras-chat-v1.png`, `docs/mockups/celloras-chat-v1.prompt.txt` | Preserve accepted generated reference and exact prompts                         | 3       |
+
+Deleted files: none. Renamed files: none. New component paths above are assigned for this wave after inspecting existing callers; no new provider/dependency is needed.
+
+### Ordered packages and acceptance
+
+1. Shell and brand: produce an authenticated sidebar with only the user's projects, working create/home/health/logout controls and native mobile navigation. Verify rendered desktop/mobile layout and account boundaries before shipping. No persistence contract changes.
+2. Workbench: wire chat and research inspector to existing data, move editing/history into accessible dialogs, preserve drafts and submission IDs across toggles, keep cancel/retry/offline states visible. Desktop composer stays visible while messages scroll; mobile context switch does not unmount chat. Depends on shell. Verify a real saved-context/marker/note journey and actual OpenShell reply, reload and cancellation.
+3. Acceptance and activation: build the Compose app, run real auth/research/chat browser checks, inspect empty/populated desktop and mobile screenshots and keyboard behavior, record observations, commit/push on `celloras.com`, update Amigospace. Runtime/DB containers stay intact. Exit when the app at localhost reflects the accepted direction, real workflows pass and evidence is saved.
+
+Verification matrix: owned sidebar/API boundaries → two-account real browser checks; research editor/history → existing storage/retry/pagination tests through new UI; chat → real OpenShell turns/reload/cancel plus anchored composer check; responsive accessibility → 1440/390px screenshots, no horizontal overflow, keyboard dialog close/focus and retained drafts. Lint/typecheck/build complete before browser acceptance. Rollback is the app commit only; no schema or data migration is involved.
 
 ## Completed wave: persistent conversational research — 2026-10-23
 

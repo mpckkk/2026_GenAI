@@ -18,6 +18,7 @@ export async function createProject(data: FormData) {
   if (typeof name !== "string" || !name.trim() || name.trim().length > 120)
     redirect("/app?error=name");
   const project = await services.projects.create(user.id, name);
+  revalidatePath("/app", "layout");
   redirect(`/app/projects/${project.id}`);
 }
 

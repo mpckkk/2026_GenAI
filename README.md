@@ -14,11 +14,13 @@ Atlas retrieval, scientific annotation/scoring, H-MEM, Zetaris, Nemotron, NeMo F
 
 ## Research workflow
 
-1. Create or reopen an experiment and send a message to the agent.
-2. Use **Plant & sample** to save tissue, sample, developmental stage and genome/identifier context. Unknown details can stay empty.
-3. Use **Add markers** to save a cluster's gene list: 1–200 distinct identifiers, with original text and case preserved. Exact duplicate tokens are removed only from the separate normalized list.
-4. Use **Record review** to attach your interpretation, evidence and uncertainty notes to saved markers. A cell-type decision is optional.
-5. Return later or browse older entries. Each marker set retains its original context when the current sample changes.
+1. Create or reopen an experiment from the sidebar and send a message to the agent. The composer stays visible while the conversation scrolls.
+2. Open **Study context → Edit context** to save tissue, sample, developmental stage and genome/identifier context. Unknown details can stay empty.
+3. Use **Add markers** in the study panel to save a cluster's gene list: 1–200 distinct identifiers, with original text and case preserved. Exact duplicate tokens are removed only from the separate normalized list.
+4. In **Research records → Edit research → Record review**, attach your interpretation, evidence and uncertainty notes to saved markers. A cell-type decision is optional.
+5. Browse saved records and older entries in the research dialog. Each marker set retains its original context when the current sample changes. Closing the dialog preserves unfinished drafts.
+
+On mobile, **Study context** opens a separate view and **Back to chat** returns to the conversation. The menu contains experiments, service health and logout. The workspace follows the accepted [chat mockup](docs/mockups/celloras-chat-v1.png); its illustrative annotation card is not a connected scientific feature.
 
 The agent receives bounded owned conversation/research history and the latest sample context. Researcher-supplied evidence remains unverified. Replies currently render as text; structured research elements use predefined frontend components. Tool-driven annotation cards require the future scientific integration.
 

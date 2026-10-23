@@ -114,6 +114,11 @@ test("real Keycloak accounts, project ownership and logout", async ({
       randomBytes(24).toString("base64url"),
     );
     expect(await (await other.request.get("/api/projects")).json()).toEqual([]);
+    await expect(
+      other
+        .getByRole("navigation", { name: "Your experiments", exact: true })
+        .getByRole("link", { name: `Soybean ${suffix}`, exact: true }),
+    ).toHaveCount(0);
     expect(
       (await other.request.get(`/api/projects/${projectId}`)).status(),
     ).toBe(404);

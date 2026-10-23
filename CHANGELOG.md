@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.6 — 2026-10-23
+
+- Applied the accepted chat design: owned experiment sidebar, compact project header, scrollable conversation and anchored composer, with the supplied Celloras logo.
+- Moved saved sample context, markers and notes into a collapsible study panel. Editing and paginated records open in a native dialog; drafts and submission IDs survive close/reopen.
+- Added mobile navigation and a separate context view that keeps the chat mounted. Existing runtime, ownership, storage, cancellation and retry contracts are preserved.
+- Kept the generated mockup and prompts as design references. Annotation cards and file uploads shown in the reference remain future features.
+
 ## 0.1.5 — 2026-10-23
 
 - Connected real Codex chat through NVIDIA OpenShell, with a Docker worker, an official Docker gateway deployment path and an explicitly selected MicroVM option for local Apple Silicon development.

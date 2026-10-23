@@ -2,6 +2,18 @@
 
 Status is updated from actual runs, not inferred from configuration.
 
+## Chat workspace redesign — 2026-10-23
+
+- Applied the user-accepted mockup to the real authenticated workspace: owned experiment sidebar, compact header, scrollable chat and anchored composer, plus study context and on-demand editing/history. The original cell logo is reused in navigation and assistant messages. No database, provider or authentication contract changed.
+- Built and activated the production Compose app. Lint, TypeScript and full formatting checks passed. The app remains at http://localhost:3100/app.
+- Ten distinct real browser tests passed during this wave: three auth/foundation checks, four research workflow/storage checks, two actual OpenShell chat/recovery checks and one new responsive workspace journey. After final UI corrections, all six affected research/layout/live-chat checks passed again in 53.2 seconds; the unchanged crash-recovery check had already passed in the earlier 1.9-minute chat run.
+- Verified immediate sidebar refresh after experiment creation and two-account sidebar isolation. Research dialogs retain unsent drafts and submission IDs on close/reopen; Escape restores focus. Saved-record links show their exact record, older history clears focused selection, and the 101-marker regression still permits review of the oldest marker.
+- Verified untouched sample fields adopt fresh saved context after a server refresh, while edited context drafts remain intact. Chat text survives research saves, closing panels and mobile context/navigation switches. Desktop and 390px mobile checks found no horizontal overflow.
+- Real OpenShell replies retained saved tissue and prior conversation after reload. Cancellation, conflicts, owner denial and offline/interrupted-run behavior still passed. The composer remains visible during scrolling, polling does not move a reader away from earlier messages, and mobile reload shows the latest response after viewport hydration.
+- Inspected desktop empty/populated chat, mobile chat/context/navigation and research-dialog screenshots. Evidence and logs are ignored under `.artifacts/workspace-e2e/`, `.artifacts/workspace-chat-e2e/`, `.artifacts/workspace-final-e2e/` and `.artifacts/chat-mockup/`. The accepted image and generation prompts are source-controlled under `docs/mockups/`.
+
+The mockup's candidate annotation card and file uploads are design references only. This wave presents real chat and researcher-authored records; scientific retrieval and structured agent results still require their actual integrations. Native Linux server acceptance remains outstanding as recorded below.
+
 ## Connected OpenShell chat — 2026-10-23
 
 - The pinned Codex 0.163.0 workload returned a real response through NVIDIA OpenShell 0.1.5. The reproducible `npm run agent:verify` command created a Linux sandbox, sent the prompt over gRPC exec, required a completed assistant response, and deleted the sandbox. There is no host-execution substitute.

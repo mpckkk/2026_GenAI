@@ -181,18 +181,30 @@ test("real OpenShell chat remembers owned context, persists, cancels and isolate
     ).status(),
   ).toBe(403);
   await page.reload();
-  await page
-    .getByText("Sample, markers & research notes", { exact: true })
-    .click();
+  const composer = page.getByRole("form", { name: "Message the agent" });
+  await expect(composer).toBeInViewport();
+  const scroller = page.getByLabel("Conversation messages", { exact: true });
+  await scroller.evaluate((element) => {
+    element.scrollTop = 0;
+  });
+  await expect(composer).toBeInViewport();
+  // Polling a saved conversation must not pull the reader back to the bottom.
+  await page.waitForResponse(
+    (response) =>
+      response.url().endsWith(endpoint) &&
+      response.request().method() === "GET",
+  );
+  expect(await scroller.evaluate((element) => element.scrollTop)).toBe(0);
   await page.screenshot({
     path: testInfo.outputPath("agent-chat-desktop.png"),
     fullPage: true,
   });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
-  await page
-    .getByText("Sample, markers & research notes", { exact: true })
-    .click();
+  await expect(composer).toBeInViewport();
+  await expect(
+    page.getByText("Response cancelled", { exact: true }),
+  ).toBeInViewport();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,

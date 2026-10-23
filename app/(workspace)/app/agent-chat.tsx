@@ -3,12 +3,15 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type FormEvent,
   type KeyboardEvent,
 } from "react";
 import type { ChatTurn, ChatWorkspace } from "@/app/core/chat";
+import { BrandMark } from "@/app/components/brand";
+import { WorkspaceIcon } from "./workspace-icons";
 import styles from "./workspace.module.css";
 
 type RequestError = { message: string; code?: string; operation: string };
@@ -110,9 +113,13 @@ function timeLabel(value: string) {
 export function AgentChat({
   projectId,
   initial,
+  contextLabel,
+  onOpenContext,
 }: {
   projectId: string;
   initial: ChatWorkspace;
+  contextLabel: string;
+  onOpenContext: () => void;
 }) {
   const endpoint = `/api/projects/${projectId}/chat`;
   const [turns, setTurns] = useState(initial.turns);
@@ -134,7 +141,9 @@ export function AgentChat({
   const loadedOlderRef = useRef(false);
   const mountedRef = useRef(true);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const latestRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const followingRef = useRef(true);
+  const prependedHeightRef = useRef<number | null>(null);
   const activeTurn = turns.find(isActive);
   const canSend =
     !posting &&
@@ -181,6 +190,30 @@ export function AgentChat({
     };
   }, [refresh]);
 
+  useLayoutEffect(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    if (prependedHeightRef.current !== null) {
+      scroller.scrollTop += scroller.scrollHeight - prependedHeightRef.current;
+      prependedHeightRef.current = null;
+    } else if (followingRef.current) {
+      scroller.scrollTop = scroller.scrollHeight;
+    }
+  }, [turns]);
+
+  useLayoutEffect(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    // Compact mode initially hides the chat while the media query hydrates.
+    // Follow new messages only after the pane has a real viewport size.
+    const observer = new ResizeObserver(() => {
+      if (followingRef.current && scroller.clientHeight > 0)
+        scroller.scrollTop = scroller.scrollHeight;
+    });
+    observer.observe(scroller);
+    return () => observer.disconnect();
+  }, []);
+
   async function sendPrompt(prompt: string, operation: string, asNew = false) {
     if (postingRef.current || !prompt.trim()) return;
     const existing = attempts.current[operation];
@@ -212,15 +245,13 @@ export function AgentChat({
       const turn: ChatTurn = await response.json();
       if (!turn.id || !turn.status)
         throw new Error("The accepted message could not be read.");
+      followingRef.current = true;
       setTurns((current) => mergeTurns(current, [turn]));
       delete attempts.current[operation];
       if (operation === "draft") {
         setDraft("");
         setDraftSubmissionId(null);
       }
-      window.requestAnimationFrame(() =>
-        latestRef.current?.scrollIntoView({ block: "nearest" }),
-      );
     } catch {
       setRequestError({
         operation,
@@ -304,6 +335,8 @@ export function AgentChat({
         throw new Error(error.message);
       }
       const workspace: ChatWorkspace = await response.json();
+      prependedHeightRef.current = scrollRef.current?.scrollHeight ?? null;
+      followingRef.current = false;
       setTurns((current) => mergeTurns(current, workspace.turns));
       setNextBefore(workspace.nextBefore);
     } catch (error) {
@@ -318,236 +351,291 @@ export function AgentChat({
   }
 
   const suggestions = [
-    "What context should I record for soybean single-cell data?",
-    "How should I assess a soybean cluster’s marker genes?",
-    "What are the limits of assigning a cell type from markers alone?",
+    {
+      label: "Plan an experiment",
+      prompt: "What context should I record for soybean single-cell data?",
+      icon: "flask" as const,
+    },
+    {
+      label: "Discuss marker genes",
+      prompt: "How should I assess a soybean cluster’s marker genes?",
+      icon: "leaf" as const,
+    },
+    {
+      label: "Review an interpretation",
+      prompt:
+        "What are the limits of assigning a cell type from markers alone?",
+      icon: "chat" as const,
+    },
   ];
 
   return (
     <section className={styles.agentChat} aria-labelledby="agent-chat-heading">
       <header className={styles.chatHeading}>
-        <div>
-          <h2 id="agent-chat-heading">Chat with Celloras</h2>
-          <p>Single-cell research, starting with soybean.</p>
-        </div>
-        <span className={styles.tag}>
+        <h2 id="agent-chat-heading">Conversation</h2>
+        <span
+          className={styles.agentStatus}
+          data-ready={runtime.status === "ready"}
+        >
+          <span aria-hidden="true" />
           {runtime.status === "ready" ? "Agent connected" : "Agent unavailable"}
         </span>
       </header>
-      <div className={styles.chatScope}>
-        <p>
-          Discuss your research with the agent. Reference lookup and
-          evidence-backed cell annotation are not connected yet.
-        </p>
-        {runtime.status === "unavailable" && (
-          <p role="status">{runtime.detail}</p>
-        )}
-      </div>
-      {pollError && (
-        <div className={styles.chatNotice} role="alert">
-          <p>
-            Live updates could not be refreshed. {pollError} Updates will retry
-            automatically.
-          </p>
-          <button
-            type="button"
-            className={styles.textButton}
-            onClick={() => {
-              void refresh();
-            }}
-          >
-            Refresh messages
-          </button>
-        </div>
-      )}
-      {nextBefore && (
-        <button
-          type="button"
-          className={styles.chatOlderButton}
-          onClick={() => {
-            void loadOlder();
-          }}
-          disabled={loadingOlder}
-        >
-          {loadingOlder ? "Loading older messages…" : "Load older messages"}
-        </button>
-      )}
-      {historyError && (
-        <p role="alert" className={styles.errorText}>
-          {historyError} Try loading older messages again.
-        </p>
-      )}
-      {turns.length ? (
-        <ol className={styles.chatTurns} aria-label="Agent conversation">
-          {turns.map((turn) => (
-            <li
-              key={turn.id}
-              data-chat-turn-id={turn.id}
-              data-chat-status={turn.status}
-            >
-              <div className={styles.chatUserMessage} data-chat-role="user">
-                <div className={styles.entryMeta}>
-                  <span>You</span>
-                  <time dateTime={turn.createdAt}>
-                    {timeLabel(turn.createdAt)} UTC
-                  </time>
-                </div>
-                <p className={styles.preservedText}>{turn.prompt}</p>
-              </div>
-              {turn.status === "completed" && turn.response ? (
-                <article
-                  className={styles.chatAssistantMessage}
-                  data-chat-role="assistant"
-                  aria-label="Celloras response"
-                >
-                  <p className={styles.chatSpeaker}>Celloras</p>
-                  <p className={styles.preservedText}>{turn.response}</p>
-                </article>
-              ) : (
-                <div className={styles.chatTurnStatus}>
-                  <div role={isActive(turn) ? "status" : undefined}>
-                    <strong>
-                      {turn.status === "queued"
-                        ? "Queued"
-                        : turn.status === "running"
-                          ? "Celloras is working"
-                          : turn.status === "cancelled"
-                            ? "Response cancelled"
-                            : "Response unavailable"}
-                    </strong>
-                    <p>
-                      {turn.status === "failed"
-                        ? failedTurnMessage(turn.errorCode)
-                        : turn.progress ||
-                          (turn.status === "cancelled"
-                            ? "Your message remains in this conversation."
-                            : turn.status === "completed"
-                              ? "The completed request did not contain a response."
-                              : "Waiting for an update from the agent.")}
-                    </p>
-                    {turn.status === "failed" && (
-                      <a className={styles.chatStatusLink} href="/app/health">
-                        Check service status
-                      </a>
-                    )}
-                  </div>
-                  {isActive(turn) && (
-                    <button
-                      type="button"
-                      className={styles.chatSecondaryButton}
-                      disabled={cancelling === turn.id}
-                      onClick={() => {
-                        void cancel(turn.id);
-                      }}
-                    >
-                      {cancelling === turn.id
-                        ? "Cancelling…"
-                        : "Cancel response"}
-                    </button>
-                  )}
-                  {(turn.status === "failed" ||
-                    turn.status === "cancelled") && (
-                    <button
-                      type="button"
-                      className={styles.chatSecondaryButton}
-                      disabled={
-                        posting ||
-                        Boolean(activeTurn) ||
-                        runtime.status !== "ready"
-                      }
-                      onClick={() => {
-                        void sendPrompt(turn.prompt, `retry:${turn.id}`);
-                      }}
-                    >
-                      Retry message
-                    </button>
-                  )}
-                </div>
-              )}
-            </li>
-          ))}
-        </ol>
-      ) : (
-        <div className={styles.chatWelcome}>
-          <h3>What would you like to work through?</h3>
-          <p>
-            Ask a question about your soybean single-cell experiment, or start
-            with one of these.
-          </p>
-          <div className={styles.chatSuggestions}>
-            {suggestions.map((suggestion) => (
+      <div
+        className={styles.chatScroll}
+        ref={scrollRef}
+        tabIndex={0}
+        aria-label="Conversation messages"
+        onScroll={(event) => {
+          const element = event.currentTarget;
+          followingRef.current =
+            element.scrollHeight - element.scrollTop - element.clientHeight <
+            80;
+        }}
+      >
+        <div className={styles.chatContent} data-empty={turns.length === 0}>
+          {runtime.status === "unavailable" && (
+            <div className={styles.chatNotice} role="status">
+              {runtime.detail} <a href="/app/health">Check service status</a>
+            </div>
+          )}
+          {pollError && (
+            <div className={styles.chatNotice} role="alert">
+              <p>
+                Live updates could not be refreshed. {pollError} Updates will
+                retry automatically.
+              </p>
               <button
-                key={suggestion}
                 type="button"
-                disabled={posting}
+                className={styles.textButton}
                 onClick={() => {
-                  setDraft(suggestion);
-                  inputRef.current?.focus();
+                  void refresh();
                 }}
               >
-                {suggestion}
+                Refresh messages
               </button>
-            ))}
-          </div>
-        </div>
-      )}
-      <div ref={latestRef} />
-      <form
-        onSubmit={submit}
-        className={styles.chatComposer}
-        aria-label="Message the agent"
-        aria-busy={posting}
-      >
-        <div className={styles.field}>
-          <label htmlFor="celloras-message">Message Celloras</label>
-          <textarea
-            ref={inputRef}
-            id="celloras-message"
-            name="prompt"
-            rows={3}
-            required
-            maxLength={12000}
-            value={draft}
-            disabled={posting}
-            onChange={(event) => setDraft(event.target.value)}
-            onKeyDown={inputKeyDown}
-            aria-describedby="chat-input-help"
-            placeholder="Ask about your single-cell research…"
-          />
-        </div>
-        {requestError && (
-          <div className={styles.errorBox} role="alert">
-            <p>{requestError.message}</p>
-            {requestError.code === "SUBMISSION_CONFLICT" &&
-              requestError.operation === "draft" && (
-                <div className={styles.reviewSection}>
+            </div>
+          )}
+          {nextBefore && (
+            <button
+              type="button"
+              className={styles.chatOlderButton}
+              onClick={() => {
+                void loadOlder();
+              }}
+              disabled={loadingOlder}
+            >
+              {loadingOlder ? "Loading older messages…" : "Load older messages"}
+            </button>
+          )}
+          {historyError && (
+            <p role="alert" className={styles.errorText}>
+              {historyError} Try loading older messages again.
+            </p>
+          )}
+          {turns.length ? (
+            <ol className={styles.chatTurns} aria-label="Agent conversation">
+              {turns.map((turn) => (
+                <li
+                  key={turn.id}
+                  data-chat-turn-id={turn.id}
+                  data-chat-status={turn.status}
+                >
+                  <div className={styles.chatUserMessage} data-chat-role="user">
+                    <div className={styles.entryMeta}>
+                      <span>You</span>
+                      <time dateTime={turn.createdAt}>
+                        {timeLabel(turn.createdAt)} UTC
+                      </time>
+                    </div>
+                    <p className={styles.preservedText}>{turn.prompt}</p>
+                  </div>
+                  {turn.status === "completed" && turn.response ? (
+                    <article
+                      className={styles.chatAssistantMessage}
+                      data-chat-role="assistant"
+                      aria-label="Celloras response"
+                    >
+                      <BrandMark size={30} />
+                      <div className={styles.assistantContent}>
+                        <p className={styles.chatSpeaker}>Celloras</p>
+                        <p className={styles.preservedText}>{turn.response}</p>
+                      </div>
+                    </article>
+                  ) : (
+                    <div className={styles.chatTurnStatus}>
+                      <div role={isActive(turn) ? "status" : undefined}>
+                        <strong>
+                          {turn.status === "queued"
+                            ? "Queued"
+                            : turn.status === "running"
+                              ? "Celloras is working"
+                              : turn.status === "cancelled"
+                                ? "Response cancelled"
+                                : "Response unavailable"}
+                        </strong>
+                        <p>
+                          {turn.status === "failed"
+                            ? failedTurnMessage(turn.errorCode)
+                            : turn.progress ||
+                              (turn.status === "cancelled"
+                                ? "Your message remains in this conversation."
+                                : turn.status === "completed"
+                                  ? "The completed request did not contain a response."
+                                  : "Waiting for an update from the agent.")}
+                        </p>
+                        {turn.status === "failed" && (
+                          <a
+                            className={styles.chatStatusLink}
+                            href="/app/health"
+                          >
+                            Check service status
+                          </a>
+                        )}
+                      </div>
+                      {isActive(turn) && (
+                        <button
+                          type="button"
+                          className={styles.chatSecondaryButton}
+                          disabled={cancelling === turn.id}
+                          onClick={() => {
+                            void cancel(turn.id);
+                          }}
+                        >
+                          {cancelling === turn.id
+                            ? "Cancelling…"
+                            : "Cancel response"}
+                        </button>
+                      )}
+                      {(turn.status === "failed" ||
+                        turn.status === "cancelled") && (
+                        <button
+                          type="button"
+                          className={styles.chatSecondaryButton}
+                          disabled={
+                            posting ||
+                            Boolean(activeTurn) ||
+                            runtime.status !== "ready"
+                          }
+                          onClick={() => {
+                            void sendPrompt(turn.prompt, `retry:${turn.id}`);
+                          }}
+                        >
+                          Retry message
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <div className={styles.chatWelcome}>
+              <BrandMark size={44} />
+              <p className={styles.welcomeEyebrow}>
+                Your research, in conversation
+              </p>
+              <h3>What are you working on?</h3>
+              <p>
+                Explore a question, discuss your markers, or plan the next step
+                in your single-cell research.
+              </p>
+              <div className={styles.chatSuggestions}>
+                {suggestions.map((suggestion) => (
                   <button
-                    type="submit"
-                    name="sendAsNew"
-                    className={styles.chatSecondaryButton}
-                    disabled={posting || Boolean(activeTurn)}
+                    key={suggestion.label}
+                    type="button"
+                    disabled={posting}
+                    onClick={() => {
+                      setDraft(suggestion.prompt);
+                      inputRef.current?.focus();
+                    }}
                   >
-                    Send as a new message
+                    <WorkspaceIcon name={suggestion.icon} size={18} />
+                    <span>{suggestion.label}</span>
+                    <WorkspaceIcon name="chevron" size={15} />
                   </button>
-                </div>
-              )}
-          </div>
-        )}
-        <div className={styles.composerFooter}>
-          <p id="chat-input-help" className={styles.fieldHint}>
-            {activeTurn
-              ? "Let this response finish, or cancel it to send another message."
-              : "Enter to send · Shift + Enter for a new line"}
-          </p>
-          <button
-            type="submit"
-            className={styles.primaryButton}
-            disabled={!canSend || !draft.trim()}
-          >
-            {posting ? "Sending…" : "Send message"}
-          </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-      </form>
+      </div>
+      <div className={styles.composerDock}>
+        <form
+          onSubmit={submit}
+          className={styles.chatComposer}
+          aria-label="Message the agent"
+          aria-busy={posting}
+        >
+          <div className={styles.field}>
+            <label htmlFor="celloras-message" className={styles.srOnly}>
+              Message Celloras
+            </label>
+            <textarea
+              ref={inputRef}
+              id="celloras-message"
+              name="prompt"
+              rows={2}
+              required
+              maxLength={12000}
+              value={draft}
+              disabled={posting}
+              onChange={(event) => setDraft(event.target.value)}
+              onKeyDown={inputKeyDown}
+              aria-describedby="chat-input-help"
+              placeholder="Ask about your single-cell data…"
+            />
+          </div>
+          {requestError && (
+            <div className={styles.errorBox} role="alert">
+              <p>{requestError.message}</p>
+              {requestError.code === "SUBMISSION_CONFLICT" &&
+                requestError.operation === "draft" && (
+                  <div className={styles.reviewSection}>
+                    <button
+                      type="submit"
+                      name="sendAsNew"
+                      className={styles.chatSecondaryButton}
+                      disabled={posting || Boolean(activeTurn)}
+                    >
+                      Send as a new message
+                    </button>
+                  </div>
+                )}
+            </div>
+          )}
+          <div className={styles.chatComposerFooter}>
+            <button
+              type="button"
+              className={styles.composerContext}
+              onClick={onOpenContext}
+              aria-label="Open study context"
+              title="Open study context"
+            >
+              <WorkspaceIcon name="plus" size={18} />
+              <span>{contextLabel}</span>
+            </button>
+            <button
+              type="submit"
+              className={styles.sendButton}
+              disabled={!canSend || !draft.trim()}
+              aria-label={posting ? "Sending…" : "Send message"}
+              title="Send message"
+            >
+              <WorkspaceIcon name="arrow" size={20} />
+            </button>
+          </div>
+        </form>
+        <p id="chat-input-help" className={styles.composerHelp}>
+          {activeTurn
+            ? "Let this response finish, or cancel it to send another message."
+            : "Enter to send · Shift + Enter for a new line"}
+        </p>
+        <p className={styles.chatScope}>
+          Reference lookup and cell annotation tools are not connected yet.
+        </p>
+      </div>
     </section>
   );
 }

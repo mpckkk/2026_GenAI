@@ -1,13 +1,14 @@
 import { redirect } from "next/navigation";
 import { services } from "@/app/bootstrap";
 import { serviceHealth } from "@/app/services/health";
+import styles from "../workspace.module.css";
 
 export default async function HealthPage() {
   if (!(await services.auth.currentUser()))
     redirect("/login?returnTo=/app/health");
   const health = await serviceHealth();
   return (
-    <>
+    <div className={styles.operationsPage}>
       <p className="eyebrow">Workspace operations</p>
       <h1>Service health</h1>
       <p className="page-description">
@@ -27,6 +28,6 @@ export default async function HealthPage() {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }
