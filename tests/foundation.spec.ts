@@ -165,6 +165,8 @@ test("real Keycloak accounts, project ownership and logout", async ({
   await page.getByRole("button", { name: "Log in", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:3100/app");
   await expect(
-    page.getByRole("heading", { name: `Soybean ${suffix}` }),
+    page
+      .getByRole("region", { name: "Your experiments", exact: true })
+      .getByRole("link", { name: `Soybean ${suffix} Continue`, exact: true }),
   ).toBeVisible();
 });

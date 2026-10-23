@@ -1,5 +1,7 @@
 # Engineering notes
 
+- Deployment-manager process arguments can embed encoded environment secrets. Inspect only process IDs/status and service-scoped health; never dump full command lines or environment values into diagnostics.
+
 - Turbopack rewrote 84 tiny floating-point values in an imported JSON reference, changing its canonical SHA-256 while native Node verified it correctly. Read the original file at runtime, explicitly include it in standalone tracing, and check authenticated health in the built app; never relax scientific integrity checks to accommodate compiler changes.
 - Store production datasets, OpenShell state and worker mTLS files outside a deployment manager’s replaceable checkout. Verify the full artifact inventory before publication and merge persistent settings without overwriting unrelated values.
 - Next’s favicon decoder requires RGBA PNG entries inside an ICO. Verify the actual production build and served icon, including the baked Keycloak theme.
