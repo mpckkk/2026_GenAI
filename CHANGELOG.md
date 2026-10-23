@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.17 — 2026-10-23
+
+- Put saved experiments first, reduced the demo to a compact entry and moved new-experiment creation into an accessible dialog that preserves unfinished names.
+- Added the Celloras favicon to the app and login theme.
+- Fixed a production-build annotation health failure by verifying original reference JSON instead of compiler-transformed values.
+- Added durable Linux runtime setup options and activated the verified root dataset plus real OpenShell/Codex worker on the public server.
+
 ## 0.1.16 — 2026-10-23
 
 - Added provisional soybean root annotation from actual expression and a compatible published marker reference, with candidates, conflicts, missing evidence and unresolved cases.

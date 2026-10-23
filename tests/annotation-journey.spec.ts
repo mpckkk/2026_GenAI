@@ -83,6 +83,15 @@ test("real annotation candidates, evidence, durable decisions and authenticated 
 }, info) => {
   test.setTimeout(700000);
   await register(page);
+  await page.goto("/app/health");
+  const annotationHealth = page.locator(".health-row").filter({
+    has: page.getByRole("heading", {
+      name: "Cell-type annotation",
+      exact: true,
+    }),
+  });
+  await expect(annotationHealth.locator(".pill")).toHaveText("ready");
+  await page.goto("/app");
   const demoOpened = page.waitForResponse(
     (response) =>
       new URL(response.url()).pathname === "/api/demo" &&

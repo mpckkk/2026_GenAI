@@ -25,6 +25,9 @@ test("chat workspace keeps drafts, saved context and accessible panels across de
     .getByRole("button", { name: "Create account", exact: true })
     .click();
   await expect(page).toHaveURL("http://localhost:3100/app");
+  await page
+    .getByRole("button", { name: "New experiment", exact: true })
+    .click();
   await page.getByLabel("Experiment name").fill("Soybean root study");
   await page
     .getByRole("button", { name: "Create experiment", exact: true })

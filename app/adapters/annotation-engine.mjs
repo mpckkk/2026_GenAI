@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
-import referenceData from "../../data/references/soybean-annotation-v1.json" with { type: "json" };
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 
 const thresholds = Object.freeze({
   minimumDetectionFraction: 0.1,
@@ -25,6 +26,22 @@ function cancelled(signal) {
 }
 
 function verifiedReference() {
+  // Bundlers can rewrite JSON floating-point literals. Verify the original
+  // file in both the standalone web app and the native agent worker.
+  let referenceData;
+  try {
+    referenceData = JSON.parse(
+      readFileSync(
+        join(process.cwd(), "data/references/soybean-annotation-v1.json"),
+        "utf8",
+      ),
+    );
+  } catch {
+    throw fail(
+      "annotation_reference_unavailable",
+      "The pinned annotation reference could not be read",
+    );
+  }
   const { contentSha256, ...content } = referenceData;
   const digest = createHash("sha256")
     .update(JSON.stringify(content))

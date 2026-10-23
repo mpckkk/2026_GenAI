@@ -83,6 +83,9 @@ test("real Keycloak accounts, project ownership and logout", async ({
   const email = `celloras-a-${suffix}@example.test`;
   const password = randomBytes(24).toString("base64url");
   await register(page, email, password);
+  await page
+    .getByRole("button", { name: "New experiment", exact: true })
+    .click();
   await page.getByLabel("Experiment name").fill(`Soybean ${suffix}`);
   await page.getByRole("button", { name: /Create experiment/ }).click();
   await expect(

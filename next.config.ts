@@ -11,7 +11,11 @@ const config: NextConfig = {
     ],
   },
   outputFileTracingIncludes: {
-    "/*": ["./data/datasets/**/*", "./data/literature/**/*"],
+    "/*": [
+      "./data/datasets/**/*",
+      "./data/literature/**/*",
+      "./data/references/soybean-annotation-v1.json",
+    ],
   },
   poweredByHeader: false,
   serverExternalPackages: ["pg", "openid-client"],

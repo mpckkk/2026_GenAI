@@ -8,7 +8,7 @@ An agent-driven workspace for plant single-cell research, starting with soybean.
 
 Sign in, open an experiment, and talk with the agent. Save plant/sample context, marker sets, notes and reviewed cell-type decisions as structured conversation entries. PostgreSQL retains the research records and chat history. Generic plant and provider interfaces allow other plants and integrations to be added with appropriate references and validation.
 
-The implemented chat runtime uses Codex CLI inside NVIDIA OpenShell. A real model response has been verified through OpenShell v0.1.5 in a Linux MicroVM on Apple Silicon. Native Linux deployment has not yet been tested; browser acceptance is recorded separately in [verification](docs/verification.md).
+The implemented chat runtime uses Codex CLI inside NVIDIA OpenShell. Real model responses have been verified through OpenShell v0.1.5 both in a Linux MicroVM on Apple Silicon and on the native Ubuntu production server. Browser acceptance is recorded separately in [verification](docs/verification.md).
 
 The real soybean root dataset supports UMAP inspection, marker ranking, expression overlays, dot plots and provisional cell-type annotation. Annotation compares measured expression with 41 exact Wm82v4 marker genes from the atlas authors' published root reference. Cards show candidates, supporting and conflicting evidence, missing markers and unresolved cases. Researchers save their own labels separately. The method has not been independently validated; see [annotation methods and limits](docs/annotation-method.md).
 
@@ -51,7 +51,7 @@ To enable the real root demo, download the GEO file linked in the dataset guide 
 npm run data:import -- --source /absolute/path/GSE270392_Gm_atlas_Root.rna.seurat.obj.rds.gz
 ```
 
-Compose mounts only `.artifacts/scientific-data` read-only into the app and worker. It does not mount the private OpenShell directory as scientific data. The curated paper collection is bundled; `npm run literature:import` explicitly refreshes it from verified primary sources. Large dataset bytes remain outside Git.
+Compose mounts the directory selected by `CELLORAS_DATASET_DIR` (locally `.artifacts/scientific-data`) read-only into the app and worker. It does not mount the private OpenShell directory as scientific data. The curated paper collection is bundled; `npm run literature:import` explicitly refreshes it from verified primary sources. Large dataset bytes remain outside Git.
 
 Open [localhost:3100](http://localhost:3100). Keycloak serves [login](http://localhost:3100/login) and [registration](http://localhost:3100/register), using email/password without first/last name fields. The local Keycloak admin is `admin`; its generated password is `KEYCLOAK_ADMIN_PASSWORD` in `.env`.
 
@@ -93,7 +93,7 @@ npm run db:migrate
 npm run dev
 ```
 
-Ports are app 3100, Keycloak 8180 and PostgreSQL 5434. Changing the app URL also requires updating Keycloak's exact callback/logout URLs. For an existing realm, `npm run auth:configure` applies the current theme and signup configuration while preserving user data. `npm run brand:sync` copies the supplied logo into the auth theme; builds run it automatically.
+Ports are app 3100, Keycloak 8180 and PostgreSQL 5434. Changing the app URL also requires updating Keycloak's exact callback/logout URLs. For an existing realm, `npm run auth:configure` applies the current theme and signup configuration while preserving user data. `npm run brand:sync` copies the supplied logo and Celloras favicon into the auth theme; builds run it automatically.
 
 ```sh
 npm run lint
@@ -113,6 +113,6 @@ See [architecture](docs/architecture.md), [configuration](docs/configuration.md)
 
 Public deployment: https://celloras.com (login on https://auth.celloras.com), run by Dokploy from this branch with `compose.yaml` + `compose.prod.yaml`. A new commit on `celloras.com` is deployed automatically within about a minute.
 
-Base Compose is local development configuration, including Keycloak `start-dev`. The public deployment uses `compose.prod.yaml` for production Keycloak, HTTPS origins and proxy routing. The scientific dataset, gateway workload and operator credentials still require setup on the deployment host; a public landing alone does not establish agent readiness. SMTP, backups, retention and native Linux agent acceptance remain separate operational work. Local email verification/password recovery are disabled, and app sessions expire after one hour without centralized backchannel revocation.
+Base Compose is local development configuration, including Keycloak `start-dev`. The public deployment uses `compose.prod.yaml` for production Keycloak, HTTPS origins and proxy routing. The verified scientific dataset and OpenShell runtime live outside the replaceable checkout under `/var/lib/celloras`; see [production setup](docs/configuration.md#durable-state-and-deployment). The actual Linux sandbox probe passed and the worker heartbeat is ready. SMTP, backups and retention remain separate operational work. Local email verification/password recovery are disabled, and app sessions expire after one hour without centralized backchannel revocation.
 
 Realm import creates missing realms but does not update existing ones. Apply future auth changes through explicit configuration/migrations. SQL migrations are checksummed; add a migration instead of editing an applied file.

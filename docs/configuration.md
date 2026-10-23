@@ -51,7 +51,7 @@ The generated Docker configuration uses host networking for supervisors, so Dock
 
 The tested Mac's Docker Desktop kernel lacked Landlock support. Apple Silicon development can explicitly select `npm run agent:setup -- --runtime=vm` after `brew install e2fsprogs`. The helper starts a managed Mac gateway that runs Linux MicroVMs. Use `agent:gateway:start` / `agent:gateway:stop` to manage it; these commands are not part of the Linux application. Stop the existing Celloras gateway before selecting another runtime on the same port. There is no automatic runtime fallback.
 
-A real Codex response was verified in that MicroVM path. The worker remains a Linux Docker container with mTLS gateway access. Native Linux deployment has not yet been exercised; refer to [verification](verification.md) for the current acceptance evidence.
+A real Codex response was verified in that MicroVM path. The worker remains a Linux Docker container with mTLS gateway access. The native Ubuntu 24.04 production server also passed a real Codex sandbox probe with Docker 28.5.0 and kernel 6.8.0-147; refer to [verification](verification.md) for acceptance evidence.
 
 When upgrading a workload revision, let active turns finish and stop the worker before setup. The MicroVM gateway has a separate bootstrap image: requesting a new sandbox image does not change an already-running gateway's bootstrap configuration. Setup writes the matching image explicitly and restarts/recreates the gateway when its TOML changes, preserving its database, keys and TLS files. Run `npm run agent:verify` before starting the updated worker. A failed probe is an execution failure, not a reason to switch runtime or replay prior turns automatically.
 
@@ -63,7 +63,18 @@ PostgreSQL holds application data in the Compose named volume. OpenShell uses a 
 
 The queue survives application/worker restarts. Workers claim separate experiments through database locks; each experiment has at most one active turn. Execution failure is explicit, without a substitute provider or automatic model retry. Terminal turns awaiting sandbox cleanup block new execution in that experiment.
 
-Base Compose remains local configuration, including Keycloak `start-dev`. The public `celloras.com` deployment uses `compose.prod.yaml` with production Keycloak at `auth.celloras.com`, HTTPS origins and reverse-proxy routing. Provider credentials, the imported scientific dataset, matching OpenShell workload, SMTP, backups, retention and operational limits still require host configuration and acceptance. Gateway Docker-socket access is infrastructure administration and belongs in that deployment boundary, not the web app. Public page availability does not establish native Linux agent acceptance.
+Base Compose remains local configuration, including Keycloak `start-dev`. The public `celloras.com` deployment uses `compose.prod.yaml` with production Keycloak at `auth.celloras.com`, HTTPS origins and reverse-proxy routing. The imported scientific dataset and matching OpenShell workload are configured on the deployment host. SMTP, backups, retention and operational limits still require separate acceptance. Gateway Docker-socket access is infrastructure administration and belongs in that deployment boundary, not the web app. Public page availability does not establish native Linux agent acceptance.
+
+Production setup accepts an explicit durable home and Compose project, without modifying the deployment manager’s environment:
+
+```sh
+npm run agent:setup -- --runtime=docker --home=/var/lib/celloras/openshell --settings-file=/var/lib/celloras/openshell/runtime.env --compose-file=compose.yaml --compose-file=compose.prod.yaml --compose-project=celloras-p51fpi
+npm run agent:verify -- --home=/var/lib/celloras/openshell
+```
+
+Merge the generated nonsecret runtime settings into the deployment manager’s persisted environment, preserving unrelated settings. Set `CELLORAS_DATASET_DIR=/var/lib/celloras/scientific-data` only after publishing and verifying the dataset catalog, manifest and every file checksum there. Then build/start the app and worker using the same Compose files and project. `CELLORAS_AGENT_HOME` is also accepted by setup and verification. Without `--settings-file`, setup retains the local behavior of updating `.env`; custom homes are supported for Docker, while the Mac MicroVM retains its managed local home.
+
+The production gateway publishes only on host loopback; the worker connects with mTLS. Keep the private agent home, metadata and settings file outside source control. Renewal uses the same durable home, runtime and Compose options, followed by the real probe before worker activation. Renew the current production access credential before **2026-10-30 13:46 UTC**; the server does not hold a refresh credential.
 
 ## Scientific integrations
 

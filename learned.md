@@ -1,5 +1,9 @@
 # Engineering notes
 
+- Turbopack rewrote 84 tiny floating-point values in an imported JSON reference, changing its canonical SHA-256 while native Node verified it correctly. Read the original file at runtime, explicitly include it in standalone tracing, and check authenticated health in the built app; never relax scientific integrity checks to accommodate compiler changes.
+- Store production datasets, OpenShell state and worker mTLS files outside a deployment manager’s replaceable checkout. Verify the full artifact inventory before publication and merge persistent settings without overwriting unrelated values.
+- Next’s favicon decoder requires RGBA PNG entries inside an ICO. Verify the actual production build and served icon, including the baked Keycloak theme.
+
 - A marker reference and published cluster labels from the same study can check consistency, but cannot establish independent annotation accuracy. Keep benchmark labels out of runtime scoring, preserve disagreements and expose exploratory thresholds.
 - Annotation-card selection and composer selection must agree before any follow-up. Sync only explicit interactions; a lazily loaded card must not silently replace the researcher's current context.
 - A latest-results limit can discard the annotation behind a follow-up after several new plots. Carry the latest annotation and a bounded set of explicitly referenced run IDs, independently checking project ownership for each.

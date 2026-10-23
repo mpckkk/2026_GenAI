@@ -3,7 +3,7 @@
 import { useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { WorkspaceIcon } from "./workspace-icons";
-import styles from "./workspace.module.css";
+import styles from "./experiments.module.css";
 
 const subscribeToHydration = () => () => {};
 const clientReady = () => true;
@@ -61,53 +61,33 @@ export function GuidedStart() {
   }
 
   return (
-    <section
-      className={styles.guidedStart}
-      aria-labelledby="guided-start-heading"
-    >
-      <div className={styles.guidedStartIcon}>
-        <WorkspaceIcon name="leaf" size={24} />
-      </div>
-      <p className={styles.eyebrow}>Start with real data</p>
-      <h2 id="guided-start-heading">Meet the cells in a soybean root.</h2>
-      <p className={styles.guidedStartDescription}>
-        Explore a published dataset, choose a cell group, and investigate its
-        genes with Celloras. We’ll suggest the next step as you go.
-      </p>
-      <div className={styles.guidedStartFacts} aria-label="Demo dataset">
-        <span>
-          <strong>7,496</strong> nuclei
-        </span>
-        <span>
-          <strong>12</strong> source clusters
-        </span>
-        <span>Existing UMAP</span>
+    <section className={styles.demo} aria-labelledby="guided-start-heading">
+      <span className={styles.demoIcon}>
+        <WorkspaceIcon name="leaf" size={22} />
+      </span>
+      <div className={styles.demoCopy}>
+        <h2 id="guided-start-heading">Try the soybean demo</h2>
+        <p>Explore real cell groups, marker genes and their evidence.</p>
       </div>
       <button
         type="button"
-        className={styles.primaryButton}
+        className={styles.demoButton}
+        aria-label="Explore soybean root demo"
         onClick={() => void start()}
         disabled={!hydrated || pending}
       >
-        {pending ? "Opening your soybean demo…" : "Explore soybean root demo"}
-        {!pending && <span aria-hidden="true"> →</span>}
+        {pending ? "Opening…" : "Open demo"}
+        {!pending && <WorkspaceIcon name="chevron" size={15} />}
       </button>
-      <p className={styles.guidedStartCaption}>
-        Published research data · Your exploration is saved privately · No
-        upload needed
-      </p>
       {error && (
-        <div className={styles.errorBox} role="alert">
+        <div className={styles.demoError} role="alert">
           <p>{error}</p>
-          <p>
-            Your existing experiments are unchanged. Retry to open the same
-            demo.
-          </p>
+          <p>Retry to open the same saved demo.</p>
         </div>
       )}
       {pending && (
-        <p className={styles.guidedStartCaption} role="status">
-          Checking the dataset and opening your saved workspace.
+        <p className={styles.demoStatus} role="status">
+          Opening your saved workspace…
         </p>
       )}
     </section>

@@ -13,16 +13,29 @@ import { resolve, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const dir = join(root, ".artifacts/openshell");
+const option = (name) =>
+  process.argv
+    .find((arg) => arg.startsWith(`--${name}=`))
+    ?.slice(name.length + 3);
+const localDir = join(root, ".artifacts/openshell");
+// Production state must survive a deployment replacing the source checkout.
+const dir = resolve(
+  option("home") || process.env.CELLORAS_AGENT_HOME || localDir,
+);
+const settingsFile = option("settings-file");
+const composeFiles = process.argv
+  .filter((arg) => arg.startsWith("--compose-file="))
+  .flatMap((arg) => ["-f", resolve(arg.slice("--compose-file=".length))]);
+const composeProject = option("compose-project");
 const state = join(dir, "state");
 const bin = join(dir, "bin/openshell");
 const configuration = join(dir, "host-config");
 const version = "0.1.5";
-const runtime =
-  process.argv.find((arg) => arg.startsWith("--runtime="))?.split("=")[1] ||
-  "docker";
+const runtime = option("runtime") || "docker";
 if (!["docker", "vm"].includes(runtime))
   throw new Error("Select --runtime=docker or --runtime=vm explicitly.");
+if (runtime === "vm" && dir !== localDir)
+  throw new Error("The managed local MicroVM uses the default agent home.");
 const platform =
   process.platform === "darwin" ? "apple-darwin" : "unknown-linux-musl";
 const arch = process.arch === "arm64" ? "aarch64" : "x86_64";
@@ -104,33 +117,53 @@ try {
 }
 const gatewayConfigChanged = previousGatewayConfig !== gatewayConfig;
 await writeFile(gatewayConfigPath, gatewayConfig, { mode: 0o600 });
-const envPath = join(root, ".env");
-let localEnv = await readFile(envPath, "utf8");
 const identity = userInfo();
-for (const [key, value] of Object.entries({
+const runtimeSettings = {
+  CELLORAS_AGENT_HOME: dir,
   OPENSHELL_STATE_DIR: state,
   OPENSHELL_CONFIG_DIR: join(dir, "worker-config"),
   CELLORAS_AGENT_METADATA_FILE: join(dir, "agent-metadata.json"),
-  CELLORAS_WORKER_UID: identity.uid,
-  CELLORAS_WORKER_GID: identity.gid,
+  CELLORAS_WORKER_UID: String(identity.uid),
+  CELLORAS_WORKER_GID: String(identity.gid),
   COMPOSE_PROFILES: runtime === "docker" ? "agent,agent-docker" : "agent",
-})) {
-  localEnv =
-    localEnv.replace(new RegExp(`^${key}=.*\\n?`, "gm"), "").trimEnd() +
-    `\n${key}=${value}\n`;
+};
+if (settingsFile) {
+  // A deployment manager can merge these non-secret settings without this
+  // helper racing its environment updates or activating the worker early.
+  await writeFile(
+    resolve(settingsFile),
+    Object.entries(runtimeSettings)
+      .map(([key, value]) => `${key}=${value}\n`)
+      .join(""),
+    { mode: 0o600 },
+  );
+} else {
+  const envPath = join(root, ".env");
+  let localEnv = await readFile(envPath, "utf8");
+  for (const [key, value] of Object.entries(runtimeSettings)) {
+    localEnv =
+      localEnv.replace(new RegExp(`^${key}=.*\\n?`, "gm"), "").trimEnd() +
+      `\n${key}=${value}\n`;
+  }
+  await writeFile(envPath, localEnv, { mode: 0o600 });
 }
-await writeFile(envPath, localEnv, { mode: 0o600 });
 // A running gateway does not reload TOML. In particular, the VM bootstrap
 // image must advance with the workload revision even when --from names the
 // new image. Keep its existing database, TLS and encryption state intact.
 if (runtime === "docker")
-  run("docker", [
-    "compose",
-    "up",
-    "-d",
-    ...(gatewayConfigChanged ? ["--force-recreate"] : []),
-    "openshell",
-  ]);
+  run(
+    "docker",
+    [
+      "compose",
+      ...composeFiles,
+      ...(composeProject ? ["-p", composeProject] : []),
+      "up",
+      "-d",
+      ...(gatewayConfigChanged ? ["--force-recreate"] : []),
+      "openshell",
+    ],
+    { ...process.env, ...runtimeSettings },
+  );
 else {
   if (gatewayConfigChanged)
     run(process.execPath, ["scripts/agent-gateway.mjs", "stop"]);
@@ -291,5 +324,5 @@ run("docker", [
   ".",
 ]);
 console.log(
-  "Run npm run agent:verify for a real sandbox execution probe, then docker compose up -d --build agent-worker app.",
+  `Run npm run agent:verify -- --home=${JSON.stringify(dir)} for a real sandbox probe. Then ${settingsFile ? "merge the generated settings into the deployment environment and " : ""}start agent-worker and app using the same Compose files and project.`,
 );

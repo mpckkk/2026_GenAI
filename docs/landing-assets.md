@@ -39,3 +39,9 @@ The landing page's UMAP preview is derived from the real public soybean-root dat
 - Colors and interactive highlighting distinguish published source groups. These names are not predictions from Celloras, and the display makes no independent validation claim.
 
 For the dataset import, expression transformations, limitations and artifact verification, see [dataset-import.md](dataset-import.md).
+
+## Browser favicon
+
+- File: `app/favicon.ico`; 16, 32, 48 and 64px RGBA PNG entries. `brand:sync` copies it to the Keycloak theme.
+- Generated with the built-in `image_gen` tool from the supplied `docs/assets/celloras-logo.png`, then resized and packaged with Sharp. The original wordmark/logo asset stays unchanged.
+- Prompt: “Use case: precise-object-edit. Asset type: Celloras browser favicon. Edit the supplied logo image: isolate ONLY its exact black hexagonal cell emblem on the left; remove the entire Celloras wordmark and excess canvas. Preserve the emblem's outline and all interior shapes exactly, no redesign. Center that emblem on a square white canvas with a small even margin, about 8% at top and bottom. Flat crisp black and white. No text, no added details. This must remain recognizably the original supplied emblem, simply extracted and framed for a favicon.”

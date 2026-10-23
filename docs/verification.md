@@ -2,6 +2,15 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## Production runtime, experiment dashboard and favicon — 2026-10-23
+
+- Published 23 scientific artifacts (564,987,598 bytes) to durable `/var/lib/celloras/scientific-data` on the production host. Full local/remote file hashes, catalog, manifest and source provenance match. The app’s read-only mount exposes 7,496 nuclei, 40,127 genes and 12 groups. Preserved unrelated managed environment values and existing accounts/data. Evidence: `.artifacts/production-data/`.
+- Installed checksum-verified OpenShell 0.1.5 and the pinned Codex annotation image on Ubuntu 24.04.5, Docker 28.5.0 and kernel 6.8.0-147 with Landlock. Actual Linux sandbox execution returned `CELLORAS_OPEN_SHELL_OK` and the probe sandbox was removed. Worker heartbeat reports ready through mTLS. Gateway publishes only on host loopback; runtime state and mounts survive checkout replacement. No refresh credential was transferred.
+- Reproduced annotation health failure in the actual standalone app. Turbopack changed 84 floating-point JSON values, causing canonical content SHA-256 mismatch while native Node passed. Loading the original file and explicitly tracing it preserves the strict reference checks. The rebuilt app passed the full real annotation browser journey in 1.3 minutes, including the new health assertion, guided/freeform model calls, evidence, researcher decisions, replay and ownership boundaries. Evidence: `.artifacts/production-wave-annotation/`.
+- Actual dashboard acceptance passed through real registration, empty state, cancel/reopen draft retention, whitespace validation, owned experiment creation, saved rows above the smaller demo, sidebar links from dashboard/project, mobile creation and Escape/hash cleanup. Desktop, 390px and 320px empty/saved/dialog views had no overflow or page errors and were visually inspected. Evidence: `.artifacts/dashboard-wave/`.
+- The actual app and Keycloak login both advertise and serve the 7,933-byte Celloras favicon with HTTP 200. The first build caught RGB ICO entries; rebuilding the icon with RGBA entries passed the production decoder. Root production build, ESLint and TypeScript passed.
+- Final public browser acceptance of this source release is pending deployment. The working server runtime and dataset above were provisioned independently of the frontend release.
+
 ## Annotation, visual landing and compact chat — 2026-10-23
 
 - Downloaded and verified the actual publisher Table S2 workbook. Its root literature panel provides 42 associations, 41 distinct exact Wm82v4 genes and nine candidate labels; all 41 genes exist in the imported root matrix. Reimporting actual publisher bytes reproduced the reference hash. Table S1 barcode and cluster membership matched all 7,496 source nuclei. Full source bytes stay outside Git.

@@ -10,4 +10,10 @@ const destination = new URL("celloras-logo.png", directory);
 
 await mkdir(directory, { recursive: true });
 await copyFile(source, destination);
-console.log("Celloras: synchronized the original logo to the Keycloak theme.");
+await copyFile(
+  new URL("../app/favicon.ico", import.meta.url),
+  new URL("favicon.ico", directory),
+);
+console.log(
+  "Celloras: synchronized the logo and favicon to the Keycloak theme.",
+);

@@ -90,6 +90,9 @@ test("conversation forms save real records and survive login, with responsive re
 }, testInfo) => {
   test.setTimeout(120000);
   const credentials = await register(page);
+  await page
+    .getByRole("button", { name: "New experiment", exact: true })
+    .click();
   await page.getByLabel("Experiment name").fill("Soybean root conversation");
   await page
     .getByRole("button", { name: "Create experiment", exact: true })
