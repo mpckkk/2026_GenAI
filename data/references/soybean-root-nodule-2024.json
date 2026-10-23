@@ -1,0 +1,669 @@
+{
+  "version": 1,
+  "source": {
+    "id": "soybean-root-nodule-cervantes-perez-2024",
+    "version": "2024.100984-mc-v1",
+    "title": "Soybean root and mature nodule marker reference",
+    "citation": "Cervantes-Pérez et al., Plant Communications (2024)",
+    "doi": "10.1016/j.xplc.2024.100984",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/",
+    "section": "Methods: Cell type annotation using M.C. (p0230, p0235)",
+    "speciesId": "glycine-max",
+    "genomeVersion": "Glycine_max_v2.1.52",
+    "geneIdNamespace": "Glyma",
+    "tissues": ["root", "nodule"],
+    "retrievedAt": "2026-10-23",
+    "sourceSha256": "47fff07bd3eae12ff372eaf595533cc0de586af198ab903af9cf52e32748449e",
+    "articleLicense": "CC BY-NC-ND 4.0; factual associations extracted, article text not redistributed",
+    "coverage": "Selected markers explicitly listed in two Methods paragraphs; not a complete atlas or validated classifier"
+  },
+  "records": [
+    {
+      "id": "p0230:epidermal:Glyma.19G255500",
+      "geneId": "Glyma.19G255500",
+      "cellType": "Epidermis",
+      "sourceLabel": "epidermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:epidermal:Glyma.06G259400",
+      "geneId": "Glyma.06G259400",
+      "cellType": "Epidermis",
+      "sourceLabel": "epidermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:epidermal:Glyma.09G099900",
+      "geneId": "Glyma.09G099900",
+      "cellType": "Epidermis",
+      "sourceLabel": "epidermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:epidermal:Glyma.10G070200",
+      "geneId": "Glyma.10G070200",
+      "cellType": "Epidermis",
+      "sourceLabel": "epidermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:epidermal:Glyma.01G156200",
+      "geneId": "Glyma.01G156200",
+      "cellType": "Epidermis",
+      "sourceLabel": "epidermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:epidermal:Glyma.07G130800",
+      "geneId": "Glyma.07G130800",
+      "cellType": "Epidermis",
+      "sourceLabel": "epidermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:epidermal:Glyma.20G061300",
+      "geneId": "Glyma.20G061300",
+      "cellType": "Epidermis",
+      "sourceLabel": "epidermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:epidermal:Glyma.02G149100",
+      "geneId": "Glyma.02G149100",
+      "cellType": "Epidermis",
+      "sourceLabel": "epidermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:epidermal:Glyma.04G010600",
+      "geneId": "Glyma.04G010600",
+      "cellType": "Epidermis",
+      "sourceLabel": "epidermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:epidermal:Glyma.17G133100",
+      "geneId": "Glyma.17G133100",
+      "cellType": "Epidermis",
+      "sourceLabel": "epidermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:cortical:Glyma.06G235500",
+      "geneId": "Glyma.06G235500",
+      "cellType": "Cortex",
+      "sourceLabel": "cortical",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:cortical:Glyma.11G221200",
+      "geneId": "Glyma.11G221200",
+      "cellType": "Cortex",
+      "sourceLabel": "cortical",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:cortical:Glyma.09G216800",
+      "geneId": "Glyma.09G216800",
+      "cellType": "Cortex",
+      "sourceLabel": "cortical",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:cortical:Glyma.15G169100",
+      "geneId": "Glyma.15G169100",
+      "cellType": "Cortex",
+      "sourceLabel": "cortical",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:endodermal:Glyma.14G218700",
+      "geneId": "Glyma.14G218700",
+      "cellType": "Endodermis",
+      "sourceLabel": "endodermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:endodermal:Glyma.16G106800",
+      "geneId": "Glyma.16G106800",
+      "cellType": "Endodermis",
+      "sourceLabel": "endodermal",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:pericycle:Glyma.02G003700",
+      "geneId": "Glyma.02G003700",
+      "cellType": "Pericycle",
+      "sourceLabel": "pericycle",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:pericycle:Glyma.05G023700",
+      "geneId": "Glyma.05G023700",
+      "cellType": "Pericycle",
+      "sourceLabel": "pericycle",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:pericycle:Glyma.11G078300",
+      "geneId": "Glyma.11G078300",
+      "cellType": "Pericycle",
+      "sourceLabel": "pericycle",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:pericycle:Glyma.08G125800",
+      "geneId": "Glyma.08G125800",
+      "cellType": "Pericycle",
+      "sourceLabel": "pericycle",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:pericycle:Glyma.09G127000",
+      "geneId": "Glyma.09G127000",
+      "cellType": "Pericycle",
+      "sourceLabel": "pericycle",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:xylem:Glyma.15G245800",
+      "geneId": "Glyma.15G245800",
+      "cellType": "Xylem",
+      "sourceLabel": "xylem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:xylem:Glyma.04G063800",
+      "geneId": "Glyma.04G063800",
+      "cellType": "Xylem",
+      "sourceLabel": "xylem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:xylem:Glyma.06G065000",
+      "geneId": "Glyma.06G065000",
+      "cellType": "Xylem",
+      "sourceLabel": "xylem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:xylem:Glyma.13G334500",
+      "geneId": "Glyma.13G334500",
+      "cellType": "Xylem",
+      "sourceLabel": "xylem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:xylem:Glyma.15G040000",
+      "geneId": "Glyma.15G040000",
+      "cellType": "Xylem",
+      "sourceLabel": "xylem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:xylem:Glyma.18G197400",
+      "geneId": "Glyma.18G197400",
+      "cellType": "Xylem",
+      "sourceLabel": "xylem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:xylem:Glyma.15G179500",
+      "geneId": "Glyma.15G179500",
+      "cellType": "Xylem",
+      "sourceLabel": "xylem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:phloem:Glyma.07G006500",
+      "geneId": "Glyma.07G006500",
+      "cellType": "Phloem",
+      "sourceLabel": "phloem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:phloem:Glyma.05G216000",
+      "geneId": "Glyma.05G216000",
+      "cellType": "Phloem",
+      "sourceLabel": "phloem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:phloem:Glyma.15G274200",
+      "geneId": "Glyma.15G274200",
+      "cellType": "Phloem",
+      "sourceLabel": "phloem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:phloem:Glyma.11G243100",
+      "geneId": "Glyma.11G243100",
+      "cellType": "Phloem",
+      "sourceLabel": "phloem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0230:phloem:Glyma.12G154300",
+      "geneId": "Glyma.12G154300",
+      "cellType": "Phloem",
+      "sourceLabel": "phloem",
+      "tissue": "root",
+      "stage": "6-day-old roots",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0230",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:inner/outer cortical:Glyma.16G039800",
+      "geneId": "Glyma.16G039800",
+      "cellType": "Inner/outer cortex",
+      "sourceLabel": "inner/outer cortical",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:inner/outer cortical:Glyma.19G255500",
+      "geneId": "Glyma.19G255500",
+      "cellType": "Inner/outer cortex",
+      "sourceLabel": "inner/outer cortical",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:inner/outer cortical:Glyma.06G259400",
+      "geneId": "Glyma.06G259400",
+      "cellType": "Inner/outer cortex",
+      "sourceLabel": "inner/outer cortical",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:inner/outer cortical:Glyma.01G156200",
+      "geneId": "Glyma.01G156200",
+      "cellType": "Inner/outer cortex",
+      "sourceLabel": "inner/outer cortical",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:inner/outer cortical:Glyma.20G061300",
+      "geneId": "Glyma.20G061300",
+      "cellType": "Inner/outer cortex",
+      "sourceLabel": "inner/outer cortical",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:inner/outer cortical:Glyma.03G079500",
+      "geneId": "Glyma.03G079500",
+      "cellType": "Inner/outer cortex",
+      "sourceLabel": "inner/outer cortical",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:sclereid layer:Glyma.04G063800",
+      "geneId": "Glyma.04G063800",
+      "cellType": "Sclereid layer",
+      "sourceLabel": "sclereid layer",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:sclereid layer:Glyma.06G065000",
+      "geneId": "Glyma.06G065000",
+      "cellType": "Sclereid layer",
+      "sourceLabel": "sclereid layer",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:sclereid layer:Glyma.13G334500",
+      "geneId": "Glyma.13G334500",
+      "cellType": "Sclereid layer",
+      "sourceLabel": "sclereid layer",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:sclereid layer:Glyma.15G040000",
+      "geneId": "Glyma.15G040000",
+      "cellType": "Sclereid layer",
+      "sourceLabel": "sclereid layer",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular endodermis:Glyma.04G218700",
+      "geneId": "Glyma.04G218700",
+      "cellType": "Vascular endodermis",
+      "sourceLabel": "vascular endodermis",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular endodermis:Glyma.14G227200",
+      "geneId": "Glyma.14G227200",
+      "cellType": "Vascular endodermis",
+      "sourceLabel": "vascular endodermis",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular endodermis:Glyma.16G106800",
+      "geneId": "Glyma.16G106800",
+      "cellType": "Vascular endodermis",
+      "sourceLabel": "vascular endodermis",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular endodermis:Glyma.20G151700",
+      "geneId": "Glyma.20G151700",
+      "cellType": "Vascular endodermis",
+      "sourceLabel": "vascular endodermis",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular bundle:Glyma.06G256000",
+      "geneId": "Glyma.06G256000",
+      "cellType": "Vascular bundle",
+      "sourceLabel": "vascular bundle",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular bundle:Glyma.10G139200",
+      "geneId": "Glyma.10G139200",
+      "cellType": "Vascular bundle",
+      "sourceLabel": "vascular bundle",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular bundle:Glyma.02G003700",
+      "geneId": "Glyma.02G003700",
+      "cellType": "Vascular bundle",
+      "sourceLabel": "vascular bundle",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular bundle:Glyma.07G231500",
+      "geneId": "Glyma.07G231500",
+      "cellType": "Vascular bundle",
+      "sourceLabel": "vascular bundle",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular bundle:Glyma.18G062100",
+      "geneId": "Glyma.18G062100",
+      "cellType": "Vascular bundle",
+      "sourceLabel": "vascular bundle",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular bundle:Glyma.08G125800",
+      "geneId": "Glyma.08G125800",
+      "cellType": "Vascular bundle",
+      "sourceLabel": "vascular bundle",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular bundle:Glyma.11G078300",
+      "geneId": "Glyma.11G078300",
+      "cellType": "Vascular bundle",
+      "sourceLabel": "vascular bundle",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular bundle:Glyma.09G127000",
+      "geneId": "Glyma.09G127000",
+      "cellType": "Vascular bundle",
+      "sourceLabel": "vascular bundle",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular bundle:Glyma.13G334500",
+      "geneId": "Glyma.13G334500",
+      "cellType": "Vascular bundle",
+      "sourceLabel": "vascular bundle",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:vascular bundle:Glyma.15G040000",
+      "geneId": "Glyma.15G040000",
+      "cellType": "Vascular bundle",
+      "sourceLabel": "vascular bundle",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:infected cell:Glyma.17G195900",
+      "geneId": "Glyma.17G195900",
+      "cellType": "Infected cell",
+      "sourceLabel": "infected cell",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:infected cell:Glyma.01G164600",
+      "geneId": "Glyma.01G164600",
+      "cellType": "Infected cell",
+      "sourceLabel": "infected cell",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:infected cell:Glyma.05G216000",
+      "geneId": "Glyma.05G216000",
+      "cellType": "Infected cell",
+      "sourceLabel": "infected cell",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:uninfected cell:Glyma.06G235500",
+      "geneId": "Glyma.06G235500",
+      "cellType": "Uninfected cell",
+      "sourceLabel": "uninfected cell",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    },
+    {
+      "id": "p0235:uninfected cell:Glyma.06G002000",
+      "geneId": "Glyma.06G002000",
+      "cellType": "Uninfected cell",
+      "sourceLabel": "uninfected cell",
+      "tissue": "nodule",
+      "stage": "28 days after inoculation",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11369782/#p0235",
+      "method": "Marker used for Molecular Cartography cell-type annotation"
+    }
+  ],
+  "excluded": [
+    {
+      "value": "CYP93A1",
+      "paragraph": "p0230",
+      "reason": "Symbol without explicit gene-ID mapping in this paragraph"
+    },
+    {
+      "value": "G4DT",
+      "paragraph": "p0230",
+      "reason": "Symbol without explicit gene-ID mapping in this paragraph"
+    },
+    {
+      "value": "Glyma.15G2100100",
+      "paragraph": "p0235",
+      "reason": "Malformed identifier in source; not corrected"
+    },
+    {
+      "value": "CYP93A1",
+      "paragraph": "p0235",
+      "reason": "Symbol without explicit gene-ID mapping in this paragraph"
+    },
+    {
+      "value": "G4DT",
+      "paragraph": "p0235",
+      "reason": "Symbol without explicit gene-ID mapping in this paragraph"
+    }
+  ]
+}

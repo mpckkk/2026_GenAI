@@ -146,6 +146,39 @@ function parse(input: unknown, catalog: PlantCatalog): AppendResearchInput {
             : uuid(command.contextEntryId, "contextEntryId"),
       };
       break;
+    case "evidence_review":
+      onlyKeys(
+        command,
+        [
+          "kind",
+          "evidenceRunId",
+          "markerEntryId",
+          "decision",
+          "cellType",
+          "notes",
+        ],
+        "command",
+      );
+      if (
+        !["candidate", "unresolved", "rejected"].includes(
+          String(command.decision),
+        )
+      )
+        invalid("decision", "Choose your review decision.");
+      parsed = {
+        kind: "evidence_review",
+        evidenceRunId: uuid(command.evidenceRunId, "evidenceRunId"),
+        markerEntryId: uuid(command.markerEntryId, "markerEntryId"),
+        decision: command.decision as "candidate" | "unresolved" | "rejected",
+        cellType: optionalText(command.cellType, "cellType", 120),
+        notes: note(command.notes, "notes", 10000),
+      };
+      if ((parsed.decision === "candidate") !== Boolean(parsed.cellType))
+        invalid(
+          "cellType",
+          "Select a returned candidate, or leave the cell type empty for unresolved/rejected evidence.",
+        );
+      break;
     case "manual_review":
       onlyKeys(
         command,
@@ -238,7 +271,10 @@ export class ResearchService {
       const requiredMarkerIds = new Set<string>();
       for (const item of page.entries) {
         if (item.kind === "markers") markerById.set(item.id, item);
-        else if (item.kind === "manual_review")
+        else if (
+          item.kind === "manual_review" ||
+          item.kind === "evidence_review"
+        )
           requiredMarkerIds.add(item.markerEntryId);
       }
       const missingMarkers = await Promise.all(
@@ -282,7 +318,8 @@ export class ResearchService {
       const parsed = parse(input, this.plants);
       const { command } = parsed;
       stage(operationId, "append.validated", { kind: command.kind });
-      let payload: ResearchPayload;
+      let payload:
+        ResearchPayload | Extract<ResearchCommand, { kind: "evidence_review" }>;
       if (command.kind === "markers") {
         const normalizedGenes = genes(command.markersRaw);
         let snapshot: PlantContext | null = null;
@@ -304,7 +341,10 @@ export class ResearchService {
         }
         payload = { ...command, genes: normalizedGenes, context: snapshot };
       } else {
-        if (command.kind === "manual_review") {
+        if (
+          command.kind === "manual_review" ||
+          command.kind === "evidence_review"
+        ) {
           const reference = await this.repository.findOwned(
             userId,
             projectId,

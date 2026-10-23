@@ -1,6 +1,7 @@
 import "server-only";
 import type { Pool, PoolClient } from "pg";
 import type {
+  ResearchCommand,
   ContextEntry,
   MarkerEntry,
   ResearchEntry,
@@ -14,6 +15,7 @@ import {
   ResearchValidationError,
   logFailure,
 } from "@/app/core/errors";
+import type { MarkerEvidenceRun } from "@/app/core/evidence";
 import { database } from "./database";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -166,7 +168,8 @@ export class PostgresResearch implements ResearchRepository {
     input: {
       submissionId: string;
       fingerprint: string;
-      payload: ResearchPayload;
+      payload:
+        ResearchPayload | Extract<ResearchCommand, { kind: "evidence_review" }>;
     },
   ): Promise<ResearchEntry> {
     const connection = await database().connect();
@@ -200,7 +203,11 @@ export class PostgresResearch implements ResearchRepository {
 
       let payload = input.payload;
       let referenceId: string | null = null;
-      if (payload.kind === "markers" || payload.kind === "manual_review") {
+      if (
+        payload.kind === "markers" ||
+        payload.kind === "manual_review" ||
+        payload.kind === "evidence_review"
+      ) {
         referenceId =
           payload.kind === "markers"
             ? payload.contextEntryId
@@ -246,10 +253,54 @@ export class PostgresResearch implements ResearchRepository {
         }
       }
 
+      let evidenceRunId: string | null = null;
+      if (payload.kind === "evidence_review") {
+        evidenceRunId = payload.evidenceRunId;
+        if (!UUID.test(evidenceRunId))
+          throw new ResearchValidationError({
+            evidenceRunId: "Choose a valid evidence run.",
+          });
+        const run = await connection.query(
+          `SELECT e.id,e.project_id,e.turn_id,e.marker_entry_id,e.result,e.created_at FROM marker_evidence_runs e
+           JOIN projects p ON p.id=e.project_id JOIN agent_turns t ON t.id=e.turn_id
+           WHERE e.id=$1 AND e.project_id=$2 AND e.owner_id=$3 AND p.owner_id=$3
+             AND t.owner_id=$3 AND t.project_id=$2 AND t.status='completed'`,
+          [evidenceRunId, projectId, userId],
+        );
+        const row = run.rows[0];
+        if (!row || row.marker_entry_id !== payload.markerEntryId)
+          throw new ResearchValidationError({
+            evidenceRunId:
+              "Choose completed evidence for this marker set in this experiment.",
+          });
+        const evidence: MarkerEvidenceRun = {
+          ...row.result,
+          id: row.id,
+          projectId: row.project_id,
+          turnId: row.turn_id,
+          createdAt: row.created_at.toISOString(),
+        };
+        const selectedCellType = payload.cellType;
+        if (
+          !["candidate", "unresolved", "rejected"].includes(payload.decision) ||
+          (payload.decision === "candidate"
+            ? !evidence.candidates.some(
+                (candidate) => candidate.cellType === selectedCellType,
+              )
+            : payload.cellType !== null)
+        ) {
+          throw new ResearchValidationError({
+            cellType:
+              "Choose a candidate present in this evidence, or an unresolved/rejected decision.",
+          });
+        }
+        payload = { ...payload, evidence };
+      }
+
       const inserted = await connection.query<Row>(
         `INSERT INTO research_entries AS e
-           (project_id, author_id, submission_id, fingerprint, kind, payload, reference_entry_id)
-         SELECT p.id, $2::uuid, $3::uuid, $4, $5, $6::jsonb, $7::uuid
+           (project_id, author_id, submission_id, fingerprint, kind, payload, reference_entry_id, evidence_run_id)
+         SELECT p.id, $2::uuid, $3::uuid, $4, $5, $6::jsonb, $7::uuid, $8::uuid
          FROM projects p WHERE p.id=$1 AND p.owner_id=$2
          RETURNING ${COLUMNS}`,
         [
@@ -260,6 +311,7 @@ export class PostgresResearch implements ResearchRepository {
           payload.kind,
           JSON.stringify(payload),
           referenceId,
+          evidenceRunId,
         ],
       );
       if (!inserted.rows[0]) throw new ProjectNotFoundError();

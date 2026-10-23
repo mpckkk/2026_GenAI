@@ -10,21 +10,22 @@ Sign in, open an experiment, and talk with the agent. Save plant/sample context,
 
 The implemented chat runtime uses Codex CLI inside NVIDIA OpenShell. A real model response has been verified through OpenShell v0.1.5 in a Linux MicroVM on Apple Silicon. Native Linux deployment has not yet been tested; browser acceptance is recorded separately in [verification](docs/verification.md).
 
-Atlas retrieval, scientific annotation/scoring, H-MEM, Zetaris, Nemotron, NeMo Files and NVIDIA tracing remain pending. General assistant responses can help discuss the saved context; they are not validated cell-type annotations or evidence of a completed analysis.
+Published marker evidence lookup is connected for soybean roots and mature nodules, with exact matching genes, source citations and researcher review. Coverage is a limited versioned reference, not the full Soybean Multi-Omic Atlas. Validated annotation/scoring, matrix analysis, H-MEM, Zetaris, Nemotron, NeMo Files and NVIDIA tracing remain pending. See [reference scope and examples](docs/soybean-reference.md).
 
 ## Research workflow
 
 1. Create or reopen an experiment from the sidebar and send a message to the agent. The composer stays visible while the conversation scrolls.
 2. Open **Study context → Edit context** to save tissue, sample, developmental stage and genome/identifier context. Unknown details can stay empty.
 3. Use **Add markers** in the study panel to save a cluster's gene list: 1–200 distinct identifiers, with original text and case preserved. Exact duplicate tokens are removed only from the separate normalized list.
-4. In **Research records → Edit research → Record review**, attach your interpretation, evidence and uncertainty notes to saved markers. A cell-type decision is optional.
-5. Browse saved records and older entries in the research dialog. Each marker set retains its original context when the current sample changes. Closing the dialog preserves unfinished drafts.
+4. Ask the agent to **look up published marker evidence** for a saved marker set. Root/nodule lookup requires its attached tissue, actual genome version `Glycine_max_v2.1.52`, and `Glyma` namespace. Missing or incompatible context stays unresolved; identifiers/builds are never silently converted.
+5. Expand candidate genes and source links in the evidence card, then **Review and save your decision**. Choose a provisional candidate, keep it unresolved, or reject the evidence. Manual reviews remain available in **Research records → Edit research → Record review**.
+6. Browse saved records and older entries in the research dialog. Each marker set retains its original context when the current sample changes. Closing the dialog preserves unfinished drafts.
 
-On mobile, **Study context** opens a separate view and **Back to chat** returns to the conversation. The menu contains experiments, service health and logout. The workspace follows the accepted [chat mockup](docs/mockups/celloras-chat-v1.png); its illustrative annotation card is not a connected scientific feature.
+On mobile, **Study context** opens a separate view and **Back to chat** returns to the conversation. The menu contains experiments, service health and logout. The workspace follows the accepted [chat mockup](docs/mockups/celloras-chat-v1.png); its layout guides the working chat; the evidence card displays actual lookup results.
 
-The agent receives bounded owned conversation/research history and the latest sample context. Researcher-supplied evidence remains unverified. Replies combine Markdown with predefined **sample context** and **marker-set cards**. Save context/markers in Study context, then ask **“Show my saved sample and markers as cards.”** Cards show actual saved records, retain the data used for that reply, and expose expandable details. **Ask about this** adds a follow-up to your draft without sending or replacing it.
+The agent receives bounded owned conversation/research history and the latest sample context. Researcher-supplied evidence remains unverified. Replies combine Markdown with predefined **sample context**, **marker-set**, and **published evidence cards**. Save context/markers in Study context, then ask **“Show my saved sample and markers as cards.”** Cards show actual saved records, retain the data used for that reply, and expose expandable details. **Ask about this** adds a follow-up to your draft without sending or replacing it.
 
-The server validates card types and resolves record IDs within the owned experiment; the model does not supply card data or executable markup. Existing Markdown history still renders. Raw HTML is disabled and image references are links. Scientific result cards and plots require the future analysis/reference integrations.
+The server validates card types and resolves record IDs within the owned experiment; the model does not supply card data or executable markup. Existing Markdown history still renders. Raw HTML is disabled and image references are links. Analytical plots and calibrated annotation results require additional analysis integrations and validation.
 
 A turn shows queued/running/completed/failed/cancelled status. Repeating the same submission returns its saved result; changed content requires a new submission. Each experiment permits one active turn. Cancellation targets that turn's sandbox. A failed or interrupted execution is not automatically repeated, and another turn cannot start while sandbox cleanup is outstanding.
 
@@ -90,7 +91,7 @@ npm run test:e2e
 
 Browser tests use local Google Chrome, real Keycloak users and persisted test records. Keep the local services running; do not point the suite at production. Screenshots are ignored and authentication traces are disabled. `verify:storage` uses uniquely named temporary local databases and removes only those databases.
 
-`/api/health/live` reports process liveness. `/api/health/ready` checks schema and Keycloak. `/app/health` separately shows worker availability and pending integrations. New chat turns require a ready worker heartbeat within 30 seconds; existing records remain accessible when it is offline. The legacy scientific `/api/chat` still authorizes ownership and returns `503 INTEGRATION_PENDING`.
+`/api/health/live` reports process liveness. `/api/health/ready` checks schema, Keycloak and the bundled marker reference. `/app/health` separately shows worker availability and pending integrations. New chat turns require a ready worker heartbeat within 30 seconds; existing records remain accessible when it is offline. The legacy scientific `/api/chat` still authorizes ownership and returns `503 INTEGRATION_PENDING`.
 
 See [architecture](docs/architecture.md), [configuration](docs/configuration.md), [verification](docs/verification.md), [implementation plan](PLAN.md) and the [Amigospace project](https://space.heyamigo.org/items/6223ea67-f6b0-4dfd-b8f5-0325f391d4e0).
 

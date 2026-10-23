@@ -126,3 +126,149 @@
   outline: 2px solid #1b5e20;
   outline-offset: 3px;
 }
+
+.evidenceStatus {
+  font-weight: 600;
+}
+.evidenceFacts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 16px 0;
+}
+.evidenceFacts > div {
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+.evidenceFacts strong {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.evidenceFacts span {
+  font-size: 12px;
+  color: #666;
+}
+.evidenceIssues {
+  padding-left: 20px;
+  margin: 16px 0;
+}
+.evidenceIssues li + li {
+  margin-top: 8px;
+}
+.candidates {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0;
+}
+.candidate {
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+}
+.candidate summary {
+  cursor: pointer;
+  padding: 12px;
+}
+.candidate summary > span:first-child {
+  font-weight: 600;
+}
+.candidate summary > span:last-child {
+  display: block;
+  padding-left: 16px;
+  font-size: 12px;
+  color: #666;
+}
+.candidate ul {
+  list-style: none;
+  padding: 0 12px 12px;
+  margin: 0;
+}
+.candidate li {
+  display: grid;
+  gap: 4px;
+  padding: 12px 0;
+  border-top: 1px solid #ededed;
+  font-size: 12px;
+}
+.candidate a,
+.body a {
+  color: #1b5e20;
+  text-underline-offset: 3px;
+}
+.sourceFacts {
+  display: grid;
+  gap: 8px;
+}
+.sourceFacts dt {
+  color: #666;
+  font-size: 12px;
+}
+.sourceFacts dd {
+  margin: 0;
+}
+.review {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e3e3e3;
+}
+.review summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.review form {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+.review label {
+  display: grid;
+  gap: 8px;
+}
+.review label > span {
+  color: #666;
+}
+.review :is(select, textarea) {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font: inherit;
+  background: white;
+  color: #111;
+}
+.review textarea {
+  resize: vertical;
+}
+.review p {
+  margin: 8px 0;
+}
+.review button {
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #111;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+.review button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.reviewNotes {
+  white-space: pre-wrap;
+}
+.card :is(summary, select, textarea, button, a):focus-visible {
+  outline: 2px solid #1b5e20;
+  outline-offset: 3px;
+}
+@media (max-width: 480px) {
+  .evidenceFacts > div {
+    padding: 12px;
+  }
+}

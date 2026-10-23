@@ -54,6 +54,7 @@ try {
         "001_foundation.sql",
         "002_research_conversation.sql",
         "003_agent_chat.sql",
+        "004_agent_response_document.sql",
       ]) {
         const sql = await readFile(
           new URL(`../db/migrations/${name}`, import.meta.url),
@@ -80,8 +81,8 @@ try {
         )
       ).rows[0];
       await assert.rejects(
-        client.query("SELECT response_document FROM agent_turns LIMIT 0"),
-        { code: "42703" },
+        client.query("SELECT id FROM marker_evidence_runs LIMIT 0"),
+        { code: "42P01" },
       );
     }
     await migrate(url);
@@ -91,7 +92,9 @@ try {
     const first = await client.query(
       "SELECT name,checksum FROM schema_migrations ORDER BY name",
     );
-    assert.equal(first.rowCount, 4);
+    assert.equal(first.rowCount, 5);
+    await client.query("SELECT id,result FROM marker_evidence_runs LIMIT 0");
+    await client.query("SELECT evidence_run_id FROM research_entries LIMIT 0");
     await client.query("SELECT response_document FROM agent_turns LIMIT 0");
     await migrate(url);
     assert.deepEqual(
@@ -109,7 +112,6 @@ try {
         ])
       ).rows[0];
       assert.equal(stored.response_document, null);
-      delete stored.response_document;
       assert.deepEqual(stored, originalTurn);
     }
     if (originalProjectId) {

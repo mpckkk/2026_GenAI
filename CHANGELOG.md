@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.9 — 2026-10-23
+
+- Connected a bounded marker-evidence lookup through the real Codex/OpenShell conversation. The worker checks ownership, retrieves actual reference associations, saves their provenance and gives the result back to the agent for explanation.
+- Added an extensible reference interface and a versioned soybean root/nodule source with 62 published associations across 45 genes. Missing context, incompatible builds/tissues, unsupported identifiers, shared markers and absent matches stay explicit. Overlap counts are not confidence scores.
+- Added visual evidence cards with source links, competing candidates, exact matching genes and expandable methods/limits. Researchers can explicitly save a provisional candidate, unresolved result or rejection against the immutable evidence snapshot.
+- Added migration 005, owned review receipts and links between research history and the original evidence turn, including long conversations and mobile reloads. Existing Markdown, saved-record cards and manual reviews remain supported.
+
 ## 0.1.8 — 2026-10-23
 
 - Connected agent-selected sample context and marker-set cards inside chat, alongside Markdown, with compact summaries, expandable source details and follow-up draft actions.

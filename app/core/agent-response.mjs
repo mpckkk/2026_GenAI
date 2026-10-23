@@ -33,6 +33,7 @@ export function parseAgentResponse(value) {
     throw new AgentResponseError();
   let length = 0;
   const references = new Set();
+  let lookups = 0;
   for (const block of value.blocks) {
     if (block?.type === "markdown") {
       if (
@@ -43,7 +44,14 @@ export function parseAgentResponse(value) {
       )
         throw new AgentResponseError();
       length += block.text.length;
-    } else if (["sample_context", "marker_set"].includes(block?.type)) {
+    } else if (
+      [
+        "sample_context",
+        "marker_set",
+        "marker_evidence",
+        "lookup_marker_evidence",
+      ].includes(block?.type)
+    ) {
       if (
         !objectWith(block, ["type", "entryId"]) ||
         typeof block.entryId !== "string" ||
@@ -52,8 +60,18 @@ export function parseAgentResponse(value) {
       )
         throw new AgentResponseError();
       references.add(block.entryId.toLowerCase());
+      if (block.type === "lookup_marker_evidence") lookups++;
     } else throw new AgentResponseError();
   }
+  if (
+    lookups > 1 ||
+    (lookups &&
+      value.blocks.some(
+        (block) =>
+          block.type !== "markdown" && block.type !== "lookup_marker_evidence",
+      ))
+  )
+    throw new AgentResponseError();
   if (length < 1 || length > 64000) throw new AgentResponseError();
   return value;
 }

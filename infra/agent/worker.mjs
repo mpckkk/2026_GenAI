@@ -4,7 +4,12 @@ import {
   OpenShellCodex,
   sandboxName,
 } from "../../app/adapters/agent-openshell.mjs";
-import { responseText } from "../../app/core/agent-response.mjs";
+import { PublishedMarkerReference } from "../../app/adapters/marker-reference.mjs";
+import { runMarkerEvidence } from "../../app/services/marker-evidence.mjs";
+import {
+  responseText,
+  AgentResponseError,
+} from "../../app/core/agent-response.mjs";
 import { resolveAgentResponse } from "../../app/services/agent-response.mjs";
 
 const workerId = randomUUID();
@@ -15,6 +20,7 @@ const pool = new Pool({
   statement_timeout: 10000,
 });
 const runtime = new OpenShellCodex();
+const markerReference = new PublishedMarkerReference();
 let stopping = false,
   activeController;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -60,7 +66,11 @@ function boundedContext(previous, research) {
       assistant: row.response_text,
       cards: row.response_document?.blocks
         .filter((block) => block.type !== "markdown")
-        .map((block) => ({ type: block.type, entryId: block.entry.id })),
+        .map((block) => ({
+          type: block.type,
+          entryId:
+            block.type === "marker_evidence" ? block.result.id : block.entry.id,
+        })),
     };
     const size = JSON.stringify(turn).length;
     if (chars + size > 90000) break;
@@ -148,6 +158,27 @@ async function claim() {
         entryId: snapshot.sampleContext.entryId,
       });
     }
+    const recentEvidence = await client.query(
+      `SELECT e.id,e.project_id,e.turn_id,e.result,e.created_at FROM marker_evidence_runs e
+       JOIN agent_turns t ON t.id=e.turn_id JOIN projects p ON p.id=e.project_id
+       WHERE e.project_id=$1 AND e.owner_id=$2 AND p.owner_id=$2 AND t.status='completed'
+       ORDER BY e.created_at DESC LIMIT 3`,
+      [turn.project_id, turn.owner_id],
+    );
+    snapshot.evidenceResults = recentEvidence.rows.map((row) => ({
+      ...row.result,
+      id: row.id,
+      projectId: row.project_id,
+      turnId: row.turn_id,
+      createdAt: row.created_at.toISOString(),
+    }));
+    snapshot.availableCards.push(
+      ...snapshot.evidenceResults.map((result) => ({
+        type: "marker_evidence",
+        entryId: result.id,
+      })),
+    );
+    snapshot.evidenceReference = (await markerReference.health()).source;
     const name = sandboxName(turn.id);
     await client.query(
       `UPDATE agent_turns SET status='running',progress='Starting agent',
@@ -222,22 +253,74 @@ async function execute(turn) {
     code = null;
   log("turn.started", { turnId: turn.id });
   try {
-    const output = await runtime.run({
-      name: turn.sandbox_name,
-      prompt: JSON.stringify({
-        experiment: turn.context_snapshot,
-        message: turn.prompt,
-      }),
-      signal: controller.signal,
-      progress: (value) => {
-        progress = value;
-      },
-    });
+    const run = (experiment, message) =>
+      runtime.run({
+        name: turn.sandbox_name,
+        prompt: JSON.stringify({ experiment, message }),
+        signal: controller.signal,
+        progress: (value) => {
+          progress = value;
+        },
+      });
+    const snapshot = turn.context_snapshot;
+    let output = await run(snapshot, turn.prompt);
+    const lookup = output.blocks.find(
+      (block) => block.type === "lookup_marker_evidence",
+    );
+    let evidence;
+    if (lookup) {
+      progress = "Looking up published marker evidence";
+      log("tool.started", { turnId: turn.id, tool: "lookup_marker_evidence" });
+      evidence = await runMarkerEvidence(pool, markerReference, {
+        projectId: turn.project_id,
+        ownerId: turn.owner_id,
+        turnId: turn.id,
+        markerEntryId: lookup.entryId,
+        availableCards: snapshot.availableCards,
+        signal: controller.signal,
+      });
+      log("tool.completed", {
+        turnId: turn.id,
+        tool: "lookup_marker_evidence",
+        evidenceId: evidence.id,
+        status: evidence.status,
+        candidates: evidence.candidates.length,
+      });
+      snapshot.evidenceResults = [evidence];
+      snapshot.availableCards.push({
+        type: "marker_evidence",
+        entryId: evidence.id,
+      });
+      snapshot.completedLookup = {
+        markerEntryId: lookup.entryId,
+        evidenceId: evidence.id,
+      };
+      await pool.query(
+        `UPDATE agent_turns SET context_snapshot=$3,progress='Explaining evidence',updated_at=now() WHERE id=$1 AND worker_id=$2 AND status='running'`,
+        [turn.id, workerId, JSON.stringify(snapshot)],
+      );
+      if (controller.signal.aborted) throw new AgentResponseError("cancelled");
+      output = await run(snapshot, turn.prompt);
+      if (
+        output.blocks.some((block) => block.type === "lookup_marker_evidence")
+      )
+        throw new AgentResponseError("agent_tool_limit");
+      // A real lookup must remain inspectable even when the model omits its card.
+      if (
+        !output.blocks.some(
+          (block) =>
+            block.type === "marker_evidence" && block.entryId === evidence.id,
+        )
+      ) {
+        if (output.blocks.length >= 12) throw new AgentResponseError();
+        output.blocks.push({ type: "marker_evidence", entryId: evidence.id });
+      }
+    }
     document = await resolveAgentResponse(pool, {
       response: output,
       projectId: turn.project_id,
       ownerId: turn.owner_id,
-      availableCards: turn.context_snapshot.availableCards,
+      availableCards: snapshot.availableCards,
     });
     response = responseText(document);
   } catch (error) {

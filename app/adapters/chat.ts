@@ -151,7 +151,38 @@ export class PostgresChat implements ChatRepository {
     const selected = result.rows.slice(0, 50);
     const nextBefore =
       result.rows.length > 50 ? selected[selected.length - 1].position : null;
-    return { turns: selected.reverse().map(turn), nextBefore, runtime };
+    const runIds = selected.flatMap((row) =>
+      (row.response_document?.blocks || []).flatMap((block) =>
+        block.type === "marker_evidence" ? [block.result.id] : [],
+      ),
+    );
+    const reviews = await database().query(
+      `SELECT DISTINCT ON (r.evidence_run_id) r.id,r.evidence_run_id,r.position::text,r.payload,r.created_at
+       FROM research_entries r JOIN projects p ON p.id=r.project_id
+       WHERE r.project_id=$1 AND r.author_id=$2 AND p.owner_id=$2 AND r.kind='evidence_review'
+         AND r.evidence_run_id=ANY($3::uuid[]) ORDER BY r.evidence_run_id,r.position DESC`,
+      [projectId, userId, runIds],
+    );
+    const evidenceReviews = Object.fromEntries(
+      reviews.rows.map((row) => [
+        row.evidence_run_id,
+        {
+          id: row.id,
+          evidenceRunId: row.evidence_run_id,
+          position: row.position,
+          decision: row.payload.decision,
+          cellType: row.payload.cellType,
+          notes: row.payload.notes,
+          createdAt: row.created_at.toISOString(),
+        },
+      ]),
+    );
+    return {
+      turns: selected.reverse().map(turn),
+      nextBefore,
+      runtime,
+      evidenceReviews,
+    };
   }
 
   async submit(

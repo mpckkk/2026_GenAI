@@ -90,6 +90,64 @@ export function ResearchEntryContent({
           )}
         </>
       );
+    case "evidence_review": {
+      return (
+        <>
+          <h3>Your evidence review</h3>
+          <p className={styles.reviewCellType}>
+            {entry.decision === "candidate"
+              ? entry.cellType
+              : entry.decision === "unresolved"
+                ? "Cell type unresolved"
+                : "Evidence rejected"}
+          </p>
+          <p className={styles.smallMuted}>
+            For {entry.evidence.marker.label || "marker set"} ·{" "}
+            {entry.evidence.marker.context?.tissue || "Tissue not specified"}
+          </p>
+          {entry.notes && <p className={styles.preservedText}>{entry.notes}</p>}
+          <p>
+            <a
+              href={`/app/projects/${entry.projectId}?chatBefore=${BigInt(entry.evidence.turnPosition) + BigInt(1)}#turn-${entry.evidence.turnId}`}
+            >
+              Open evidence in conversation
+            </a>
+          </p>
+          <details className={styles.entryDetails}>
+            <summary>Evidence preserved with this review</summary>
+            <p>
+              <a
+                href={entry.evidence.source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {entry.evidence.source.citation}
+              </a>
+            </p>
+            <p>
+              Reference {entry.evidence.source.version} ·{" "}
+              {entry.evidence.source.genomeVersion}
+            </p>
+            <p>
+              {entry.evidence.matchedGenes.length} matching genes ·{" "}
+              {entry.evidence.candidates.length} candidate cell types
+            </p>
+            <p>Result: {entry.evidence.status.replaceAll("_", " ")}</p>
+            <ul>
+              {entry.evidence.candidates.map((candidate) => (
+                <li key={candidate.cellType}>
+                  {candidate.cellType}: {candidate.matchedGenes.join(", ")}
+                </li>
+              ))}
+            </ul>
+          </details>
+          <p className={styles.manualLabel}>
+            Researcher decision linked to a published-reference lookup. It is
+            not a validated automated annotation.
+          </p>
+        </>
+      );
+    }
     case "manual_review": {
       const marker = markers.find((item) => item.id === entry.markerEntryId);
       return (
@@ -156,7 +214,12 @@ export function ConversationEntry({
     >
       <div className={styles.entryMeta}>
         <span>
-          You{entry.kind === "manual_review" ? " · Manual review" : ""}
+          You
+          {entry.kind === "manual_review"
+            ? " · Manual review"
+            : entry.kind === "evidence_review"
+              ? " · Evidence review"
+              : ""}
         </span>
         <time dateTime={entry.createdAt}>{timestamp} UTC</time>
       </div>

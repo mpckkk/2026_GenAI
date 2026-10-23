@@ -1,4 +1,5 @@
 import "server-only";
+import { PublishedMarkerReference } from "@/app/adapters/marker-reference.mjs";
 import { database } from "@/app/adapters/database";
 import { keycloakConfiguration } from "@/app/adapters/auth";
 import { logFailure } from "@/app/core/errors";
@@ -24,6 +25,18 @@ export async function foundationHealth(): Promise<ServiceHealth[]> {
           );
           await database().query(
             "SELECT worker_id, status, detail, heartbeat_at FROM agent_workers LIMIT 0",
+          );
+        },
+      },
+      {
+        name: "Marker reference",
+        check: async () => {
+          await new PublishedMarkerReference().health();
+          await database().query(
+            "SELECT id, project_id, owner_id, turn_id, marker_entry_id, result FROM marker_evidence_runs LIMIT 0",
+          );
+          await database().query(
+            "SELECT evidence_run_id FROM research_entries LIMIT 0",
           );
         },
       },

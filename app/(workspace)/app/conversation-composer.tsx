@@ -227,7 +227,8 @@ export function ConversationComposer({
     evidenceText: "Supporting evidence",
     notes: mode === "context" ? "Sample notes" : "Review notes",
   };
-  const savedLabels: Record<Mode, string> = {
+  const savedLabels: Record<ResearchEntry["kind"], string> = {
+    evidence_review: "Evidence review saved.",
     message: "Note saved to this experiment.",
     context:
       "Sample context saved. Earlier marker sets keep their original context.",
@@ -360,6 +361,7 @@ export function ConversationComposer({
                   </label>
                   <input
                     id="context-genome"
+                    list="reference-genomes"
                     value={currentContextDraft.genomeVersion ?? ""}
                     onChange={(event) =>
                       updateContext("genomeVersion", event.target.value)
@@ -374,6 +376,7 @@ export function ConversationComposer({
                   </label>
                   <input
                     id="context-namespace"
+                    list="reference-namespaces"
                     value={currentContextDraft.geneIdNamespace ?? ""}
                     onChange={(event) =>
                       updateContext("geneIdNamespace", event.target.value)
@@ -383,6 +386,17 @@ export function ConversationComposer({
                   />
                 </div>
               </div>
+              <datalist id="reference-genomes">
+                <option value="Glycine_max_v2.1.52" />
+              </datalist>
+              <datalist id="reference-namespaces">
+                <option value="Glyma" />
+              </datalist>
+              <p className={styles.fieldHint}>
+                The current root/nodule marker reference uses
+                Glycine_max_v2.1.52 and Glyma IDs. Enter your actual dataset
+                version; leave it blank if unknown.
+              </p>
               <div className={styles.field}>
                 <label htmlFor="context-notes">
                   Sample notes <span>(optional)</span>

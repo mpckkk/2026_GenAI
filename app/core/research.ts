@@ -1,3 +1,4 @@
+import type { MarkerEvidenceRun, EvidenceReviewDecision } from "./evidence";
 import type { PlantContext } from "./plants";
 
 export type ResearchCommand =
@@ -9,6 +10,14 @@ export type ResearchCommand =
       label: string | null;
       markersRaw: string;
       contextEntryId: string | null;
+    }
+  | {
+      kind: "evidence_review";
+      evidenceRunId: string;
+      markerEntryId: string;
+      decision: EvidenceReviewDecision;
+      cellType: string | null;
+      notes: string;
     }
   | {
       kind: "manual_review";
@@ -24,7 +33,10 @@ export interface AppendResearchInput {
 }
 
 export type ResearchPayload =
-  | Exclude<ResearchCommand, { kind: "markers" }>
+  | Exclude<ResearchCommand, { kind: "markers" | "evidence_review" }>
+  | (Extract<ResearchCommand, { kind: "evidence_review" }> & {
+      evidence: MarkerEvidenceRun;
+    })
   | (Extract<ResearchCommand, { kind: "markers" }> & {
       genes: string[];
       context: PlantContext | null;
@@ -74,7 +86,8 @@ export interface ResearchRepository {
     input: {
       submissionId: string;
       fingerprint: string;
-      payload: ResearchPayload;
+      payload:
+        ResearchPayload | Extract<ResearchCommand, { kind: "evidence_review" }>;
     },
   ): Promise<ResearchEntry>;
 }

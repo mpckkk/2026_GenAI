@@ -24,7 +24,7 @@ export class OpenShellCodex {
   constructor() {
     this.bin = process.env.OPENSHELL_BIN || "openshell";
     this.image =
-      process.env.CELLORAS_AGENT_IMAGE || "celloras-codex:0.163.0-ui1";
+      process.env.CELLORAS_AGENT_IMAGE || "celloras-codex:0.163.0-evidence1";
     this.provider = process.env.CELLORAS_AGENT_PROVIDER || "celloras-codex";
     this.model = process.env.CELLORAS_AGENT_MODEL || "";
     this.metadataPath = process.env.CELLORAS_AGENT_METADATA_FILE;

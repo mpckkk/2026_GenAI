@@ -3,7 +3,10 @@
   "additionalProperties": false,
   "required": ["version", "blocks"],
   "properties": {
-    "version": { "type": "integer", "enum": [1] },
+    "version": {
+      "type": "integer",
+      "enum": [1]
+    },
     "blocks": {
       "type": "array",
       "minItems": 1,
@@ -15,8 +18,15 @@
             "additionalProperties": false,
             "required": ["type", "text"],
             "properties": {
-              "type": { "type": "string", "enum": ["markdown"] },
-              "text": { "type": "string", "minLength": 1, "maxLength": 64000 }
+              "type": {
+                "type": "string",
+                "enum": ["markdown"]
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64000
+              }
             }
           },
           {
@@ -26,7 +36,12 @@
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["sample_context", "marker_set"]
+                "enum": [
+                  "sample_context",
+                  "marker_set",
+                  "marker_evidence",
+                  "lookup_marker_evidence"
+                ]
               },
               "entryId": {
                 "type": "string",

@@ -88,6 +88,10 @@ function failedTurnMessage(code: string | null) {
       return "The agent could not complete this response. Your message is saved; you can retry.";
     case "agent_output_limit":
       return "The response reached its output limit. Try a shorter or more focused request.";
+    case "marker_reference_unavailable":
+      return "The published marker reference is unavailable. No evidence was substituted; check service status.";
+    case "agent_tool_limit":
+      return "The agent requested more than one lookup. Please retry for one marker set.";
     case "agent_response_invalid":
       return "The agent returned a response format we could not display. Please retry.";
     case "agent_card_unavailable":
@@ -131,6 +135,7 @@ export function AgentChat({
   plants: PlantDefinition[];
 }) {
   const endpoint = `/api/projects/${projectId}/chat`;
+  const [reviews, setReviews] = useState(initial.evidenceReviews);
   const [turns, setTurns] = useState(initial.turns);
   const [runtime, setRuntime] = useState(initial.runtime);
   const [nextBefore, setNextBefore] = useState(initial.nextBefore);
@@ -152,6 +157,7 @@ export function AgentChat({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const followingRef = useRef(true);
+  const linkedTurnRef = useRef<string | null>(null);
   const prependedHeightRef = useRef<number | null>(null);
   const activeTurn = turns.find(isActive);
   const canSend =
@@ -188,6 +194,7 @@ export function AgentChat({
       if (!mountedRef.current) return;
       setTurns((current) => mergeTurns(current, workspace.turns));
       setRuntime(workspace.runtime);
+      setReviews((current) => ({ ...current, ...workspace.evidenceReviews }));
       if (!loadedOlderRef.current) setNextBefore(workspace.nextBefore);
       setPollError(null);
     } catch (error) {
@@ -214,6 +221,17 @@ export function AgentChat({
   }, [refresh]);
 
   useLayoutEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (id.startsWith("turn-")) {
+      const target = document.getElementById(id);
+      if (target) {
+        followingRef.current = false;
+        linkedTurnRef.current = id;
+      }
+    }
+  }, []);
+
+  useLayoutEffect(() => {
     const scroller = scrollRef.current;
     if (!scroller) return;
     if (prependedHeightRef.current !== null) {
@@ -230,8 +248,15 @@ export function AgentChat({
     // Compact mode initially hides the chat while the media query hydrates.
     // Follow new messages only after the pane has a real viewport size.
     const observer = new ResizeObserver(() => {
-      if (followingRef.current && scroller.clientHeight > 0)
+      if (scroller.clientHeight <= 0) return;
+      if (linkedTurnRef.current) {
+        document
+          .getElementById(linkedTurnRef.current)
+          ?.scrollIntoView({ block: "start" });
+        linkedTurnRef.current = null;
+      } else if (followingRef.current) {
         scroller.scrollTop = scroller.scrollHeight;
+      }
     });
     observer.observe(scroller);
     return () => observer.disconnect();
@@ -362,6 +387,7 @@ export function AgentChat({
       followingRef.current = false;
       setTurns((current) => mergeTurns(current, workspace.turns));
       setNextBefore(workspace.nextBefore);
+      setReviews((current) => ({ ...current, ...workspace.evidenceReviews }));
     } catch (error) {
       setHistoryError(
         error instanceof Error
@@ -380,8 +406,9 @@ export function AgentChat({
       icon: "flask" as const,
     },
     {
-      label: "Discuss marker genes",
-      prompt: "How should I assess a soybean cluster’s marker genes?",
+      label: "Find marker evidence",
+      prompt:
+        "Look up published evidence for my saved soybean markers. Show candidate cell types and the supporting genes, or explain what context is missing.",
       icon: "leaf" as const,
     },
     {
@@ -461,6 +488,7 @@ export function AgentChat({
               {turns.map((turn) => (
                 <li
                   key={turn.id}
+                  id={`turn-${turn.id}`}
                   data-chat-turn-id={turn.id}
                   data-chat-status={turn.status}
                 >
@@ -485,6 +513,7 @@ export function AgentChat({
                         {turn.responseDocument ? (
                           <AgentResponse
                             document={turn.responseDocument}
+                            reviews={reviews}
                             plants={plants}
                             onAsk={askAboutCard}
                             actionsDisabled={
@@ -667,7 +696,8 @@ export function AgentChat({
             : "Enter to send · Shift + Enter for a new line"}
         </p>
         <p className={styles.chatScope}>
-          Reference lookup and cell annotation tools are not connected yet.
+          Published marker lookup: soybean root and nodule. Results need
+          researcher review.
         </p>
       </div>
     </section>

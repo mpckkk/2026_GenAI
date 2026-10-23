@@ -21,6 +21,7 @@ export interface ChatRuntime {
 }
 
 export interface ChatWorkspace {
+  evidenceReviews: Record<string, import("./evidence").EvidenceReviewReceipt>;
   turns: ChatTurn[];
   nextBefore: string | null;
   runtime: ChatRuntime;

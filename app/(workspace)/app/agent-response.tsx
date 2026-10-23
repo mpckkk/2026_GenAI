@@ -8,6 +8,8 @@ import type { PlantDefinition } from "@/app/core/plants";
 import { MarkdownMessage } from "@/app/components/markdown-message";
 import { ContextDetails, ResearchEntryContent } from "./conversation-entry";
 import { WorkspaceIcon, type IconName } from "./workspace-icons";
+import type { EvidenceReviewReceipt } from "@/app/core/evidence";
+import { EvidenceCard } from "./evidence-card";
 import styles from "./agent-response.module.css";
 
 // New visual types join this finite registry after their contracts/tools exist.
@@ -21,11 +23,13 @@ const cards: Record<
 
 export function AgentResponse({
   document,
+  reviews,
   plants,
   onAsk,
   actionsDisabled,
 }: {
   document: ResponseDocument;
+  reviews: Record<string, EvidenceReviewReceipt>;
   plants: PlantDefinition[];
   onAsk: (question: string) => void;
   actionsDisabled: boolean;
@@ -43,6 +47,16 @@ export function AgentResponse({
         if (block.type === "markdown") {
           return <MarkdownMessage key={index}>{block.text}</MarkdownMessage>;
         }
+        if (block.type === "marker_evidence")
+          return (
+            <EvidenceCard
+              key={block.result.id}
+              result={block.result}
+              review={reviews[block.result.id]}
+              onAsk={onAsk}
+              actionsDisabled={actionsDisabled}
+            />
+          );
         const definition = cards[block.type];
         if (!definition)
           return (

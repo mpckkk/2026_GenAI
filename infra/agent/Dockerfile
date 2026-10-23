@@ -16,5 +16,8 @@ COPY infra/agent/ ./infra/agent/
 COPY app/adapters/agent-openshell.mjs ./app/adapters/agent-openshell.mjs
 COPY app/core/agent-response.mjs ./app/core/agent-response.mjs
 COPY app/services/agent-response.mjs ./app/services/agent-response.mjs
+COPY app/adapters/marker-reference.mjs ./app/adapters/marker-reference.mjs
+COPY app/services/marker-evidence.mjs ./app/services/marker-evidence.mjs
+COPY data/references/ ./data/references/
 USER node
 CMD ["node", "infra/agent/worker.mjs"]

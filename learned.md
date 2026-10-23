@@ -1,5 +1,10 @@
 # Engineering notes
 
+- Verify the source's actual annotation build and marker method before importing facts. A paper may use different builds for transcriptomics and proteomics. A blocked supplementary workbook and downloadable raw counts do not justify claiming a marker-table integration.
+- Preserve malformed source identifiers as documented exclusions instead of silently fixing them. Keep unsupported symbols separate from valid gene IDs absent from a limited reference, and keep shared-marker ambiguity visible.
+- A tool result and a researcher's decision are different records. Persist the canonical evidence/input/source snapshot first, then resolve an explicit review against that completed owned run. Reject client-supplied evidence and candidate labels absent from the actual result.
+- Evidence links need a chat pagination cursor as well as a turn anchor. On mobile, defer anchor scrolling until the chat viewport is visible after hydration, just as following the newest message waits for a measurable viewport.
+
 - Let model output select predefined card types and record IDs; resolve values from canonical owned records on the server. Validate both the offered catalog and database ownership, and persist the resolved snapshot so later context changes cannot rewrite an earlier answer.
 - Codex's output schema applies to the final assistant message. Parse the last completed message after a successful turn, not concatenated intermediate commentary. Ship schema changes with an explicit workload image revision so cached runtimes and workers cannot silently disagree.
 - Reusing a full research table inside chat can make a mobile card taller than the conversation viewport. Show compact sample facts first and put full metadata behind an expandable section.

@@ -25,21 +25,33 @@ The append-only submission identity is `(project_id, submission_id)`. Identical 
 
 `infra/agent/worker.mjs` claims queued rows with `FOR UPDATE SKIP LOCKED`. It freezes bounded completed chat history, recent owned research entries and the independently queried latest sample context. Context is retained even when more than 30 subsequent research records exist. Missing or truncated history is disclosed to the agent as unknown; saved research content is treated as data, not trusted instructions.
 
-`app/adapters/agent-openshell.mjs` is the execution adapter. Its current `OpenShellCodex` implementation creates a per-turn sandbox, executes the pinned Codex CLI and accepts a response only after a completed turn event. `run-codex.mjs` disables shell, browser, external app and other tool capabilities for this conversational increment. No atlas query, dataset analysis or scientific scoring is implemented.
+`app/adapters/agent-openshell.mjs` is the execution adapter. Its current `OpenShellCodex` implementation creates a per-turn sandbox, executes the pinned Codex CLI and accepts a response only after a completed turn event. `run-codex.mjs` disables shell, browser, external app and other tool capabilities for this conversational increment. Scientific tools are brokered through the typed response protocol. Published root/nodule marker lookup is connected; complete atlas retrieval, matrix analysis and calibrated annotation remain pending.
 
 The worker records real progress and terminal state. Queued cancellation is immediate; running cancellation signals the adapter and removes the exact turn sandbox. Interrupted execution becomes an explicit failure, without automatically repeating the model call. Cleanup is retried separately, and an experiment stays blocked until outstanding sandbox deletion is confirmed. These boundaries allow other execution implementations later; alternative CLIs, direct APIs, OpenRouter and Vercel routes are not currently working chat adapters.
 
 ## Visual response contract
 
-`app/core/agent-response.schema.json` defines v1 model output: an ordered list of Markdown blocks and `sample_context` / `marker_set` references. `agent-response.d.mts` supplies provider-neutral types; `agent-response.mjs` strictly checks object keys, versions, supported types, UUIDs, duplicate references, block count and text limits. The first runtime uses Codex's [schema-constrained output](https://learn.chatgpt.com/docs/non-interactive-mode); future CLI/API adapters return the same `AgentResponse` contract.
+`app/core/agent-response.schema.json` defines v1 model output: an ordered list of Markdown blocks and `sample_context`, `marker_set`, and `marker_evidence` references, plus an explicit `lookup_marker_evidence` request. `agent-response.d.mts` supplies provider-neutral types; `agent-response.mjs` strictly checks object keys, versions, supported types, UUIDs, duplicate references, block count and text limits. The first runtime uses Codex's [schema-constrained output](https://learn.chatgpt.com/docs/non-interactive-mode); future CLI/API adapters return the same `AgentResponse` contract.
 
 The worker includes exact IDs in bounded research context and offers an explicit card catalog. Models select only a type and entry ID. `app/services/agent-response.mjs` checks that selection against the catalog and independently queries canonical research rows with project, author and owner predicates. Wrong-kind, absent, foreign-project and foreign-owner references fail with `agent_card_unavailable`; malformed output fails with `agent_response_invalid`. No partial card output or invented data is substituted.
 
 Resolved `ResponseDocument` blocks contain saved research snapshots and source metadata. The terminal worker update commits the document and its Markdown text projection atomically; cancellation and failure store neither. Migration 004 adds nullable `response_document`, preserving old replies. Existing null-document rows use their original Markdown; new documents use the finite component registry in `agent-response.tsx`. The text projection keeps older readers usable.
 
-Cards reuse the research components and configured plant catalog. Compact sample fields and expandable metadata, marker chips/original input and source details are predefined React UI. Card follow-up actions append an editable question to the composer without sending or discarding existing text; actions are disabled during an uncertain submission. Research content remains researcher-authored and unverified. The bounded catalog includes recent records and the latest sample, not every historical record. Scientific plots, evidence and annotation cards require real tools and new validated block contracts before they join the registry.
+Cards reuse the research components and configured plant catalog. Compact sample fields and expandable metadata, marker chips/original input and source details are predefined React UI. Card follow-up actions append an editable question to the composer without sending or discarding existing text; actions are disabled during an uncertain submission. Research content remains researcher-authored and unverified. The bounded catalog includes recent records and the latest sample, not every historical record. The evidence card uses a persisted lookup result. Scientific plots and calibrated annotation cards still require their own real tools and contracts.
 
-Workload revision `celloras-codex:0.163.0-ui1` includes the canonical schema. Upgrade the workload and worker together after migration; the new adapter rejects old free-text output. Stop the worker before changing its image, retain the additive column on rollback, and use the prior worker with its matching prior workload if reverting execution.
+Workload revision `celloras-codex:0.163.0-evidence1` includes the canonical schema. Upgrade the workload and worker together after migration; the new adapter rejects old free-text output. Stop the worker before changing its image, retain the additive column on rollback, and use the prior worker with its matching prior workload if reverting execution.
+
+## Published marker evidence and review
+
+`MarkerEvidenceSource` is the provider-neutral contract. The worker composition root injects `PublishedMarkerReference` into `runMarkerEvidence`; the adapter loads a versioned factual reference asset. The app checks the same asset in readiness. [Reference documentation](soybean-reference.md) gives coverage, provenance, matching rules and validation limits.
+
+A model can request one `lookup_marker_evidence` operation for an offered saved marker ID. The worker checks the offered catalog and independently joins project ownership, researcher authorship and the active owned turn before looking up anything. The tool uses the marker's immutable attached context. It stores the canonical input and result in `marker_evidence_runs`, then invokes the runtime again with the actual result. A second tool request fails with `agent_tool_limit`. The final reply always includes the completed lookup's inspectable evidence card. Each inference execution removes its turn sandbox before another execution starts; heartbeats/cancellation continue across the entire turn.
+
+Tool start/completion logs contain turn/run IDs, status and candidate counts, not genes, notes or provider credentials. A source failure is explicit. Completed lookup snapshots can remain as audits for failed/cancelled turns, but reviews require a completed owned originating turn. No interrupted inference is automatically replayed.
+
+Migration 005 adds evidence runs and an `evidence_review` research kind with same-project references. `PostgresResearch` revalidates ownership, completion, marker linkage and returned candidate names inside the append transaction. The browser cannot supply the evidence snapshot; the repository copies it from the run. Existing submission idempotency/conflict handling applies. Reviews retain the exact input, source version/hash and result. Chat history returns latest review receipts for the evidence cards on that page, independently of research-history pagination. Review links reopen the cited chat position, including older evidence turns.
+
+Prior text and sample/marker documents remain readable. Deploy migration, app, worker and the `evidence1` workload together. After evidence reviews exist, roll forward rather than booting an older app that cannot render the new research kind. Do not remove the additive tables/columns to undo a deployment.
 
 ## Runtime and credential boundary
 
@@ -51,7 +63,7 @@ OpenShell v0.1.5 and Codex CLI 0.163.0 are pinned. A real direct response has be
 
 ## Structured research
 
-Each owned project is shown as an experiment. Existing project IDs and APIs remain compatible. `ResearchCommand` is a discriminated union of researcher messages, plant/sample contexts, marker submissions and manual reviews. Fixed React components render those records. Agent replies currently use text; arbitrary generated UI is not executed.
+Each owned project is shown as an experiment. Existing project IDs and APIs remain compatible. `ResearchCommand` is a discriminated union of researcher messages, plant/sample contexts, marker submissions, manual reviews and evidence-linked reviews. Fixed React components render those records. Agent replies use Markdown and finite predefined cards; arbitrary generated UI is not executed.
 
 `ResearchService` validates plant context through `PlantCatalog`, tokenizes markers without changing original text/case and resolves references. `PostgresResearch` checks ownership, locks the project, validates submission fingerprints and expected reference kinds, then commits. Identical retries return the original entry; changed content conflicts. Same-project foreign keys prevent cross-experiment references.
 
@@ -69,18 +81,19 @@ Local browser issuer URLs use `localhost:8180`; the app rewrites only transport 
 
 ## Integration ledger
 
-| Boundary               | Implemented                                                       | Remaining                                                     |
-| ---------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------- |
-| Keycloak               | Local registration, login/logout and owned sessions               | SMTP, production deployment and revocation policy             |
-| PostgreSQL             | Projects, research records, chat queue, identities and migrations | Retention, backups, production operations                     |
-| General chat           | Durable queue, worker, OpenShell/Codex adapter                    | Broader deployment acceptance, additional runtime adapters    |
-| Plant catalog          | Generic validated configuration, soybean enabled                  | Reviewed additions with suitable references and evaluation    |
-| Zetaris                | Reference interface and explicit pending adapter                  | Real sources, provenance and queries                          |
-| Nemotron / Vercel      | Model interface and explicit pending adapter                      | Actual routing, credentials and live acceptance               |
-| H-MEM                  | Memory interface and explicit pending adapter                     | Retrieval, corrections and provenance                         |
-| NeMo Files             | Asset interface and explicit pending adapter                      | Authorized byte storage and durability                        |
-| NVIDIA Intake / Studio | Trace interface and explicit pending adapter                      | Real OTLP export and visible traces                           |
-| Scientific annotation  | Context-bearing interfaces and ownership gate                     | Evidence-backed annotation, conflicts, scoring and evaluation |
+| Boundary               | Implemented                                                              | Remaining                                                             |
+| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| Keycloak               | Local registration, login/logout and owned sessions                      | SMTP, production deployment and revocation policy                     |
+| PostgreSQL             | Projects, research records, chat queue, identities and migrations        | Retention, backups, production operations                             |
+| General chat           | Durable queue, worker, OpenShell/Codex adapter                           | Broader deployment acceptance, additional runtime adapters            |
+| Plant catalog          | Generic validated configuration, soybean enabled                         | Reviewed additions with suitable references and evaluation            |
+| Marker evidence        | Versioned published root/nodule source, exact matches and linked reviews | Broader references, expert/held-out evaluation, calibrated annotation |
+| Zetaris                | Reference interface and explicit pending adapter                         | Real sources, provenance and queries                                  |
+| Nemotron / Vercel      | Model interface and explicit pending adapter                             | Actual routing, credentials and live acceptance                       |
+| H-MEM                  | Memory interface and explicit pending adapter                            | Retrieval, corrections and provenance                                 |
+| NeMo Files             | Asset interface and explicit pending adapter                             | Authorized byte storage and durability                                |
+| NVIDIA Intake / Studio | Trace interface and explicit pending adapter                             | Real OTLP export and visible traces                                   |
+| Scientific annotation  | Context-bearing interfaces and ownership gate                            | Evidence-backed annotation, conflicts, scoring and evaluation         |
 
 The legacy `/api/chat` is the scientific annotation endpoint and still returns `503 INTEGRATION_PENDING`. It is separate from the implemented experiment chat queue. Pending adapters never fabricate a result or silently switch providers. Large files remain a future `Assets` responsibility; application records and execution state stay in PostgreSQL.
 
