@@ -1,5 +1,7 @@
 # Celloras demo
 
+The local Keycloak login can show a **Demo login** panel with email, password and **Use demo credentials**, which fills the regular form. Set `CELLORAS_DEMO_EMAIL` and `CELLORAS_DEMO_PASSWORD` for an existing demo account in the ignored `.env`, then run `docker compose up -d --no-deps keycloak`. These values are intentionally public on that login page. Leaving either blank hides the panel; registration stays unchanged. This does not create an account or bypass authentication.
+
 ## Guided real-data journey
 
 Sign in and choose **Explore soybean root demo** on the experiments page. It creates or resumes your own saved workspace. The source is the GSE270392 root RNA dataset: 7,496 nuclei, 40,127 genes and 12 original source clusters. Import it once using [the dataset guide](dataset-import.md).

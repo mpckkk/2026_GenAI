@@ -222,6 +222,78 @@ a {
   font-size: 13px;
 }
 
+.celloras-demo {
+  margin-bottom: 24px;
+  padding: 16px;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #333;
+  text-align: left;
+}
+
+.celloras-demo h2 {
+  color: #111;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.celloras-demo p {
+  margin-top: 4px;
+  color: #666;
+  font-size: 13px;
+}
+
+.celloras-demo dl {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0;
+  font-size: 13px;
+}
+
+.celloras-demo dl > div {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.celloras-demo dt {
+  font-weight: 600;
+}
+
+.celloras-demo dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.celloras-demo code {
+  color: #111;
+  font-size: 13px;
+}
+
+.celloras-demo-button {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #111;
+  border-radius: 8px;
+  background: #fff;
+  color: #111;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.celloras-demo-button:hover {
+  background: #e9e9e9;
+}
+
+.celloras-demo-button:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 3px;
+}
+
 .pf-v5-c-helper-text,
 .pf-v5-c-alert {
   font-size: 13px;

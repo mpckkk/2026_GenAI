@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.12 — 2026-10-23
+
+- Added an optional demo login panel beneath the Keycloak form, with visible credentials and a button to fill the existing form.
+
 ## 0.1.11 — 2026-10-23
 
 - Added a guided real soybean root demo with contextual next actions, interactive UMAP/cluster selection, descriptive marker rankings, expression overlays and dot plots.

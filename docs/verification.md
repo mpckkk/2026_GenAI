@@ -2,6 +2,12 @@
 
 Status is updated from actual runs, not inferred from configuration.
 
+## Demo login panel — 2026-10-23
+
+- Recreated the local Keycloak container with the existing demo account configured through ignored `.env`. The login footer displays the credentials and a **Use demo credentials** button; registration contains no demo panel.
+- A real Chrome check verified desktop and 390px mobile layout without horizontal overflow, filled both fields through the button, confirmed focus moved to **Log in**, then signed in successfully to the experiments page through Keycloak. Screenshots remain local in `.artifacts/demo-login/`.
+- The existing auth-screen browser check passed, including password visibility, login validation, spacious registration without name fields and return navigation. Targeted script lint and Git whitespace checks passed.
+
 ## Guided real soybean data and literature — 2026-10-23
 
 - Imported the actual GEO root RNA object with source checksum verification: 7,496 nuclei, 40,127 RNA genes, 12 original clusters and 16,620,589 raw counts. Original RNA/SCT axes, matrices, metadata and published PCA/Harmony/UMAP are preserved. The artifact version is `02f079834ad067c47b77e1e34c86501d783fa78fc1797c7aa7f8ab23c13bbda5`.

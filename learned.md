@@ -1,5 +1,7 @@
 # Engineering notes
 
+- Keep public demo sign-in hints in Keycloak's theme footer, configured for the existing account. Fill the real form and keep authentication unchanged; render the panel only on login, not registration. Use ignored local configuration for the displayed values.
+
 - A near-bottom autoscroll threshold can exceed the entire scroll range. With 56px of overflow, an 80px threshold treated scrolling to the top as following the latest message. Use only a pixel-rounding tolerance at the actual bottom and preserve scroll during polling.
 
 - Inspect the actual expression layer: this root Seurat object stores raw counts in both RNA.counts and RNA.data. Derive and name normalization explicitly; preserve SCT on its own feature axis. Compare values against an independent R calculation before plotting.

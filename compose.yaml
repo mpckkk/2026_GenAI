@@ -97,6 +97,8 @@ services:
       KC_HEALTH_ENABLED: "true"
       KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET:?Required}
       CELLORAS_APP_URL: http://localhost:3100
+      CELLORAS_DEMO_EMAIL: ${CELLORAS_DEMO_EMAIL:-}
+      CELLORAS_DEMO_PASSWORD: ${CELLORAS_DEMO_PASSWORD:-}
     ports: ["127.0.0.1:8180:8080"]
     volumes:
       - ./infra/keycloak/realm.json:/opt/keycloak/data/import/celloras-realm.json:ro
