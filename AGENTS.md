@@ -1,0 +1,12 @@
+# Celloras
+
+- Work on the single shared `celloras.com` branch. No per-feature branches.
+- Use Amigospace as durable memory when connected. Resume first; reopen exact pages before updating, and confirm committed results.
+- Canonical plan: https://space.heyamigo.org/items/6223ea67-f6b0-4dfd-b8f5-0325f391d4e0
+- Keep domain contracts in `app/core`, provider code in `app/adapters` and model calls in `app/gateway`. Wire dependencies in `app/bootstrap.ts`.
+- Enforce ownership at every server boundary before data access, model calls, memory or file operations.
+- Never fabricate annotation results, silently bypass authentication, or replace an unavailable provider with an automatic no-op.
+- H-MEM is a specification to implement, not an external service.
+- Use real browser/service checks. Record observed results and limitations in `docs/verification.md`, with lessons in `learned.md`.
+- Never commit `.env`, provider credentials, session data or test browser traces. Keycloak owns credential forms.
+- Compose is local development only. Do not prune Docker volumes or unrelated user data.

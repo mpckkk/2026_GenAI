@@ -1,0 +1,36 @@
+{
+  "realm": "celloras",
+  "displayName": "Celloras",
+  "enabled": true,
+  "registrationAllowed": true,
+  "registrationEmailAsUsername": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": false,
+  "verifyEmail": false,
+  "rememberMe": false,
+  "bruteForceProtected": true,
+  "passwordPolicy": "length(12)",
+  "ssoSessionIdleTimeout": 3600,
+  "ssoSessionMaxLifespan": 3600,
+  "clients": [
+    {
+      "clientId": "celloras",
+      "name": "Celloras workspace",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "secret": "${KEYCLOAK_CLIENT_SECRET}",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": ["http://localhost:3100/api/auth/callback"],
+      "webOrigins": ["http://localhost:3100"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:3100/"
+      },
+      "defaultClientScopes": ["web-origins", "acr", "profile", "email", "roles"]
+    }
+  ]
+}
