@@ -1,9 +1,14 @@
 # Changelog
 
-## 0.1.13 — 2026-10-23
+## 0.1.14 — 2026-10-23
 
 - Redesigned the landing with green accents, original botanical artwork and an interactive preview of all 7,496 published root nuclei.
 - Included public images and source-data assets in the standalone deployment.
+
+## 0.1.13 — 2026-10-23
+
+- Added `compose.prod.yaml` for the public deployment on celloras.com: production Keycloak on auth.celloras.com behind the proxy, HTTPS app URLs, no host port bindings.
+- Keycloak client redirect, web origin and logout URLs now follow `CELLORAS_APP_URL` instead of a fixed localhost URL.
 
 ## 0.1.12 — 2026-10-23
 

@@ -1,0 +1,25 @@
+# Production overrides for the public deployment on celloras.com.
+# Run with: docker compose -f compose.yaml -f compose.prod.yaml up -d --build
+# TLS terminates at the reverse proxy (Traefik), which routes
+# celloras.com -> app:3100 and auth.celloras.com -> keycloak:8080.
+services:
+  postgres:
+    restart: unless-stopped
+    ports: !reset []
+  keycloak:
+    command: ["start", "--import-realm"]
+    restart: unless-stopped
+    environment:
+      KC_HOSTNAME: https://auth.celloras.com
+      KC_HTTP_ENABLED: "true"
+      KC_PROXY_HEADERS: xforwarded
+      CELLORAS_APP_URL: https://celloras.com
+    ports: !reset []
+  app:
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      APP_URL: https://celloras.com
+      KEYCLOAK_ISSUER: https://auth.celloras.com/realms/celloras
+      KEYCLOAK_INTERNAL_ISSUER: https://auth.celloras.com/realms/celloras
+    ports: !reset []

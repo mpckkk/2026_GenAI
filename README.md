@@ -109,6 +109,8 @@ See [architecture](docs/architecture.md), [configuration](docs/configuration.md)
 
 ## Deployment status
 
+Public deployment: https://celloras.com (login on https://auth.celloras.com), run by Dokploy from this branch with `compose.yaml` + `compose.prod.yaml`. A new commit on `celloras.com` is deployed automatically within about a minute.
+
 Compose is local development configuration, including Keycloak `start-dev`. A Linux server needs deployment overrides for public domains, TLS, production Keycloak, secret delivery, SMTP, backups and retention. This repository does not yet establish a production deployment. Local email verification/password recovery are disabled, and app sessions expire after one hour without centralized backchannel revocation.
 
 Realm import creates missing realms but does not update existing ones. Apply future auth changes through explicit configuration/migrations. SQL migrations are checksummed; add a migration instead of editing an applied file.
