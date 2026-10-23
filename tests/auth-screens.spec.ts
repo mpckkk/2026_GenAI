@@ -8,6 +8,16 @@ test("branded auth screens, mobile layout and real validation", async ({
     page.getByRole("heading", { name: "Welcome back" }),
   ).toBeVisible();
   await expect(page.getByLabel("Email address", { exact: true })).toBeVisible();
+  const logoBackground = await page
+    .locator("#kc-header-wrapper")
+    .evaluate((element) => getComputedStyle(element).backgroundImage);
+  const logoPath = logoBackground.match(/url\(["']?([^"')]+)["']?\)/)?.[1];
+  expect(logoPath).toBeTruthy();
+  const logoResponse = await page.request.get(
+    new URL(logoPath!, page.url()).href,
+  );
+  expect(logoResponse.status()).toBe(200);
+  expect(logoResponse.headers()["content-type"]).toContain("image/png");
   await expect(
     page.getByRole("link", { name: "Back to Celloras" }),
   ).toHaveAttribute("href", "http://localhost:3100");

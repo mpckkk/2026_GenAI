@@ -15,6 +15,9 @@ export async function foundationHealth(): Promise<ServiceHealth[]> {
         name: "PostgreSQL",
         check: async () => {
           await database().query("SELECT id FROM projects LIMIT 0");
+          await database().query(
+            "SELECT id, project_id, author_id, submission_id, fingerprint, position, kind, payload, reference_entry_id, created_at FROM research_entries LIMIT 0",
+          );
         },
       },
       {

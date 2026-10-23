@@ -7,6 +7,8 @@
   },
   "scripts": {
     "dev": "next dev --port 3100",
+    "brand:sync": "node scripts/sync-brand-assets.mjs",
+    "prebuild": "npm run brand:sync",
     "build": "next build",
     "start": "next start --port 3100",
     "lint": "eslint .",
@@ -16,7 +18,8 @@
     "db:migrate": "node --env-file=.env scripts/migrate.mjs",
     "setup": "node scripts/setup.mjs",
     "test:e2e": "playwright test",
-    "auth:configure": "node --env-file=.env scripts/keycloak-configure.mjs"
+    "auth:configure": "node --env-file=.env scripts/keycloak-configure.mjs",
+    "verify:storage": "node --env-file=.env scripts/verify-research-storage.mjs"
   },
   "dependencies": {
     "next": "16.4.2",

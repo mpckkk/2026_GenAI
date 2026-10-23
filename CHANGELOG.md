@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.4 — 2026-10-23
+
+- Added a persistent conversational workspace for researcher notes, plant/sample context, marker sets and manual annotation reviews.
+- Added a configurable plant catalog and generic biological-context contracts, with soybean enabled first.
+- Added owner-scoped research storage, immutable context snapshots, linked reviews, idempotent submissions and paginated history through an additive migration.
+- Added authenticated research APIs and predefined UI elements with truthful save/error states. Scientific agent replies and reference integrations remain pending.
+- Kept older marker sets reviewable through history and added explicit new-entry recovery after a committed save loses its response.
+- Applied the actual logo and black/white design kit across landing, workspace and Keycloak, preserving the original image bytes.
+- Documented configuration ownership and added real migration-rehearsal and browser/service acceptance checks.
+
 ## 0.1.3 — 2026-10-23
 
 - Added the supplied Celloras logo to the README and preserved the original PNG bytes in `docs/assets/celloras-logo.png`.

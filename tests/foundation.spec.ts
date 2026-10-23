@@ -7,18 +7,25 @@ test("public landing, mobile layout and anonymous access", async ({
 }, testInfo) => {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: /Cell identity/ }),
+    page.getByRole("heading", {
+      name: "Your single-cell research, in conversation.",
+    }),
   ).toBeVisible();
   await expect(
-    page.getByText("Illustrative layout · not a scientific result"),
+    page.getByText("Example layout; no analysis has run."),
   ).toBeVisible();
+  await page
+    .getByRole("img", { name: "Celloras", exact: true })
+    .evaluateAll((images) =>
+      Promise.all(images.map((image) => (image as HTMLImageElement).decode())),
+    );
   await page.screenshot({
     path: testInfo.outputPath("landing-desktop.png"),
     fullPage: true,
   });
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(
-    page.getByRole("link", { name: /Start a research project/ }),
+    page.getByRole("link", { name: /Start an experiment/ }),
   ).toBeVisible();
   const overflow = await page.evaluate(() =>
     [...document.querySelectorAll("body *")]
@@ -69,15 +76,17 @@ test("real Keycloak accounts, project ownership and logout", async ({
   const email = `celloras-a-${suffix}@example.test`;
   const password = randomBytes(24).toString("base64url");
   await register(page, email, password);
-  await page.getByLabel("Project name").fill(`Soybean ${suffix}`);
-  await page.getByRole("button", { name: /Create project/ }).click();
+  await page.getByLabel("Experiment name").fill(`Soybean ${suffix}`);
+  await page.getByRole("button", { name: /Create experiment/ }).click();
   await expect(
     page.getByRole("heading", { name: `Soybean ${suffix}` }),
   ).toBeVisible();
   const projectUrl = page.url();
   const projectId = projectUrl.split("/").at(-1)!;
   await page.reload();
-  await expect(page.getByText("Project saved", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("Experiment saved", { exact: true }),
+  ).toBeVisible();
   await page.screenshot({
     path: testInfo.outputPath("project.png"),
     fullPage: true,

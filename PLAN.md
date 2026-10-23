@@ -1,5 +1,92 @@
 # Initial Celloras structure
 
+## Active wave: persistent conversational research — 2026-10-23
+
+User authorized implementation, parallel work, unattended verification and publishing on `celloras.com`. This section supersedes the earlier proposed form-first research slice. The target is a real persistent conversation with predefined context/marker/review elements, a configurable plant catalog (soybean enabled first), and the supplied branding. Real scientific model/reference integrations are not configured locally; this wave must not manufacture assistant answers or annotations.
+
+Implementation and local acceptance complete. The actual Compose build, all seven browser/service tests, fresh/populated migration rehearsals, readiness transition and data-preserving restart passed. See `docs/verification.md` for evidence and the Keycloak restart caveat. The shared branch is the publication target; live scientific integrations remain a separate pending increment.
+
+### Integration and contracts
+
+Authenticated browser → owned experiment → research service → typed command validation → PostgreSQL append transaction → committed entry → fixed UI renderer. Existing Project IDs/routes/APIs stay compatible. Context is an immutable conversation entry; a marker submission links to its exact context and stores a snapshot. A manual review links to a marker entry in the same experiment. Messages are researcher-authored until a live agent is integrated.
+
+`app/core/plants.ts` and `app/core/research.ts` freeze the shared contract. Service methods are `workspace(userId, projectId, before?)` and `append(userId, projectId, input: unknown)`. The workspace returns latest context, paginated entries and recent marker options plus markers displayed/referenced on the current page. Catalog methods are synchronous `list`/`find`. All clients receive serialized values, no provider credentials. Message/research commands use an explicit UUID submission ID; identical retries return the committed row, changed commands conflict and offer an explicit new-entry save. Positions remain strings because PostgreSQL uses bigint.
+
+Configuration split: versioned catalog/tool definitions in source; secrets and environment-specific values in ignored `.env`, with variable names only in `.env.example`; canonical experiment context in PostgreSQL. Configuration validation stays centralized. Do not introduce species-specific tables or database constraints. Unknown biological metadata remains unknown.
+
+### File change ledger
+
+New files listed here were checked against the current tree and are assigned these paths. No deletions or renames.
+
+| Action   | Path                                                                   | Change / reason                                                         | Package |
+| -------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------- |
+| CREATE   | `app/core/plants.ts`                                                   | Generic catalog/context contracts                                       | 1       |
+| CREATE   | `app/core/research.ts`                                                 | Commands, entries, repository/action contracts                          | 1       |
+| UPDATE   | `app/core/errors.ts`                                                   | Validation and retry conflict errors                                    | 2       |
+| CREATE   | `app/plant-catalog.ts`                                                 | Reviewed species configuration, soybean only initially                  | 2       |
+| CREATE   | `app/adapters/plants.ts`                                               | Validate/serve configured catalog                                       | 2       |
+| CREATE   | `db/migrations/002_research_conversation.sql`                          | Additive owned entry persistence and same-project references            | 2       |
+| CREATE   | `app/adapters/research.ts`                                             | Transactional append/retry, owner filtering, keyset pagination          | 2       |
+| CREATE   | `app/services/research.ts`                                             | Validate commands, normalize markers, resolve context/review references | 2       |
+| UPDATE   | `app/bootstrap.ts`                                                     | Construct catalog and research services                                 | 2       |
+| UPDATE   | `app/services/health.ts`                                               | Probe required research schema                                          | 2       |
+| UPDATE   | `app/(workspace)/app/layout.tsx`                                       | Compact authenticated shell                                             | 3       |
+| UPDATE   | `app/(workspace)/app/page.tsx`                                         | Experiment create/reopen                                                | 3       |
+| UPDATE   | `app/(workspace)/app/actions.ts`                                       | Authorized research server action with truthful errors                  | 3       |
+| UPDATE   | `app/(workspace)/app/projects/[projectId]/page.tsx`                    | Conversation/context/history composition                                | 3       |
+| CREATE   | `app/(workspace)/app/conversation-composer.tsx`                        | Notes and inline context/marker/review entry                            | 3       |
+| CREATE   | `app/(workspace)/app/conversation-entry.tsx`                           | Exhaustive predefined result rendering                                  | 3       |
+| CREATE   | `app/(workspace)/app/workspace.module.css`                             | Isolated responsive workspace styles                                    | 3       |
+| UPDATE   | `app/components/brand.tsx`                                             | Supplied PNG, shared signature preserved                                | 4       |
+| UPDATE   | `app/(public)/page.tsx`                                                | Honest chat-first landing                                               | 4       |
+| UPDATE   | `app/components/annotation-card.tsx`                                   | Clearly illustrative structured preview                                 | 4       |
+| UPDATE   | `app/globals.css`                                                      | Black/white kit and shared/public styles                                | 4       |
+| UPDATE   | `infra/keycloak/themes/celloras/login/resources/css/celloras.css`      | Real logo without changing credentials                                  | 4       |
+| CREATE   | `scripts/sync-brand-assets.mjs`                                        | Deterministic logo copy                                                 | 4       |
+| GENERATE | `infra/keycloak/themes/celloras/login/resources/img/celloras-logo.png` | Exact bytes from canonical docs asset                                   | 4       |
+| UPDATE   | `package.json`                                                         | Brand sync/prebuild commands                                            | 4       |
+| CREATE   | `app/api/projects/[projectId]/research/route.ts`                       | Authorized read/append API sharing the domain service                   | 5       |
+| UPDATE   | `app/api/responses.ts`                                                 | Safe typed research errors                                              | 5       |
+| UPDATE   | `app/core/agent.ts`                                                    | Explicit biological context seam, old unavailable API compatibility     | 5       |
+| UPDATE   | `app/core/tools.ts`                                                    | Context-bearing reference/model contracts                               | 5       |
+| UPDATE   | `.env.example`                                                         | Configuration ownership and pending integration names                   | 5       |
+| CREATE   | `docs/configuration.md`                                                | Configuration/secrets/catalog/application-data split                    | 5       |
+| UPDATE   | `tests/foundation.spec.ts`                                             | Experiment UI names, preserve auth/isolation                            | 5       |
+| UPDATE   | `tests/auth-screens.spec.ts`                                           | Actual logo asset availability                                          | 5       |
+| CREATE   | `tests/research-workflow.spec.ts`                                      | Real durable research/API/isolation/retry/pagination journey            | 5       |
+| CREATE   | `scripts/verify-research-storage.mjs`                                  | Real fresh/populated migration rehearsal in disposable databases        | 5       |
+| UPDATE   | `README.md`                                                            | Current workflow/setup/limits                                           | 5       |
+| UPDATE   | `docs/architecture.md`                                                 | Implemented boundaries and pending scientific integrations              | 5       |
+| UPDATE   | `docs/verification.md`                                                 | Observed runtime evidence                                               | 5       |
+| UPDATE   | `CHANGELOG.md`                                                         | Delivered wave                                                          | 5       |
+| UPDATE   | `learned.md`                                                           | Actual findings                                                         | 5       |
+| UPDATE   | `PLAN.md`                                                              | This ledger and final state                                             | 5       |
+
+### Work packages and ownership
+
+1. Root freezes shared contracts above. Exit: backend/UI agree their producer/consumer shapes.
+2. Backend worker owns catalog, repository, service, migration, errors, wiring and readiness. Keep existing projects untouched; use an owner-locked transaction, canonical command fingerprint and immutable references. Verify with actual PostgreSQL through root integration. Exit: storage API works and missing migration fails readiness.
+3. UI worker owns only workspace files. Render notes/context/markers/manual reviews in one thread; preserve drafts on errors and clear only after commit. Label researcher input and manual evidence; show actual pending scientific status. Exit: real save/reopen and mobile layout work.
+4. Branding worker owns shared/public/theme assets and package scripts. Preserve canonical PNG bytes and auth field spacing. Exit: original/generated hashes match and assets render in both environments.
+5. Root owns API integration, configuration docs, public contracts, tests, runtime, documentation, commits and push. Exit: real acceptance passes and remote commit is confirmed.
+
+Workers share this checkout, do not revert others, and do not commit/push/restart services. Packages 2 and 3 follow contract freeze; branding is independent.
+
+### Verification and rollout
+
+| Boundary          | Required evidence                                                                                                                      |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Migration         | Fresh and populated isolated PostgreSQL rehearsal; preserve old project IDs; idempotent rerun; schema readiness fails before migration |
+| Research storage  | Save context/note/markers/manual review; reload, logout/login and restart persistence; old context remains attached to old markers     |
+| Retries           | Concurrent identical requests produce one row; changed content with same ID conflicts                                                  |
+| Authorization     | Two accounts; foreign project reads/writes and cross-project context/review references rejected                                        |
+| Pagination        | More than one page of real records; stable cursors with no missing/duplicated entries                                                  |
+| Validation        | Empty/oversized markers, unsupported species, invalid cursor and malformed payloads fail; raw markers/case preserved                   |
+| UI/brand          | Desktop/mobile screenshots, focus/labels, wrapping/no overflow, actual app/auth image requests                                         |
+| Existing behavior | Registration without names, login/logout and legacy pending `/api/chat` still behave truthfully                                        |
+
+Run repository lint/typecheck/build and actual Playwright tests against the Compose stack. Apply the new migration before activating the new app. Rehearse failure cases in isolated databases; never drop development data or prune volumes. Roll back application code only while retaining new entries for diagnosis/roll-forward. Secrets and browser auth traces stay out of logs and Git. Real model/source/trace acceptance remains pending until configured, with no simulated substitute.
+
 Build on `celloras.com` only. The repository starts at one empty initialization commit.
 
 ## Outcome

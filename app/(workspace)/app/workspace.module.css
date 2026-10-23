@@ -1,0 +1,644 @@
+.workspace {
+  min-height: 100vh;
+  background: #fff;
+  color: #111;
+}
+.header {
+  min-height: 96px;
+  padding: 16px max(32px, calc((100vw - 1200px) / 2));
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  border-bottom: 1px solid #e3e3e3;
+}
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 14px;
+}
+.navigation a:hover,
+.textButton:hover,
+.backLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.account {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 13px;
+  min-width: 0;
+}
+.account > span {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #666;
+}
+.textButton {
+  padding: 8px 0;
+  border: 0;
+  background: none;
+  color: #111;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.main {
+  width: 100%;
+  max-width: 1200px;
+  padding: 48px 32px 80px;
+  margin: 0 auto;
+}
+.main > h1 {
+  font-size: 32px;
+  line-height: 1.25;
+  margin: 8px 0 16px;
+}
+.eyebrow {
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+}
+.experiments {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.pageHeading h1,
+.conversationHeading h1 {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  line-height: 1.25;
+  margin: 8px 0 12px;
+  overflow-wrap: anywhere;
+}
+.pageHeading > p:last-child,
+.pageDescription {
+  color: #666;
+  max-width: 600px;
+  margin-bottom: 32px;
+}
+.createPanel {
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  padding: 24px;
+}
+.createPanel h2 {
+  font-size: 18px;
+}
+.createForm {
+  display: flex;
+  align-items: end;
+  gap: 24px;
+  margin-top: 24px;
+}
+.createForm > .field {
+  flex: 1;
+  min-width: 0;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.field > label {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.field label > span {
+  font-weight: 400;
+  color: #666;
+}
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #bdbdbd;
+  border-radius: 8px;
+  background: #fff;
+  color: #111;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.field textarea {
+  min-height: 112px;
+  resize: vertical;
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #777;
+}
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: #111;
+}
+.field input:disabled,
+.field textarea:disabled,
+.field select:disabled {
+  background: #f5f5f5;
+}
+.fieldGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.primaryButton {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 24px;
+  border: 1px solid #000;
+  border-radius: 8px;
+  background: #000;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+.primaryButton:hover:not(:disabled) {
+  background: #333;
+}
+.primaryButton:disabled {
+  opacity: 0.55;
+}
+.savedExperiments {
+  margin-top: 32px;
+}
+.experimentGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.experimentCard {
+  display: block;
+  padding: 24px;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+}
+.experimentCard:hover {
+  border-color: #111;
+}
+.experimentCard h2 {
+  font-size: 20px;
+  margin: 16px 0 24px;
+  overflow-wrap: anywhere;
+}
+.experimentCard > span {
+  font-size: 14px;
+  color: #666;
+}
+.emptyExperiments,
+.emptyConversation {
+  padding: 40px 0;
+}
+.emptyExperiments h2,
+.emptyConversation h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.emptyExperiments p,
+.emptyConversation p {
+  color: #666;
+  max-width: 560px;
+}
+.conversationPage {
+  max-width: 816px;
+  margin: 0 auto;
+}
+.backLink {
+  display: inline-block;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 24px;
+}
+.conversationHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.conversationHeading > div {
+  min-width: 0;
+}
+.conversationHeading h1 {
+  margin-bottom: 0;
+}
+.tag {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
+.contextSummary {
+  padding: 16px 24px;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.contextSummary > p {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+.contextSummary > summary {
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  list-style: none;
+}
+.contextSummary > summary::-webkit-details-marker {
+  display: none;
+}
+.contextSummary > summary::after {
+  content: "+";
+  font-size: 16px;
+}
+.contextSummary[open] > summary::after {
+  content: "−";
+}
+.contextSummary > summary > span:nth-child(2) {
+  overflow-wrap: anywhere;
+  flex: 1;
+  min-width: 100px;
+}
+.summaryLabel {
+  font-weight: 600;
+}
+.systemNotice {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 24px 0;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.systemLabel {
+  color: #111;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.systemNotice a,
+.savedReceipt a,
+.threadHeading a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.thread {
+  border-top: 1px solid #e3e3e3;
+  padding-top: 24px;
+}
+.threadHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.threadHeading h2 {
+  font-size: 16px;
+}
+.threadHeading a {
+  font-size: 13px;
+}
+.olderLink {
+  display: block;
+  margin-top: 24px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.olderLink:hover {
+  border-color: #111;
+}
+.entries {
+  list-style: none;
+  padding: 0;
+  margin: 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.entry {
+  min-width: 0;
+  scroll-margin-top: 24px;
+}
+.entryMeta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #666;
+}
+.entryMeta > span {
+  color: #111;
+  font-weight: 600;
+}
+.messageBubble {
+  background: #f5f5f5;
+  padding: 24px;
+  border-radius: 8px;
+}
+.structuredCard {
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  padding: 24px;
+}
+.structuredCard h3 {
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.entryTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.detailList {
+  margin: 16px 0 0;
+  font-size: 14px;
+}
+.detailList > div {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid #e3e3e3;
+}
+.detailList dt {
+  color: #666;
+}
+.detailList dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.preservedText {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.geneList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+}
+.geneList li {
+  background: #f5f5f5;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 13px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.entryDetails {
+  margin-top: 16px;
+  font-size: 13px;
+}
+.entryDetails summary {
+  cursor: pointer;
+  color: #555;
+}
+.rawMarkers {
+  margin: 16px 0 0;
+  padding: 16px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  font-size: 13px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.reviewCellType {
+  font-size: 20px;
+  margin: 16px 0 8px;
+  overflow-wrap: anywhere;
+}
+.reviewSection {
+  margin-top: 24px;
+}
+.reviewSection h4 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.manualLabel {
+  color: #666;
+  font-size: 12px;
+  border-top: 1px solid #e3e3e3;
+  padding-top: 16px;
+  margin-top: 24px;
+}
+.smallMuted,
+.fieldHint {
+  color: #666;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.composer {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 24px;
+}
+.composerModes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e3e3e3;
+}
+.composerModes button {
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #fff;
+  color: #555;
+  font-size: 13px;
+}
+.composerModes button:hover {
+  background: #f5f5f5;
+}
+.composerModes button[aria-pressed="true"] {
+  border-color: #111;
+  color: #111;
+  font-weight: 600;
+}
+.composerModes button:disabled {
+  opacity: 0.6;
+}
+.composerFields {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border: 0;
+  margin: 0;
+  padding: 24px;
+  min-width: 0;
+}
+.formIntro h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.formIntro p {
+  color: #666;
+  font-size: 14px;
+}
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.checkboxLabel input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: #111;
+  flex-shrink: 0;
+}
+.checkboxLabel span {
+  overflow-wrap: anywhere;
+}
+.composerFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+}
+.savedReceipt {
+  padding: 16px 24px;
+  border-top: 1px solid #e3e3e3;
+  background: #f5f5f5;
+  font-size: 13px;
+  border-radius: 0 0 8px 8px;
+}
+.savedReceipt a {
+  display: inline-block;
+  margin-left: 4px;
+}
+.errorBox {
+  padding: 16px;
+  border: 1px solid #a52c2c;
+  border-radius: 8px;
+  color: #8b2020;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.errorBox ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+.errorText {
+  font-size: 13px;
+  color: #8b2020;
+}
+@media (max-width: 800px) {
+  .header {
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    padding: 16px 24px;
+  }
+  .navigation {
+    order: 3;
+    width: 100%;
+    padding-top: 8px;
+  }
+  .account > span {
+    display: none;
+  }
+  .main {
+    padding: 32px 24px 64px;
+  }
+}
+@media (max-width: 560px) {
+  .header {
+    padding: 16px;
+  }
+  .main {
+    padding: 32px 16px 48px;
+  }
+  .pageHeading h1,
+  .conversationHeading h1 {
+    font-size: 28px;
+  }
+  .createPanel,
+  .structuredCard,
+  .messageBubble {
+    padding: 20px;
+  }
+  .createForm,
+  .conversationHeading,
+  .composerFooter {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .conversationHeading > .tag {
+    align-self: start;
+  }
+  .experimentGrid,
+  .fieldGrid {
+    grid-template-columns: 1fr;
+  }
+  .systemNotice {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .contextSummary {
+    padding: 16px;
+  }
+  .summaryLabel {
+    width: 100%;
+  }
+  .detailList > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .composerModes {
+    padding: 12px;
+    gap: 4px;
+  }
+  .composerModes button {
+    padding: 8px;
+  }
+  .composerFields {
+    padding: 20px;
+  }
+  .savedReceipt {
+    padding: 16px 20px;
+  }
+  .threadHeading {
+    align-items: start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .field input,
+  .field textarea,
+  .field select {
+    font-size: 16px;
+  }
+}

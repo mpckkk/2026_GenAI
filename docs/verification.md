@@ -2,6 +2,19 @@
 
 Status is updated from actual runs, not inferred from configuration.
 
+## Conversational research and configuration — 2026-10-23
+
+- The production Compose image builds successfully. Repository lint, TypeScript and formatting checks pass.
+- All seven real browser/service tests passed against Next.js, PostgreSQL and Keycloak after the service restart (13.0 seconds): registration/login/logout, owned experiments, persistent notes/context/markers/manual reviews, validation, escaped researcher text, cross-account and cross-project denial, pagination and retry recovery.
+- The retry test executes the real server action, drops its response after commit, then verifies that an edited draft gets a conflict and an explicit new-entry save preserves both records. Concurrent identical API submissions return one committed entry. Context changes do not alter older marker snapshots.
+- An additional history regression created 101 marker sets, opened the oldest page and saved a manual review against the oldest marker. Referenced markers remain available even outside the recent-marker window.
+- Fresh and populated disposable PostgreSQL databases passed migration and unchanged-rerun rehearsals. The development migration preserved all five pre-wave project IDs. A temporary real app container returned readiness 503 with only migration 001 and 200 after migration 002; only that temporary container/database were removed.
+- PostgreSQL and app restart preserved full-row checksums for 27 application users, 22 experiments and 339 research entries. Keycloak retained a stale connection after the database restart; restarting Keycloak restored service. Local maintenance must restart that dependent service and check a real auth flow.
+- The original and generated Keycloak logo bytes match SHA-256 `087659986c7f5b87c982ebe7a0942c741d0cdba728510575e98db79c7052e974`. Actual Next.js and Keycloak image requests succeed. Desktop/mobile screenshots cover the landing, spacious three-field signup, login and research conversation; no horizontal overflow was measured.
+- Versioned plant configuration enables soybean (`glycine-max`) through a validated catalog adapter. Research context and marker lists are stored in PostgreSQL; local deployment values remain in ignored `.env`. No provider credentials or browser traces are committed.
+
+This is persistent conversational research storage with predefined input and record components. Scientific assistant replies, reference retrieval, annotation scoring and sponsor service integrations remain pending. No real scientific result is claimed by these checks.
+
 ## README logo — 2026-10-23
 
 Copied the supplied 1712×1152 PNG unchanged into `docs/assets/celloras-logo.png`; source and repository SHA-256 hashes match. Rendered the README with GitHub's Markdown API, opened the result locally in Chrome, confirmed the image loaded at 560px width and inspected the screenshot. Formatting checks passed. The original image bytes were also uploaded to Amigospace under Celloras Branding.

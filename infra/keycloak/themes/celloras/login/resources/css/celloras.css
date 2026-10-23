@@ -44,13 +44,17 @@
 }
 
 #kc-header-wrapper {
+  /* Crop only the display viewport; the generated asset is the original PNG. */
+  width: 192px;
+  height: 61px;
   margin: 0;
   padding: 0;
-  color: #000 !important;
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -1px;
+  overflow: hidden;
+  background: #fff url("../img/celloras-logo.png") no-repeat;
+  background-size: 118% auto;
+  background-position: 66.67% 49.35%;
+  color: #000;
+  text-indent: -9999px;
   text-transform: none;
   text-align: left;
 }

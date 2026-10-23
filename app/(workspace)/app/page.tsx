@@ -2,8 +2,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { services } from "@/app/bootstrap";
 import { createProject } from "./actions";
+import styles from "./workspace.module.css";
 
-export default async function ProjectsPage({
+export default async function ExperimentsPage({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string }>;
@@ -13,60 +14,70 @@ export default async function ProjectsPage({
   const projects = await services.projects.list(user.id);
   const { error } = await searchParams;
   return (
-    <>
-      <p className="eyebrow">Your research</p>
-      <h1>Projects</h1>
-      <p className="page-description">
-        A place for each question, and the evidence that helps answer it.
-      </p>
-      <section className="panel create-project">
-        <h2>Create a project</h2>
-        <form action={createProject}>
-          <div>
-            <label htmlFor="project-name">Project name</label>
+    <div className={styles.experiments}>
+      <header className={styles.pageHeading}>
+        <p className={styles.eyebrow}>Your single-cell research</p>
+        <h1>Experiments</h1>
+        <p>
+          Keep sample context, markers and your annotation decisions in one
+          conversation.
+        </p>
+      </header>
+      <section className={styles.createPanel} aria-labelledby="create-heading">
+        <h2 id="create-heading">Start an experiment</h2>
+        <form action={createProject} className={styles.createForm}>
+          <div className={styles.field}>
+            <label htmlFor="project-name">Experiment name</label>
             <input
               id="project-name"
               name="name"
               placeholder="e.g. Soybean root nodule"
               required
               maxLength={120}
+              aria-invalid={error === "name" || undefined}
+              aria-describedby={error === "name" ? "name-error" : undefined}
             />
             {error === "name" && (
-              <p role="alert">Enter a name with 1–120 characters.</p>
+              <p id="name-error" role="alert" className={styles.errorText}>
+                Enter a name with 1–120 characters.
+              </p>
             )}
           </div>
-          <button className="button" type="submit">
-            Create project ↗
+          <button className={styles.primaryButton} type="submit">
+            Create experiment
           </button>
         </form>
       </section>
-      <section aria-label="Your projects">
+      <section
+        aria-label="Your experiments"
+        className={styles.savedExperiments}
+      >
         {projects.length ? (
-          <div className="project-grid">
+          <div className={styles.experimentGrid}>
             {projects.map((project) => (
               <Link
-                className="project-tile"
+                className={styles.experimentCard}
                 href={`/app/projects/${project.id}`}
                 key={project.id}
               >
-                <span className="eyebrow">Research project</span>
+                <p className={styles.eyebrow}>Experiment</p>
                 <h2>{project.name}</h2>
-                <span className="muted">Open project ↗</span>
+                <span>
+                  Open conversation <span aria-hidden="true">→</span>
+                </span>
               </Link>
             ))}
           </div>
         ) : (
-          <div className="empty-state">
-            <span className="empty-icon" aria-hidden="true">
-              ✳
-            </span>
-            <h2>Your first project starts here.</h2>
+          <div className={styles.emptyExperiments}>
+            <h2>Your research starts here.</h2>
             <p>
-              Create a project to keep your analysis and its evidence together.
+              Create an experiment, then add a note or your first set of
+              markers.
             </p>
           </div>
         )}
       </section>
-    </>
+    </div>
   );
 }

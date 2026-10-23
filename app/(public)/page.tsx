@@ -20,64 +20,63 @@ export default function Landing() {
       <main id="main">
         <section className="hero shell">
           <div className="hero-copy">
-            <div className="eyebrow">
-              <span className="status-dot" /> A workspace for plant single-cell
-              research
-            </div>
-            <h1>
-              Cell identity,
-              <br />
-              <em>with evidence.</em>
-            </h1>
+            <p className="eyebrow">
+              Plant single-cell research · Soybean first
+            </p>
+            <h1>Your single-cell research, in conversation.</h1>
             <p className="hero-description">
-              Explore soybean cell types from marker genes. Bring atlas
-              evidence, competing annotations, and your research notes into one
-              project.
+              Keep tissue context, cluster markers and research notes together
+              in a conversation you can return to.
             </p>
             <div className="hero-actions">
               <a className="button" href="/register">
-                Start a research project <span aria-hidden="true">↗</span>
+                Start an experiment <span aria-hidden="true">↗</span>
               </a>
               <a className="text-link" href="#workflow">
-                Explore the workflow <span aria-hidden="true">↓</span>
+                See the workflow <span aria-hidden="true">↓</span>
               </a>
             </div>
             <p className="hero-note">
-              Built for careful review. Your scientific judgment stays central.
+              Early access. Reference-based cell-type suggestions are in
+              development.
             </p>
           </div>
           <div className="hero-visual">
-            <div className="orbit orbit-one" />
-            <div className="orbit orbit-two" />
             <AnnotationExample />
           </div>
         </section>
         <section id="workflow" className="workflow shell">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">From question to context</p>
-              <h2>A clearer path through your evidence.</h2>
+              <p className="eyebrow">Inside your experiment</p>
+              <h2>Keep the context with the conversation.</h2>
             </div>
             <p>
-              Keep the reasoning beside the result, so you can return to both.
+              Start with soybean. Keep each cluster and its open questions in a
+              research record of its own.
             </p>
           </div>
           <div className="steps">
             {[
               [
                 "01",
-                "Bring your markers",
-                "Start with the genes that define your cluster and give your analysis a project of its own.",
+                "Add context",
+                "Tell Celloras which tissue and cluster you’re studying. Add genome details when you have them.",
               ],
               [
                 "02",
-                "Examine the evidence",
-                "Review candidate cell identities alongside atlas references and any disagreements.",
+                "Bring your markers",
+                "Paste the genes for your cluster and keep the original list with your experiment.",
               ],
               [
                 "03",
-                "Keep the context",
-                "Build a record of your findings, corrections, and the questions that still need an answer.",
+                "Keep your notes",
+                "Record the questions and observations that guide your analysis, directly in the conversation.",
+              ],
+              [
+                "04",
+                "Return later",
+                "Reopen the experiment with its saved context and conversation when you’re ready to continue.",
               ],
             ].map(([number, title, description]) => (
               <article key={number}>
@@ -89,17 +88,18 @@ export default function Landing() {
           </div>
         </section>
         <section className="research-note shell">
-          <span className="eyebrow">Made for research</span>
+          <h2>Built toward evidence-backed annotation</h2>
           <p>
-            Annotations are hypotheses to investigate. Evidence quality, source
-            provenance, and biological context matter more than a
-            confident-sounding answer.
+            The next scientific step is to connect marker genes to reference
+            evidence, show competing cell-type interpretations and make
+            uncertainty visible. Soybean comes first; other plants will follow
+            as their references and methods are validated.
           </p>
         </section>
       </main>
       <footer className="site-footer shell">
         <Brand />
-        <span>Soybean cell annotation · Research workspace</span>
+        <span>Plant single-cell research · Soybean first</span>
         <Link href="/login">Open workspace ↗</Link>
       </footer>
     </div>

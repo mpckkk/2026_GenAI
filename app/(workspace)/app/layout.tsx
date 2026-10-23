@@ -2,7 +2,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Brand } from "@/app/components/brand";
 import { services } from "@/app/bootstrap";
+import styles from "./workspace.module.css";
+
 export const dynamic = "force-dynamic";
+
 export default async function WorkspaceLayout({
   children,
 }: {
@@ -11,24 +14,23 @@ export default async function WorkspaceLayout({
   const user = await services.auth.currentUser();
   if (!user) redirect("/login");
   return (
-    <div className="workspace">
-      <aside className="sidebar">
+    <div className={styles.workspace}>
+      <header className={styles.header}>
         <Brand />
-        <p className="eyebrow sidebar-label">Research workspace</p>
-        <nav aria-label="Workspace navigation">
-          <Link href="/app">↗ &nbsp; Projects</Link>
-          <Link href="/app/health">◉ &nbsp; Service health</Link>
+        <nav aria-label="Workspace navigation" className={styles.navigation}>
+          <Link href="/app">Experiments</Link>
+          <Link href="/app/health">Service health</Link>
         </nav>
-        <div className="sidebar-account">
-          <span>{user.displayName}</span>
+        <div className={styles.account}>
+          <span title={user.displayName}>{user.displayName}</span>
           <form action="/api/auth/logout" method="post">
-            <button className="text-link" type="submit">
-              Log out ↗
+            <button className={styles.textButton} type="submit">
+              Log out
             </button>
           </form>
         </div>
-      </aside>
-      <main id="main" className="workspace-main">
+      </header>
+      <main id="main" className={styles.main}>
         {children}
       </main>
     </div>
