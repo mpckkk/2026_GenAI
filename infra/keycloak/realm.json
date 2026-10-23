@@ -25,11 +25,11 @@
       "standardFlowEnabled": true,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": false,
-      "redirectUris": ["http://localhost:3100/api/auth/callback"],
-      "webOrigins": ["http://localhost:3100"],
+      "redirectUris": ["${CELLORAS_APP_URL}/api/auth/callback"],
+      "webOrigins": ["${CELLORAS_APP_URL}"],
       "attributes": {
         "pkce.code.challenge.method": "S256",
-        "post.logout.redirect.uris": "http://localhost:3100/"
+        "post.logout.redirect.uris": "${CELLORAS_APP_URL}/"
       },
       "defaultClientScopes": ["web-origins", "acr", "profile", "email", "roles"]
     }

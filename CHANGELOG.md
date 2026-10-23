@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.13 — 2026-10-23
+
+- Added `compose.prod.yaml` for the public deployment on celloras.com: production Keycloak on auth.celloras.com behind the proxy, HTTPS app URLs, no host port bindings.
+- Keycloak client redirect, web origin and logout URLs now follow `CELLORAS_APP_URL` instead of a fixed localhost URL.
+
 ## 0.1.12 — 2026-10-23
 
 - Added an optional demo login panel beneath the Keycloak form, with visible credentials and a button to fill the existing form.
