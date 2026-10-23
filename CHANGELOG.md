@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.7 — 2026-10-23
+
+- Render assistant Markdown with proper headings, bold/italic text, nested lists, links, quotes, code, tables and footnotes, including saved conversation history.
+- Contain wide tables and code inside scrollable blocks on mobile. Keep raw HTML disabled, filter unsafe URLs and show image references as links without automatically loading them.
+
 ## 0.1.6 — 2026-10-23
 
 - Applied the accepted chat design: owned experiment sidebar, compact project header, scrollable conversation and anchored composer, with the supplied Celloras logo.

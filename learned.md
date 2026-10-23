@@ -1,5 +1,8 @@
 # Engineering notes
 
+- Assistant text needs a Markdown renderer rather than `white-space: pre-wrap`. Keep stored text unchanged; parse it only at the presentation boundary with raw HTML disabled and safe URL handling. Scope typography to messages, contain wide tables/code, and give footnote references and labels unique IDs per reply.
+- Check Docker's guest filesystem when writes fail even if macOS has free space. A successful image build exhausted the guest disk and the next auth callback failed; unused build-cache cleanup restored the real registration/chat path without changing authentication code or touching volumes.
+
 - A chat workspace needs its own scroll container and an anchored composer. A long document with research forms below chat made navigation and message entry cumbersome; keep research editing on demand and preserve component state while panels close.
 - Server layouts retain client navigation state. Revalidate the owned workspace layout after creating an experiment so its sidebar includes the new project immediately.
 - Render research dialogs into the document body. A history URL must open its native dialog even when the mobile study inspector is hidden; keep the editor mounted so drafts and retry IDs survive close/reopen.

@@ -2,6 +2,15 @@
 
 Status is updated from actual runs, not inferred from configuration.
 
+## Markdown replies — 2026-10-23
+
+- Replaced plain assistant paragraphs with a reusable `react-markdown`/`remark-gfm` component and scoped typography. Stored replies and user prompts are unchanged. Existing conversation history renders through the same component after reload.
+- Production Docker build, lint, TypeScript and formatting checks passed. The rebuilt app is running at http://localhost:3100/app.
+- One real browser journey passed in 23.6 seconds through Keycloak registration, owned project creation, OpenShell/Codex execution, persisted response retrieval and reload. Checked headings, bold/italic text, nested lists, quotes, tables, inline/fenced code, strikethrough, disabled task checkboxes, links and working footnote targets/labels.
+- The actual model response contained the requested unsafe URL and HTML examples. The browser produced no executable link, injected HTML image or script execution, and made no image-reference requests. External links use `noopener noreferrer`; image references become explicit links.
+- At 390px, both the page and conversation fit the viewport, the composer stays visible, and wide tables/code scroll within their own blocks. Desktop/mobile screenshots were inspected. Evidence: `.artifacts/markdown-e2e-retry/`; build and run logs: `.artifacts/markdown/`.
+- The first browser attempt stopped at authentication while Docker's 31.3GB filesystem was full; the app also reported `ENOSPC` writing its image cache. Cleared 2.557GB of unused build cache under the existing cleanup authorization, preserving containers and volumes. The same browser check then passed; worker health remained ready with a fresh heartbeat.
+
 ## Chat workspace redesign — 2026-10-23
 
 - Applied the user-accepted mockup to the real authenticated workspace: owned experiment sidebar, compact header, scrollable chat and anchored composer, plus study context and on-demand editing/history. The original cell logo is reused in navigation and assistant messages. No database, provider or authentication contract changed.

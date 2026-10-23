@@ -11,6 +11,7 @@ import {
 } from "react";
 import type { ChatTurn, ChatWorkspace } from "@/app/core/chat";
 import { BrandMark } from "@/app/components/brand";
+import { MarkdownMessage } from "@/app/components/markdown-message";
 import { WorkspaceIcon } from "./workspace-icons";
 import styles from "./workspace.module.css";
 
@@ -459,7 +460,7 @@ export function AgentChat({
                       <BrandMark size={30} />
                       <div className={styles.assistantContent}>
                         <p className={styles.chatSpeaker}>Celloras</p>
-                        <p className={styles.preservedText}>{turn.response}</p>
+                        <MarkdownMessage>{turn.response}</MarkdownMessage>
                       </div>
                     </article>
                   ) : (
