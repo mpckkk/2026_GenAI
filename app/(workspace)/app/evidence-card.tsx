@@ -9,6 +9,7 @@ import type {
 import type { ResearchEntry } from "@/app/core/research";
 import { appendResearch } from "./actions";
 import { ResultHeader, CountBar } from "./result-card";
+import { MarkerEvidenceView } from "./marker-evidence-view";
 import styles from "./agent-response.module.css";
 
 const statusLabels = {
@@ -158,48 +159,29 @@ export function EvidenceCard({
         )}
         {result.candidates.length > 0 && (
           <div className={styles.candidates} aria-label="Candidate cell types">
-            {result.candidates.map((candidate) => (
-              <details
-                key={candidate.cellType}
-                className={styles.candidate}
-                open={result.candidates.length === 1 ? true : undefined}
-              >
-                <summary>
-                  <span>
-                    {result.candidates.length === 1
-                      ? "Matching genes"
-                      : candidate.cellType}
-                  </span>
-                  <span>
-                    {candidate.matchedGenes.length} matching{" "}
-                    {candidate.matchedGenes.length === 1 ? "gene" : "genes"}
-                  </span>
-                </summary>
-                <ul aria-label={`${candidate.cellType} evidence`}>
-                  {candidate.records.map((record) => (
-                    <li key={record.id}>
-                      <code>{record.geneId}</code>
-
-                      <a
-                        href={record.sourceUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {result.source.url.includes(".xlsx")
-                          ? "Source table ↗"
-                          : "Source paragraph ↗"}
-                      </a>
-                      <details>
-                        <summary>Evidence details</summary>
-                        <p>
-                          {record.stage} · {record.method}
-                        </p>
-                      </details>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            ))}
+            {result.candidates.map((candidate) =>
+              result.candidates.length === 1 ? (
+                <MarkerEvidenceView
+                  key={candidate.cellType}
+                  candidate={candidate}
+                  source={result.source}
+                />
+              ) : (
+                <details key={candidate.cellType} className={styles.candidate}>
+                  <summary>
+                    <span>{candidate.cellType}</span>
+                    <span>
+                      {candidate.matchedGenes.length} matching{" "}
+                      {candidate.matchedGenes.length === 1 ? "gene" : "genes"}
+                    </span>
+                  </summary>
+                  <MarkerEvidenceView
+                    candidate={candidate}
+                    source={result.source}
+                  />
+                </details>
+              ),
+            )}
           </div>
         )}
         {result.sharedGenes.length > 0 && (

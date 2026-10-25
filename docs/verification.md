@@ -2,6 +2,13 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## Compact marker evidence — 2026-10-25
+
+- The earlier redesign retained repeated prose when evidence rows were expanded. Replaced that structure with a four-row gene/species/source matrix, grouped citations and a native modal gene inspector.
+- A fresh real OpenShell lookup for the existing local Root hair markers completed as turn `500c0741-e6f3-4a95-b00d-c460335dddce` in project `513c598a-a4b5-40c8-bdd0-a0f5d8bb5430`. The UI resolves its saved Table S2 format into three Arabidopsis reference rows, one soybean reference row and two cited studies. All four exact atlas-row URLs and original method strings were checked. Source species is metadata, not a new validation claim.
+- The real Keycloak/agent/researcher review acceptance passed (1.3 minutes), including the older source format, grouped source link, unspecified original reference species, modal focus/Escape/return focus, immutable review, replay/conflict handling and account isolation. No responses were mocked.
+- Desktop, 390px and 320px checks passed with no document or inspector horizontal overflow and no browser runtime errors. Screenshots and logs are under ignored `.artifacts/evidence-matrix/`. TypeScript, lint and production build passed; final presentation and public acceptance are recorded below after deployment.
+
 ## Visual research cards — 2026-10-25
 
 - Checked all six real authenticated card types: marker evidence, marker set, sample context, annotation, scientific results and literature. Desktop, 390px and 320px checks covered source disclosure, ambiguous candidates, group selection and question drafting. No page/card horizontal overflow; wide expression plots scroll inside their labelled region. Inspected screenshots under ignored `.artifacts/card-redesign/`.

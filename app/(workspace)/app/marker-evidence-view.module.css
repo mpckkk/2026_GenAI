@@ -1,0 +1,358 @@
+.evidence {
+  min-width: 0;
+  color: #213b2c;
+}
+.matrixHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  padding: 8px 0 16px;
+}
+.matrixHeading h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+.matrixHeading > span {
+  font-size: 12px;
+  color: #69776e;
+}
+.columns,
+.geneRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 146px 48px 16px;
+  gap: 12px;
+  align-items: center;
+}
+.columns {
+  font-size: 11px;
+  color: #6c796f;
+  padding: 0 12px 10px;
+}
+.columns > span:nth-child(3) {
+  text-align: center;
+}
+.rows {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-block: 1px solid #dfe7e1;
+}
+.rows > li + li {
+  border-top: 1px solid #edf0ed;
+}
+.geneRow {
+  width: 100%;
+  min-height: 55px;
+  border: 0;
+  border-radius: 0;
+  padding: 12px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.geneRow:hover {
+  background: #f3f7f3;
+}
+.geneRow > code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.geneRow > svg {
+  color: #839389;
+}
+.species {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: #536759;
+}
+.species i {
+  display: block;
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: #53825a;
+}
+.species[data-cross-species="true"] i,
+.evidenceType[data-cross-species="true"] i {
+  background: #a78756;
+}
+.species[data-cross-species="unknown"] i,
+.evidenceType[data-cross-species="unknown"] i {
+  background: #8b938c;
+}
+.sourceIndex {
+  justify-self: center;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: #607366;
+  border: 1px solid #dee7df;
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+.hint {
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: #707d73;
+}
+.references {
+  margin-top: 24px;
+}
+.references h5 {
+  font-weight: 400;
+  font-size: 11px;
+  color: #65766a;
+  margin: 0 0 10px;
+}
+.studies {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.studies a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  padding: 12px;
+  border: 1px solid #e0e8e1;
+  border-radius: 8px;
+  text-decoration: none;
+  background: #f8faf7;
+}
+.studies a:hover {
+  border-color: #a7beac;
+  background: #f1f6ee;
+}
+.studyIndex {
+  align-self: flex-start;
+  font-size: 10px;
+  color: #778776;
+  font-variant-numeric: tabular-nums;
+  padding-top: 1px;
+}
+.studies strong {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  color: #2d4c35;
+  overflow-wrap: anywhere;
+}
+.studies small {
+  display: block;
+  font-size: 11px;
+  margin-top: 3px;
+  color: #6a7c6c;
+}
+.external {
+  margin-left: auto;
+  color: #68816c;
+}
+.contextNote {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 14px 0 0;
+  font-size: 11px;
+  color: #6b7566;
+  line-height: 1.6;
+}
+.contextNote > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.inspector {
+  position: fixed;
+  inset: 0;
+  width: min(460px, 100vw);
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid #d7e1d8;
+  background: #fff;
+  color: #243b2c;
+  font:
+    13px/1.65 Arial,
+    Helvetica,
+    sans-serif;
+  box-sizing: border-box;
+}
+.inspector[open] {
+  display: flex;
+  flex-direction: column;
+}
+.inspector::backdrop {
+  background: #16291d45;
+}
+.inspectorHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e2e8e2;
+  flex-shrink: 0;
+}
+.inspectorHeader > span {
+  font-size: 12px;
+  color: #627465;
+}
+.inspectorHeader button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: #f2f6f0;
+  border-radius: 50%;
+  color: #37583d;
+  cursor: pointer;
+}
+.inspectorBody {
+  padding: 32px 28px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: #69806b;
+}
+.inspectorBody h2 {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  overflow-wrap: anywhere;
+}
+.evidenceType {
+  padding: 20px 0;
+  margin-top: 16px;
+  border-bottom: 1px solid #e2e8e2;
+}
+.evidenceType > .species {
+  font-weight: 600;
+  color: #536347;
+}
+.evidenceType p {
+  margin: 10px 0 0;
+  color: #6a756d;
+  font-size: 12px;
+}
+.facts {
+  margin: 0;
+}
+.facts > div {
+  display: grid;
+  grid-template-columns: 135px minmax(0, 1fr);
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid #edf0ed;
+  font-size: 12px;
+}
+.facts dt {
+  color: #748075;
+}
+.facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.sourceActions {
+  display: grid;
+  gap: 10px;
+  margin-top: 28px;
+}
+.sourceActions a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid #d4e0d1;
+  border-radius: 6px;
+  text-decoration: none;
+  background: #ecf2e6;
+  color: #264b32;
+  font-size: 12px;
+}
+.sourceActions a[data-secondary="true"] {
+  background: #fff;
+}
+.sourceActions a:hover {
+  border-color: #738e6b;
+}
+.original {
+  margin-top: 28px;
+  font-size: 11px;
+  color: #748076;
+  overflow-wrap: anywhere;
+}
+.original summary {
+  cursor: pointer;
+  padding: 8px 0;
+}
+.original p {
+  margin: 12px 0;
+}
+.evidence :is(button, a, summary):focus-visible {
+  outline: 2px solid #34704b;
+  outline-offset: 3px;
+}
+@container (max-width: 560px) {
+  .columns {
+    display: none;
+  }
+  .geneRow {
+    grid-template-columns: minmax(0, 1fr) 36px 16px;
+    gap: 4px 8px;
+  }
+  .geneRow > code {
+    grid-column: 1;
+  }
+  .geneRow > .species {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 11px;
+  }
+  .sourceIndex {
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+  .geneRow > svg {
+    grid-column: 3;
+    grid-row: 1 / 3;
+  }
+  .studies {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 400px) {
+  .inspectorHeader {
+    padding-inline: 20px;
+  }
+  .inspectorBody {
+    padding: 28px 20px;
+  }
+  .inspectorBody h2 {
+    font-size: 21px;
+  }
+  .facts > div {
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 12px;
+  }
+}

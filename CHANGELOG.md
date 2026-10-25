@@ -1,5 +1,11 @@
 # Changelog
 
+## Compact marker evidence — 2026-10-25
+
+- Replaced repeated gene provenance paragraphs with an interactive gene/species/source matrix and deduplicated study links.
+- Added an accessible gene inspector with exact source-row links and full saved provenance. Known atlas records show the original reference species; older formats explicitly leave it unspecified.
+- Kept evidence results, matching, source snapshots and researcher decisions unchanged.
+
 ## Visual research cards — 2026-10-25
 
 - Marker evidence now leads with candidate identity, visible matching genes and a compact count bar. Source links and researcher decisions stay attached to the original result.

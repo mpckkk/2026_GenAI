@@ -100,3 +100,5 @@
 - Element screenshots can include a fixed chat composer when the card exceeds the viewport. Inspect a realistic viewport separately, then capture the full card at sufficient viewport height; do not hide the composer to claim the responsive layout works.
 
 - A push to this deployment can replace the checkout while a manual build is running. The manual `up` then reported `getwd: no such file or directory`, while the deployment process had already started the correct new image. Check the current checkout, container image digest and actual public browser behavior before retrying deployment commands.
+
+- A styled accordion is still a wall of text when every gene repeats the same provenance. Structure the information first: gene → original reference species → shared study. Open one gene in a focus-managed inspector and keep full provenance available. Read only the exact versioned saved format; never infer the original source species from a soybean gene ID or silently enrich a historical result from a new catalog.

@@ -17,3 +17,19 @@ Create `app/(workspace)/app/result-card.tsx` and `result-card.module.css` for th
 ## Acceptance
 
 Use authenticated real saved records. Capture before/after and desktop/mobile screenshots. Verify source disclosures, candidate/group selection, draft-question actions, review controls, no page overflow, and unchanged canonical response data. Run lint, typecheck and build. Do not present marker overlap or descriptive annotation scores as probabilities. Keep blocked/empty states distinct from a completed lookup with zero matches.
+
+## Evidence detail correction — 2026-10-25
+
+The first release retained repeated provenance paragraphs, and the user rejected it. Replace the evidence list with an inspectable matrix and shared study links.
+
+| Action | File                                                  | Change                                                                                                                                                        |
+| ------ | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CREATE | `app/(workspace)/app/marker-provenance.ts`            | Interpret only the exact stored Table S2 v1 producer format; unknown formats remain explicitly unspecified. Never infer study species from a soybean gene ID. |
+| CREATE | `app/(workspace)/app/marker-evidence-view.tsx`        | Gene/species/study rows, deduplicated citations and a native accessible detail dialog for one record.                                                         |
+| CREATE | `app/(workspace)/app/marker-evidence-view.module.css` | Compact evidence matrix, linked source tiles and responsive inspector.                                                                                        |
+| UPDATE | `app/(workspace)/app/evidence-card.tsx`               | Use the evidence matrix for single and competing candidates.                                                                                                  |
+| UPDATE | `app/(workspace)/app/agent-response.module.css`       | Remove obsolete inline provenance row styling.                                                                                                                |
+| UPDATE | `tests/marker-evidence.spec.ts`                       | Verify grouped source navigation, actual record details and keyboard dismissal alongside the existing real review journey.                                    |
+| UPDATE | `docs/verification.md`, `learned.md`, `CHANGELOG.md`  | Record observed evidence, correction and limitations.                                                                                                         |
+
+Order: deterministic presentation metadata → compact component/dialog → real saved-record browser checks → push/live verification. No domain, stored-result, provider or scoring changes; no deleted/renamed files. Exact source text and row links stay available in the inspector. Verify four demo genes map to three Arabidopsis references and one soybean reference, two distinct studies, no silent inference for old paragraph records, unchanged saved responses/reviews, keyboard focus return, and 320px/390px layouts.
