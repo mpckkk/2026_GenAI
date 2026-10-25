@@ -1,34 +1,29 @@
-# Celloras pitch deck
+# Celloras hackathon pitch
 
-[PowerPoint — editable](Celloras-Pitch-Deck.pptx) · [PDF — ready to present](Celloras-Pitch-Deck.pdf) · [Speaker notes and sources](speaker-notes.md)
+[PowerPoint](Celloras-Pitch-Deck.pptx) · [PDF](Celloras-Pitch-Deck.pdf) · [Speaker notes](speaker-notes.md)
 
-Eight pitch slides and two appendix slides for the GenAI hackathon, revised on 25 October 2026. The story follows one result: ask the agent to annotate soybean cells, inspect the evidence, then revisit a researcher's decision.
+**Four slides, roughly two minutes.** No separate cover or appendix.
 
-## Story
+1. **Problem and value:** plant researchers connect genes, references and papers; Celloras runs analysis and keeps the evidence with their decision.
+2. **Working workflow:** ask for annotation, inspect Root hair evidence, save a researcher's judgment.
+3. **Architecture and sponsors:** Zetaris supplies the versioned reference; the official Meterless H-MEM Engine recalls current decisions with sources.
+4. **Proof:** twelve groups analysed, 2,952 numerical checks, and the public review/corrected-recall workflow passed. Independent biological validation is next.
 
-1. Make cell annotation a conversation.
-2. Researchers connect gene activity, marker tables, papers and past decisions.
-3. One request returns a visual result across twelve soybean cell groups.
-4. Follow the Root hair candidate to its measured marker genes.
-5. Zetaris supplies the versioned reference and a saved query receipt.
-6. Meterless H-MEM recalls a researcher's corrected decision.
-7. The agent runs the tools, while the researcher reviews the interpretation.
-8. Try the working soybean workflow; independent validation and own datasets come next.
-9. Appendix: numerical checks and current scientific scope.
-10. Appendix: scientific sources and implementation links.
+## Fit to the judging criteria
 
-## References and assets
+The [official rubric](https://hackathon.genai.works/event/open-agent-hackathon-2026), checked on 25 October 2026:
 
-The revised presentation draws on [Front's original Series A deck](https://front.com/blog/inside-fronts-series-a-slide-deck), with its direct problem–solution sequence and concise product explanation. Earlier references were the [original Airbnb deck](https://www.startups.com/articles/airbnb-pitch-deck-teardown-and-redesign) and [Buffer's original 2011 deck](https://buffer.com/resources/from-0-to-1000000-users-the-journey-and-statistics-of-buffer/). Their assets and business metrics are not reused.
+| Criterion    | Points | Where the deck addresses it                                                           |
+| ------------ | -----: | ------------------------------------------------------------------------------------- |
+| Impact       |     30 | Slide 1: a defined research task and the manual work the agent handles                |
+| Technical    |     20 | Slides 3–4: architecture, real tools and observed checks                              |
+| Innovation   |     15 | Slides 1–3: annotation, evidence and correction-aware research memory in one workflow |
+| Demo         |     15 | Slides 1–2: actual map and measured gene-expression result                            |
+| Product & UX |     10 | Slide 2: ask, inspect and save a judgment in the conversation                         |
+| Sponsor tech |     10 | Slide 3: actual Zetaris and H-MEM receipts and their roles                            |
 
-The design uses the supplied Celloras logo, Inter, black, white and the green accent from the Amigospace design kit. Large plots and short headlines replace the earlier technical walkthrough. Validation details sit in the appendix.
+This mapping is presentation coverage, not a prediction of judges' scores. Researcher impact has not been quantified. Numerical agreement does not establish biological accuracy.
 
-All product captures and scientific figures come from actual Celloras runs. The opening point cloud uses the original UMAP coordinates of all 7,496 soybean-root nuclei, without identity labels. The annotation map is the application's full export, and the dot plot contains measured expression. The H-MEM receipt shows an illustrative review correction: group 6 stays unresolved pending independent evidence, while its computed Root hair candidate remains unchanged.
+The visual style retains Celloras's Inter, white/black/green design and the direct problem–solution approach of [Front's original Series A deck](https://front.com/blog/inside-fronts-series-a-slide-deck). All figures and receipts are actual Celloras outputs. Text and architecture shapes are editable. Sources and scientific scope are in the notes and [methods](../annotation-method.md).
 
-The PowerPoint contains editable text, architecture shapes, outcome counts, speaker notes and source links. Scientific plots and product receipts remain images. Detailed scope is in [annotation methods](../annotation-method.md); sponsor implementation and test pointers are in [the sponsor explanation](../sponsor-explanation.md).
-
-## Checks
-
-The ten-slide PowerPoint passed package, geometry, Inter font-policy and re-import checks. Every slide was rendered and inspected. The PDF was exported through LibreOffice and all ten pages were visually inspected. Native Microsoft PowerPoint execution was not tested. This revision changes the presentation and documentation only.
-
-The 1–4 minute video is a separate deliverable; use [the recording script](../submission.md#simple-video-script--target-240).
+Package, geometry, font and re-import checks passed. All four slides and PDF pages were visually inspected; the PDF embeds Inter. Microsoft PowerPoint execution was not tested. The separate [1–4 minute video](../submission.md#simple-video-script--target-240) still needs recording.

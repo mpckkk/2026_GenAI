@@ -2,6 +2,13 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## Four-slide hackathon pitch — 2026-10-25
+
+- Reduced the deck to four slides: problem/value, one real workflow, architecture with both required sponsors, and observed proof. Rechecked the official event rubric (Impact 30, Technical 20, Innovation 15, Demo 15, Product & UX 10, Sponsor tech 10) and mapped each criterion in the deck guide.
+- Package, geometry, Inter font-policy and exact-file re-import checks passed without findings. Rendered and inspected all four slides and PDF pages; the PDF embeds Inter. Native Microsoft PowerPoint execution was not tested.
+- The figures, sponsor receipts and test results reuse the accepted workflow. No application changes or new analysis runs were part of this revision. Sources and scope remain in the four slides' notes.
+- PowerPoint SHA-256: `3ade0e87dd1a397ac5a26cff075862a4d9662e9ba596e77f0b7f6300fd89d2df`. Private build receipts remain under ignored `.artifacts/pitchdeck/`.
+
 ## Pitch deck redesign — 2026-10-25
 
 - Rebuilt the [deck](pitchdeck/README.md) as eight pitch slides plus two appendix slides. The story follows the manual evidence work, the real annotation map, one Root hair candidate, Zetaris reference retrieval and H-MEM correction recall. Added Front's original Series A deck as a design reference.

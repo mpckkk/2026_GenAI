@@ -1,100 +1,43 @@
-# Celloras — speaker notes and sources
+# Celloras — four-slide speaker notes
 
-Present slides 1–8. Keep slides 9–10 for questions.
+Aim for roughly two minutes. Sources below are for follow-up, not narration.
 
 ## Slide 1
 
-Celloras makes plant cell annotation a conversation. A researcher asks the agent to analyze the groups, inspect their marker genes and explain the evidence. The dots shown here are all 7,496 nuclei in the soybean-root demo, using the original UMAP coordinates and a single color without identity labels.
+Plant researchers have to connect expression data and published evidence to identify their cells. Celloras runs that investigation and keeps the evidence and review together. This is the actual soybean-root demo with 7,496 nuclei. The intended benefit is less manual analysis and evidence reconstruction; time savings and biological accuracy have not been independently benchmarked.
 
-Sources and provenance:
+Sources:
 
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
 - https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/
+- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
+- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
 
 ## Slide 2
 
-Knowing which cells are present is a step toward interpreting a plant experiment. The evidence comes from measured expression, compatible marker references, papers and earlier reviews. Researchers have to connect those pieces for each interpretation. We are automating the execution and evidence handling; the researcher keeps the scientific judgment. No time-savings benchmark is claimed.
+Ask for annotation, then inspect one group. Two measured marker genes support the Root hair candidate for group 6. The researcher keeps it unresolved pending independent evidence. Candidate calculations and reviews stay separate. Guided prompts, the selectable map and inline sources support the workflow. Later, the agent can retrieve that saved judgment and its reason.
 
-Sources and provenance:
+Sources:
 
+- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
-- https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/
 
 ## Slide 3
 
-This is an actual Celloras annotation output, not a product mockup. The complete soybean root dataset contains 7,496 nuclei in 12 source groups. Seven receive exploratory suggestions, one is ambiguous and four remain unresolved. Click any group to inspect the evidence. These counts are not an accuracy score.
+The server-side agent uses real analysis tools. Zetaris supplies one versioned marker panel, checks all 42 associations and retains the retrieval receipt. The official Meterless H-MEM Engine stores project-owned reviews in PostgreSQL and recalls the latest correction with its source. Both receipts shown here come from the same working demo. Next.js and Keycloak provide the authenticated interface.
 
-Sources and provenance:
+Sources:
 
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
+- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
+- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
+- https://github.com/mpckkk/2026_GenAI/tree/celloras.com
 
 ## Slide 4
 
-Follow one group. Root hair is its candidate because two marker genes meet the exploratory support rules. The plot shows their actual measured expression across all source groups. The arrow points to group 6. A candidate is a starting point for review; independent evidence still matters.
+The combined annotation, evidence, review and corrected-recall workflow passed on the public app. An independent base-R calculation agreed across 2,952 numerical values. That establishes computational consistency, not independent biological accuracy. Seven groups receive exploratory suggestions, one is ambiguous and four stay unresolved. Next are independent validation, researchers’ own datasets and more plants. The live demo and public code are available for inspection.
 
-Sources and provenance:
+Sources:
 
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
-
-## Slide 5
-
-Zetaris has a working role in the annotation: the application retrieves the published root marker panel through a read-only query, checks all 42 associations against the expected reference content and saves the query receipt with the result. This slide includes the actual retrieval line from the saved annotation. The current integration serves one versioned marker panel, not full-atlas federation.
-
-Sources and provenance:
-
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
-
-## Slide 6
-
-The researcher corrected the demonstration review: keep group 6 unresolved until independent evidence is checked. The computed Root hair candidate did not change. In a later turn, Meterless H-MEM retrieves the current saved review, its reason and its source. The screenshot is an actual recall receipt from this workflow. Correction-aware retrieval and project isolation have separate regression checks.
-
-Sources and provenance:
-
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
-
-## Slide 7
-
-The web application authenticates the researcher and enforces ownership. The server-side OpenShell/Codex agent selects and runs real scientific tools. Zetaris supplies the verified marker reference. Explicit researcher reviews become project-owned memory in the official Meterless H-MEM engine, persisted in PostgreSQL. Later requests retrieve those reviews with source links. Provider interfaces keep these responsibilities separate.
-
-Sources and provenance:
-
-- https://github.com/mpckkk/2026_GenAI/tree/celloras.com
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
-
-## Slide 8
-
-The goal is to reduce the repeated work of assembling evidence and reconstructing decisions. The current working demo starts with soybean. Independent biological validation and support for researchers’ own compatible datasets are the next milestone, with other plants added through species and reference interfaces. These are next steps, not claims of completed features. Try the working workflow at celloras.com.
-
-Sources and provenance:
-
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
-- https://github.com/mpckkk/2026_GenAI/tree/celloras.com
-
-## Slide 9
-
-Appendix. The independent base-R arithmetic check passed 2,952 values at tolerance 1e-10, with maximum absolute error 2.9004576518332215e-15. This is implementation agreement, not biological accuracy. The combined public workflow rehearsal passed on 25 October 2026 and retained actual Zetaris and H-MEM receipts. The same-study panel needs independent biological validation.
-
-Sources and provenance:
-
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
-
-## Slide 10
-
-Detailed source links and narration accompany every slide. Product images are actual Celloras outputs and source receipts. The opening point cloud is replotted from all 7,496 nuclei without changing their original coordinates or applying identity labels. Design references: Front’s original 2016 Series A deck, published by its founders, plus the previously inspected Airbnb and Buffer decks. Their assets and business metrics are not reused.
-
-Sources and provenance:
-
 - https://github.com/mpckkk/2026_GenAI/tree/celloras.com
-- https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
-- https://front.com/blog/inside-fronts-series-a-slide-deck

@@ -1,5 +1,9 @@
 # Changelog
 
+## Four-slide hackathon pitch — 2026-10-25
+
+- Shortened the deck from ten slides to four and mapped its content to the official judging rubric. Kept actual workflow visuals, sponsor receipts, architecture and observed proof; moved source detail into speaker notes.
+
 ## Pitch deck redesign — 2026-10-25
 
 - Rebuilt the pitch around one soybean annotation journey, with larger scientific visuals, short headlines and Celloras typography/colors.

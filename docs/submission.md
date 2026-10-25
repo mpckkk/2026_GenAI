@@ -27,7 +27,7 @@ Use the existing soybean-root dataset. It avoids a multi-gigabyte upload during 
 
 **The combined public rehearsal passed on 2026-10-25.** The [ready demo](demo.md#open-the-ready-demo) contains actual annotation, a measured-marker dot plot, an illustrative saved review, H-MEM recall and its correction in one experiment. Annotation run `af2c9005-6be1-4f7c-baf4-dede8d06155c` retains Zetaris query `f7fbb611-05df-4f96-83c8-efe2e60e8d32`; recall turns `65facd5a-7116-4c72-8115-fa09d923913c` and `caf0379c-ae9f-4631-9af3-bc77bc6be142` retain the original and corrected review sources. Repeating preparation reused those exact records without additional inference or review writes. Numerical evidence and the earlier answer's receipt remained unchanged. Separate memory regression checks cover older-context and distinct-group behavior; this combined rehearsal covers one annotation group.
 
-The prepared history is available for walkthroughs now. The [ten-slide deck](pitchdeck/README.md) is prepared. The actual 1–4 minute recording remains outstanding; rehearse any new live prompts before recording.
+The prepared history is available for walkthroughs now. The [four-slide deck](pitchdeck/README.md) is prepared. The actual 1–4 minute recording remains outstanding; rehearse any new live prompts before recording.
 
 ## Simple video script — target 2:40
 
@@ -58,8 +58,8 @@ For a fresh continuous recording, use a separate experiment/account, run annotat
 
 Label prepared result footage **Earlier actual run**. If waiting is shortened in editing, label the cut; the target duration is the edited video length. Keep the existing candidate/review distinction visible. Finish with https://celloras.com and https://github.com/mpckkk/2026_GenAI/tree/celloras.com.
 
-## Deck — ten slides
+## Deck — four slides
 
-The [editable PowerPoint](pitchdeck/Celloras-Pitch-Deck.pptx) and [PDF](pitchdeck/Celloras-Pitch-Deck.pdf) cover the problem, workflow, real cell map, Zetaris reference, H-MEM recall, architecture, observed results and next steps. Slides 1–8 form the pitch; slides 9–10 contain validation and sources. [Speaker notes](pitchdeck/speaker-notes.md) include narration and exact source links. The revised visual structure draws on Front’s original Series A deck, alongside the earlier Airbnb and Buffer references.
+The [editable PowerPoint](pitchdeck/Celloras-Pitch-Deck.pptx) and [PDF](pitchdeck/Celloras-Pitch-Deck.pdf) use four slides: problem and value, the real workflow, architecture with Zetaris/H-MEM receipts, and working proof. [Speaker notes](pitchdeck/speaker-notes.md) contain a roughly two-minute narration and exact sources. The [deck guide](pitchdeck/README.md#fit-to-the-judging-criteria) maps the content to the official 100-point rubric.
 
 Avoid unsupported claims of classification accuracy, full-atlas federation or “weeks to seconds.” Current annotation is exploratory; same-study agreement is not independent validation. Keep this boundary concise in the presentation and link [methods](annotation-method.md) for detail.
