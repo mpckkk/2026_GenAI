@@ -7,7 +7,7 @@ Requirements below follow the user's submission instructions supplied on 2026-10
 | Deliverable              | Contents                                                                             | Current status                                                                                    |
 | ------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
 | Demo video, 1–4 minutes  | The agent's main research workflow, actual Zetaris query provenance and H-MEM recall | Recording pending; outline below                                                                  |
-| Slide deck               | Problem, solution, architecture, sponsor use and observed results                    | Deck artifact pending; outline below                                                              |
+| Slide deck               | Problem, solution, architecture, sponsor use and observed results                    | [PowerPoint and PDF prepared](pitchdeck/README.md)                                                |
 | Public GitHub repository | All code, setup, usage and dependencies in the README                                | Public visibility verified; application is on `celloras.com`, while default branch remains `main` |
 | Sponsor explanation      | Zetaris's role, the H-MEM Engine and a test/demo showing each working                | [Written explanation and test pointers](sponsor-explanation.md) prepared                          |
 
@@ -27,7 +27,7 @@ Use the existing soybean-root dataset. It avoids a multi-gigabyte upload during 
 
 **The combined public rehearsal passed on 2026-10-25.** The [ready demo](demo.md#open-the-ready-demo) contains actual annotation, a measured-marker dot plot, an illustrative saved review, H-MEM recall and its correction in one experiment. Annotation run `af2c9005-6be1-4f7c-baf4-dede8d06155c` retains Zetaris query `f7fbb611-05df-4f96-83c8-efe2e60e8d32`; recall turns `65facd5a-7116-4c72-8115-fa09d923913c` and `caf0379c-ae9f-4631-9af3-bc77bc6be142` retain the original and corrected review sources. Repeating preparation reused those exact records without additional inference or review writes. Numerical evidence and the earlier answer's receipt remained unchanged. Separate memory regression checks cover older-context and distinct-group behavior; this combined rehearsal covers one annotation group.
 
-The prepared history is available for walkthroughs now. The actual 1–4 minute recording and slide deck remain outstanding; rehearse any new live prompts before recording.
+The prepared history is available for walkthroughs now. The [ten-slide deck](pitchdeck/README.md) is prepared. The actual 1–4 minute recording remains outstanding; rehearse any new live prompts before recording.
 
 ## Simple video script — target 2:40
 
@@ -58,13 +58,8 @@ For a fresh continuous recording, use a separate experiment/account, run annotat
 
 Label prepared result footage **Earlier actual run**. If waiting is shortened in editing, label the cut; the target duration is the edited video length. Keep the existing candidate/review distinction visible. Finish with https://celloras.com and https://github.com/mpckkk/2026_GenAI/tree/celloras.com.
 
-## Six-slide outline
+## Deck — ten slides
 
-1. **Problem:** researchers repeatedly compare marker evidence and reconstruct earlier label decisions. Use one concrete ambiguous group, not an unsupported time-saving statistic.
-2. **Solution:** ask → inspect evidence → review → return later. Show actual Celloras cards and the researcher's role.
-3. **Architecture:** Next.js/Keycloak → owned agent worker → scientific tools + Zetaris reference adapter; explicit reviews → H-MEM + PostgreSQL → later sourced recall. OpenShell/Codex runs the agent.
-4. **Zetaris:** show the reference table, SELECT-only account boundary and saved query receipt. State the current 42-association scope.
-5. **Meterless H-MEM:** show a decision, later recall and correction, with source links and project isolation. Identify the pinned official Engine implementation.
-6. **Proof and next work:** real test results, public repository and demo; separate measured functionality from future plants, additional references and `.h5ad` uploads.
+The [editable PowerPoint](pitchdeck/Celloras-Pitch-Deck.pptx) and [PDF](pitchdeck/Celloras-Pitch-Deck.pdf) cover the problem, workflow, real cell map, Zetaris reference, H-MEM recall, architecture, observed results and next steps. Slide 10 is a source appendix. [Speaker notes](pitchdeck/speaker-notes.md) include narration and exact source links. The visual structure was informed by the original Airbnb and Buffer decks.
 
 Avoid unsupported claims of classification accuracy, full-atlas federation or “weeks to seconds.” Current annotation is exploratory; same-study agreement is not independent validation. Keep this boundary concise in the presentation and link [methods](annotation-method.md) for detail.

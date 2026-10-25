@@ -1,5 +1,10 @@
 # Changelog
 
+## Hackathon pitch deck — 2026-10-25
+
+- Added a ten-slide editable PowerPoint and PDF, with actual soybean annotation visuals, Zetaris and Meterless H-MEM roles, architecture, observed results and next steps.
+- Added narration, sources and original Airbnb/Buffer deck references; linked the finished deck from the README and submission checklist. Video recording remains outstanding.
+
 ## Quiet composer actions — 2026-10-25
 
 - Moved marker upload into the message toolbar and replaced stacked outlined controls with a compact icon/label suggestion row.

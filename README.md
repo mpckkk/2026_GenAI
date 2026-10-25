@@ -23,7 +23,7 @@ The hackathon submission uses **Zetaris and the Meterless H-MEM Engine** in the 
 
 The complete public workflow passed: annotation → measured-marker plot → researcher review → H-MEM recall → correction, with Zetaris and H-MEM in the same experiment. [Open the prepared demo](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320) after using **Use demo credentials** on [login](https://celloras.com/login). Follow the [short walkthrough](docs/demo.md#open-the-ready-demo).
 
-See the [sponsor explanation and tests](docs/sponsor-explanation.md), [setup](docs/configuration.md#sponsor-integrations) and [submission preparation](docs/submission.md). Reproduce the complete journey with `npm run demo:workflow` using the [documented environment](docs/demo.md#prepare-the-complete-workflow). The final video and slide deck remain to be produced.
+See the [sponsor explanation and tests](docs/sponsor-explanation.md), [setup](docs/configuration.md#sponsor-integrations) and [submission preparation](docs/submission.md). Reproduce the complete journey with `npm run demo:workflow` using the [documented environment](docs/demo.md#prepare-the-complete-workflow). The [pitch deck is ready in PowerPoint and PDF](docs/pitchdeck/README.md); the final video remains to be recorded.
 
 Cursor and NVIDIA are optional under the supplied submission rules. The existing OpenShell runtime is working. Nightshift has a selectable adapter but no verified live inference; Nemotron, NeMo Files and NVIDIA tracing remain optional pending work.
 
