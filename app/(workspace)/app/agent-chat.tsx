@@ -774,6 +774,46 @@ export function AgentChat({
                       <BrandMark size={30} />
                       <div className={styles.assistantContent}>
                         <p className={styles.chatSpeaker}>Celloras</p>
+                        {!!turn.recalledDecisions?.length && (
+                          <details className={styles.memoryReceipt}>
+                            <summary>
+                              Recalled {turn.recalledDecisions.length} saved{" "}
+                              {turn.recalledDecisions.length === 1
+                                ? "decision"
+                                : "decisions"}
+                            </summary>
+                            <p>
+                              Your previous reviews in this experiment, recalled
+                              by H-MEM.
+                            </p>
+                            <ul>
+                              {turn.recalledDecisions.map((decision) => {
+                                const value = JSON.parse(decision.content) as {
+                                  cellType?: string;
+                                  cluster?: string;
+                                  markerSet?: string;
+                                  decision?: string;
+                                  note?: string;
+                                };
+                                return (
+                                  <li key={decision.source}>
+                                    <a href={decision.href}>
+                                      {value.cellType ||
+                                        value.decision ||
+                                        "Saved review"}
+                                      {value.cluster
+                                        ? ` · group ${value.cluster}`
+                                        : value.markerSet
+                                          ? ` · ${value.markerSet}`
+                                          : ""}
+                                    </a>
+                                    {value.note && <p>{value.note}</p>}
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </details>
+                        )}
                         {turn.responseDocument ? (
                           <AgentResponse
                             document={turn.responseDocument}

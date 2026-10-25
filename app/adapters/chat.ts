@@ -24,7 +24,7 @@ import type { ResponseDocument } from "@/app/core/agent-response.mjs";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const MAX_POSITION = "9223372036854775807";
 const COLUMNS =
-  "t.id, t.submission_id, t.position::text AS position, t.prompt, t.requested_action, t.response_text, t.response_document, t.status, t.progress, t.error_code, t.created_at, t.updated_at";
+  "t.id, t.submission_id, t.position::text AS position, t.prompt, t.requested_action, t.response_text, t.response_document, t.context_snapshot->'researchMemory'->'decisions' AS recalled_decisions, t.status, t.progress, t.error_code, t.created_at, t.updated_at";
 type Row = {
   id: string;
   submission_id: string;
@@ -33,6 +33,7 @@ type Row = {
   requested_action: SubmitChatInput["action"] | null;
   response_text: string | null;
   response_document: ResponseDocument | null;
+  recalled_decisions: ChatTurn["recalledDecisions"] | null;
   status: ChatStatus;
   progress: string;
   error_code: string | null;
@@ -49,6 +50,17 @@ function turn(row: Row): ChatTurn {
     action: row.requested_action,
     response: row.response_text,
     responseDocument: row.response_document,
+    recalledDecisions:
+      row.status === "completed"
+        ? (row.recalled_decisions ?? []).map(
+            ({ source, href, savedAt, content }) => ({
+              source,
+              href,
+              savedAt,
+              content,
+            }),
+          )
+        : [],
     status: row.status,
     progress: row.progress,
     errorCode: row.error_code,

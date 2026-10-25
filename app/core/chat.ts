@@ -9,6 +9,12 @@ export interface ChatTurn {
   action?: import("./analysis").ScientificAction | null;
   response: string | null;
   responseDocument: ResponseDocument | null;
+  recalledDecisions?: Array<{
+    source: string;
+    href: string;
+    savedAt: string;
+    content: string;
+  }>;
   status: ChatStatus;
   progress: string;
   errorCode: string | null;

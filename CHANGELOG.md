@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.19 — 2026-10-25
+
+- Connected Meterless H-MEM to saved researcher reviews, with project-isolated PostgreSQL state, an append-only trust ledger and source receipts in chat.
+- Preserved superseded decisions for audit while recalling the latest explicit review for each group.
+- Added selectable Zetaris reference queries with exact version/hash verification and visible delivery provenance. Workspace access is still needed for live activation.
+- Added a Meterless Nightshift API runtime alongside the default NVIDIA OpenShell/Codex runtime. Actual returned-model receipts distinguish routing modes from verified Nemotron execution; live runtime access is still required.
+- Added provider setup/probe commands and health states that distinguish missing access from a verified connection.
+
 ## 0.1.18 — 2026-10-25
 
 - Added CSV marker upload with column preview, grouped imports, sample context, original-file download and an included soybean example.

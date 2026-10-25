@@ -9,13 +9,15 @@ import {
   OpenShellCodex,
   sandboxName,
 } from "../../app/adapters/agent-openshell.mjs";
-import { PublishedMarkerReference } from "../../app/adapters/marker-reference.mjs";
+import { configuredReferences } from "../../app/adapters/zetaris-reference.mjs";
 import { runMarkerEvidence } from "../../app/services/marker-evidence.mjs";
 import {
   responseText,
   AgentResponseError,
 } from "../../app/core/agent-response.mjs";
 import { resolveAgentResponse } from "../../app/services/agent-response.mjs";
+import { ResearchMemory } from "../../app/adapters/research-memory.mjs";
+import { NightshiftAgent } from "../../app/gateway/nightshift.mjs";
 
 const workerId = randomUUID();
 const pool = new Pool({
@@ -24,11 +26,20 @@ const pool = new Pool({
   connectionTimeoutMillis: 5000,
   statement_timeout: 10000,
 });
-const runtime = new OpenShellCodex();
-const markerReference = new PublishedMarkerReference();
+const runtimeName = process.env.CELLORAS_AGENT_RUNTIME || "openshell";
+if (!["openshell", "nightshift"].includes(runtimeName))
+  throw new Error("agent_runtime_invalid");
+const runtime =
+  runtimeName === "openshell" ? new OpenShellCodex() : new NightshiftAgent();
+const references = configuredReferences();
+const markerReference = references.marker;
 const scientific = new LocalScientificData();
 const literature = new CuratedLiterature();
-const annotation = new MarkerAnnotationEngine({ scientificData: scientific });
+const annotation = new MarkerAnnotationEngine({
+  scientificData: scientific,
+  loadReference: references.load,
+});
+const memory = new ResearchMemory();
 let stopping = false,
   activeController;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -48,6 +59,7 @@ async function health() {
   let ready = false;
   try {
     await runtime.health();
+    await memory.health(pool);
     ready = true;
   } catch {
     /* fail closed */
@@ -59,7 +71,9 @@ async function health() {
     [
       workerId,
       ready ? "ready" : "unavailable",
-      ready ? "OpenShell connected" : "Agent runtime needs attention",
+      ready
+        ? `${runtimeName === "openshell" ? "OpenShell" : "Meterless Nightshift"} connected${runtime.lastReceipt?.returnedModel ? ` · ${runtime.lastReceipt.returnedModel}` : ""}`
+        : `${runtimeName} runtime needs attention`,
     ],
   );
   return ready;
@@ -108,6 +122,7 @@ function boundedContext(previous, research) {
 
 async function claim() {
   const client = await pool.connect();
+  let claimedId;
   try {
     await client.query("BEGIN");
     const result = await client.query(`SELECT t.* FROM agent_turns t
@@ -122,6 +137,7 @@ async function claim() {
       await client.query("COMMIT");
       return null;
     }
+    claimedId = turn.id;
     const previous = await client.query(
       `SELECT prompt,response_text,response_document FROM agent_turns
       WHERE project_id=$1 AND owner_id=$2 AND status='completed' AND position < $3
@@ -287,7 +303,14 @@ async function claim() {
       snapshot.annotation = { status: "unavailable" };
     }
 
-    const name = sandboxName(turn.id);
+    const name = runtimeName === "openshell" ? sandboxName(turn.id) : null;
+    snapshot.agentRuntime = runtimeName;
+    snapshot.researchMemory = await memory.recall(client, {
+      ownerId: turn.owner_id,
+      projectId: turn.project_id,
+      turnId: turn.id,
+      query: turn.prompt,
+    });
     await client.query(
       `UPDATE agent_turns SET status='running',progress='Starting agent',
       worker_id=$2,sandbox_name=$3,context_snapshot=$4,heartbeat_at=now(),started_at=now(),updated_at=now()
@@ -295,9 +318,23 @@ async function claim() {
       [turn.id, workerId, name, JSON.stringify(snapshot)],
     );
     await client.query("COMMIT");
+    log("memory.recalled", {
+      turnId: turn.id,
+      count: snapshot.researchMemory.decisions.length,
+    });
     return { ...turn, sandbox_name: name, context_snapshot: snapshot };
   } catch (error) {
     await client.query("ROLLBACK");
+    if (
+      claimedId &&
+      typeof error.code === "string" &&
+      /^(memory_|zetaris_|reference_provider_)/.test(error.code)
+    ) {
+      await client.query(
+        "UPDATE agent_turns SET status='failed',error_code=$2,progress='Research service needs attention',finished_at=now(),updated_at=now() WHERE id=$1 AND status='queued'",
+        [claimedId, error.code],
+      );
+    }
     throw error;
   } finally {
     client.release();
@@ -314,7 +351,10 @@ async function recover() {
   for (const turn of cleanup.rows) {
     if (turn.sandbox_name !== sandboxName(turn.id)) continue;
     try {
-      await runtime.remove(turn.sandbox_name);
+      // Historical sandbox leases always belong to OpenShell, even after switching runtime.
+      await (
+        runtimeName === "openshell" ? runtime : new OpenShellCodex()
+      ).remove(turn.sandbox_name);
       await pool.query(
         "UPDATE agent_turns SET sandbox_name=NULL WHERE id=$1 AND status IN ('completed','failed','cancelled')",
         [turn.id],
@@ -361,8 +401,8 @@ async function execute(turn) {
     code = null;
   log("turn.started", { turnId: turn.id });
   try {
-    const run = (experiment, message) =>
-      runtime.run({
+    const run = async (experiment, message) => {
+      const output = await runtime.run({
         name: turn.sandbox_name,
         prompt: JSON.stringify({ experiment, message }),
         signal: controller.signal,
@@ -370,6 +410,16 @@ async function execute(turn) {
           progress = value;
         },
       });
+      if (runtime.lastReceipt) {
+        experiment.inferenceReceipts ??= [];
+        experiment.inferenceReceipts.push(runtime.lastReceipt);
+        await pool.query(
+          "UPDATE agent_turns SET context_snapshot=$3 WHERE id=$1 AND worker_id=$2 AND status='running'",
+          [turn.id, workerId, JSON.stringify(experiment)],
+        );
+      }
+      return output;
+    };
     const snapshot = turn.context_snapshot;
     const completedCards = [];
     let steps = 0,

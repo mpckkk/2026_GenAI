@@ -60,6 +60,7 @@ try {
         "005_marker_evidence.sql",
         "006_scientific_analysis.sql",
         "007_annotation.sql",
+        "008_marker_imports.sql",
       ]) {
         const sql = await readFile(
           new URL(`../db/migrations/${name}`, import.meta.url),
@@ -105,7 +106,7 @@ try {
         )
       ).rows[0];
       await assert.rejects(
-        client.query("SELECT id FROM marker_imports LIMIT 0"),
+        client.query("SELECT project_id FROM research_memory LIMIT 0"),
         { code: "42P01" },
       );
     }
@@ -116,7 +117,7 @@ try {
     const first = await client.query(
       "SELECT name,checksum FROM schema_migrations ORDER BY name",
     );
-    assert.equal(first.rowCount, 8);
+    assert.equal(first.rowCount, 9);
     if (originalAnalysis) {
       assert.deepEqual(
         (
@@ -148,6 +149,10 @@ try {
     await client.query("SELECT owner_id,demo_key FROM demo_projects LIMIT 0");
     await client.query("SELECT id,result FROM marker_evidence_runs LIMIT 0");
     await client.query("SELECT id,receipt,sha256 FROM marker_imports LIMIT 0");
+    await client.query("SELECT project_id,state FROM research_memory LIMIT 0");
+    await client.query(
+      "SELECT project_id,turn_id,entry FROM research_memory_ledger LIMIT 0",
+    );
     await client.query("SELECT evidence_run_id FROM research_entries LIMIT 0");
     await client.query("SELECT response_document FROM agent_turns LIMIT 0");
     await migrate(url);

@@ -12,8 +12,7 @@ const canonical = (value) =>
   typeof value === "string" ? value.trim().toLowerCase() : "";
 const genePattern = /^Glyma\.[0-9]{2}G[0-9]{6}$/;
 
-function atlasReference() {
-  const data = verifiedReference();
+function atlasReference(data) {
   const r = data.reference;
   return {
     version: 1,
@@ -33,6 +32,7 @@ function atlasReference() {
       sourceSha256: r.sha256,
       articleLicense: data.provenance.rights,
       coverage: r.coverage,
+      ...(data.delivery ? { delivery: data.delivery } : {}),
     },
     records: data.records.map((row) => ({
       id: `table-s2:${row.row}:${row.geneId}:${row.cellType}`,
@@ -49,11 +49,21 @@ function atlasReference() {
 
 /** Explicit configured source. No network, symbol guessing or automatic build conversion. */
 export class PublishedMarkerReference {
-  constructor() {
+  constructor({
+    atlasLoader = async () => verifiedReference(),
+    atlasOnly = false,
+  } = {}) {
     this.reference = reference;
+    this.atlasLoader = atlasLoader;
+    this.atlasOnly = atlasOnly;
   }
-  async health(selected = this.reference) {
+  async health(selected) {
+    selected ??= this.atlasOnly
+      ? atlasReference(await this.atlasLoader())
+      : this.reference;
     const { source, records } = selected;
+    const stableSource = { ...source };
+    delete stableSource.delivery;
     if (
       selected.version !== 1 ||
       !records.length ||
@@ -73,15 +83,15 @@ export class PublishedMarkerReference {
       source: {
         ...source,
         referenceSha256: createHash("sha256")
-          .update(JSON.stringify(selected))
+          .update(JSON.stringify({ ...selected, source: stableSource }))
           .digest("hex"),
       },
     };
   }
   async lookup(marker) {
     const selected =
-      canonical(marker.context?.genomeVersion) === "wm82v4"
-        ? atlasReference()
+      this.atlasOnly || canonical(marker.context?.genomeVersion) === "wm82v4"
+        ? atlasReference(await this.atlasLoader())
         : this.reference;
     const { source } = await this.health(selected);
     const result = {

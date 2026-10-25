@@ -1,4 +1,7 @@
-import type { AnnotationProvider } from "../core/annotation";
+import type {
+  AnnotationProvider,
+  AnnotationReferenceDocument,
+} from "../core/annotation";
 import type { ScientificData } from "../core/scientific-data";
 
 export class AnnotationError extends Error {
@@ -11,7 +14,13 @@ export class AnnotationError extends Error {
 }
 
 export class MarkerAnnotationEngine implements AnnotationProvider {
-  constructor(options: { scientificData: ScientificData });
+  constructor(options: {
+    scientificData: ScientificData;
+    loadReference?: (options?: {
+      signal?: AbortSignal;
+    }) => Promise<AnnotationReferenceDocument>;
+  });
   health: AnnotationProvider["health"];
   run: AnnotationProvider["run"];
 }
+export function verifiedReference(): AnnotationReferenceDocument;

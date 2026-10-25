@@ -1,5 +1,11 @@
 # Engineering notes
 
+- Explicit group comparisons can score below a generic memory threshold even when both saved reviews exist. Recognize exact owned group names/IDs before hybrid ranking, retain both distinct targets, and record that selection in the retrieval trace. Do not silently relabel groups or present retrieval weight as biological confidence.
+
+- Nightshift uses `meterless/*` routing modes and a real runtime proxy token. A successful connection or `meterless/auto` response is not proof that Nemotron executed; retain reported model receipts and verify the fleet route.
+- H-MEM's upstream reference ranks memories but does not supply application tenancy or durable database transactions. Scope the engine to one owned project, persist its state/ledger atomically, and supersede biological decisions only by exact review target, not similarity heuristics.
+- Zetaris's SaaS query API uses an API Bearer token plus organization/request headers. Close returned query cursors, retain only non-secret request receipts, and verify the complete marker-reference hash before allowing remote records into numerical annotation.
+
 - Deployment-manager process arguments can embed encoded environment secrets. Inspect only process IDs/status and service-scoped health; never dump full command lines or environment values into diagnostics.
 
 - Turbopack rewrote 84 tiny floating-point values in an imported JSON reference, changing its canonical SHA-256 while native Node verified it correctly. Read the original file at runtime, explicitly include it in standalone tracing, and check authenticated health in the built app; never relax scientific integrity checks to accommodate compiler changes.

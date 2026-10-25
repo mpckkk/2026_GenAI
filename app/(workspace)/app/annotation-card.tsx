@@ -365,6 +365,14 @@ function AnnotationContent({
       </div>
       <details className={styles.methods}>
         <summary>Reference, method and validation</summary>
+        {result.payload.referenceDelivery && (
+          <p>
+            Marker reference retrieved through{" "}
+            {result.payload.referenceDelivery.provider}; all{" "}
+            {result.payload.referenceDelivery.recordCount} associations verified
+            against the published reference version.
+          </p>
+        )}
         <p>
           <strong>{result.method.label}.</strong> {result.method.description}
         </p>

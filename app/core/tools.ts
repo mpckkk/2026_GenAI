@@ -1,4 +1,5 @@
-import type { AnnotationResult, Evidence, JsonValue } from "./types";
+import type { AnnotationResult, Evidence } from "./types";
+import type { MemoryRecall, MemoryRequest } from "./memory";
 import type { PlantContext } from "./plants";
 
 export interface EvidenceQuery {
@@ -18,8 +19,7 @@ export interface MarkerData {
   findEvidence(query: EvidenceQuery): Promise<Evidence[]>;
 }
 export interface Memory {
-  recall(projectId: string, query: string): Promise<JsonValue[]>;
-  remember(projectId: string, value: JsonValue): Promise<void>;
+  recall(input: MemoryRequest): Promise<MemoryRecall>;
 }
 export interface ModelGateway {
   annotate(input: ModelAnnotationInput): Promise<AnnotationResult>;

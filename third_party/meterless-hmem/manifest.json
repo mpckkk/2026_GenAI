@@ -1,0 +1,32 @@
+{
+  "repository": "https://github.com/Meterless/Meterless",
+  "commit": "1742dec56a66e58eef9dda2d2b865823758ca8cd",
+  "license": "Apache-2.0",
+  "typescript": "6.0.3",
+  "files": {
+    "LICENSE": "63e29fc8231b53757a77fbc371071c91d768621efa1e68b1d9ff8d1bb7c4a0ef",
+    "source/conflictDetection.ts": "432e8b86ed0b5883d435e5ab4a12160d1f40d194cbdb4c119d3b710cbb0301a3",
+    "runtime/conflictDetection.mjs": "163d03877f06bf3fd85c5cad284becb49bf8dd4cd8a4bde7afe2b4373959d73d",
+    "source/dreaming.ts": "d12594d667ec068690c6b81e020cd62ade91671316a1ab9b529259304aceb009",
+    "runtime/dreaming.mjs": "b8b37cf0ec67b22e1a591371c5ac5bcadd3847cd192a4cbf32443a336e07c384",
+    "source/embeddings.ts": "89433327ee1075a8049bc8518cdf5cabf51ad67802e192266841cdee727b6d10",
+    "runtime/embeddings.mjs": "79291be565a27f65a8ce6aa8ca38cce74198bf629165a38e9e68277e8643dc87",
+    "source/index.ts": "9c481889afcdd70086d3bb3470842fa2330215e4d7760d826d103accdf8c1cdf",
+    "runtime/index.mjs": "62995c111aff775c0ee4100dd07dd2cf88161280120b86a0d83e15e503b06986",
+    "source/memoryMining.ts": "6072693d654ea1c34a9adbf6ce80101eeb1eeb56273d264f6ceb4859ffde6562",
+    "runtime/memoryMining.mjs": "0bf8cc446be92e84e59ebcc580b120baa0bfe681861d16691ff637f7298ed630",
+    "source/memoryRetrieval.ts": "4fe120b1b64fe7225b9b28fda59514c114de9e885d22c5bf0aa035788b6d629d",
+    "runtime/memoryRetrieval.mjs": "f52652bf5a2e929eda6d31ef4e294c98fb906fc2b10e2e5ffb0d5d0735bfbe5b",
+    "source/memoryStore.ts": "a1eac8de8c0fde0e503e1212f3cb98295a661c2a8bad93ad82e51985885e6fd0",
+    "runtime/memoryStore.mjs": "a71bf0f8947419c286bf955e7eb199f9c07decb9132ce099b85e46322a0ca631",
+    "source/sleepCycle.ts": "3ce0d4f3233d0ad7c133a2cbaf39b6122467022e0aa378a160a0d463e2264cef",
+    "runtime/sleepCycle.mjs": "67e22a1c27fccb1f280d27d29821c920e28c0255270c145b08f8ee25d1f27676",
+    "source/trustLedger.ts": "263253dd3342c488ce773d7e728d77aec983c1833873602b59ce1a6c7999e20e",
+    "runtime/trustLedger.mjs": "75986ec9212111df16626f142cae3915334d9c11fb0e2ccae6be8e1000a4e724",
+    "source/types.ts": "becb504870a67646a20a421ffe04d8732db63418393423d2186c074b182f54c7",
+    "runtime/types.mjs": "aac39670e75d043c541d19911d047bfdd5fd646f76017478c16cb8481319d5c0",
+    "conformance/runner.ts": "d6724860761c4846a0bce3080d25115bcb0ba1d9d0d2e933438f5683a7a9b7c5",
+    "conformance/runner.mjs": "aea1d6ca2e1af16fb79bc7f4b59765f1979b20970bca6aadb9c48cfebcfede82",
+    "conformance/vectors/vectors.json": "10afb5a07233466576ba6feb0d88408488909ba2721ee9157fdb932132917029"
+  }
+}

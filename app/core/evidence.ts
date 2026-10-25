@@ -1,6 +1,7 @@
 import type { MarkerEntry } from "./research";
 
 export interface MarkerReferenceSource {
+  delivery?: import("./annotation").ReferenceDelivery;
   id: string;
   version: string;
   title: string;

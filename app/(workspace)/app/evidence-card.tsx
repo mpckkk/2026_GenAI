@@ -194,6 +194,12 @@ export function EvidenceCard({
         )}
         <details className={styles.sampleDetails}>
           <summary>Reference, method and limits</summary>
+          {result.source.delivery && (
+            <p>
+              Reference retrieved through {result.source.delivery.provider} and
+              verified against the published version.
+            </p>
+          )}
           <p>
             <a
               href={result.source.url}

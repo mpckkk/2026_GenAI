@@ -2,11 +2,15 @@ import { LocalScientificData } from "../adapters/scientific-data.mjs";
 import { CuratedLiterature } from "../adapters/literature.mjs";
 import { MarkerAnnotationEngine } from "../adapters/annotation-engine.mjs";
 import "server-only";
-import { PublishedMarkerReference } from "@/app/adapters/marker-reference.mjs";
+import {
+  configuredReferences,
+  ZetarisReference,
+} from "../adapters/zetaris-reference.mjs";
 import { database } from "@/app/adapters/database";
 import { keycloakConfiguration } from "@/app/adapters/auth";
 import { logFailure } from "@/app/core/errors";
 import { chatRuntime } from "@/app/adapters/chat";
+import { ResearchMemory } from "../adapters/research-memory.mjs";
 
 export interface ServiceHealth {
   name: string;
@@ -55,7 +59,7 @@ export async function foundationHealth(): Promise<ServiceHealth[]> {
       {
         name: "Marker reference",
         check: async () => {
-          await new PublishedMarkerReference().health();
+          await configuredReferences().marker.health();
           await database().query(
             "SELECT id, project_id, owner_id, turn_id, marker_entry_id, result FROM marker_evidence_runs LIMIT 0",
           );
@@ -103,10 +107,18 @@ async function researchHealth(): Promise<ServiceHealth[]> {
   return Promise.all(
     [
       {
+        name: "H-MEM",
+        check: async () => {
+          await new ResearchMemory().health(database());
+          return "Saved researcher decisions · project-scoped recall · PostgreSQL trust ledger";
+        },
+      },
+      {
         name: "Cell-type annotation",
         check: async () => {
           const h = await new MarkerAnnotationEngine({
             scientificData: scientific,
+            loadReference: configuredReferences().load,
           }).health();
           return `${h.reference.markerGeneCount} verified marker genes · ${h.reference.cellTypeCount} root identities · researcher review required`;
         },
@@ -138,26 +150,83 @@ async function researchHealth(): Promise<ServiceHealth[]> {
     }),
   );
 }
+const zetaris = new ZetarisReference();
+async function sponsorHealth(): Promise<ServiceHealth[]> {
+  let data: ServiceHealth = {
+    name: "Zetaris",
+    status: "pending",
+    detail:
+      "Connect a Zetaris workspace and select it as the marker-reference provider.",
+  };
+  if (process.env.CELLORAS_REFERENCE_PROVIDER === "zetaris") {
+    try {
+      const receipt = await zetaris.health();
+      data = {
+        name: "Zetaris",
+        status: "ready",
+        detail: `${receipt.recordCount} reference associations queried and hash-verified`,
+      };
+    } catch {
+      data = {
+        name: "Zetaris",
+        status: "unavailable",
+        detail:
+          "Reference query failed. Check workspace access, table import and source version.",
+      };
+    }
+  }
+  let nightshift: ServiceHealth = {
+    name: "Meterless Nightshift",
+    status: "pending",
+    detail:
+      "Connect a Nightshift runtime and select its model route. OpenShell remains the default.",
+  };
+  let nemotron: ServiceHealth = {
+    name: "Nemotron",
+    status: "pending",
+    detail:
+      "No completed model call has verified a Nemotron route in the active runtime.",
+  };
+  if (process.env.CELLORAS_AGENT_RUNTIME === "nightshift") {
+    try {
+      const worker = await database().query<{ detail: string }>(
+        "SELECT detail FROM agent_workers WHERE status='ready' AND detail LIKE 'Meterless Nightshift connected%' AND heartbeat_at > clock_timestamp()-interval '30 seconds' ORDER BY heartbeat_at DESC LIMIT 1",
+      );
+      nightshift = worker.rowCount
+        ? {
+            name: "Meterless Nightshift",
+            status: "ready",
+            detail: worker.rows[0].detail,
+          }
+        : {
+            name: "Meterless Nightshift",
+            status: "unavailable",
+            detail:
+              "Worker cannot verify the configured runtime and model route.",
+          };
+      if (worker.rows[0]?.detail.toLowerCase().includes("nemotron"))
+        nemotron = {
+          name: "Nemotron",
+          status: "ready",
+          detail:
+            "The active runtime reported a Nemotron model on a completed response.",
+        };
+    } catch {
+      nightshift = {
+        name: "Meterless Nightshift",
+        status: "unavailable",
+        detail: "Worker status could not be verified.",
+      };
+    }
+  }
+  return [data, nightshift, nemotron];
+}
 export async function serviceHealth(): Promise<ServiceHealth[]> {
   return [
     ...(await foundationHealth()),
     await agentHealth(),
     ...(await researchHealth()),
-    {
-      name: "Zetaris",
-      status: "pending",
-      detail: "Marker sources and query integration",
-    },
-    {
-      name: "Nemotron",
-      status: "pending",
-      detail: "Model selection and gateway connection",
-    },
-    {
-      name: "H-MEM",
-      status: "pending",
-      detail: "Memory retrieval and provenance implementation",
-    },
+    ...(await sponsorHealth()),
     {
       name: "NVIDIA NeMo Files",
       status: "pending",

@@ -90,16 +90,20 @@ const method = {
 
 /** Provider-neutral numerical annotation. The model never chooses evidence values. */
 export class MarkerAnnotationEngine {
-  constructor({ scientificData }) {
+  constructor({
+    scientificData,
+    loadReference = async () => verifiedReference(),
+  }) {
     if (!scientificData || typeof scientificData.run !== "function")
       throw new TypeError("A scientific data provider is required");
     this.scientificData = scientificData;
+    this.loadReference = loadReference;
   }
 
   async health() {
     return {
       status: "ready",
-      reference: structuredClone(verifiedReference().reference),
+      reference: structuredClone((await this.loadReference()).reference),
     };
   }
 
@@ -114,7 +118,7 @@ export class MarkerAnnotationEngine {
         "annotation_input_invalid",
         "Choose a dataset and an optional exact cluster ID",
       );
-    const source = verifiedReference();
+    const source = await this.loadReference({ signal });
     const inspection = await this.scientificData.run({
       datasetId,
       operation: "inspect",
@@ -403,9 +407,11 @@ export class MarkerAnnotationEngine {
         referenceId: source.reference.id,
         referenceVersion: source.reference.version,
         referenceUrl: source.reference.url,
+        ...(source.delivery ? { referenceDelivery: source.delivery } : {}),
       },
       payload: {
         reference: structuredClone(source.reference),
+        ...(source.delivery ? { referenceDelivery: source.delivery } : {}),
         clusters,
         validation,
       },

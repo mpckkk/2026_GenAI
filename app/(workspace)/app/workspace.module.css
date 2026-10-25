@@ -1440,3 +1440,21 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
+.memoryReceipt {
+  color: var(--muted, #68716b);
+  font-size: 0.8125rem;
+  margin: 0 0 16px;
+}
+.memoryReceipt summary {
+  cursor: pointer;
+}
+.memoryReceipt p {
+  margin: 8px 0;
+}
+.memoryReceipt li {
+  margin: 12px 0;
+}
+.memoryReceipt a {
+  color: inherit;
+  text-underline-offset: 3px;
+}

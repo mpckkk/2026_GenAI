@@ -27,7 +27,9 @@ The append-only submission identity is `(project_id, submission_id)`. Identical 
 
 `app/adapters/agent-openshell.mjs` is the execution adapter. Its current `OpenShellCodex` implementation creates a per-turn sandbox, executes the pinned Codex CLI and accepts a response only after a completed turn event. `run-codex.mjs` disables shell, browser, external app and other tool capabilities for this conversational increment. Scientific tools are brokered through the typed response protocol: published root/nodule marker lookup, real sparse root analysis, provisional annotation and curated literature retrieval. Complete atlas coverage and independently validated annotation remain pending.
 
-The worker records real progress and terminal state. Queued cancellation is immediate; running cancellation signals the adapter and removes the exact turn sandbox. Interrupted execution becomes an explicit failure, without automatically repeating the model call. Cleanup is retried separately, and an experiment stays blocked until outstanding sandbox deletion is confirmed. These boundaries allow other execution implementations later; alternative CLIs, direct APIs, OpenRouter and Vercel routes are not currently working chat adapters.
+The worker records real progress and terminal state. Queued cancellation is immediate; running cancellation signals the adapter and removes the exact turn sandbox. Interrupted execution becomes an explicit failure, without automatically repeating the model call. Cleanup is retried separately, and an experiment stays blocked until outstanding sandbox deletion is confirmed. `CELLORAS_AGENT_RUNTIME=nightshift` selects the separate Meterless API adapter using the same independently authorized tool broker and strict card parser. It creates no sandbox; historical OpenShell cleanup always uses the OpenShell adapter. Nightshift live acceptance still needs runtime access. Alternative CLIs, direct APIs, OpenRouter and Vercel routes are not currently verified chat adapters.
+
+Explicit saved reviews also feed `ResearchMemory` during the owned turn-claim transaction. The pinned Meterless H-MEM reference ranks only the current decisions for exact review targets. PostgreSQL holds per-project state and an append-only trust ledger; retrieved source receipts are frozen in the turn and expandable in the UI. Other projects cannot enter the engine's candidate set. Automatic biological mining, semantic conflict resolution, sleep and dreaming are disabled. See [sponsor setup and limits](configuration.md#sponsor-integrations).
 
 ## Visual response contract
 
@@ -88,9 +90,10 @@ Local browser issuer URLs use `localhost:8180`; the app rewrites only transport 
 | General chat           | Durable queue, worker, OpenShell/Codex adapter                           | Broader deployment acceptance, additional runtime adapters            |
 | Plant catalog          | Generic validated configuration, soybean enabled                         | Reviewed additions with suitable references and evaluation            |
 | Marker evidence        | Versioned published root/nodule source, exact matches and linked reviews | Broader references, expert/held-out evaluation, calibrated annotation |
-| Zetaris                | Reference interface and explicit pending adapter                         | Real sources, provenance and queries                                  |
-| Nemotron / Vercel      | Model interface and explicit pending adapter                             | Actual routing, credentials and live acceptance                       |
-| H-MEM                  | Memory interface and explicit pending adapter                            | Retrieval, corrections and provenance                                 |
+| Zetaris                | SQL adapter, versioned reference export, hash validation, query receipts | Workspace access and actual remote query acceptance                   |
+| Nightshift / Nemotron  | Meterless API runtime adapter, strict broker protocol, model receipts    | Runtime access and verified Nemotron execution                        |
+| Vercel                 | Model interface and explicit pending adapter                             | Actual routing, credentials and live acceptance                       |
+| H-MEM                  | Pinned engine, owned PG persistence, review recall and trust ledger      | Larger-scale indexing/capacity validation                             |
 | NeMo Files             | Asset interface and explicit pending adapter                             | Authorized byte storage and durability                                |
 | NVIDIA Intake / Studio | Trace interface and explicit pending adapter                             | Real OTLP export and visible traces                                   |
 | Scientific annotation  | Compatible root marker comparison, evidence cards and label reviews      | Independent validation, broader references and additional species     |

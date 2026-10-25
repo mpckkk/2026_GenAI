@@ -16,6 +16,13 @@ COPY infra/agent/ ./infra/agent/
 COPY app/adapters/agent-openshell.mjs ./app/adapters/agent-openshell.mjs
 COPY app/core/agent-response.mjs app/core/analysis.mjs ./app/core/
 COPY app/services/agent-response.mjs ./app/services/agent-response.mjs
+COPY app/adapters/research-memory.mjs ./app/adapters/research-memory.mjs
+COPY app/adapters/zetaris-reference.mjs ./app/adapters/zetaris-reference.mjs
+COPY app/gateway/nightshift.mjs ./app/gateway/nightshift.mjs
+COPY app/core/agent-response.schema.json ./app/core/agent-response.schema.json
+COPY third_party/meterless-hmem/runtime/ ./third_party/meterless-hmem/runtime/
+COPY third_party/meterless-hmem/LICENSE ./third_party/meterless-hmem/LICENSE
+COPY third_party/meterless-hmem/README.md ./third_party/meterless-hmem/README.md
 COPY app/adapters/marker-reference.mjs ./app/adapters/marker-reference.mjs
 COPY app/services/marker-evidence.mjs ./app/services/marker-evidence.mjs
 COPY data/references/ ./data/references/

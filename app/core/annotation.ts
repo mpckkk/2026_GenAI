@@ -15,6 +15,22 @@ export interface AnnotationReference {
   cellTypeCount: number;
 }
 
+export interface ReferenceDelivery {
+  provider: "Zetaris";
+  requestId: string;
+  retrievedAt: string;
+  recordCount: number;
+  contentSha256: string;
+}
+export interface AnnotationReferenceDocument {
+  version: number;
+  reference: AnnotationReference;
+  provenance: Record<string, unknown>;
+  records: Array<Record<string, unknown>>;
+  contentSha256: string;
+  delivery?: ReferenceDelivery;
+}
+
 export interface AnnotationGeneEvidence {
   geneId: string;
   sourceGeneId: string;
@@ -83,9 +99,11 @@ export interface AnnotationResult {
     referenceId: string;
     referenceVersion: string;
     referenceUrl: string;
+    referenceDelivery?: ReferenceDelivery;
   };
   payload: {
     reference: AnnotationReference;
+    referenceDelivery?: ReferenceDelivery;
     clusters: AnnotationCluster[];
     validation: {
       status: "not_independently_validated";

@@ -5,6 +5,12 @@ import type {
 } from "../core/evidence";
 import type { MarkerEntry } from "../core/research";
 export class PublishedMarkerReference implements MarkerEvidenceSource {
+  constructor(options?: {
+    atlasLoader?: () => Promise<
+      import("../core/annotation").AnnotationReferenceDocument
+    >;
+    atlasOnly?: boolean;
+  });
   health(): Promise<{
     records: number;
     genes: number;
