@@ -1,5 +1,9 @@
 # Engineering notes
 
+- For a hackathon pitch, show the research problem and one concrete result before explaining infrastructure. Give the actual plot enough room to read, show sponsor receipts where they support the story, and keep detailed validation in the appendix. A repeated heading/footer template and miniature full-workspace screenshots weaken the pitch.
+
+- A headless PDF exporter may not discover user-installed fonts even when the slide renderer does. Give the export process an explicit font configuration and inspect the PDF font table as well as the page images.
+
 - Pitch evidence needs two separate checks: numerical implementation agreement does not establish biological annotation accuracy. Preserve that distinction in the slide itself, and use source-linked actual product captures. Inspect exported files too: presentation hyperlinks can change color in a PDF renderer even when the authoring preview looks correct.
 
 - A rebuilt image filled Docker's 31.3 GB guest filesystem despite free host space, making the next real annotation fail with PostgreSQL SQLSTATE `53100`. Check guest capacity before large rebuilds. Removing unused build cache reclaimed 2.184 GB without touching volumes; preserve failed turns and start an explicitly fresh acceptance run after repair.

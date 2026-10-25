@@ -1,5 +1,10 @@
 # Changelog
 
+## Pitch deck redesign — 2026-10-25
+
+- Rebuilt the pitch around one soybean annotation journey, with larger scientific visuals, short headlines and Celloras typography/colors.
+- Gave Zetaris and Meterless H-MEM separate evidence slides; moved numerical validation and sources into two appendix slides. Updated PowerPoint, PDF and speaker notes.
+
 ## Hackathon pitch deck — 2026-10-25
 
 - Added a ten-slide editable PowerPoint and PDF, with actual soybean annotation visuals, Zetaris and Meterless H-MEM roles, architecture, observed results and next steps.

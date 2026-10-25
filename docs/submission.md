@@ -60,6 +60,6 @@ Label prepared result footage **Earlier actual run**. If waiting is shortened in
 
 ## Deck — ten slides
 
-The [editable PowerPoint](pitchdeck/Celloras-Pitch-Deck.pptx) and [PDF](pitchdeck/Celloras-Pitch-Deck.pdf) cover the problem, workflow, real cell map, Zetaris reference, H-MEM recall, architecture, observed results and next steps. Slide 10 is a source appendix. [Speaker notes](pitchdeck/speaker-notes.md) include narration and exact source links. The visual structure was informed by the original Airbnb and Buffer decks.
+The [editable PowerPoint](pitchdeck/Celloras-Pitch-Deck.pptx) and [PDF](pitchdeck/Celloras-Pitch-Deck.pdf) cover the problem, workflow, real cell map, Zetaris reference, H-MEM recall, architecture, observed results and next steps. Slides 1–8 form the pitch; slides 9–10 contain validation and sources. [Speaker notes](pitchdeck/speaker-notes.md) include narration and exact source links. The revised visual structure draws on Front’s original Series A deck, alongside the earlier Airbnb and Buffer references.
 
 Avoid unsupported claims of classification accuracy, full-atlas federation or “weeks to seconds.” Current annotation is exploratory; same-study agreement is not independent validation. Keep this boundary concise in the presentation and link [methods](annotation-method.md) for detail.

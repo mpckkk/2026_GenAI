@@ -2,6 +2,13 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## Pitch deck redesign — 2026-10-25
+
+- Rebuilt the [deck](pitchdeck/README.md) as eight pitch slides plus two appendix slides. The story follows the manual evidence work, the real annotation map, one Root hair candidate, Zetaris reference retrieval and H-MEM correction recall. Added Front's original Series A deck as a design reference.
+- Package, geometry, Inter font-policy and exact-file re-import checks passed without findings. Inspected rendered slides and all ten PDF pages. The first PDF export substituted a serif font; supplying an explicit font configuration fixed it, and the final PDF embeds Inter Regular/Bold. Microsoft PowerPoint execution was not tested.
+- Scientific figures and sponsor receipts reuse the previously accepted workflow. This revision does not establish a new scientific or live application acceptance. No application behavior changed, and local Docker stayed closed.
+- Final editable PowerPoint SHA-256: `d9510112978a6d2403455179ab45b3e96633fe7b4782e07ed26826addad1e402`. Private render and validation receipts are in ignored `.artifacts/pitchdeck/`.
+
 ## Pitch deck — 2026-10-25
 
 - Prepared the [ten-slide PowerPoint and PDF](pitchdeck/README.md), with actual Celloras figures/screenshots, speaker notes, cited sources, required sponsor roles and an editable 7/1/4 outcome chart. Reviewed published copies of the original Airbnb and Buffer decks for narrative structure.

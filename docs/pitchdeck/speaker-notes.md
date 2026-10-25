@@ -1,8 +1,10 @@
 # Celloras — speaker notes and sources
 
+Present slides 1–8. Keep slides 9–10 for questions.
+
 ## Slide 1
 
-Celloras helps plant researchers investigate cell identity in a conversation. The map is an actual output from the soybean-root demonstration. Every suggested name can be investigated, and the researcher keeps the final decision.
+Celloras makes plant cell annotation a conversation. A researcher asks the agent to analyze the groups, inspect their marker genes and explain the evidence. The dots shown here are all 7,496 nuclei in the soybean-root demo, using the original UMAP coordinates and a single color without identity labels.
 
 Sources and provenance:
 
@@ -11,7 +13,7 @@ Sources and provenance:
 
 ## Slide 2
 
-The difficulty is not generating a label. Researchers compare gene expression, consult compatible references, and keep track of why they accepted or rejected an interpretation. Celloras brings those steps together. No time-saving or accuracy benchmark is claimed.
+Knowing which cells are present is a step toward interpreting a plant experiment. The evidence comes from measured expression, compatible marker references, papers and earlier reviews. Researchers have to connect those pieces for each interpretation. We are automating the execution and evidence handling; the researcher keeps the scientific judgment. No time-savings benchmark is claimed.
 
 Sources and provenance:
 
@@ -20,55 +22,62 @@ Sources and provenance:
 
 ## Slide 3
 
-The agent chooses analysis tools and returns interactive elements in the conversation. The screenshot is from the actual public application. Candidate results and researcher reviews are stored separately. Later conversations can retrieve the review through H-MEM.
+This is an actual Celloras annotation output, not a product mockup. The complete soybean root dataset contains 7,496 nuclei in 12 source groups. Seven receive exploratory suggestions, one is ambiguous and four remain unresolved. Click any group to inspect the evidence. These counts are not an accuracy score.
 
 Sources and provenance:
 
-- https://github.com/mpckkk/2026_GenAI/tree/celloras.com
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
+- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
 
 ## Slide 4
 
-This is GSE270392, a published soybean root single-nucleus RNA dataset. The original coordinates and groups are retained; Celloras overlays its exploratory marker-based suggestions. Gray groups remain unresolved. Source group IDs are not biological labels.
+Follow one group. Root hair is its candidate because two marker genes meet the exploratory support rules. The plot shows their actual measured expression across all source groups. The arrow points to group 6. A candidate is a starting point for review; independent evidence still matters.
 
 Sources and provenance:
 
-- https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
+- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
 
 ## Slide 5
 
-Root hair is the computed candidate for group 6. Glyma.01G224900 and Glyma.17G030700 meet the supporting-marker thresholds. The plot is measured expression, not a generated illustration. Zetaris supplies the 42 associations across 41 genes in the versioned root reference; it is one published panel, not full-atlas federation. Query receipt f7fbb611-05df-4f96-83c8-efe2e60e8d32 is retained on annotation af2c9005-6be1-4f7c-baf4-dede8d06155c. The same-study panel is exploratory and is not independent biological validation.
+Zetaris has a working role in the annotation: the application retrieves the published root marker panel through a read-only query, checks all 42 associations against the expected reference content and saves the query receipt with the result. This slide includes the actual retrieval line from the saved annotation. The current integration serves one versioned marker panel, not full-atlas federation.
 
 Sources and provenance:
 
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
 
 ## Slide 6
 
-This actual recall is from the combined public demo. The researcher changed the demonstration review to unresolved pending independent evidence; the calculated Root hair candidate stayed unchanged. H-MEM retrieves the current review and cites its source. The official pinned Meterless reference implementation is used with project-owned PostgreSQL persistence. Separate regression checks test retrieval beyond recent context and isolation between groups.
+The researcher corrected the demonstration review: keep group 6 unresolved until independent evidence is checked. The computed Root hair candidate did not change. In a later turn, Meterless H-MEM retrieves the current saved review, its reason and its source. The screenshot is an actual recall receipt from this workflow. Correction-aware retrieval and project isolation have separate regression checks.
 
 Sources and provenance:
 
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
+- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
 
 ## Slide 7
 
-The web app authenticates researchers and enforces ownership. The server-side agent invokes scientific tools, while the Zetaris adapter retrieves a verified marker reference. Only explicit researcher reviews enter decision memory. H-MEM uses the official Meterless engine with owned state in PostgreSQL and returns a sourced recall. NVIDIA OpenShell runs the CLI agent. Model, reference and memory interfaces provide extension points; not every possible provider is deployed.
+The web application authenticates the researcher and enforces ownership. The server-side OpenShell/Codex agent selects and runs real scientific tools. Zetaris supplies the verified marker reference. Explicit researcher reviews become project-owned memory in the official Meterless H-MEM engine, persisted in PostgreSQL. Later requests retrieve those reviews with source links. Provider interfaces keep these responsibilities separate.
 
 Sources and provenance:
 
 - https://github.com/mpckkk/2026_GenAI/tree/celloras.com
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/architecture.md
 
 ## Slide 8
 
-Seven groups received a provisional suggestion, one was ambiguous and four stayed unresolved. These are outcome counts, not accuracy metrics. The independent base-R arithmetic check passed 2,952 numerical comparisons at tolerance 1e-10. It validates the computation, not the biological identity. The combined public sponsor rehearsal passed on 25 October 2026 and included correction-aware recall. No independent classifier accuracy is claimed.
+The goal is to reduce the repeated work of assembling evidence and reconstructing decisions. The current working demo starts with soybean. Independent biological validation and support for researchers’ own compatible datasets are the next milestone, with other plants added through species and reference interfaces. These are next steps, not claims of completed features. Try the working workflow at celloras.com.
+
+Sources and provenance:
+
+- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
+- https://github.com/mpckkk/2026_GenAI/tree/celloras.com
+
+## Slide 9
+
+Appendix. The independent base-R arithmetic check passed 2,952 values at tolerance 1e-10, with maximum absolute error 2.9004576518332215e-15. This is implementation agreement, not biological accuracy. The combined public workflow rehearsal passed on 25 October 2026 and retained actual Zetaris and H-MEM receipts. The same-study panel needs independent biological validation.
 
 Sources and provenance:
 
@@ -76,19 +85,9 @@ Sources and provenance:
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
 
-## Slide 9
-
-These are next steps, not completed capabilities. We start with one working soybean workflow, then validate independently, support researchers’ own compatible datasets, and add plants through explicit reference and species adapters. Try the current application at celloras.com. The application code is on the celloras.com branch of the public repository.
-
-Sources and provenance:
-
-- https://github.com/mpckkk/2026_GenAI/tree/celloras.com
-- https://celloras.com
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
-
 ## Slide 10
 
-Design references are the real original Airbnb and Buffer decks, inspected through published copies. Their narrative structure and economy influenced this deck; their assets, market claims and business metrics were not reused. Screenshots and scientific plots are from actual Celloras runs, captured on 25 October 2026. Full source links are provided on their corresponding slides.
+Detailed source links and narration accompany every slide. Product images are actual Celloras outputs and source receipts. The opening point cloud is replotted from all 7,496 nuclei without changing their original coordinates or applying identity labels. Design references: Front’s original 2016 Series A deck, published by its founders, plus the previously inspected Airbnb and Buffer decks. Their assets and business metrics are not reused.
 
 Sources and provenance:
 
@@ -98,5 +97,4 @@ Sources and provenance:
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
-- https://www.startups.com/articles/airbnb-pitch-deck-teardown-and-redesign
-- https://buffer.com/resources/from-0-to-1000000-users-the-journey-and-statistics-of-buffer/
+- https://front.com/blog/inside-fronts-series-a-slide-deck
