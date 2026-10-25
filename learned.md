@@ -74,3 +74,6 @@
 - Current TypeScript ESLint support requires TypeScript below 6.1; pin 6.0.3. Next.js's bundled lint plugins require ESLint 9. Pin the compatible dependency graph instead of forcing peer resolution.
 - A real mobile browser check found decorative rotated ellipses caused horizontal overflow at 390px. Remove their rotation at mobile widths; do not hide all page overflow to mask layout defects.
 - Tests use real accounts and projects. Keep credentials and browser traces out of artifacts and Git. Screenshots of the landing page, project and health view are sufficient for visual evidence.
+
+- Uploaded marker lists and expression matrices support different scientific claims. Preserve original CSV bytes and immutable context, use exact compatible reference overlap for a gene list, and reserve expression/UMAP claims for a measured dataset. The included marker example comes from the reference itself and is not an accuracy benchmark.
+- A selected imported group can be older than the worker’s recent 30 research records. Resolve its bounded exact handle within the owned project before building the tool catalog; retain existing ownership checks at tool execution.

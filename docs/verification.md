@@ -2,6 +2,15 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## CSV marker upload — 2026-10-25
+
+- Built the actual standalone app and Linux worker, applied migration 008 and tested through real Keycloak accounts, PostgreSQL and OpenShell/Codex. The final four-test run passed in 2.7 minutes: upload/evidence, import boundaries, existing numerical annotation/review and earlier root marker evidence/review. TypeScript, ESLint and changed-file formatting passed.
+- Uploaded the actual included CSV through the browser file picker after exercising **Use example** and its preview. Three groups retained 4/3/3 genes with root/Wm82v4 context. Original download bytes and SHA-256 matched the input. Reload retained the import and the real agent's canonical evidence. After 31 later research notes, the selected older group still resolved through the owned tool catalog: four Root hair gene matches, actual Table S2 links and expandable source-row details. Final local turn: `f83873b9-01ff-451f-90eb-bee50699add5`.
+- Real API checks passed for UTF-8 BOM, quoted commas/newlines/escaped quotes, duplicate genes, identical replay, changed-content 409, malformed/empty/inconsistent rows, invalid columns, oversized CSV 413, too many groups, cross-origin 403 and cross-account list/download/write 404. Rejected requests left exactly the original context and marker entry; unauthenticated reads returned 401.
+- Migration rehearsal passed in fresh and populated disposable PostgreSQL databases, including unchanged reruns and preservation of existing projects, conversation, analysis results and reviews. No existing data or Docker volumes were removed.
+- Inspected desktop preview, saved groups at 390px, and evidence-card screenshots; 390px and 320px dialog width assertions passed. Hiding the example introduction after selection keeps the import action visible on the tested desktop. Evidence: `.artifacts/marker-upload-accepted/`.
+- Scope: bounded CSV gene lists with exact published-reference overlap; the example was selected from that same reference and is not independent validation. XLSX, full expression matrices and multi-gigabyte browser uploads are not supported by this importer. The existing published root dataset remains available for measured expression, UMAP and provisional all-cluster annotation.
+
 ## Production runtime, experiment dashboard and favicon — 2026-10-23
 
 - Published 23 scientific artifacts (564,987,598 bytes) to durable `/var/lib/celloras/scientific-data` on the production host. Full local/remote file hashes, catalog, manifest and source provenance match. The app’s read-only mount exposes 7,496 nuclei, 40,127 genes and 12 groups. Preserved unrelated managed environment values and existing accounts/data. Evidence: `.artifacts/production-data/`.

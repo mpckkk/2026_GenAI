@@ -110,7 +110,10 @@ function context(value: unknown, catalog: PlantCatalog): PlantContext {
   };
 }
 
-function parse(input: unknown, catalog: PlantCatalog): AppendResearchInput {
+export function parseResearchInput(
+  input: unknown,
+  catalog: PlantCatalog,
+): AppendResearchInput {
   const envelope = object(input, "entry");
   onlyKeys(envelope, ["submissionId", "command"], "entry");
   const submissionId = uuid(envelope.submissionId, "submissionId");
@@ -315,7 +318,7 @@ export class ResearchService {
     stage(operationId, "append.started");
     try {
       await this.access.requireProject(userId, projectId);
-      const parsed = parse(input, this.plants);
+      const parsed = parseResearchInput(input, this.plants);
       const { command } = parsed;
       stage(operationId, "append.validated", { kind: command.kind });
       let payload:

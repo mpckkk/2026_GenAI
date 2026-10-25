@@ -20,6 +20,7 @@ import type {
 } from "@/app/core/scientific-data";
 import { AgentResponse } from "./agent-response";
 import { NextActions, type GuidedAction } from "./next-actions";
+import { MarkerUpload } from "./marker-upload";
 import type { ScientificSelection } from "./scientific-card";
 import { WorkspaceIcon } from "./workspace-icons";
 import styles from "./workspace.module.css";
@@ -881,7 +882,7 @@ export function AgentChat({
               <p>
                 {dataset
                   ? "Start with a map of the published nuclei. Choose a group, explore its genes, and follow the evidence. No prompt needed."
-                  : "Record your plant and sample, then add a marker list or discuss a question with Celloras."}
+                  : "Upload a marker CSV below, try the soybean example, or discuss a question with Celloras."}
               </p>
               {!dataset && (
                 <div className={styles.chatSuggestions}>
@@ -913,6 +914,13 @@ export function AgentChat({
         </div>
       </div>
       <div className={styles.composerDock}>
+        <MarkerUpload
+          projectId={projectId}
+          canAsk={canRun}
+          onAsk={(prompt) =>
+            runAction({ label: "Find cell-type evidence", prompt })
+          }
+        />
         {dataset && (
           <NextActions
             description={nextDescription}

@@ -18,12 +18,14 @@ Published marker lookup for roots and mature nodules and curated literature retr
 
 Start with **Explore soybean root demo**: 7,496 real nuclei, 12 source clusters and suggested next actions in chat. Choose **Annotate all clusters**, inspect a candidate's measured marker evidence and alternatives, then accept, correct, reject or leave its label unresolved with your rationale. You can also select a cluster, inspect expression, retrieve cited evidence and save an interpretation. Dataset import instructions are in [dataset import](docs/dataset-import.md); the walkthrough is in [the demo guide](docs/demo.md).
 
+For your own marker table, open an experiment and choose **Upload markers** above the composer. Upload a CSV exported from Excel or choose **Use example**, check the group/gene columns and sample context, then import and select **Find cell-type evidence**. The original file, grouped genes and context are saved together. See [CSV format and limits](docs/marker-upload.md).
+
 For the earlier marker-reference examples, use the [demo guide](docs/demo.md). `npm run demo:prepare` signs in with supplied local credentials and prepares root and nodule examples through the real agent; it can resume without duplicating completed runs.
 
 1. Create or reopen an experiment from the sidebar and send a message to the agent. The composer stays visible while the conversation scrolls.
 2. Open **Study context → Edit context** to save tissue, sample, developmental stage and genome/identifier context. Unknown details can stay empty.
 3. Use **Add markers** in the study panel to save a cluster's gene list: 1–200 distinct identifiers, with original text and case preserved. Exact duplicate tokens are removed only from the separate normalized list.
-4. Ask the agent to **look up published marker evidence** for a saved marker set. Root/nodule lookup requires its attached tissue, actual genome version `Glycine_max_v2.1.52`, and `Glyma` namespace. Missing or incompatible context stays unresolved; identifiers/builds are never silently converted.
+4. Ask the agent to **look up published marker evidence** for a saved marker set. Root lookup supports the Wm82v4 atlas literature panel; the earlier root/nodule reference uses `Glycine_max_v2.1.52`. Each lookup requires its attached tissue, actual genome version and `Glyma` namespace. Missing or incompatible context stays unresolved; identifiers/builds are never silently converted.
 5. Expand candidate genes and source links in the evidence card, then **Review and save your decision**. Choose a provisional candidate, keep it unresolved, or reject the evidence. Manual reviews remain available in **Research records → Edit research → Record review**.
 6. Browse saved records and older entries in the research dialog. Each marker set retains its original context when the current sample changes. Closing the dialog preserves unfinished drafts.
 

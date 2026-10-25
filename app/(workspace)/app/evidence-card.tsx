@@ -144,8 +144,14 @@ export function EvidenceCard({
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Source paragraph ↗
+                        {result.source.url.includes(".xlsx")
+                          ? "Source table ↗"
+                          : "Source paragraph ↗"}
                       </a>
+                      <details>
+                        <summary>Evidence details</summary>
+                        <p>{record.method}</p>
+                      </details>
                     </li>
                   ))}
                 </ul>

@@ -1,0 +1,11 @@
+cluster,gene,tissue,genome_version,source_note
+Example A,Glyma.01G224900,root,Wm82v4,Illustrative published-marker input; Zhang et al. Table S2 row 71; not a new experimental sample
+Example A,Glyma.20G032500,root,Wm82v4,Illustrative published-marker input; Zhang et al. Table S2 row 179; not a new experimental sample
+Example A,Glyma.20G061100,root,Wm82v4,Illustrative published-marker input; Zhang et al. Table S2 row 181; not a new experimental sample
+Example A,Glyma.17G030700,root,Wm82v4,Illustrative published-marker input; Zhang et al. Table S2 row 309; not a new experimental sample
+Example B,Glyma.03G007500,root,Wm82v4,Illustrative published-marker input; Zhang et al. Table S2 row 81; not a new experimental sample
+Example B,Glyma.04G227200,root,Wm82v4,Illustrative published-marker input; Zhang et al. Table S2 row 247; not a new experimental sample
+Example B,Glyma.16G106800,root,Wm82v4,Illustrative published-marker input; Zhang et al. Table S2 row 308; not a new experimental sample
+Example C,Glyma.09G255200,root,Wm82v4,Illustrative published-marker input; Zhang et al. Table S2 row 124; not a new experimental sample
+Example C,Glyma.13G334500,root,Wm82v4,Illustrative published-marker input; Zhang et al. Table S2 row 293; not a new experimental sample
+Example C,Glyma.15G040000,root,Wm82v4,Illustrative published-marker input; Zhang et al. Table S2 row 298; not a new experimental sample

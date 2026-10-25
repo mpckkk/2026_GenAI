@@ -40,6 +40,7 @@ export type ResearchPayload =
   | (Extract<ResearchCommand, { kind: "markers" }> & {
       genes: string[];
       context: PlantContext | null;
+      source?: { importId: string; fileName: string; sha256: string };
     });
 
 export type ResearchEntry = ResearchPayload & {

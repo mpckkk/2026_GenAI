@@ -2,6 +2,14 @@
 
 The local Keycloak login can show a **Demo login** panel with email, password and **Use demo credentials**, which fills the regular form. Set `CELLORAS_DEMO_EMAIL` and `CELLORAS_DEMO_PASSWORD` for an existing demo account in the ignored `.env`, then run `docker compose up -d --no-deps keycloak`. These values are intentionally public on that login page. Leaving either blank hides the panel; registration stays unchanged. This does not create an account or bypass authentication.
 
+## Bring a marker CSV
+
+Create an experiment, then choose **Upload markers → Use example → Import marker groups**. Select **Find cell-type evidence** beside Example A. The real agent compares its four genes with the compatible Wm82v4 published reference and renders a Root hair evidence card. Expand the candidate and **Evidence details** to inspect the original table rows. Ask why the candidate is provisional, or save your own review.
+
+You can also upload a CSV exported from Excel, select its group/gene columns and confirm its tissue and genome version. The original CSV is downloadable and groups remain available after reload. Unknown or incompatible context remains unresolved. [Format and limits](marker-upload.md).
+
+The included file is an illustrative selection from the published marker panel, not a new experiment or an accuracy benchmark. This flow compares gene lists. Use the existing root demo below for measured expression, UMAP and all-cluster annotation; no large browser upload is needed for that demo.
+
 ## Guided real-data journey
 
 Sign in and choose **Explore soybean root demo** on the experiments page. It creates or resumes your own saved workspace. The source is the GSE270392 root RNA dataset: 7,496 nuclei, 40,127 genes and 12 original source clusters. Import it once using [the dataset guide](dataset-import.md).

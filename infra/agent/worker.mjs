@@ -133,6 +133,28 @@ async function claim() {
       WHERE project_id=$1 AND author_id=$2 ORDER BY position DESC LIMIT 30`,
       [turn.project_id, turn.owner_id],
     );
+    // An explicit imported group can be older than the recent-record window.
+    // Resolve only bounded exact handles within this owned experiment.
+    const markerHandles = [
+      ...turn.prompt.matchAll(/marker-set:([a-f0-9-]{36})\b/gi),
+    ]
+      .map((match) => match[1].toLowerCase())
+      .filter((id) => /^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/.test(id))
+      .slice(0, 2);
+    if (markerHandles.length) {
+      const requested = await client.query(
+        `SELECT r.id,r.kind,r.payload,r.created_at FROM research_entries r
+         JOIN projects p ON p.id=r.project_id AND p.owner_id=$2
+         WHERE r.project_id=$1 AND r.author_id=$2 AND r.kind='markers' AND r.id=ANY($3::uuid[])`,
+        [turn.project_id, turn.owner_id, markerHandles],
+      );
+      research.rows = [
+        ...requested.rows,
+        ...research.rows.filter(
+          (row) => !requested.rows.some((selected) => selected.id === row.id),
+        ),
+      ];
+    }
     const snapshot = boundedContext(previous.rows, research.rows);
     const sample = await client.query(
       `SELECT r.id,r.payload,r.created_at FROM research_entries r

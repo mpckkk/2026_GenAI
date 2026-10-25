@@ -17,6 +17,8 @@ import { PostgresResearch } from "./adapters/research";
 import { ResearchService } from "./services/research";
 import { PostgresChat } from "./adapters/chat";
 import { ChatService } from "./services/chat";
+import { PostgresMarkerImports } from "./adapters/marker-import";
+import { MarkerImportService } from "./services/marker-import";
 
 const projects = new PostgresProjects();
 const access = new AccessService(projects);
@@ -28,6 +30,11 @@ export const services = {
   access,
   plants,
   research: new ResearchService(access, new PostgresResearch(), plants),
+  markerImports: new MarkerImportService(
+    access,
+    new PostgresMarkerImports(),
+    plants,
+  ),
   analysis: new AnalysisService(
     access,
     new PostgresAnalysis(new LocalScientificData()),

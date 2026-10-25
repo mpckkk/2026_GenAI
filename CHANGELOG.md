@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.18 — 2026-10-25
+
+- Added CSV marker upload with column preview, grouped imports, sample context, original-file download and an included soybean example.
+- Saved each import atomically with owned immutable records and safe submission retries.
+- Connected uploaded groups to real OpenShell evidence cards, including groups outside recent chat context.
+- Added exact Wm82v4 root marker lookup alongside the earlier root/nodule reference, with inspectable source rows.
+
 ## 0.1.17 — 2026-10-23
 
 - Put saved experiments first, reduced the demo to a compact entry and moved new-experiment creation into an accessible dialog that preserves unfinished names.

@@ -1,7 +1,10 @@
 type JsonBody =
   { ok: true; value: unknown } | { ok: false; response: Response };
 
-export async function readJsonBody(request: Request): Promise<JsonBody> {
+export async function readJsonBody(
+  request: Request,
+  maxBytes = 65536,
+): Promise<JsonBody> {
   const reader = request.body?.getReader();
   if (!reader)
     return {
@@ -15,7 +18,7 @@ export async function readJsonBody(request: Request): Promise<JsonBody> {
       const { done, value } = await reader.read();
       if (done) break;
       length += value.byteLength;
-      if (length > 65536) {
+      if (length > maxBytes) {
         await reader.cancel();
         return {
           ok: false,

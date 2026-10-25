@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import reference from "../../data/references/soybean-root-nodule-2024.json" with { type: "json" };
+import { verifiedReference } from "./annotation-engine.mjs";
 
 export class MarkerReferenceError extends Error {
   constructor() {
@@ -11,15 +12,50 @@ const canonical = (value) =>
   typeof value === "string" ? value.trim().toLowerCase() : "";
 const genePattern = /^Glyma\.[0-9]{2}G[0-9]{6}$/;
 
+function atlasReference() {
+  const data = verifiedReference();
+  const r = data.reference;
+  return {
+    version: 1,
+    source: {
+      id: r.id,
+      version: r.version,
+      title: r.title,
+      citation: "Zhang et al., Cell (2024), Table S2",
+      doi: r.doi,
+      url: r.url,
+      section: "Sheet1, literature-derived Root column",
+      speciesId: r.speciesId,
+      genomeVersion: r.genomeBuild,
+      geneIdNamespace: "Glyma",
+      tissues: [r.tissue],
+      retrievedAt: data.provenance.retrievedAt,
+      sourceSha256: r.sha256,
+      articleLicense: data.provenance.rights,
+      coverage: r.coverage,
+    },
+    records: data.records.map((row) => ({
+      id: `table-s2:${row.row}:${row.geneId}:${row.cellType}`,
+      geneId: row.geneId,
+      cellType: row.cellType,
+      sourceLabel: row.sourceLabel,
+      tissue: "root",
+      stage: "Check the source study's root sample context",
+      sourceUrl: `${r.url}#Sheet1!H${row.row}`,
+      method: `Table S2, Sheet1 row ${row.row}, Root column; source species ${row.sourceSpecies}; original reference ${row.originalReference}. ${canonical(row.sourceSpecies) !== "soybean" ? "Source evidence may involve cross-species orthology; review the original study." : ""}`,
+    })),
+  };
+}
+
 /** Explicit configured source. No network, symbol guessing or automatic build conversion. */
 export class PublishedMarkerReference {
   constructor() {
     this.reference = reference;
   }
-  async health() {
-    const { source, records } = this.reference;
+  async health(selected = this.reference) {
+    const { source, records } = selected;
     if (
-      this.reference.version !== 1 ||
+      selected.version !== 1 ||
       !records.length ||
       records.some(
         (r) =>
@@ -37,13 +73,17 @@ export class PublishedMarkerReference {
       source: {
         ...source,
         referenceSha256: createHash("sha256")
-          .update(JSON.stringify(this.reference))
+          .update(JSON.stringify(selected))
           .digest("hex"),
       },
     };
   }
   async lookup(marker) {
-    const { source } = await this.health();
+    const selected =
+      canonical(marker.context?.genomeVersion) === "wm82v4"
+        ? atlasReference()
+        : this.reference;
+    const { source } = await this.health(selected);
     const result = {
       version: 1,
       status: "no_matches",
@@ -57,7 +97,9 @@ export class PublishedMarkerReference {
       limitations: [
         "Exact matches to a limited published marker list, not a validated cell-type prediction. Counts are not confidence scores.",
         "Shared expression, cell state, dropout and doublets can make marker overlap ambiguous. A missing match is not evidence against a cell type.",
-        "Reference samples: 6-day-old roots and nodules 28 days after inoculation. Check developmental stage, treatment and cultivar before interpreting matches.",
+        selected === this.reference
+          ? "Reference samples: 6-day-old roots and nodules 28 days after inoculation. Check developmental stage, treatment and cultivar before interpreting matches."
+          : "This is the atlas authors' root literature panel, including orthology-derived markers. It is not an independently validated classifier. Check stage, treatment and cultivar before interpreting matches.",
       ],
       method: "exact-marker-overlap-v1",
     };
@@ -106,7 +148,7 @@ export class PublishedMarkerReference {
     const genes = new Set(
       marker.genes.filter((gene) => genePattern.test(gene)),
     );
-    const rows = this.reference.records.filter(
+    const rows = selected.records.filter(
       (record) =>
         record.tissue === canonical(context.tissue) && genes.has(record.geneId),
     );

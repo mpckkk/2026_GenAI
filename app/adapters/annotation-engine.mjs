@@ -25,7 +25,7 @@ function cancelled(signal) {
     throw fail("annotation_cancelled", "Cell-type annotation was cancelled");
 }
 
-function verifiedReference() {
+export function verifiedReference() {
   // Bundlers can rewrite JSON floating-point literals. Verify the original
   // file in both the standalone web app and the native agent worker.
   let referenceData;
