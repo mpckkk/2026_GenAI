@@ -7,6 +7,7 @@ import type {
   AnnotationResult,
 } from "@/app/core/annotation";
 import styles from "./annotation-map.module.css";
+import { plantDefinitions } from "@/app/plant-catalog";
 
 const palette = [
   "#548c72",
@@ -301,7 +302,10 @@ export function AnnotationMapView({
       >
         <rect width="720" height={plot.height} rx="12" fill="#fafcf9" />
         <text x="24" y="34" fontSize="20" fontWeight="600" fill="#233b2c">
-          {result.dataset.species} {result.dataset.tissue}
+          {plantDefinitions.find(
+            (plant) => plant.id === result.dataset.speciesId,
+          )?.commonName || result.dataset.species}{" "}
+          {result.dataset.tissue}
         </text>
         <text x="24" y="56" fontSize="12" fill="#617164">
           {number.format(map.embedding.points.length)} nuclei · Cell-type
