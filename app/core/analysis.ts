@@ -2,6 +2,7 @@ import type {
   ScientificDataset,
   ScientificOperation,
   ScientificResult,
+  ScientificPoint,
 } from "./scientific-data";
 import type { LiteratureResult } from "./literature";
 import type { AnnotationResult, AnnotationReview } from "./annotation";
@@ -45,8 +46,19 @@ export interface AnalysisReview {
   createdAt: string;
 }
 
+export interface AnnotationMap {
+  runId: string;
+  dataset: ScientificDataset;
+  embedding: { name: "UMAP"; points: ScientificPoint[] };
+}
+
 /** Owned durable analysis boundary, independent of the numerical provider. */
 export interface AnalysisRepository {
+  annotationMap(
+    userId: string,
+    projectId: string,
+    runId: string,
+  ): Promise<AnnotationMap>;
   workspace(userId: string, projectId: string): Promise<AnalysisWorkspace>;
   startDemo(userId: string): Promise<{ projectId: string; url: string }>;
   get(

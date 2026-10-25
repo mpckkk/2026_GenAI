@@ -125,6 +125,55 @@ export class PostgresAnalysis implements AnalysisRepository {
       annotationReviews: annotationReviews.rows.map(annotationReview),
     };
   }
+  async annotationMap(userId: string, projectId: string, runId: string) {
+    // Resolve the completed owned run before touching any scientific dataset.
+    const run = await this.get(userId, projectId, runId);
+    const result = run.result;
+    if (
+      !("operation" in result) ||
+      result.operation !== "annotation" ||
+      !("payload" in result)
+    )
+      throw new AnalysisError("analysis_input_invalid");
+    const map = await this.data.run({
+      datasetId: result.dataset.id,
+      operation: "inspect",
+    });
+    if (
+      map.operation !== "inspect" ||
+      map.dataset.id !== result.dataset.id ||
+      map.dataset.artifactVersion !== result.dataset.artifactVersion ||
+      map.dataset.source.sha256 !== result.dataset.source.sha256 ||
+      map.payload.embedding.points.length !== result.dataset.nCells
+    )
+      throw new AnalysisError("annotation_map_version_mismatch");
+    const counts = new Map<string, number>();
+    for (const point of map.payload.embedding.points) {
+      if (!Number.isFinite(point.x) || !Number.isFinite(point.y))
+        throw new AnalysisError("annotation_data_invalid");
+      counts.set(point.cluster, (counts.get(point.cluster) || 0) + 1);
+    }
+    if (
+      result.payload.clusters.some(
+        (cluster) => counts.get(cluster.cluster) !== cluster.nCells,
+      )
+    )
+      throw new AnalysisError("annotation_map_version_mismatch");
+    console.info(
+      JSON.stringify({
+        event: "annotation.map.loaded",
+        runId,
+        projectId,
+        points: map.payload.embedding.points.length,
+        artifactVersion: map.dataset.artifactVersion,
+      }),
+    );
+    return {
+      runId: run.id,
+      dataset: map.dataset,
+      embedding: map.payload.embedding,
+    };
+  }
   async review(
     userId: string,
     projectId: string,

@@ -18,6 +18,10 @@ export class AnalysisService {
     await this.access.requireProject(userId, projectId);
     return this.repository.get(userId, projectId, runId);
   }
+  async annotationMap(userId: string, projectId: string, runId: string) {
+    await this.access.requireProject(userId, projectId);
+    return this.repository.annotationMap(userId, projectId, runId);
+  }
   async review(
     userId: string,
     projectId: string,

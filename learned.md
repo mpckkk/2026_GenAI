@@ -101,4 +101,6 @@
 
 - A push to this deployment can replace the checkout while a manual build is running. The manual `up` then reported `getwd: no such file or directory`, while the deployment process had already started the correct new image. Check the current checkout, container image digest and actual public browser behavior before retrying deployment commands.
 
-- A styled accordion is still a wall of text when every gene repeats the same provenance. Structure the information first: gene → original reference species → shared study. Open one gene in a focus-managed inspector and keep full provenance available. Read only the exact versioned saved format; never infer the original source species from a soybean gene ID or silently enrich a historical result from a new catalog.
+- A styled accordion is still a wall of text when every gene repeats the same provenance. Structure the information first: gene → original reference species → shared study. The user rejected a side inspector: open one gene directly beneath its row and keep full provenance available inline. Read only the exact versioned saved format; never infer the original source species from a soybean gene ID or silently enrich a historical result from a new catalog.
+
+- The annotation result must lead with the actual cell map when a visual result is requested. Use the saved suggestions with the exact version-checked measured embedding, retain unresolved/ambiguous groups, and export the same figure. A marker-only result has no cell coordinates and must not receive an invented UMAP.

@@ -33,3 +33,27 @@ The first release retained repeated provenance paragraphs, and the user rejected
 | UPDATE | `docs/verification.md`, `learned.md`, `CHANGELOG.md`  | Record observed evidence, correction and limitations.                                                                                                         |
 
 Order: deterministic presentation metadata → compact component/dialog → real saved-record browser checks → push/live verification. No domain, stored-result, provider or scoring changes; no deleted/renamed files. Exact source text and row links stay available in the inspector. Verify four demo genes map to three Arabidopsis references and one soybean reference, two distinct studies, no silent inference for old paragraph records, unchanged saved responses/reviews, keyboard focus return, and 320px/390px layouts.
+
+## Inline evidence and annotation image — 2026-10-25
+
+The user explicitly rejected the side inspector. Keep gene details inline and lead annotation with a real, selectable UMAP colored by the saved computed suggestions. Export the figure as an image. Do not attach a synthetic cell map to marker-only evidence; that result contains no coordinates.
+
+| Action | File                                                         | Change                                                                                     | Package |
+| ------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------- |
+| UPDATE | `app/(workspace)/app/marker-evidence-view.tsx`               | One compact expanded row; remove modal and focus transfer                                  | 1       |
+| UPDATE | `app/(workspace)/app/marker-evidence-view.module.css`        | Inline evidence styling; delete fixed side-panel rules                                     | 1       |
+| UPDATE | `tests/marker-evidence.spec.ts`                              | Real source links through inline evidence, no dialog                                       | 1       |
+| UPDATE | `app/core/analysis.ts`                                       | Typed annotation map read contract                                                         | 2       |
+| UPDATE | `app/services/analysis.ts`                                   | Authorize map access                                                                       | 2       |
+| UPDATE | `app/adapters/analysis.ts`                                   | Read exact saved annotation's compatible measured embedding; reject version/count mismatch | 2       |
+| CREATE | `app/api/projects/[projectId]/analyses/[runId]/map/route.ts` | Authenticated read endpoint                                                                | 2       |
+| CREATE | `app/(workspace)/app/annotation-map.tsx`                     | Selectable color-coded actual UMAP and PNG export                                          | 3       |
+| CREATE | `app/(workspace)/app/annotation-map.module.css`              | Responsive figure, labels and export action                                                | 3       |
+| UPDATE | `app/(workspace)/app/annotation-card.tsx`                    | Map before candidate controls; share selection                                             | 3       |
+| UPDATE | `app/(workspace)/app/annotation-card.module.css`             | Compact matching group legend                                                              | 3       |
+| UPDATE | `tests/annotation-journey.spec.ts`                           | Actual map, export, selection and ownership checks                                         | 4       |
+| UPDATE | `docs/verification.md`, `learned.md`, `CHANGELOG.md`         | Record real acceptance and rejected panel pattern                                          | 4       |
+
+No files renamed or deleted. No migrations, recalculated embeddings, changed scores or provider activation.
+
+Sequence: (1) inline evidence, (2) owned/version-checked embedding read, (3) rendered/exportable image, (4) real local and public browser checks, then push on `celloras.com`. Acceptance covers original coordinates/counts, saved result immutability, wrong owner/project/run rejection, PNG content, desktop/mobile overflow, keyboard selection and source access. A missing or incompatible embedding shows an explicit error while saved annotation evidence remains readable.

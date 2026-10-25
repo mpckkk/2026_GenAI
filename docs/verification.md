@@ -2,6 +2,12 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## Annotation image and inline evidence — 2026-10-25
+
+- Removed the side inspector after the user's explicit correction. Evidence now expands below the selected gene; only one row is open at a time.
+- Added a real annotated UMAP and PNG export. The map joins saved computed suggestions to the original measured coordinates only after ownership, artifact-version, source-hash and cluster-count checks. No annotation scores, persisted results or source coordinates are rewritten. Marker-only evidence does not receive a fabricated map.
+- TypeScript, ESLint and production build passed. Local browser acceptance was interrupted before sign-in: Docker Desktop's log recorded a GUI `POST /app/quit`, and the daemon/Keycloak were unavailable. Docker was reopened once before the cause was known, then quit from the GUI again; it has been left closed. No local browser acceptance is claimed. Public Linux checks are recorded after deployment.
+
 ## Compact marker evidence — 2026-10-25
 
 - The earlier redesign retained repeated prose when evidence rows were expanded. Replaced that structure with a four-row gene/species/source matrix, grouped citations and a native modal gene inspector.

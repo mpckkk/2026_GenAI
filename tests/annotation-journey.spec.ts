@@ -458,3 +458,101 @@ test("real annotation candidates, evidence, durable decisions and authenticated 
     await other.close();
   }
 });
+
+test("annotation image preserves real coordinates, exports PNG and stays project-owned", async ({
+  page,
+  browser,
+}, info) => {
+  test.setTimeout(300000);
+  await register(page);
+  const opened = await page.request.post("/api/demo", { headers });
+  expect(opened.ok()).toBe(true);
+  const demo = await opened.json();
+  await page.goto(demo.url);
+  await page.getByRole("button", { name: /^Annotate all clusters/ }).click();
+  const turn = await completedTurn(page, demo.projectId, 0);
+  const { run, card, endpoint } = await annotationRun(
+    page,
+    demo.projectId,
+    turn,
+  );
+  const response = await page.request.get(`${endpoint}/map`);
+  expect(response.status()).toBe(200);
+  const map = await response.json();
+  expect(map.dataset.artifactVersion).toBe(run.result.dataset.artifactVersion);
+  expect(map.embedding.points).toHaveLength(7496);
+  const published = JSON.parse(
+    await (
+      await import("node:fs/promises")
+    ).readFile("public/images/soybean-root-umap.json", "utf8"),
+  );
+  expect(map.embedding.points).toHaveLength(published.points.length);
+  for (const [index, point] of map.embedding.points.entries()) {
+    expect(Math.abs(point.x - published.points[index][0])).toBeLessThan(
+      0.000001,
+    );
+    expect(Math.abs(point.y - published.points[index][1])).toBeLessThan(
+      0.000001,
+    );
+    expect(point.cluster).toBe(
+      published.clusters[published.points[index][2]].id,
+    );
+  }
+  const figure = card.locator('[data-annotation-map="true"]');
+  await expect(figure).toBeVisible({ timeout: 30000 });
+  await expect(figure.locator("g[data-map-cluster] > circle")).toHaveCount(
+    7496,
+  );
+  await figure.getByText("Root hair", { exact: true }).first().click();
+  await expect(
+    card.getByRole("button", { name: /^Cluster 6\b/ }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(
+    card.getByRole("heading", { name: "Root hair", exact: true }),
+  ).toBeVisible();
+  const downloading = page.waitForEvent("download");
+  await card
+    .getByRole("button", { name: "Download image ↓", exact: true })
+    .click();
+  const download = await downloading;
+  expect(download.suggestedFilename()).toBe(
+    "celloras-gse270392-root-rna-v1-annotation.png",
+  );
+  const file = info.outputPath("annotation.png");
+  await download.saveAs(file);
+  const bytes = await (await import("node:fs/promises")).readFile(file);
+  expect(bytes.subarray(0, 8).toString("hex")).toBe("89504e470d0a1a0a");
+  expect(bytes.readUInt32BE(16)).toBe(1440);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await figure.scrollIntoViewIfNeeded();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({ path: info.outputPath("annotation-map-mobile.png") });
+  const unrelated = await page.request.post("/api/projects", {
+    headers,
+    data: { name: "Map ownership check" },
+  });
+  expect(unrelated.status()).toBe(201);
+  expect(
+    (
+      await page.request.get(
+        `/api/projects/${(await unrelated.json()).id}/analyses/${run.id}/map`,
+      )
+    ).status(),
+  ).toBe(404);
+  const other = await browser.newContext();
+  try {
+    const outsider = await other.newPage();
+    expect((await outsider.request.get(`${endpoint}/map`)).status()).toBe(401);
+    await register(outsider);
+    expect((await outsider.request.get(`${endpoint}/map`)).status()).toBe(404);
+  } finally {
+    await other.close();
+  }
+  const after = await (await page.request.get(endpoint)).json();
+  expect(after.result).toEqual(run.result);
+  expect(after.annotationReviews).toEqual(run.annotationReviews);
+});

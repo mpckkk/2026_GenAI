@@ -35,39 +35,43 @@
 }
 .clusters {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-  margin: 16px 0 28px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 12px 0 28px;
 }
 .clusters button {
   min-width: 0;
   display: grid;
-  gap: 3px;
+  grid-template-columns: 7px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 3px;
   text-align: left;
-  border: 1px solid #dfe3dc;
+  border: 1px solid #e0e6dc;
   border-radius: 7px;
-  padding: 12px;
-  background: #fff;
+  padding: 9px 10px;
+  background: white;
   color: #333;
-  font-size: 12px;
+  cursor: pointer;
 }
-.clusters button strong {
-  font-weight: 400;
-  color: #65776b;
-  font-size: 11px;
+.clusterDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
 }
 .clusters button .clusterLabel {
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.4;
-  margin: 4px 0;
   color: #2c4032;
 }
+.clusters button small {
+  grid-column: 2;
+  font-size: 10px;
+  color: #74816f;
+}
 .overview {
-  border: 1px solid #e3eae5;
-  border-radius: 10px;
-  padding: 18px;
-  margin: 24px 0 20px;
+  margin: 20px 0;
 }
 .selectedLabel {
   margin: 0 0 7px;

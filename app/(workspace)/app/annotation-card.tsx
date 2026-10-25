@@ -12,6 +12,7 @@ import type {
 import type { GuidedAction } from "./next-actions";
 import type { ScientificSelection } from "./scientific-card";
 import { ResultHeader, CountBar } from "./result-card";
+import { AnnotationMapView, annotationColors } from "./annotation-map";
 import styles from "./annotation-card.module.css";
 
 const counts = new Intl.NumberFormat("en-GB");
@@ -191,7 +192,10 @@ function AnnotationContent({
   actionsDisabled: boolean;
 }) {
   const [localSelected, setLocalSelected] = useState(
-    result.payload.clusters[0]?.cluster ?? "",
+    result.payload.clusters.find((item) => item.status === "suggested")
+      ?.cluster ??
+      result.payload.clusters[0]?.cluster ??
+      "",
   );
   const selected =
     selection?.datasetId === result.dataset.id &&
@@ -207,6 +211,7 @@ function AnnotationContent({
   const reference = result.payload.reference;
   const allCandidates = expandedClusters.has(selected);
   const candidateListId = useId();
+  const colors = annotationColors(result.payload.clusters);
 
   function selectContext(clusterId = selected) {
     setLocalSelected(clusterId);
@@ -256,6 +261,13 @@ function AnnotationContent({
           {result.dataset.species} · {result.dataset.tissue} ·{" "}
           {result.dataset.genomeBuild}
         </p>
+        <AnnotationMapView
+          projectId={run.projectId}
+          runId={run.id}
+          result={result}
+          selected={selected}
+          onSelect={selectContext}
+        />
         <div className={styles.overview}>
           <CountBar
             label={`${result.summary.suggestedCount} suggested, ${result.summary.ambiguousCount} ambiguous, ${result.summary.unresolvedCount} unresolved clusters`}
@@ -289,9 +301,14 @@ function AnnotationContent({
               key={item.cluster}
               type="button"
               aria-pressed={item.cluster === selected}
+              aria-label={`Cluster ${item.cluster}, ${item.suggestedLabel || statusLabels[item.status]}, ${counts.format(item.nCells)} nuclei`}
               onClick={() => selectContext(item.cluster)}
             >
-              <strong>Cluster {item.cluster}</strong>
+              <i
+                className={styles.clusterDot}
+                style={{ background: colors.get(item.cluster) }}
+                aria-hidden="true"
+              />
               <span className={styles.clusterLabel}>
                 {item.suggestedLabel ||
                   (item.status === "ambiguous"
@@ -299,10 +316,7 @@ function AnnotationContent({
                     : "Identity open")}
               </span>
               <small>
-                <span data-status={item.status}>
-                  {statusLabels[item.status]}
-                </span>{" "}
-                · {counts.format(item.nCells)} nuclei
+                Group {item.cluster} · {counts.format(item.nCells)}
               </small>
             </button>
           ))}

@@ -162,23 +162,24 @@ test("real agent retrieves published root evidence and researcher saves an immut
     exact: true,
   });
   await gene.click();
-  const inspector = page.getByRole("dialog", {
-    name: "Glyma.14G218700",
+  const inline = card.getByRole("region", {
+    name: "Evidence for Glyma.14G218700",
     exact: true,
   });
-  await expect(inspector).toBeVisible();
-  await expect(inspector).toContainText("Reference species not recorded");
+  await expect(inline).toBeVisible();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(gene).toHaveAttribute("aria-expanded", "true");
+  await expect(inline).toContainText(
+    "does not specify the original reference species",
+  );
   await expect(
-    inspector.getByRole("link", { name: "Open published source" }),
+    inline.getByRole("link", { name: "Read published source" }),
   ).toHaveAttribute("href", run.candidates[0].records[0].sourceUrl);
-  await expect(
-    inspector.getByRole("button", { name: "Close gene evidence" }),
-  ).toBeFocused();
-  await inspector.getByText("Full saved provenance", { exact: true }).click();
-  await expect(inspector).toContainText(run.candidates[0].records[0].method);
-  await page.keyboard.press("Escape");
-  await expect(inspector).not.toBeVisible();
-  await expect(gene).toBeFocused();
+  await inline.getByText("Full saved provenance", { exact: true }).click();
+  await expect(inline).toContainText(run.candidates[0].records[0].method);
+  await gene.click();
+  await expect(inline).not.toBeVisible();
+  await expect(gene).toHaveAttribute("aria-expanded", "false");
   await card.getByText("Reference, method and limits", { exact: true }).click();
   await expect(card).toContainText("Glycine_max_v2.1.52");
   await expect(card).toContainText("Marker overlap, not a confidence score.");

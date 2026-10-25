@@ -1,5 +1,11 @@
 # Changelog
 
+## Annotation image and inline evidence — 2026-10-25
+
+- Removed the gene side panel; one gene now expands directly inside the evidence card.
+- Added a selectable annotated UMAP using original measured coordinates and the saved computed suggestions, with separate ambiguous/unresolved colors and PNG download.
+- Added an owned annotation-map endpoint that requires the saved dataset version, source checksum and cluster cell counts to match.
+
 ## Compact marker evidence — 2026-10-25
 
 - Replaced repeated gene provenance paragraphs with an interactive gene/species/source matrix and deduplicated study links.

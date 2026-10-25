@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useId, useState } from "react";
 import type {
   EvidenceCandidate,
   MarkerReferenceSource,
@@ -25,15 +25,9 @@ export function MarkerEvidenceView({
       rows.map((row) => row.studyUrl).filter((url): url is string => !!url),
     ),
   ];
-  const [selected, setSelected] = useState(0);
-  const dialog = useRef<HTMLDialogElement>(null);
-  const titleId = useId();
-  const row = rows[selected];
+  const [selected, setSelected] = useState<number | null>(null);
+  const detailsId = useId();
   const hasCrossSpecies = rows.some((row) => row.crossSpecies);
-  function inspect(index: number) {
-    setSelected(index);
-    dialog.current?.showModal();
-  }
   return (
     <div className={styles.evidence}>
       <div className={styles.matrixHeading}>
@@ -57,8 +51,9 @@ export function MarkerEvidenceView({
               type="button"
               className={styles.geneRow}
               aria-label={`Inspect evidence for ${item.record.geneId}`}
-              aria-haspopup="dialog"
-              onClick={() => inspect(index)}
+              aria-expanded={selected === index}
+              aria-controls={`${detailsId}-${index}`}
+              onClick={() => setSelected(selected === index ? null : index)}
             >
               <code>{item.record.geneId}</code>
               <span
@@ -79,6 +74,57 @@ export function MarkerEvidenceView({
               </span>
               <WorkspaceIcon name="chevron" size={15} />
             </button>
+            {selected === index && (
+              <div
+                id={`${detailsId}-${index}`}
+                role="region"
+                aria-label={`Evidence for ${item.record.geneId}`}
+                className={styles.inlineEvidence}
+              >
+                <p className={styles.location}>
+                  {item.locator || source.section}
+                </p>
+                <p className={styles.evidenceNote}>
+                  {item.crossSpecies === true
+                    ? `${item.species} reference mapped to this soybean gene. Check the original study for species-specific evidence.`
+                    : item.crossSpecies === false
+                      ? "The atlas cites a soybean study for this marker."
+                      : "The saved source does not specify the original reference species."}
+                </p>
+                <div className={styles.sourceActions}>
+                  {item.studyUrl && (
+                    <a
+                      href={item.studyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {item.originalReference
+                        ? "Read cited study"
+                        : "Read published source"}{" "}
+                      ↗
+                    </a>
+                  )}
+                  {item.originalReference && item.sourceUrl && (
+                    <a
+                      href={item.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Open atlas source row ↗
+                    </a>
+                  )}
+                </div>
+                <details className={styles.original}>
+                  <summary>Full saved provenance</summary>
+                  <p>
+                    {item.record.sourceLabel} · {item.record.tissue} ·{" "}
+                    {item.record.stage}
+                  </p>
+                  <p>{item.record.method}</p>
+                  <p>{source.citation}</p>
+                </details>
+              </div>
+            )}
           </li>
         ))}
       </ul>
@@ -128,105 +174,6 @@ export function MarkerEvidenceView({
           </span>
         </p>
       )}
-      <dialog
-        ref={dialog}
-        className={styles.inspector}
-        aria-labelledby={titleId}
-      >
-        {row && (
-          <>
-            <header className={styles.inspectorHeader}>
-              <span>Gene evidence</span>
-              <button
-                type="button"
-                autoFocus
-                aria-label="Close gene evidence"
-                onClick={() => dialog.current?.close()}
-              >
-                <WorkspaceIcon name="close" size={20} />
-              </button>
-            </header>
-            <div className={styles.inspectorBody} key={row.record.id}>
-              <p className={styles.eyebrow}>
-                {candidate.cellType} · {row.record.tissue}
-              </p>
-              <h2 id={titleId}>{row.record.geneId}</h2>
-              <div
-                className={styles.evidenceType}
-                data-cross-species={
-                  row.crossSpecies === null
-                    ? "unknown"
-                    : String(row.crossSpecies)
-                }
-              >
-                <span className={styles.species}>
-                  <i aria-hidden="true" />
-                  {row.species
-                    ? `${row.species} reference`
-                    : "Reference species not recorded"}
-                </span>
-                <p>
-                  {row.crossSpecies === true
-                    ? "The atlas links this soybean gene to a reference from another species. This does not establish soybean-specific expression."
-                    : row.crossSpecies === false
-                      ? "The atlas lists a soybean reference for this marker. Check the study context before accepting the cell-type label."
-                      : "The saved lookup does not specify the original reference species. Open the published source to check its context."}
-                </p>
-              </div>
-              <dl className={styles.facts}>
-                <div>
-                  <dt>Cell-type association</dt>
-                  <dd>{row.record.cellType}</dd>
-                </div>
-                <div>
-                  <dt>Sample tissue</dt>
-                  <dd>{row.record.tissue}</dd>
-                </div>
-                <div>
-                  <dt>Reference location</dt>
-                  <dd>{row.locator || source.section}</dd>
-                </div>
-                {row.record.sourceLabel !== row.record.cellType && (
-                  <div>
-                    <dt>Published label</dt>
-                    <dd>{row.record.sourceLabel}</dd>
-                  </div>
-                )}
-              </dl>
-              <div className={styles.sourceActions}>
-                {row.studyUrl && (
-                  <a
-                    href={row.studyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {row.originalReference
-                      ? "Open cited study"
-                      : "Open published source"}{" "}
-                    <span>↗</span>
-                  </a>
-                )}
-                {row.originalReference && row.sourceUrl && (
-                  <a
-                    href={row.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-secondary="true"
-                  >
-                    Open atlas source row <span>↗</span>
-                  </a>
-                )}
-              </div>
-              <details className={styles.original}>
-                <summary>Full saved provenance</summary>
-                <p>{row.record.stage}</p>
-                <p>{row.record.method}</p>
-                <p>{source.citation}</p>
-              </details>
-            </div>
-          </>
-        )}
-      </dialog>
     </div>
   );
 }
