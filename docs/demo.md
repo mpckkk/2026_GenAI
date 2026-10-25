@@ -4,6 +4,8 @@ The complete public workflow passed on 2026-10-25: annotation through Zetaris, m
 
 ## Open the ready demo
 
+Start with the visuals: [interactive cell map](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320?chatBefore=4#turn-056b9b64-0f3b-4bb9-85d8-d026c0a18b31) and [measured-marker comparison](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320?chatBefore=9#turn-c554f03a-bb55-458e-85fe-46dc920ef619). Both are saved inside **Soybean root · real cells** under the demo login. Scroll to **Cell map** or **Expression comparison** below the response text. Select group 6 on the map to highlight its 388 nuclei; the dot plot compares its two supporting genes across all groups. Dot size shows detection fraction and color shows mean expression. These are actual saved scientific results.
+
 1. [Sign in](https://celloras.com/login), click **Use demo credentials**, then **Log in**.
 2. [Open the prepared annotation](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320?chatBefore=8#turn-048dd33d-077c-40a8-a7da-251b04aab83b). Scroll to **Cell-type suggestions**, select **Cluster 6** and expand **Root hair**. Show the two measured supporting genes and their source rows. **Reference, method and validation** shows actual Zetaris delivery.
 3. [Open the complete conversation](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320). The four prepared turns contain annotation, the marker dot plot, the original saved-decision recall and the corrected recall. These are saved outputs from actual agent runs.
