@@ -98,3 +98,5 @@
 - For research cards, lead with the candidate/result, show the specific genes or measured plot immediately, and keep source/method detail expandable. Overlap and evidence bars must encode real counts and remain explicitly distinct from confidence.
 - A scientific SVG with an intrinsic width plus `min-width: 100%` scales a small gene comparison to an excessively tall chart. Keep its actual dimensions and let the labelled plot region scroll on narrow screens.
 - Element screenshots can include a fixed chat composer when the card exceeds the viewport. Inspect a realistic viewport separately, then capture the full card at sufficient viewport height; do not hide the composer to claim the responsive layout works.
+
+- A push to this deployment can replace the checkout while a manual build is running. The manual `up` then reported `getwd: no such file or directory`, while the deployment process had already started the correct new image. Check the current checkout, container image digest and actual public browser behavior before retrying deployment commands.
