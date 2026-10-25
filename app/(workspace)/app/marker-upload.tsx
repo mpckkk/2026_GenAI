@@ -231,10 +231,14 @@ export function MarkerUpload({
       <button
         className={styles.trigger}
         type="button"
+        aria-label="Upload markers"
+        title="Upload markers"
+        aria-haspopup="dialog"
         disabled={!hydrated}
         onClick={() => void open()}
       >
-        <WorkspaceIcon name="plus" size={16} /> Upload markers
+        <WorkspaceIcon name="plus" size={18} />
+        <span>Upload markers</span>
       </button>
       {hydrated &&
         createPortal(

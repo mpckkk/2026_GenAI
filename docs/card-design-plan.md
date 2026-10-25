@@ -1,5 +1,11 @@
 # Visual research cards
 
+## Composer actions — 2026-10-25
+
+Keep the accepted annotation map intact. Put marker upload in the composer toolbar, shorten contextual suggestions, and give them a quiet, consistent icon/label row. Show the selected group once in the composer. On narrow screens, keep suggestions in one row with wrapping labels and an accessible icon upload control. Preserve prompts, operations, availability checks and upload behavior.
+
+Update `agent-chat.tsx`, `next-actions.tsx`, `workspace.module.css`, `workspace-icons.tsx`, `marker-upload.tsx` and `marker-upload.module.css` under `app/(workspace)/app`; update changelog, verification and lessons. No API/data changes or new dependencies. Verify desktop and 390px/320px public UI, keyboard focus and the real upload dialog, then save the accepted visual record in Amigospace.
+
 Requested 2026-10-25: make every agent card readable and visually useful, starting with marker evidence. Keep the existing black/white design kit, with green for evidence and selection.
 
 ## Presentation sequence

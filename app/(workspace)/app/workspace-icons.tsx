@@ -12,10 +12,30 @@ export type IconName =
   | "activity"
   | "logout"
   | "grid"
+  | "label"
+  | "search"
+  | "book"
   | "leaf";
 
 const paths: Record<IconName, React.ReactNode> = {
   plus: <path d="M12 5v14M5 12h14" />,
+  label: (
+    <>
+      <path d="M3 4h8l10 10-7 7L3 10V4Z" />
+      <circle cx="7.5" cy="8" r="1" />
+    </>
+  ),
+  search: (
+    <>
+      <circle cx="10.5" cy="10.5" r="6.5" />
+      <path d="m16 16 5 5" />
+    </>
+  ),
+  book: (
+    <>
+      <path d="M12 5v15M12 5C9 3 5 3 2 4v15c3-1 7-1 10 1 3-2 7-2 10-1V4c-3-1-7-1-10 1Z" />
+    </>
+  ),
   flask: (
     <>
       <path d="M9 3h6M10 3v7L5 19a1.3 1.3 0 0 0 1.2 2h11.6a1.3 1.3 0 0 0 1.2-2l-5-9V3M8 15h8" />

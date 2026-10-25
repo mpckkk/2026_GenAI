@@ -1,5 +1,10 @@
 # Changelog
 
+## Quiet composer actions — 2026-10-25
+
+- Moved marker upload into the message toolbar and replaced stacked outlined controls with a compact icon/label suggestion row.
+- Shortened action labels and kept the selected group visible once, with responsive controls and keyboard access. The annotation map and scientific action payloads are unchanged.
+
 ## Annotation image and inline evidence — 2026-10-25
 
 - Removed the gene side panel; one gene now expands directly inside the evidence card.

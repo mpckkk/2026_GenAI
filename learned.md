@@ -104,3 +104,5 @@
 - A styled accordion is still a wall of text when every gene repeats the same provenance. Structure the information first: gene → original reference species → shared study. The user rejected a side inspector: open one gene directly beneath its row and keep full provenance available inline. Read only the exact versioned saved format; never infer the original source species from a soybean gene ID or silently enrich a historical result from a new catalog.
 
 - The annotation result must lead with the actual cell map when a visual result is requested. Use the saved suggestions with the exact version-checked measured embedding, retain unresolved/ambiguous groups, and export the same figure. A marker-only result has no cell coordinates and must not receive an invented UMAP.
+
+- Keep chat suggestions quiet and compact. Upload belongs in the composer toolbar; repeating the selected group in each action wastes space and creates a second competing control area. Preserve the selected context once, concise verb labels and narrow-screen keyboard/touch access.

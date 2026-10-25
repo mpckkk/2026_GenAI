@@ -574,7 +574,7 @@ export function AgentChat({
             ? latestScience.payload.genes.map((gene) => gene.geneId)
             : [];
     const literature: GuidedAction = {
-      label: "Find relevant papers",
+      label: "Find papers",
       prompt: `Find compatible published evidence for this soybean root analysis${cluster ? ` of source cluster ${cluster}` : ""}${genes.length ? ` and genes ${genes.join(", ")}` : ""}. Distinguish study context from evidence supporting a cell identity, and explain gaps.`,
       action: {
         operation: "literature",
@@ -601,8 +601,8 @@ export function AgentChat({
             {
               label:
                 latestScience.operation === "expression"
-                  ? "Compare this gene across groups"
-                  : "Compare top genes across groups",
+                  ? "Compare this gene"
+                  : "Compare top genes",
               prompt: `Show a dot plot of ${genes.join(", ")} across the source clusters in ${dataset.title}. Explain detection and expression without assigning an unsupported cell type.`,
               action: { operation: "dotplot", datasetId: dataset.id, genes },
             },
@@ -613,7 +613,7 @@ export function AgentChat({
       nextDescription = `Cluster ${cluster} is selected. Find genes enriched in this group before exploring possible identities.`;
       nextActions = [
         {
-          label: `Find markers for cluster ${cluster}`,
+          label: "Find markers",
           prompt: `Find genes enriched in source cluster ${cluster} of ${dataset.title}. Explain the comparison and limits; do not assign a cell identity without evidence.`,
           action: { operation: "markers", datasetId: dataset.id, cluster },
         },
@@ -632,7 +632,7 @@ export function AgentChat({
       nextActions = largest
         ? [
             {
-              label: `Explore cluster ${largest.id} markers`,
+              label: `Explore group ${largest.id}`,
               prompt: `Find genes enriched in source cluster ${largest.id} of ${dataset.title}. Explain the comparison and limits; do not assign a cell identity without evidence.`,
               action: {
                 operation: "markers",
@@ -660,7 +660,7 @@ export function AgentChat({
     )
   ) {
     const annotationAction: GuidedAction = {
-      label: cluster ? `Annotate cluster ${cluster}` : "Annotate all clusters",
+      label: cluster ? "Annotate group" : "Annotate all groups",
       prompt: `Annotate ${cluster ? `source cluster ${cluster}` : "all source clusters"} in ${dataset.title} using the compatible published marker reference. Show candidate cell types, supporting and conflicting genes, uncertainty and citations. Keep unresolved groups explicit and leave final label decisions to me.`,
       action: {
         operation: "annotation",
@@ -954,13 +954,6 @@ export function AgentChat({
         </div>
       </div>
       <div className={styles.composerDock}>
-        <MarkerUpload
-          projectId={projectId}
-          canAsk={canRun}
-          onAsk={(prompt) =>
-            runAction({ label: "Find cell-type evidence", prompt })
-          }
-        />
         {dataset && (
           <NextActions
             description={nextDescription}
@@ -993,7 +986,7 @@ export function AgentChat({
               aria-describedby="chat-input-help"
               placeholder={
                 cluster
-                  ? `Ask about cluster ${cluster}, or choose a suggested step…`
+                  ? `Ask about group ${cluster}, or choose a suggested step…`
                   : "Ask a question, or choose a suggested step…"
               }
             />
@@ -1037,6 +1030,13 @@ export function AgentChat({
           )}
           <div className={styles.chatComposerFooter}>
             <div className={styles.composerTools}>
+              <MarkerUpload
+                projectId={projectId}
+                canAsk={canRun}
+                onAsk={(prompt) =>
+                  runAction({ label: "Find cell-type evidence", prompt })
+                }
+              />
               <button
                 type="button"
                 className={styles.composerContext}
@@ -1044,7 +1044,7 @@ export function AgentChat({
                 aria-label="Open study context"
                 title={dataset?.title || "Open study context"}
               >
-                <WorkspaceIcon name="plus" size={18} />
+                <WorkspaceIcon name="panel" size={16} />
                 <span>{contextLabel}</span>
               </button>
               {dataset && cluster && (
@@ -1056,7 +1056,7 @@ export function AgentChat({
                   }
                   aria-label={`Clear selected cluster ${cluster}`}
                 >
-                  Cluster {cluster} ×
+                  Group {cluster} ×
                 </button>
               )}
             </div>

@@ -1,7 +1,17 @@
 "use client";
 
 import type { ScientificAction } from "@/app/core/analysis";
+import { WorkspaceIcon, type IconName } from "./workspace-icons";
 import styles from "./workspace.module.css";
+
+const actionIcons: Record<ScientificAction["operation"], IconName> = {
+  annotation: "label",
+  markers: "search",
+  literature: "book",
+  inspect: "grid",
+  expression: "activity",
+  dotplot: "grid",
+};
 
 export interface GuidedAction {
   label: string;
@@ -32,11 +42,17 @@ export function NextActions({
             type="button"
             key={action.label}
             className={styles.nextSuggestion}
+            data-operation={action.action?.operation}
             onClick={() => onRun(action)}
             disabled={disabled}
           >
-            {action.label}
-            <span aria-hidden="true"> →</span>
+            <WorkspaceIcon
+              name={
+                action.action ? actionIcons[action.action.operation] : "chat"
+              }
+              size={16}
+            />
+            <span>{action.label}</span>
           </button>
         ))}
       </div>

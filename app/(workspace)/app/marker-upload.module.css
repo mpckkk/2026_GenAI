@@ -1,15 +1,35 @@
 .trigger {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 10px;
-  border: 1px solid #cad7cb;
-  border-radius: 7px;
-  color: #245a2c;
-  background: #f6f9f3;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 5px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  color: #59665d;
+  background: transparent;
   font-size: 12px;
   cursor: pointer;
   white-space: nowrap;
+}
+.trigger:hover:not(:disabled) {
+  color: #1b5e20;
+  background: #f0f5f1;
+}
+.trigger:disabled {
+  opacity: 0.5;
+}
+@media (max-width: 560px) {
+  .trigger {
+    min-width: 40px;
+    min-height: 40px;
+  }
+  .trigger > span {
+    display: none;
+  }
 }
 .dialog {
   width: min(680px, calc(100vw - 28px));

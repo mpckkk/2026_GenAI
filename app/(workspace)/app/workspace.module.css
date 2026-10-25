@@ -607,11 +607,11 @@
 .composerContext {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
   max-width: 100%;
   padding: 6px 8px;
-  margin-left: -4px;
+  min-height: 36px;
   background: #fff;
   border: 0;
   border-radius: 6px;
@@ -1403,31 +1403,56 @@
   }
 }
 .nextActions {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 .nextActions > div {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  gap: 4px;
 }
 .nextSuggestion {
-  min-height: 32px;
-  border: 1px solid #e1e6e1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  min-height: 36px;
+  border: 1px solid transparent;
   border-radius: 8px;
-  background: #fafbf9;
-  color: #5b655c;
-  padding: 6px 10px;
-  font-size: 11px;
+  background: transparent;
+  color: #606b63;
+  padding: 7px 11px;
+  font-size: 12px;
   line-height: 1.4;
   text-align: left;
 }
+.nextSuggestion > svg {
+  flex-shrink: 0;
+}
+.nextSuggestion[data-operation="annotation"] {
+  color: #2d6040;
+  background: #f0f5f1;
+}
 .nextSuggestion:hover:not(:disabled) {
   color: #1b5e20;
-  border-color: #b6cbb5;
-  background: #f3f7f0;
+  border-color: #d5e1d7;
+  background: #eaf2ec;
 }
 .nextSuggestion:disabled {
   opacity: 0.5;
+}
+@media (max-width: 560px) {
+  .nextSuggestion {
+    flex: 1 1 0;
+    min-height: 44px;
+    padding: 6px;
+    gap: 5px;
+  }
+  .composerTools {
+    gap: 3px;
+  }
+  .composerContext {
+    padding: 6px 4px;
+  }
 }
 .clusterContext {
   background: #f4f6f3;
