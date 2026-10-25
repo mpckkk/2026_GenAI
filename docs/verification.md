@@ -2,6 +2,14 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## Composer actions — 2026-10-25
+
+- Live release `2db2b3f` moves marker upload into the composer toolbar and gives suggestions concise icon/label controls. Scientific prompts, payloads and the accepted annotation map are unchanged.
+- Host TypeScript, ESLint and production build passed; GitHub Foundation checks passed. Linux app is healthy, started at 18:48:20 UTC with image `sha256:0920a44193d04caa5a7d152add69e01684d52a554e6dc3b31f23db5d18a21312`.
+- Real public browser acceptance passed at 18:48:53 UTC: selected group 3, verified all three contextual actions, opened upload by keyboard, dismissed with Escape and confirmed focus return and draft preservation. Cleared the group and verified the all-groups action and placeholder; opened and closed upload on mobile. No new model run or research record was needed for this presentation change.
+- Inspected desktop, 390px and 320px screenshots. Controls stay in one row without button/document overflow; no browser runtime errors. Desktop composer dock decreased from 231px to 199px. Evidence is in ignored `.artifacts/composer-actions/`. Local Docker remains closed; no local browser acceptance is claimed.
+- Actual screenshot bytes and the implementation/check record were saved to Amigospace Design Kit node `7554bf13-1e23-4e5e-99bd-1a1c57663375`.
+
 ## Annotation image and inline evidence — 2026-10-25
 
 - Removed the side inspector after the user's explicit correction. Evidence now expands below the selected gene; only one row is open at a time.
