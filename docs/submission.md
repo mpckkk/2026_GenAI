@@ -25,7 +25,9 @@ Use the existing soybean-root dataset. It avoids a multi-gigabyte upload during 
 4. In a later turn, ask what was decided for that exact group and why. Show the H-MEM recalled-decision receipt and follow its source. A browser reload alone does not prove memory retrieval; capture the actual receipt. Use the existing automated journey to demonstrate recall beyond recent context separately.
 5. Correct that same review and ask again. Confirm the current recall reflects the correction, the earlier answer remains historical and another group's decision remains unaffected.
 
-Existing live checks prove Zetaris annotation and H-MEM retrieval separately. **The combined rehearsal above is still open.** Before recording, retain the annotation run ID, Zetaris query receipt, review ID and recalled source from this same experiment. If any step fails, fix and repeat it before describing the workflow as demonstrated.
+**The combined public rehearsal passed on 2026-10-25.** The [ready demo](demo.md#open-the-ready-demo) contains actual annotation, a measured-marker dot plot, an illustrative saved review, H-MEM recall and its correction in one experiment. Annotation run `af2c9005-6be1-4f7c-baf4-dede8d06155c` retains Zetaris query `f7fbb611-05df-4f96-83c8-efe2e60e8d32`; recall turns `65facd5a-7116-4c72-8115-fa09d923913c` and `caf0379c-ae9f-4631-9af3-bc77bc6be142` retain the original and corrected review sources. Repeating preparation reused those exact records without additional inference or review writes. Numerical evidence and the earlier answer's receipt remained unchanged. Separate memory regression checks cover older-context and distinct-group behavior; this combined rehearsal covers one annotation group.
+
+The prepared history is available for walkthroughs now. The actual 1–4 minute recording and slide deck remain outstanding; rehearse any new live prompts before recording.
 
 ## Recording outline — target 3:30
 

@@ -21,7 +21,9 @@ The hackathon submission uses **Zetaris and the Meterless H-MEM Engine** in the 
 - **Zetaris supplies published evidence.** The Linux deployment queries a versioned 42-association root marker reference with a read-only account, verifies its complete content hash and retains query provenance in the annotation card. A real public agent run passed; all 12 cluster results matched the prior reference run.
 - **H-MEM recalls researcher decisions.** The worker uses Meterless's pinned official reference implementation with project-owned PostgreSQL state, correction history and source receipts. Real agent checks passed for recall beyond recent context, correction and isolation. Remembered interpretations remain separate from published evidence.
 
-See the [sponsor explanation and tests](docs/sponsor-explanation.md), [setup](docs/configuration.md#sponsor-integrations) and [submission preparation](docs/submission.md). The final video and slide deck remain to be produced; a combined rehearsal will show both sponsors in one experiment.
+The complete public workflow passed: annotation → measured-marker plot → researcher review → H-MEM recall → correction, with Zetaris and H-MEM in the same experiment. [Open the prepared demo](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320) after using **Use demo credentials** on [login](https://celloras.com/login). Follow the [short walkthrough](docs/demo.md#open-the-ready-demo).
+
+See the [sponsor explanation and tests](docs/sponsor-explanation.md), [setup](docs/configuration.md#sponsor-integrations) and [submission preparation](docs/submission.md). Reproduce the complete journey with `npm run demo:workflow` using the [documented environment](docs/demo.md#prepare-the-complete-workflow). The final video and slide deck remain to be produced.
 
 Cursor and NVIDIA are optional under the supplied submission rules. The existing OpenShell runtime is working. Nightshift has a selectable adapter but no verified live inference; Nemotron, NeMo Files and NVIDIA tracing remain optional pending work.
 

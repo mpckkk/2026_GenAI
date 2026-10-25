@@ -1,6 +1,16 @@
 # Celloras demo
 
-For the hackathon, use the **guided real-data journey** below, followed by saved-decision recall through H-MEM. The [submission walkthrough](submission.md) joins both required sponsors in one experiment and supplies the recording outline. The [sponsor explanation](sponsor-explanation.md) identifies the implemented boundaries and recorded tests. The video and deck are still pending.
+The complete public workflow passed on 2026-10-25: annotation through Zetaris, measured-marker comparison, explicit researcher review, H-MEM recall and correction. The [submission walkthrough](submission.md) supplies the recording outline; the video and deck are still pending.
+
+## Open the ready demo
+
+1. [Sign in](https://celloras.com/login), click **Use demo credentials**, then **Log in**.
+2. [Open the prepared annotation](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320?chatBefore=8#turn-048dd33d-077c-40a8-a7da-251b04aab83b). Scroll to **Cell-type suggestions**, select **Cluster 6** and expand **Root hair**. Show the two measured supporting genes and their source rows. **Reference, method and validation** shows actual Zetaris delivery.
+3. [Open the complete conversation](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320). The four prepared turns contain annotation, the marker dot plot, the original saved-decision recall and the corrected recall. These are saved outputs from actual agent runs.
+4. Expand **Recalled 1 saved decision** to show H-MEM's source. Follow the group link to its annotation card. The review history retains the provisional Root hair review and its withdrawal; the computed suggestion and measurements remain unchanged.
+5. For a live follow-up, select group 6 and click **Ask about my saved decision**, then Send. The current demonstration review is unresolved pending independent evidence.
+
+All steps use the same 7,496-nucleus soybean-root experiment. The prepared reviews are labelled demonstrations. For a fresh recording from the beginning, register a separate account and follow the guided journey below; the shared demo already contains its completed review/correction history.
 
 The local Keycloak login can show a **Demo login** panel with email, password and **Use demo credentials**, which fills the regular form. Set `CELLORAS_DEMO_EMAIL` and `CELLORAS_DEMO_PASSWORD` for an existing demo account in the ignored `.env`, then run `docker compose up -d --no-deps keycloak`. These values are intentionally public on that login page. Leaving either blank hides the panel; registration stays unchanged. This does not create an account or bypass authentication.
 

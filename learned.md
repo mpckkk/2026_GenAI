@@ -2,6 +2,7 @@
 
 - A rebuilt image filled Docker's 31.3 GB guest filesystem despite free host space, making the next real annotation fail with PostgreSQL SQLSTATE `53100`. Check guest capacity before large rebuilds. Removing unused build cache reclaimed 2.184 GB without touching volumes; preserve failed turns and start an explicitly fresh acceptance run after repair.
 - Demonstrate the sponsor chain using the same annotation run: real reference query, measured marker plot, explicit review, recalled source and correction. Keep the original calculation and historical answer receipts unchanged, and make the saved-review follow-up carry the exact run and group.
+- A source link opens its saved turn, whose generated explanation can put a lazy-loaded card below the viewport. Scroll the card into view before interacting with its contents in browser rehearsals; DOM visibility alone does not trigger its intersection observer.
 
 - The user's final submission instructions supersede earlier sponsor-lesson interpretations: Zetaris plus one Meterless Engine are required; Celloras uses H-MEM. Nightshift, Nemotron and other NVIDIA integrations are optional. Keep requirements, working-feature proof and future product scope separate; two separate integration tests do not establish a combined recorded workflow.
 

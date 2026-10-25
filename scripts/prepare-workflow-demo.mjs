@@ -406,6 +406,8 @@ try {
     receipt.locator("a").filter({ hasText: "group 6" }).first(),
   ).toHaveAttribute("href", source.href);
   await receipt.locator("a").filter({ hasText: "group 6" }).first().click();
+  // The source turn may contain a long explanation above its lazy-loaded card.
+  await card().scrollIntoViewIfNeeded();
   await expect(card()).toBeVisible();
   await card()
     .getByRole("button", { name: /^Cluster 6\b/ })

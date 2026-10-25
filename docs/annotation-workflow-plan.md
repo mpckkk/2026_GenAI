@@ -36,3 +36,7 @@ Generated local outputs: ignored `.artifacts/workflow-demo/` contains screenshot
 - An explicit review yields a H-MEM source receipt; its correction replaces current recall without rewriting the earlier answer or annotation result.
 - The user can open the saved demo using the existing advertised login and follow the source/review links.
 - Video and slide-deck production remain separate deliverables; a working preparation script does not constitute a recorded submission video.
+
+## Observed outcome
+
+The combined local and public journeys passed on 2026-10-25. The public run used actual Zetaris delivery and H-MEM review/correction receipts in the same experiment; a complete replay reused its exact saved records. See [verification](verification.md#complete-annotation-workflow--2026-10-25) and [the ready demo](demo.md#open-the-ready-demo). No migrations or scientific scoring changes were needed. Local Docker capacity was repaired by removing unused build cache, and the rehearsal was corrected to scroll a lazy-loaded source card into view.
