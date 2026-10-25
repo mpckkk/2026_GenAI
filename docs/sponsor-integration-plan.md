@@ -1,6 +1,27 @@
 # Sponsor integration — 2026-10-25
 
-Implementation status: H-MEM local acceptance complete (real browser/agent/DB, isolated source recall and correction); seven existing scientific/evidence journeys passed. Zetaris is installed on Linux with all nine vendor checks passed; its real adapter verifies the 42-record reference through a dedicated read-only account. It is selected in production, and a real public annotation completed with unchanged numerical results and saved Zetaris provenance. Nightshift still needs native runtime setup and NVIDIA sign-in; Nemotron execution is not verified. OpenShell remains selected. Exact observations are in `docs/verification.md`.
+## Submission requirements correction
+
+The user's latest submission instructions require **Zetaris and one Meterless Engine in a working feature**. Celloras uses **H-MEM** as that Engine. Cursor and NVIDIA are optional; there are no event credits to claim. Nightshift/Nemotron setup is optional work, not a submission blocker. This supersedes earlier interpretations of the Academy setup lesson. Preserve existing working OpenShell execution while prioritizing the two required integrations and their evidence.
+
+Required deliverables: a 1–4 minute demo video, a slide deck covering problem/solution/architecture/sponsor use, a public GitHub repository with setup/usage/dependencies, and a sponsor explanation naming the Meterless Engine and a working test/demo. See [submission preparation](submission.md) and [sponsor explanation](sponsor-explanation.md).
+
+### Submission documentation pass
+
+| Action | Path                               | Purpose                                                                                     | Package |
+| ------ | ---------------------------------- | ------------------------------------------------------------------------------------------- | ------- |
+| CREATE | `docs/sponsor-explanation.md`      | Exact sponsor roles, implemented boundaries, source links and observed proof                | S1      |
+| CREATE | `docs/submission.md`               | Four deliverables, a timed recording outline, deck outline and one-workflow acceptance gate | S2      |
+| UPDATE | `README.md`                        | Put required sponsor features and proof links ahead of optional work                        | S1      |
+| UPDATE | `docs/demo.md`                     | Point presenters to the current soybean-root sponsor demonstration                          | S2      |
+| UPDATE | `docs/configuration.md`            | Separate H-MEM requirements from optional Nightshift setup                                  | S1      |
+| UPDATE | `docs/sponsor-integration-plan.md` | Record corrected requirements and this ledger                                               | S1      |
+| UPDATE | `CHANGELOG.md`                     | Record documentation scope without claiming new runtime functionality                       | S2      |
+| UPDATE | `learned.md`                       | Preserve the corrected sponsor requirement                                                  | S1      |
+
+S1 reconciles the user's requirements against the source and recorded live acceptance; each sponsor claim needs a code pointer and actual result. S2 defines the continuous evidence → researcher review → recall → correction rehearsal and the video/deck content. Verify relative links and actual repository visibility/branch. No runtime changes, deletions or renames in this pass. The outline is not a completed recording or slide deck; both remain open deliverables. The next implementation work, if rehearsal exposes a gap, must have its own inspected file ledger and real acceptance check.
+
+Implementation status: H-MEM local and public acceptance complete (real browser/agent/DB, isolated source recall and correction); seven existing scientific/evidence journeys passed. Zetaris is installed on Linux with all nine vendor checks passed; its real adapter verifies the 42-record reference through a dedicated read-only account. It is selected in production, and a real public annotation completed with unchanged numerical results and saved Zetaris provenance. Optional Nightshift still needs runtime setup; Nemotron execution is not verified. OpenShell remains selected. Exact observations are in `docs/verification.md`.
 
 ## Outcome and boundaries
 
@@ -10,9 +31,9 @@ No changes to upload formats, annotation mathematics or authentication. Existing
 
 ## File change ledger
 
-### Runtime activation follow-up
+### Earlier runtime activation work
 
-Zetaris Cloud access is now available. Install the supplied official bundle on the existing Linux server, with a separate Compose project, replaced bootstrap passwords, loopback-only administration ports and the API connected to Celloras's private Docker network. Keep the vendor bundle and credentials outside Git. Verify its actual API before selecting it in Celloras. Meterless installation still needs the user to complete the native installer, which Computer Use could not launch.
+The completed Zetaris activation followed this plan: install the supplied official bundle on the existing Linux server, with a separate Compose project, replaced bootstrap passwords, loopback-only administration ports and the API connected to Celloras's private Docker network. Keep the vendor bundle and credentials outside Git. Verify its actual API before selecting it in Celloras. A separate optional Nightshift installation attempt stopped when Computer Use could not launch its native installer; it is not required for the working H-MEM integration.
 
 | Action | Path                                    | Change                                                                                | Package |
 | ------ | --------------------------------------- | ------------------------------------------------------------------------------------- | ------- |

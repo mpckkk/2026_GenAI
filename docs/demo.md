@@ -1,5 +1,7 @@
 # Celloras demo
 
+For the hackathon, use the **guided real-data journey** below, followed by saved-decision recall through H-MEM. The [submission walkthrough](submission.md) joins both required sponsors in one experiment and supplies the recording outline. The [sponsor explanation](sponsor-explanation.md) identifies the implemented boundaries and recorded tests. The video and deck are still pending.
+
 The local Keycloak login can show a **Demo login** panel with email, password and **Use demo credentials**, which fills the regular form. Set `CELLORAS_DEMO_EMAIL` and `CELLORAS_DEMO_PASSWORD` for an existing demo account in the ignored `.env`, then run `docker compose up -d --no-deps keycloak`. These values are intentionally public on that login page. Leaving either blank hides the panel; registration stays unchanged. This does not create an account or bypass authentication.
 
 ## Bring a marker CSV
@@ -24,11 +26,13 @@ The existing UMAP and clusters are preserved, not recomputed. Marker ranking use
 
 ## Earlier curated-marker examples
 
+These older root/nodule examples require the bundled `CELLORAS_REFERENCE_PROVIDER=published` configuration in a local environment. The active Zetaris table covers the Wm82v4 root panel only. Do not switch production providers for this older walkthrough; use the guided root journey for the sponsor demonstration.
+
 Sign in to the local app and open **Soybean demo**. Its prepared conversation contains a real agent lookup and an inspectable evidence card. The sidebar also contains **Soybean nodule demo**.
 
 These examples use selected published marker associations. They do not represent uploaded samples or an analyzed expression matrix. All displayed evidence and assistant responses come through the working reference adapter and OpenShell agent.
 
-## Two-minute presentation
+### Earlier two-minute presentation
 
 1. **Root evidence:** open Soybean demo. Explain that the researcher saved a tissue, genome build and marker list, then asked the agent to retrieve evidence. Expand **Endodermis** and follow **Source paragraph**. Two genes match the limited reference; the third has no reference hit. Open **Saved review** to show the explicitly labeled provisional demo decision and its research-history link.
 2. **Ask a live question:** send “Why is the Endodermis label only provisional, and what evidence would strengthen or weaken it?” The connected agent uses the saved context and actual evidence. Its next answer is a real model execution.
@@ -42,7 +46,7 @@ Other useful prompts:
 
 The demo demonstrates conversational evidence retrieval, visual source inspection and researcher review. Full-atlas coverage and validated automatic annotation remain future work. The separate guided root demo above now supports actual expression-matrix exploration. [Reference scope](soybean-reference.md).
 
-## Prepare or resume the local demo
+### Prepare or resume the earlier local demo
 
 Start the existing app, Keycloak, PostgreSQL and OpenShell worker. Supply `CELLORAS_DEMO_EMAIL` and `CELLORAS_DEMO_PASSWORD` as environment variables for an existing local account, then run:
 

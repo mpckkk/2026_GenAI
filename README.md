@@ -12,7 +12,18 @@ The implemented chat runtime uses Codex CLI inside NVIDIA OpenShell. Real model 
 
 The real soybean root dataset supports UMAP inspection, marker ranking, expression overlays, dot plots and provisional cell-type annotation. Annotation compares measured expression with 41 exact Wm82v4 marker genes from the atlas authors' published root reference. Cards show candidates, supporting and conflicting evidence, missing markers and unresolved cases. Researchers save their own labels separately. The method has not been independently validated; see [annotation methods and limits](docs/annotation-method.md).
 
-Published marker lookup for roots and mature nodules and curated literature retrieval provide additional cited context with explicit genome compatibility. Coverage is a limited versioned reference, not the full atlas. Meterless H-MEM recalls saved researcher decisions with project isolation and source receipts. Zetaris is installed on Linux and its adapter has retrieved and hash-verified the 42-record reference with a read-only key. The public annotation workflow uses it and retains its query provenance; all 12 numerical cluster results match the prior reference. Meterless Nightshift model routing has a selectable adapter; runtime setup and live acceptance are still required. Nemotron execution is not yet verified. NeMo Files and NVIDIA tracing remain pending. See [sponsor setup](docs/configuration.md#sponsor-integrations) and [reference scope](docs/soybean-reference.md).
+Published marker lookup for roots and mature nodules and curated literature retrieval provide additional cited context with explicit genome compatibility. Coverage is a limited versioned reference, not the full atlas. See [reference scope](docs/soybean-reference.md).
+
+## Required sponsor integrations
+
+The hackathon submission uses **Zetaris and the Meterless H-MEM Engine** in the research workflow:
+
+- **Zetaris supplies published evidence.** The Linux deployment queries a versioned 42-association root marker reference with a read-only account, verifies its complete content hash and retains query provenance in the annotation card. A real public agent run passed; all 12 cluster results matched the prior reference run.
+- **H-MEM recalls researcher decisions.** The worker uses Meterless's pinned official reference implementation with project-owned PostgreSQL state, correction history and source receipts. Real agent checks passed for recall beyond recent context, correction and isolation. Remembered interpretations remain separate from published evidence.
+
+See the [sponsor explanation and tests](docs/sponsor-explanation.md), [setup](docs/configuration.md#sponsor-integrations) and [submission preparation](docs/submission.md). The final video and slide deck remain to be produced; a combined rehearsal will show both sponsors in one experiment.
+
+Cursor and NVIDIA are optional under the supplied submission rules. The existing OpenShell runtime is working. Nightshift has a selectable adapter but no verified live inference; Nemotron, NeMo Files and NVIDIA tracing remain optional pending work.
 
 ## Research workflow
 
@@ -20,7 +31,7 @@ Start with **Explore soybean root demo**: 7,496 real nuclei, 12 source clusters 
 
 For your own marker table, open an experiment and choose **Upload markers** above the composer. Upload a CSV exported from Excel or choose **Use example**, check the group/gene columns and sample context, then import and select **Find cell-type evidence**. The original file, grouped genes and context are saved together. See [CSV format and limits](docs/marker-upload.md).
 
-For the earlier marker-reference examples, use the [demo guide](docs/demo.md). `npm run demo:prepare` signs in with supplied local credentials and prepares root and nodule examples through the real agent; it can resume without duplicating completed runs.
+For the earlier marker-reference examples, use the [demo guide](docs/demo.md). With the bundled `published` reference provider selected locally, `npm run demo:prepare` signs in with supplied credentials and prepares root and nodule examples through the real agent; it can resume without duplicating completed runs. These older examples are separate from the active Zetaris root demonstration.
 
 1. Create or reopen an experiment from the sidebar and send a message to the agent. The composer stays visible while the conversation scrolls.
 2. Open **Study context → Edit context** to save tissue, sample, developmental stage and genome/identifier context. Unknown details can stay empty.

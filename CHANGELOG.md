@@ -1,5 +1,11 @@
 # Changelog
 
+## Documentation — 2026-10-25
+
+- Clarified the required sponsor pair as Zetaris and Meterless H-MEM; Nightshift and NVIDIA setup are optional under the supplied submission instructions.
+- Added the sponsor explanation, test pointers and a submission checklist with recording/deck outlines. The combined rehearsal, video and deck remain open deliverables.
+- Separated the current Zetaris root demo from older bundled-reference examples. No runtime behavior changed.
+
 ## 0.1.20 — 2026-10-25
 
 - Added explicit private-network HTTP configuration for the self-hosted Zetaris adapter; HTTPS remains the default.

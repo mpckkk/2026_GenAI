@@ -1,5 +1,7 @@
 # Engineering notes
 
+- The user's final submission instructions supersede earlier sponsor-lesson interpretations: Zetaris plus one Meterless Engine are required; Celloras uses H-MEM. Nightshift, Nemotron and other NVIDIA integrations are optional. Keep requirements, working-feature proof and future product scope separate; two separate integration tests do not establish a combined recorded workflow.
+
 - A service attached to two Compose networks can resolve a generic name such as `postgres` to the other application's database. Zetaris's API did exactly this when joined to Celloras: `postgres` resolved to 172.19.0.2, while its own database was on 172.20.0.3. Use the exact private database hostname before joining the API to the application's network; do not reset passwords in response to that authentication error.
 - Keep credentials private without making mounted startup scripts unreadable to the container user. Root-owned mode 0700 on Zetaris's `init/*.sh` caused a real driver startup failure; the non-secret scripts need mode 0755 while `.env` stays 0600.
 
