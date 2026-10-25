@@ -4,6 +4,26 @@ For the hackathon, use the **guided real-data journey** below, followed by saved
 
 The local Keycloak login can show a **Demo login** panel with email, password and **Use demo credentials**, which fills the regular form. Set `CELLORAS_DEMO_EMAIL` and `CELLORAS_DEMO_PASSWORD` for an existing demo account in the ignored `.env`, then run `docker compose up -d --no-deps keycloak`. These values are intentionally public on that login page. Leaving either blank hides the panel; registration stays unchanged. This does not create an account or bypass authentication.
 
+## Prepare the complete workflow
+
+With the real dataset, worker and authentication running, execute:
+
+```sh
+# Local: use a fresh real account for an isolated rehearsal.
+CELLORAS_WORKFLOW_AUTH=register npm run demo:workflow
+
+# Public: use the existing account advertised on the login page.
+CELLORAS_DEMO_URL=https://celloras.com npm run demo:workflow
+```
+
+The browser journey annotates all groups, inspects marker/source evidence, generates a real dot plot, saves a labelled demonstration review for group 6, recalls it through H-MEM, then withdraws it and verifies the corrected recall. It checks that the numerical result and the earlier answer's receipt remain unchanged. The public run requires an actual Zetaris query receipt and all 42 verified reference associations.
+
+Beside a saved review, **Ask about my saved decision** drafts the question with its exact group and analysis context. It preserves an unfinished question; press Send when ready.
+
+Run one preparation at a time. Fixed submission IDs resume completed turns for the same account, and later researcher edits are preserved. A failed turn stops preparation without automatic inference retry; inspect the failure before starting a new rehearsal. Registration mode intentionally creates a fresh acceptance account on each invocation. To resume locally with an existing account, set `CELLORAS_DEMO_EMAIL` and `CELLORAS_DEMO_PASSWORD` and omit registration mode. `node --env-file=.env scripts/prepare-workflow-demo.mjs` can read those values from the ignored local configuration.
+
+The command writes direct experiment/turn links, source receipts and desktop/mobile screenshots to ignored `.artifacts/workflow-demo/`. It does not save browser credentials or sessions. Prepared reviews are demonstration decisions, not independent biological validation.
+
 ## Bring a marker CSV
 
 Create an experiment, then choose **Upload markers → Use example → Import marker groups**. Select **Find cell-type evidence** beside Example A. The real agent compares its four genes with the compatible Wm82v4 published reference and renders a Root hair evidence card. Expand the candidate and **Evidence details** to inspect the original table rows. Ask why the candidate is provisional, or save your own review.

@@ -2,6 +2,13 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## Complete annotation workflow — 2026-10-25
+
+- The real local journey passed before and after adding the saved-review follow-up. The rebuilt app's final run used a fresh Keycloak account, the actual expression matrix, OpenShell/Codex and H-MEM. It annotated all 12 groups/7,496 nuclei, inspected the Root hair markers for group 6, rendered their dot plot, saved an explicit illustrative review, recalled its exact source, saved a withdrawal and recalled the corrected source. Local reference delivery was `published`; the public Zetaris run is recorded separately below when accepted.
+- Final local project `a6218c33-0ee5-48d0-9871-5bfef418b33c`, annotation `7601754f-c454-4279-8cfa-7bf0501ab14b`, plot `20432bbc-b82c-42da-9d80-6e82462b0467`. Review sources `annotation-review:e8a767a2-439a-4a30-895c-7918caf26a2c` and `annotation-review:9fc016d0-0cc9-4ba5-8d46-a4202f7fc71c`; recall turns `1ef0f6bb-4d5b-4a4e-8afd-91bbbaf6418d` and `881fc843-560a-4635-b5e3-3a81de2f1216`. Numerical result and historical receipt remained deeply equal after correction/reload. The follow-up retained an unfinished draft, the exact group/run and explicit sending. Source navigation and 390px layout checks passed.
+- A post-build attempt failed with PostgreSQL `53100` because Docker's 31.3 GB guest disk was full. Removed 2.184 GB of unused build cache only, preserving containers/volumes and failed turns; the fresh full journey then passed. No inference was silently retried. ESLint, TypeScript and the production app image build passed.
+- The resumable command is `npm run demo:workflow`. Screenshots and non-secret receipts live under ignored `.artifacts/workflow-demo/`. Prepared reviews are explicitly labelled demonstrations. This verifies the working workflow, not independent biological accuracy or a recorded submission video.
+
 ## Zetaris Linux activation — 2026-10-25
 
 - Installed the official participant bundle on the existing Linux host as a separate Compose project. All nine vendor checks passed: PostgreSQL, driver, API, UI, init, bootstrap, UI response, administrator login and a real UI→API→driver→Spark query. Administrative ports bind to loopback; the API uses the private Celloras network.

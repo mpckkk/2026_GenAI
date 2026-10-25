@@ -437,6 +437,13 @@ function AnnotationContent({
           runId={run.id}
           cluster={cluster}
           initialReviews={reviews}
+          actionsDisabled={actionsDisabled}
+          onAsk={() => {
+            selectContext();
+            onAsk(
+              `Saved annotation run: ${run.id}\nWhat is my latest saved decision for group ${cluster.cluster}, and why? Recall my researcher review and cite its saved source. Explain any correction while keeping my decision separate from the computed cell-type suggestion.`,
+            );
+          }}
         />
       )}
     </>
@@ -671,11 +678,15 @@ function AnnotationReviewPanel({
   runId,
   cluster,
   initialReviews,
+  onAsk,
+  actionsDisabled,
 }: {
   projectId: string;
   runId: string;
   cluster: AnnotationCluster;
   initialReviews: AnnotationReview[];
+  onAsk: () => void;
+  actionsDisabled: boolean;
 }) {
   const id = useId();
   const submissionIds = useRef(new Map<string, string>());
@@ -804,6 +815,16 @@ function AnnotationReviewPanel({
           </p>
           <p>{latest.note}</p>
           <small>{timestamp(latest.createdAt)}</small>
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.button}
+              disabled={actionsDisabled || pending}
+              onClick={onAsk}
+            >
+              Ask about my saved decision
+            </button>
+          </div>
         </div>
       )}
       {clusterReviews.length > 1 && (

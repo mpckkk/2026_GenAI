@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.21 — 2026-10-25
+
+- Added a complete, resumable real-agent demonstration: soybean annotation, measured-marker comparison, researcher review, H-MEM recall and correction. Public preparation requires actual Zetaris provenance.
+- Added **Ask about my saved decision** to annotation reviews, retaining the selected group/run and any unfinished question before explicit sending.
+- Preparation verifies unchanged numerical evidence and historical receipts, preserves later researcher edits and captures non-secret source receipts and desktop/mobile screenshots.
+
 ## Documentation — 2026-10-25
 
 - Clarified the required sponsor pair as Zetaris and Meterless H-MEM; Nightshift and NVIDIA setup are optional under the supplied submission instructions.
