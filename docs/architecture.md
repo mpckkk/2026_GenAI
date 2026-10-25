@@ -90,7 +90,7 @@ Local browser issuer URLs use `localhost:8180`; the app rewrites only transport 
 | General chat           | Durable queue, worker, OpenShell/Codex adapter                              | Broader deployment acceptance, additional runtime adapters            |
 | Plant catalog          | Generic validated configuration, soybean enabled                            | Reviewed additions with suitable references and evaluation            |
 | Marker evidence        | Versioned published root/nodule source, exact matches and linked reviews    | Broader references, expert/held-out evaluation, calibrated annotation |
-| Zetaris                | SQL adapter, self-hosted reference, hash-verified real query, read-only key | Live annotation rollout and key renewal                               |
+| Zetaris                | SQL adapter, self-hosted reference, hash-verified real query, read-only key | Key renewal; broader reference coverage                               |
 | Nightshift / Nemotron  | Meterless API runtime adapter, strict broker protocol, model receipts       | Runtime access and verified Nemotron execution                        |
 | Vercel                 | Model interface and explicit pending adapter                                | Actual routing, credentials and live acceptance                       |
 | H-MEM                  | Pinned engine, owned PG persistence, review recall and trust ledger         | Larger-scale indexing/capacity validation                             |

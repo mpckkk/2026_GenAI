@@ -4,6 +4,7 @@
 
 - Added explicit private-network HTTP configuration for the self-hosted Zetaris adapter; HTTPS remains the default.
 - Added the JSON-array reference export verified against the official Linux hackathon stack, with exact 42-record content validation and a read-only application key.
+- Activated Zetaris in production and verified the real agent annotation with unchanged numerical results and visible source provenance.
 - Documented installation, query/grant syntax, network isolation and credential renewal. Nightshift/Nemotron activation still requires runtime setup.
 
 ## 0.1.19 — 2026-10-25

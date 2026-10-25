@@ -1,6 +1,6 @@
 # Sponsor integration — 2026-10-25
 
-Implementation status: H-MEM local acceptance complete (real browser/agent/DB, isolated source recall and correction); seven existing scientific/evidence journeys passed. Zetaris is installed on Linux with all nine vendor checks passed; its real adapter verifies the 42-record reference through a dedicated read-only account. Live application rollout is next. Nightshift still needs native runtime setup and NVIDIA sign-in; Nemotron execution is not verified. OpenShell remains selected. Exact observations are in `docs/verification.md`.
+Implementation status: H-MEM local acceptance complete (real browser/agent/DB, isolated source recall and correction); seven existing scientific/evidence journeys passed. Zetaris is installed on Linux with all nine vendor checks passed; its real adapter verifies the 42-record reference through a dedicated read-only account. It is selected in production, and a real public annotation completed with unchanged numerical results and saved Zetaris provenance. Nightshift still needs native runtime setup and NVIDIA sign-in; Nemotron execution is not verified. OpenShell remains selected. Exact observations are in `docs/verification.md`.
 
 ## Outcome and boundaries
 
