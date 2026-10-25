@@ -30,11 +30,25 @@ await writeFile(
   path,
   lines.map((row) => row.map(quote).join(",")).join("\n") + "\n",
 );
+// The verified self-hosted JSON reader expects a JSON document, not NDJSON.
+const jsonPath = new URL("zetaris-marker-reference.json", path);
+await writeFile(
+  jsonPath,
+  JSON.stringify(
+    reference.records.map((record, index) => ({
+      record_index: index,
+      record_json: JSON.stringify(record),
+      reference_id: reference.reference.id,
+      content_sha256: reference.contentSha256,
+    })),
+  ) + "\n",
+);
 console.log(
   JSON.stringify({
     event: "zetaris.reference.exported",
     records: reference.records.length,
     contentSha256: reference.contentSha256,
     file: path.pathname,
+    jsonFile: jsonPath.pathname,
   }),
 );

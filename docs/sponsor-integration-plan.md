@@ -1,14 +1,33 @@
 # Sponsor integration — 2026-10-25
 
-Implementation status: H-MEM local acceptance complete (real browser/agent/DB, isolated source recall and correction); seven existing scientific/evidence journeys passed. Zetaris and Nightshift adapters are implemented and packaged but live activation is blocked on actual workspace/runtime access. Their probes report unconfigured; Nemotron execution is not verified. OpenShell and the published reference remain selected. Exact observations are in `docs/verification.md`.
+Implementation status: H-MEM local acceptance complete (real browser/agent/DB, isolated source recall and correction); seven existing scientific/evidence journeys passed. Zetaris is installed on Linux with all nine vendor checks passed; its real adapter verifies the 42-record reference through a dedicated read-only account. Live application rollout is next. Nightshift still needs native runtime setup and NVIDIA sign-in; Nemotron execution is not verified. OpenShell remains selected. Exact observations are in `docs/verification.md`.
 
 ## Outcome and boundaries
 
 Connect sponsor capabilities to actual research work on the single `celloras.com` branch. H-MEM remembers explicit researcher decisions with provenance and project isolation. Zetaris supplies the same verified marker reference through its SQL API. Nightshift can run the existing bounded agent/tool loop through its OpenAI-compatible endpoint while OpenShell remains the default CLI runtime. Never label a configured provider as verified without a real call; Nightshift routing does not by itself prove Nemotron executed.
 
-No changes to upload formats, annotation mathematics or authentication. Existing `.h5ad` ingestion remains separate unfinished work. No credentials are available for Zetaris or Nightshift yet; access is requested while independent work proceeds.
+No changes to upload formats, annotation mathematics or authentication. Existing `.h5ad` ingestion remains separate unfinished work. Zetaris access is available and stored privately. Nightshift runtime access is still pending.
 
 ## File change ledger
+
+### Runtime activation follow-up
+
+Zetaris Cloud access is now available. Install the supplied official bundle on the existing Linux server, with a separate Compose project, replaced bootstrap passwords, loopback-only administration ports and the API connected to Celloras's private Docker network. Keep the vendor bundle and credentials outside Git. Verify its actual API before selecting it in Celloras. Meterless installation still needs the user to complete the native installer, which Computer Use could not launch.
+
+| Action | Path                                    | Change                                                                                | Package |
+| ------ | --------------------------------------- | ------------------------------------------------------------------------------------- | ------- |
+| UPDATE | `app/adapters/zetaris-reference.mjs`    | Explicit opt-in for HTTP on the operator's private Docker network; keep HTTPS default | A2      |
+| UPDATE | `.env.example`                          | Document private transport selection, without credentials                             | A2      |
+| UPDATE | `compose.yaml`                          | Pass the explicit private-transport setting to app and worker                         | A2      |
+| UPDATE | `scripts/prepare-zetaris-reference.mjs` | Export a JSON array for the verified self-hosted file reader alongside the CSV        | A2      |
+| UPDATE | `docs/configuration.md`                 | Installation, actual source registration and private-network activation               | A3      |
+| UPDATE | `docs/verification.md`                  | Record real installation, SQL and application acceptance                              | A3      |
+| UPDATE | `README.md`                             | Actual verified provider status                                                       | A3      |
+| UPDATE | `docs/architecture.md`                  | Actual data boundary and remaining runtime work                                       | A3      |
+| UPDATE | `CHANGELOG.md`                          | Delivered activation behavior                                                         | A3      |
+| UPDATE | `learned.md`                            | Record discovered API and operational requirements                                    | A3      |
+
+A1 installs and verifies the vendor stack with an authenticated real query. A2 connects the exact 42-record reference, verifies its content hash through the adapter, and proves the private HTTP opt-in is required. A3 activates only after A1/A2 pass, then exercises a real annotation conversation and its source receipt before recording deployment. No migrations, deletes or renames. Reverting provider selection is an explicit operator action; failures must never select another source automatically.
 
 New paths below are deliberate additions. Existing caller paths have been inspected. Vendor source/output filenames are enumerated by the pinned import manifest, with the complete list added before generation.
 

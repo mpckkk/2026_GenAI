@@ -1,5 +1,8 @@
 # Engineering notes
 
+- A service attached to two Compose networks can resolve a generic name such as `postgres` to the other application's database. Zetaris's API did exactly this when joined to Celloras: `postgres` resolved to 172.19.0.2, while its own database was on 172.20.0.3. Use the exact private database hostname before joining the API to the application's network; do not reset passwords in response to that authentication error.
+- Keep credentials private without making mounted startup scripts unreadable to the container user. Root-owned mode 0700 on Zetaris's `init/*.sh` caused a real driver startup failure; the non-secret scripts need mode 0755 while `.env` stays 0600.
+
 - Explicit group comparisons can score below a generic memory threshold even when both saved reviews exist. Recognize exact owned group names/IDs before hybrid ranking, retain both distinct targets, and record that selection in the retrieval trace. Do not silently relabel groups or present retrieval weight as biological confidence.
 
 - Nightshift uses `meterless/*` routing modes and a real runtime proxy token. A successful connection or `meterless/auto` response is not proof that Nemotron executed; retain reported model receipts and verify the fleet route.
@@ -83,3 +86,5 @@
 
 - Uploaded marker lists and expression matrices support different scientific claims. Preserve original CSV bytes and immutable context, use exact compatible reference overlap for a gene list, and reserve expression/UMAP claims for a measured dataset. The included marker example comes from the reference itself and is not an accuracy benchmark.
 - A selected imported group can be older than the worker’s recent 30 research records. Resolve its bounded exact handle within the owned project before building the tool catalog; retain existing ownership checks at tool execution.
+
+- The Zetaris 2.4.3.1 hackathon JSON reader returned only the first NDJSON object. Export one JSON array and require the expected 42-row count plus canonical hash before activation. Its table grant syntax is `GRANT SELECT ON LIGHTNING DATABASE TABLE ... TO USER ...`; older generic SQL examples do not match this parser. Invalid keys may return HTTP 500; treat every non-2xx response as failure.

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.20 — 2026-10-25
+
+- Added explicit private-network HTTP configuration for the self-hosted Zetaris adapter; HTTPS remains the default.
+- Added the JSON-array reference export verified against the official Linux hackathon stack, with exact 42-record content validation and a read-only application key.
+- Documented installation, query/grant syntax, network isolation and credential renewal. Nightshift/Nemotron activation still requires runtime setup.
+
 ## 0.1.19 — 2026-10-25
 
 - Connected Meterless H-MEM to saved researcher reviews, with project-isolated PostgreSQL state, an append-only trust ledger and source receipts in chat.

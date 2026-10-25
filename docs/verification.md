@@ -2,6 +2,13 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## Zetaris Linux activation — 2026-10-25
+
+- Installed the official participant bundle on the existing Linux host as a separate Compose project. All nine vendor checks passed: PostgreSQL, driver, API, UI, init, bootstrap, UI response, administrator login and a real UI→API→driver→Spark query. Administrative ports bind to loopback; the API uses the private Celloras network.
+- Registered the JSON-array reference as `CELLORAS.marker_reference_v1`. The real Celloras adapter retrieved 42 records and verified document SHA-256 `0aee9d9a7eba874fdcf1e6edfefc970fa651f4fc516f6f249d02dafeab535485`; query cleanup succeeded. Receipt `6d7e0c98-bf99-4c80-b78f-438d5f207ec3` at 13:15:49 UTC. A dedicated GENERAL account has SELECT on this table only; its private API key expires 2026-11-25.
+- Real negative probes rejected missing HTTP opt-in, a public HTTP hostname masquerading as a private IP prefix, an invalid API key and an ungranted table. No provider fallback occurred. Evidence is in ignored `.artifacts/sponsor-setup/zetaris/`; no vendor bundle, passwords or tokens are committed.
+- Live application annotation rollout is not yet recorded here. Meterless H-MEM remains verified; Nightshift installation and NVIDIA sign-in still require user completion before a real Nemotron call can be tested.
+
 ## Sponsor adapters and research memory — 2026-10-25
 
 - Meterless H-MEM is pinned to `1742dec56a66e58eef9dda2d2b865823758ca8cd`, with unchanged Apache-2.0 source/license, reproducible generated runtime and a SHA manifest. All 13 upstream conformance checks passed against that runtime. The application uses only explicit researcher decisions; automatic mining, sleep/dreaming and semantic conflict resolution are not enabled.

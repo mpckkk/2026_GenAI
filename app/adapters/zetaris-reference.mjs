@@ -1,4 +1,5 @@
 import { randomUUID, createHash } from "node:crypto";
+import { isIP } from "node:net";
 import { verifiedReference } from "./annotation-engine.mjs";
 import { PublishedMarkerReference } from "./marker-reference.mjs";
 
@@ -30,8 +31,26 @@ function configuration() {
   } catch {
     throw new ZetarisError("zetaris_invalid_configuration");
   }
+  // Self-hosted Zetaris exposes HTTP on a private Docker network or loopback.
+  // This is an explicit operator choice, never an automatic HTTPS downgrade.
+  const host = url.hostname;
+  const privateIPv4 =
+    isIP(host) === 4 &&
+    (/^127\./.test(host) ||
+      /^10\./.test(host) ||
+      /^192\.168\./.test(host) ||
+      /^172\.(?:1[6-9]|2\d|3[01])\./.test(host));
+  const privateHost =
+    /^[a-z0-9][a-z0-9-]*$/i.test(host) ||
+    host === "[::1]" ||
+    host === "host.docker.internal" ||
+    privateIPv4;
+  const privateHttp =
+    url.protocol === "http:" &&
+    privateHost &&
+    process.env.ZETARIS_ALLOW_PRIVATE_HTTP === "true";
   if (
-    url.protocol !== "https:" ||
+    (url.protocol !== "https:" && !privateHttp) ||
     url.username ||
     url.password ||
     url.search ||

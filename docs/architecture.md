@@ -83,20 +83,20 @@ Local browser issuer URLs use `localhost:8180`; the app rewrites only transport 
 
 ## Integration ledger
 
-| Boundary               | Implemented                                                              | Remaining                                                             |
-| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| Keycloak               | Local registration, login/logout and owned sessions                      | SMTP, production deployment and revocation policy                     |
-| PostgreSQL             | Projects, research records, chat queue, identities and migrations        | Retention, backups, production operations                             |
-| General chat           | Durable queue, worker, OpenShell/Codex adapter                           | Broader deployment acceptance, additional runtime adapters            |
-| Plant catalog          | Generic validated configuration, soybean enabled                         | Reviewed additions with suitable references and evaluation            |
-| Marker evidence        | Versioned published root/nodule source, exact matches and linked reviews | Broader references, expert/held-out evaluation, calibrated annotation |
-| Zetaris                | SQL adapter, versioned reference export, hash validation, query receipts | Workspace access and actual remote query acceptance                   |
-| Nightshift / Nemotron  | Meterless API runtime adapter, strict broker protocol, model receipts    | Runtime access and verified Nemotron execution                        |
-| Vercel                 | Model interface and explicit pending adapter                             | Actual routing, credentials and live acceptance                       |
-| H-MEM                  | Pinned engine, owned PG persistence, review recall and trust ledger      | Larger-scale indexing/capacity validation                             |
-| NeMo Files             | Asset interface and explicit pending adapter                             | Authorized byte storage and durability                                |
-| NVIDIA Intake / Studio | Trace interface and explicit pending adapter                             | Real OTLP export and visible traces                                   |
-| Scientific annotation  | Compatible root marker comparison, evidence cards and label reviews      | Independent validation, broader references and additional species     |
+| Boundary               | Implemented                                                                 | Remaining                                                             |
+| ---------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Keycloak               | Local registration, login/logout and owned sessions                         | SMTP, production deployment and revocation policy                     |
+| PostgreSQL             | Projects, research records, chat queue, identities and migrations           | Retention, backups, production operations                             |
+| General chat           | Durable queue, worker, OpenShell/Codex adapter                              | Broader deployment acceptance, additional runtime adapters            |
+| Plant catalog          | Generic validated configuration, soybean enabled                            | Reviewed additions with suitable references and evaluation            |
+| Marker evidence        | Versioned published root/nodule source, exact matches and linked reviews    | Broader references, expert/held-out evaluation, calibrated annotation |
+| Zetaris                | SQL adapter, self-hosted reference, hash-verified real query, read-only key | Live annotation rollout and key renewal                               |
+| Nightshift / Nemotron  | Meterless API runtime adapter, strict broker protocol, model receipts       | Runtime access and verified Nemotron execution                        |
+| Vercel                 | Model interface and explicit pending adapter                                | Actual routing, credentials and live acceptance                       |
+| H-MEM                  | Pinned engine, owned PG persistence, review recall and trust ledger         | Larger-scale indexing/capacity validation                             |
+| NeMo Files             | Asset interface and explicit pending adapter                                | Authorized byte storage and durability                                |
+| NVIDIA Intake / Studio | Trace interface and explicit pending adapter                                | Real OTLP export and visible traces                                   |
+| Scientific annotation  | Compatible root marker comparison, evidence cards and label reviews         | Independent validation, broader references and additional species     |
 
 The scientific `/api/chat` endpoint now validates a dataset-based request and queues an annotation action through the same owned experiment chat service. Its body is `{projectId, submissionId, datasetId, cluster?}`; unsupported gene-only input is rejected. Pending adapters never fabricate a result or silently switch providers. Scientific dataset bytes live in the configured read-only directory; application records and execution state stay in PostgreSQL. General uploaded assets remain a future `Assets` responsibility.
 
