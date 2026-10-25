@@ -4,17 +4,17 @@ Aim for roughly two minutes. Sources below are for follow-up, not narration.
 
 ## Slide 1
 
-Plant researchers have to connect expression data and published evidence to identify their cells. Celloras runs that investigation and keeps the evidence and review together. This is the actual soybean-root demo with 7,496 nuclei. The intended benefit is less manual analysis and evidence reconstruction; time savings and biological accuracy have not been independently benchmarked.
+Celloras is an agent for plant single-cell research, starting with soybean. Ask it to annotate the groups and it runs the tools, returns a visual map and lets you inspect the evidence behind each candidate. The figure is the actual 7,496-nucleus demo. The researcher keeps the final judgment; independent biological validation remains next work.
 
 Sources:
 
-- https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
+- https://pmc.ncbi.nlm.nih.gov/articles/PMC12136577/
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
 
 ## Slide 2
 
-Ask for annotation, then inspect one group. Two measured marker genes support the Root hair candidate for group 6. The researcher keeps it unresolved pending independent evidence. Candidate calculations and reviews stay separate. Guided prompts, the selectable map and inline sources support the workflow. Later, the agent can retrieve that saved judgment and its reason.
+Without Celloras, the researcher coordinates analysis scripts, reference lookup and their research notes. With Celloras, they ask the agent to run the analysis, inspect the returned evidence and revisit a saved decision in the same conversation. This compares workflow responsibilities, not the capabilities of every competing tool. No measured time-saving or accuracy improvement is claimed.
 
 Sources:
 
@@ -23,21 +23,21 @@ Sources:
 
 ## Slide 3
 
-The server-side agent uses real analysis tools. Zetaris supplies one versioned marker panel, checks all 42 associations and retains the retrieval receipt. The official Meterless H-MEM Engine stores project-owned reviews in PostgreSQL and recalls the latest correction with its source. Both receipts shown here come from the same working demo. Next.js and Keycloak provide the authenticated interface.
+The server-side OpenShell/Codex agent chooses scientific tools in response to the request. Zetaris supplies a checked, versioned marker reference. Numerical tools measure expression; the language model explains their outputs. The official Meterless H-MEM Engine recalls explicit project-owned reviews and their sources when relevant. Next.js and Keycloak provide the interface, with owned state in PostgreSQL. The agent suggests; the researcher reviews.
 
 Sources:
 
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
+- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
 - https://github.com/mpckkk/2026_GenAI/tree/celloras.com
 
 ## Slide 4
 
-The combined annotation, evidence, review and corrected-recall workflow passed on the public app. An independent base-R calculation agreed across 2,952 numerical values. That establishes computational consistency, not independent biological accuracy. Seven groups receive exploratory suggestions, one is ambiguous and four stay unresolved. Next are independent validation, researchers’ own datasets and more plants. The live demo and public code are available for inspection.
+The slide transcribes the first sentence of the actual agent response after the demonstration review was corrected and links to that reply. It recalls unresolved pending independent evidence and links to the saved review, while the computed Root hair candidate stays unchanged. The same public workflow includes annotation and Zetaris retrieval. The numerical implementation passed 2,952 independent base-R comparisons; this is not an independent biological accuracy benchmark. Try the soybean demo at celloras.com.
 
 Sources:
 
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
 - https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
-- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
+- https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
 - https://github.com/mpckkk/2026_GenAI/tree/celloras.com

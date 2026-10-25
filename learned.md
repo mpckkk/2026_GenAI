@@ -1,5 +1,7 @@
 # Engineering notes
 
+- Explain an agent through the work it performs: question, tool actions and reviewable result. A sponsor-only diagram or test counters do not explain user value. Show the without/with workflow and one actual sourced reply.
+
 - A submission deck must fit the event rubric and requested pitch length. Four slides can cover problem/value, workflow, sponsor architecture and proof; avoid adding a cover or appendix when the user asks for a very short pitch.
 
 - For a hackathon pitch, show the research problem and one concrete result before explaining infrastructure. Give the actual plot enough room to read, show sponsor receipts where they support the story, and keep detailed validation in the appendix. A repeated heading/footer template and miniature full-workspace screenshots weaken the pitch.

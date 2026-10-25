@@ -1,5 +1,9 @@
 # Changelog
 
+## Clearer agent pitch — 2026-10-26
+
+- Added an explicit without/with Celloras comparison and explained the agent’s actions alongside Zetaris, scientific tools and Meterless H-MEM. Replaced the test-counter slide with an actual sourced agent reply. The deck stays at four slides.
+
 ## Four-slide hackathon pitch — 2026-10-25
 
 - Shortened the deck from ten slides to four and mapped its content to the official judging rubric. Kept actual workflow visuals, sponsor receipts, architecture and observed proof; moved source detail into speaker notes.

@@ -2,6 +2,13 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## Agent and workflow comparison pitch — 2026-10-26
+
+- Reframed the four slides around the agent, an explicit without/with Celloras comparison, its concrete tool actions and an actual sourced decision-recall answer. Zetaris and Meterless H-MEM appear alongside the work they perform. Numerical checks stay in notes, not the closing slide.
+- Checked the transcribed answer against the saved demo screenshot. It preserves the unresolved researcher review and unchanged Root hair candidate, and links to the corresponding actual reply. The comparison does not claim measured time savings or biological accuracy gains.
+- Package, geometry, Inter font-policy and exact-file re-import checks passed without findings. Inspected all four slides and PDF pages; Inter is embedded in the PDF. Native Microsoft PowerPoint execution was not tested. No application changes or new analysis runs were needed.
+- PowerPoint SHA-256: `87336186ac1caea44acf612e24306ab883aad6dee1a8f08d47f431fd41822676`. Private build receipts remain under ignored `.artifacts/pitchdeck/`.
+
 ## Four-slide hackathon pitch — 2026-10-25
 
 - Reduced the deck to four slides: problem/value, one real workflow, architecture with both required sponsors, and observed proof. Rechecked the official event rubric (Impact 30, Technical 20, Innovation 15, Demo 15, Product & UX 10, Sponsor tech 10) and mapped each criterion in the deck guide.

@@ -60,6 +60,6 @@ Label prepared result footage **Earlier actual run**. If waiting is shortened in
 
 ## Deck — four slides
 
-The [editable PowerPoint](pitchdeck/Celloras-Pitch-Deck.pptx) and [PDF](pitchdeck/Celloras-Pitch-Deck.pdf) use four slides: problem and value, the real workflow, architecture with Zetaris/H-MEM receipts, and working proof. [Speaker notes](pitchdeck/speaker-notes.md) contain a roughly two-minute narration and exact sources. The [deck guide](pitchdeck/README.md#fit-to-the-judging-criteria) maps the content to the official 100-point rubric.
+The [editable PowerPoint](pitchdeck/Celloras-Pitch-Deck.pptx) and [PDF](pitchdeck/Celloras-Pitch-Deck.pdf) use four slides: the agent and its visual output, a without/with comparison, the agent’s tools and sponsor roles, and an actual sourced decision-recall answer. [Speaker notes](pitchdeck/speaker-notes.md) contain a roughly two-minute narration and exact sources. The [deck guide](pitchdeck/README.md#fit-to-the-judging-criteria) maps the content to the official 100-point rubric.
 
 Avoid unsupported claims of classification accuracy, full-atlas federation or “weeks to seconds.” Current annotation is exploratory; same-study agreement is not independent validation. Keep this boundary concise in the presentation and link [methods](annotation-method.md) for detail.
