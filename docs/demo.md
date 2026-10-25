@@ -1,6 +1,6 @@
 # Celloras demo
 
-The complete public workflow passed on 2026-10-25: annotation through Zetaris, measured-marker comparison, explicit researcher review, H-MEM recall and correction. The [submission walkthrough](submission.md) supplies the recording outline; the video and deck are still pending.
+The complete public workflow passed on 2026-10-25: annotation through Zetaris, measured-marker comparison, explicit researcher review, H-MEM recall and correction. Use the [simple 2:40 video script](submission.md#simple-video-script--target-240) to tell the story through one Root hair candidate, its evidence and the researcher's remembered decision. The video and deck are still pending.
 
 ## Open the ready demo
 

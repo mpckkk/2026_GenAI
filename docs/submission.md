@@ -29,18 +29,34 @@ Use the existing soybean-root dataset. It avoids a multi-gigabyte upload during 
 
 The prepared history is available for walkthroughs now. The actual 1–4 minute recording and slide deck remain outstanding; rehearse any new live prompts before recording.
 
-## Recording outline — target 3:30
+## Simple video script — target 2:40
 
-| Time      | Screen/action                                | Point to explain                                                                            |
-| --------- | -------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 0:00–0:20 | Root cell map and research question          | Naming cell groups requires inspecting markers, sources and competing interpretations.      |
-| 0:20–1:15 | Agent annotation and evidence card           | Show measured evidence and the verified Zetaris reference receipt.                          |
-| 1:15–1:50 | Candidate explanation and saved review       | The agent assists the investigation; the researcher records the decision and rationale.     |
-| 1:50–2:45 | Later question, H-MEM receipt and correction | Recall the earlier decision with its source; show that a correction changes current recall. |
-| 2:45–3:15 | Architecture and test evidence               | Explain the two sponsor boundaries and the real tests behind them.                          |
-| 3:15–3:30 | Repo and live app                            | Show where to inspect the code, reproduce setup and try the workflow.                       |
+Tell one story: **What are these cells, why does Celloras think so, and what did the researcher decide?** Follow group 6, the Root hair candidate, throughout. The viewer should understand the result before hearing the implementation details.
 
-Rehearse with real model latency. If waiting is shortened in editing, label it; label any prepared result as an earlier actual run. Do not imply the total analysis took the edited video's duration.
+| Time      | Show                                                                                                                                                                                     | Narration                                                                                                                                                                                                                                  |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0:00–0:20 | The soybean root cell map, already open. Caption: **Which cells are these?**                                                                                                             | “This soybean root experiment contains thousands of cells. To name the groups, a researcher needs to compare their gene activity with published evidence. Celloras brings that work into a conversation.”                                  |
+| 0:20–0:50 | The real annotation request and its returned map. Select **Root hair · Group 6**; the selected group contains 388 nuclei. Caption: **Ask Celloras**.                                     | “The agent runs the analysis and shows suggested cell types on the map. Let's inspect this group. Root hair is its candidate; groups with insufficient evidence stay unresolved.”                                                          |
+| 0:50–1:25 | The Root hair evidence, then the saved two-gene expression plot. Open one source row and the **Reference, method and validation** disclosure. Caption: **Check the evidence · Zetaris**. | “Two marker genes support this candidate. We can inspect their measured expression and open the published source. Zetaris supplies the versioned marker reference used in this analysis, and the result keeps a record of that retrieval.” |
+| 1:25–1:50 | **Saved annotation decision** for the same group. Keep the current demonstration decision visible. Caption: **The researcher decides**.                                                  | “The researcher still makes the decision. In this demo, they keep the group unresolved until independent evidence is checked. That decision and its reason stay separate from the agent's suggestion.”                                     |
+| 1:50–2:20 | The later question and its answer. Expand **Recalled 1 saved decision**, then follow its group link. Caption: **Remember the decision · Meterless H-MEM**.                               | “Later, the researcher asks what they decided. Meterless H-MEM retrieves the saved decision and its reason, with a link back to the record. The next conversation can pick up where the research stopped.”                                 |
+| 2:20–2:40 | Return to the annotated map, use **Download image**, then show the app and GitHub branch links.                                                                                          | “Celloras helps researchers investigate cell identities and keep their reasoning with the evidence. This working demo starts with soybean. Try it at celloras.com.”                                                                        |
+
+### Presenter setup
+
+Sign in before recording, close Study context, and keep the map and chat large enough to read. Use the [prepared annotation](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320?chatBefore=8#turn-048dd33d-077c-40a8-a7da-251b04aab83b), [measured-marker plot](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320?chatBefore=9#turn-c554f03a-bb55-458e-85fe-46dc920ef619) and the corrected H-MEM recall in the [same conversation](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320). Scroll to each result before recording its shot. Use cuts between these views so the audience follows the investigation without watching a long scroll.
+
+The two supporting genes are `Glyma.01G224900` and `Glyma.17G030700`; show their labels without reading the IDs aloud. Briefly point to the selected group on the plot. Explain its dot size and color only if the shot needs it: size is the fraction of nuclei expressing a gene, color is mean expression.
+
+Show the actual **Marker reference retrieved through Zetaris** line and the actual **H-MEM** recall receipt. Keep the architecture diagram, SQL, service-health page and the detailed correction history for the deck. Each sponsor gets a visible job in the research story.
+
+### Recording state and remaining work
+
+The prepared outputs came from real agent runs; the current saved decision for group 6 is **unresolved pending independent evidence**, while the computed candidate remains Root hair. Use the corrected recall turn `caf0379c-ae9f-4631-9af3-bc77bc6be142`, not the earlier provisional review's answer. The script follows that existing state and does not require changing shared reviews.
+
+For a fresh continuous recording, use a separate experiment/account, run annotation, save the same explicitly illustrative unresolved decision, and use **Ask about my saved decision → Send**. Rehearse that run before recording; the short version above is a script, not a newly executed rehearsal or finished video. Existing full-workflow acceptance is recorded above.
+
+Label prepared result footage **Earlier actual run**. If waiting is shortened in editing, label the cut; the target duration is the edited video length. Keep the existing candidate/review distinction visible. Finish with https://celloras.com and https://github.com/mpckkk/2026_GenAI/tree/celloras.com.
 
 ## Six-slide outline
 
