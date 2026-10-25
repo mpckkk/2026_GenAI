@@ -2,6 +2,13 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## Visual research cards — 2026-10-25
+
+- Checked all six real authenticated card types: marker evidence, marker set, sample context, annotation, scientific results and literature. Desktop, 390px and 320px checks covered source disclosure, ambiguous candidates, group selection and question drafting. No page/card horizontal overflow; wide expression plots scroll inside their labelled region. Inspected screenshots under ignored `.artifacts/card-redesign/`.
+- Real `marker-evidence.spec.ts` acceptance passed (41.7 seconds): Keycloak registration, actual agent lookup, visible gene sources, saved immutable researcher review, history navigation, replay/conflict semantics and account isolation. Updated the assertions for the new visible candidate headline and concise count explanation.
+- Generated a fresh real two-gene dot plot through the local agent and verified all 12 rows against the saved result. No mock responses or synthetic scientific results were used. Existing numerical methods and immutable result snapshots are unchanged.
+- TypeScript, ESLint and production Next.js build passed. Final production-build screenshots were inspected; no browser runtime errors were observed. The public deployment is checked separately below. This presentation wave does not claim the broader runtime failures documented in the next section are fixed.
+
 ## Complete annotation workflow — 2026-10-25
 
 - The real local journey passed before and after adding the saved-review follow-up. The rebuilt app's final run used a fresh Keycloak account, the actual expression matrix, OpenShell/Codex and H-MEM. It annotated all 12 groups/7,496 nuclei, inspected the Root hair markers for group 6, rendered their dot plot, saved an explicit illustrative review, recalled its exact source, saved a withdrawal and recalled the corrected source. Local reference delivery was `published`; the public run below requires Zetaris.

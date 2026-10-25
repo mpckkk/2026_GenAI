@@ -1,5 +1,11 @@
 # Changelog
 
+## Visual research cards — 2026-10-25
+
+- Marker evidence now leads with candidate identity, visible matching genes and a compact count bar. Source links and researcher decisions stay attached to the original result.
+- Added a shared card header/surface across sample, markers, evidence, annotation, scientific and literature cards. Annotation groups show candidate names and evidence distributions; plots use compact sizing, visual legends and detection bars.
+- Refined mobile layouts and keyboard focus states without changing scientific calculations, provider calls or review persistence.
+
 ## 0.1.21 — 2026-10-25
 
 - Added a complete, resumable real-agent demonstration: soybean annotation, measured-marker comparison, researcher review, H-MEM recall and correction. Public preparation requires actual Zetaris provenance.

@@ -94,3 +94,7 @@
 - A selected imported group can be older than the worker’s recent 30 research records. Resolve its bounded exact handle within the owned project before building the tool catalog; retain existing ownership checks at tool execution.
 
 - The Zetaris 2.4.3.1 hackathon JSON reader returned only the first NDJSON object. Export one JSON array and require the expected 42-row count plus canonical hash before activation. Its table grant syntax is `GRANT SELECT ON LIGHTNING DATABASE TABLE ... TO USER ...`; older generic SQL examples do not match this parser. Invalid keys may return HTTP 500; treat every non-2xx response as failure.
+
+- For research cards, lead with the candidate/result, show the specific genes or measured plot immediately, and keep source/method detail expandable. Overlap and evidence bars must encode real counts and remain explicitly distinct from confidence.
+- A scientific SVG with an intrinsic width plus `min-width: 100%` scales a small gene comparison to an excessively tall chart. Keep its actual dimensions and let the labelled plot region scroll on narrow screens.
+- Element screenshots can include a fixed chat composer when the card exceeds the viewport. Inspect a realistic viewport separately, then capture the full card at sufficient viewport height; do not hide the composer to claim the responsive layout works.

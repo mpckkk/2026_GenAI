@@ -11,6 +11,7 @@ import type {
 } from "@/app/core/annotation";
 import type { GuidedAction } from "./next-actions";
 import type { ScientificSelection } from "./scientific-card";
+import { ResultHeader, CountBar } from "./result-card";
 import styles from "./annotation-card.module.css";
 
 const counts = new Intl.NumberFormat("en-GB");
@@ -131,10 +132,11 @@ export function AnnotationCard({
       data-response-card="annotation_result"
       data-analysis-id={run.id}
     >
-      <header className={styles.header}>
-        <strong>Cell-type suggestions</strong>
-        <span>Reference evidence · Researcher review</span>
-      </header>
+      <ResultHeader
+        icon="grid"
+        title="Cell-type suggestions"
+        detail="Review candidates"
+      />
       {loaded ? (
         <AnnotationContent
           key={run.id}
@@ -254,21 +256,32 @@ function AnnotationContent({
           {result.dataset.species} · {result.dataset.tissue} ·{" "}
           {result.dataset.genomeBuild}
         </p>
-        <div className={styles.counts} aria-label="Annotation status overview">
-          <span>
-            <strong>{result.summary.suggestedCount}</strong> suggested
-          </span>
-          <span>
-            <strong>{result.summary.ambiguousCount}</strong> ambiguous
-          </span>
-          <span>
-            <strong>{result.summary.unresolvedCount}</strong> unresolved
-          </span>
+        <div className={styles.overview}>
+          <CountBar
+            label={`${result.summary.suggestedCount} suggested, ${result.summary.ambiguousCount} ambiguous, ${result.summary.unresolvedCount} unresolved clusters`}
+            segments={[
+              { count: result.summary.suggestedCount, tone: "match" },
+              { count: result.summary.ambiguousCount, tone: "conflict" },
+              { count: result.summary.unresolvedCount, tone: "neutral" },
+            ]}
+          />
+          <div
+            className={styles.counts}
+            aria-label="Annotation status overview"
+          >
+            <span>
+              <strong>{result.summary.suggestedCount}</strong> suggested
+            </span>
+            <span>
+              <strong>{result.summary.ambiguousCount}</strong> ambiguous
+            </span>
+            <span>
+              <strong>{result.summary.unresolvedCount}</strong> unresolved
+            </span>
+          </div>
         </div>
         <p className={styles.caption}>
-          Select a source cluster to compare candidates and record your
-          decision. Scores describe marker evidence; they are not probabilities
-          or validated confidence.
+          Choose a group to explore its candidate cell types.
         </p>
         <div className={styles.clusters} aria-label="Select annotation cluster">
           {result.payload.clusters.map((item) => (
@@ -279,8 +292,18 @@ function AnnotationContent({
               onClick={() => selectContext(item.cluster)}
             >
               <strong>Cluster {item.cluster}</strong>
-              <span data-status={item.status}>{statusLabels[item.status]}</span>
-              <small>{counts.format(item.nCells)} nuclei</small>
+              <span className={styles.clusterLabel}>
+                {item.suggestedLabel ||
+                  (item.status === "ambiguous"
+                    ? "Multiple candidates"
+                    : "Identity open")}
+              </span>
+              <small>
+                <span data-status={item.status}>
+                  {statusLabels[item.status]}
+                </span>{" "}
+                · {counts.format(item.nCells)} nuclei
+              </small>
             </button>
           ))}
         </div>
@@ -288,13 +311,16 @@ function AnnotationContent({
           <>
             <div className={styles.clusterHeading}>
               <div>
-                <h4>Cluster {cluster.cluster}</h4>
-                <p className={styles.caption}>
-                  {counts.format(cluster.nCells)} nuclei
-                  {cluster.suggestedLabel
-                    ? ` · Suggested: ${cluster.suggestedLabel}`
-                    : " · No single label assigned"}
+                <p className={styles.selectedLabel}>
+                  Cluster {cluster.cluster} · {counts.format(cluster.nCells)}{" "}
+                  nuclei
                 </p>
+                <h4>
+                  {cluster.suggestedLabel ||
+                    (cluster.status === "ambiguous"
+                      ? "Compare possible identities"
+                      : "Cell identity still open")}
+                </h4>
               </div>
               <span className={styles.status} data-status={cluster.status}>
                 {statusLabels[cluster.status]}
@@ -475,15 +501,25 @@ function Candidate({
           <strong>{candidate.cellType}</strong>
         </span>
         <span className={styles.score}>
-          Score{" "}
+          Evidence score{" "}
           <strong title={String(candidate.score)}>
             {numeric(candidate.score)}
           </strong>
         </span>
         <span className={styles.evidenceCounts}>
-          {candidate.supportingGenes.length} supporting ·{" "}
-          {candidate.conflictingGenes.length} conflicting ·{" "}
-          {candidate.uninformativeGenes.length} weak
+          <CountBar
+            segments={[
+              { count: candidate.supportingGenes.length, tone: "match" },
+              { count: candidate.conflictingGenes.length, tone: "conflict" },
+              { count: candidate.uninformativeGenes.length, tone: "neutral" },
+            ]}
+            label={`${candidate.supportingGenes.length} supporting, ${candidate.conflictingGenes.length} conflicting, ${candidate.uninformativeGenes.length} weak genes`}
+          />
+          <span>
+            {candidate.supportingGenes.length} supporting ·{" "}
+            {candidate.conflictingGenes.length} conflicting ·{" "}
+            {candidate.uninformativeGenes.length} weak
+          </span>
         </span>
       </summary>
       <div className={styles.candidateBody}>

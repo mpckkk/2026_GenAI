@@ -18,6 +18,7 @@ import type {
   ScientificResult,
 } from "@/app/core/scientific-data";
 import type { GuidedAction } from "./next-actions";
+import { ResultHeader } from "./result-card";
 import styles from "./scientific-card.module.css";
 
 const number = new Intl.NumberFormat("en-GB");
@@ -299,18 +300,19 @@ export function ScientificCard({
       data-analysis-id={run.id}
       aria-label="Scientific result card"
     >
-      <header className={styles.header}>
-        <strong>
-          {run.result.operation === "inspect"
+      <ResultHeader
+        icon={run.result.operation === "inspect" ? "grid" : "activity"}
+        title={
+          run.result.operation === "inspect"
             ? "Cell map"
             : run.result.operation === "markers"
-              ? "Marker exploration"
+              ? "Marker genes"
               : run.result.operation === "expression"
                 ? "Gene expression"
-                : "Expression comparison"}
-        </strong>
-        <span>Computed from published data</span>
-      </header>
+                : "Expression comparison"
+        }
+        detail="Published dataset"
+      />
       {loaded ? (
         <>
           <ScientificResultContent
@@ -506,8 +508,8 @@ function Dotplot({
   onSelect: (cluster: string) => void;
 }) {
   const { genes, clusters, values } = result.payload;
-  const width = Math.max(360, 100 + genes.length * 96);
-  const height = 120 + clusters.length * 32;
+  const width = Math.max(340, 120 + genes.length * 110);
+  const height = 100 + clusters.length * 27;
   const max = Math.max(0, ...values.map((value) => value.meanLogExpression));
   return (
     <div
@@ -518,7 +520,7 @@ function Dotplot({
     >
       <svg
         className={styles.dotplot}
-        style={{ width, minWidth: "100%" }}
+        style={{ width, height, maxWidth: "none" }}
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-label="Gene expression across source clusters. Dot area shows the fraction of nuclei with detected expression. Color shows mean log-normalized expression."
@@ -526,9 +528,9 @@ function Dotplot({
         {genes.map((gene, index) => (
           <text
             key={gene.geneId}
-            x={100 + index * 96}
+            x={120 + index * 110}
             y={70}
-            transform={`rotate(-35, ${100 + index * 96}, 70)`}
+            transform={`rotate(-35, ${120 + index * 110}, 70)`}
             fontSize="11"
             fill="#444"
           >
@@ -537,14 +539,14 @@ function Dotplot({
         ))}
         {clusters.map((cluster, index) => (
           <g key={cluster.id}>
-            <text x="8" y={104 + index * 32} fontSize="12" fill="#444">
+            <text x="8" y={94 + index * 27} fontSize="12" fill="#444">
               Cluster {cluster.id}
             </text>
             <line
               x1="80"
               x2={width - 16}
-              y1={100 + index * 32}
-              y2={100 + index * 32}
+              y1={90 + index * 27}
+              y2={90 + index * 27}
               stroke="#f0f0f0"
             />
           </g>
@@ -557,8 +559,8 @@ function Dotplot({
           return (
             <circle
               key={`${value.geneId}:${value.cluster}`}
-              cx={100 + x * 96}
-              cy={100 + y * 32}
+              cx={120 + x * 110}
+              cy={90 + y * 27}
               r={Math.sqrt(value.detectionFraction) * 12}
               fill={expressionColor(value.meanLogExpression, max)}
               stroke="#c9d3c9"
@@ -569,11 +571,31 @@ function Dotplot({
           );
         })}
       </svg>
-      <p className={styles.caption}>
-        Dot area: fraction detected · Color: mean log1p(CP10k), 0–
-        {max.toFixed(2)}. Zero detection produces no dot. Scroll sideways to see
-        all genes when needed.
-      </p>
+      <div className={styles.dotLegend}>
+        <div>
+          <span>Nuclei expressing the gene</span>
+          <div className={styles.dotSizes}>
+            {[0.25, 0.5, 1].map((fraction) => (
+              <span key={fraction}>
+                <i
+                  style={{
+                    width: Math.sqrt(fraction) * 24,
+                    height: Math.sqrt(fraction) * 24,
+                  }}
+                />
+                {fraction * 100}%
+              </span>
+            ))}
+          </div>
+        </div>
+        <div>
+          <span>Mean expression</span>
+          <div className={styles.legend}>
+            0 <span className={styles.legendScale} /> {max.toFixed(2)}
+          </div>
+          <small>log1p(CP10k)</small>
+        </div>
+      </div>
       <details className={styles.caption}>
         <summary>Read the exact values</summary>
         <table className={styles.table}>
@@ -706,8 +728,8 @@ export function ScientificResultContent({
         {clusterButtons.length > 0 && (
           <>
             <p className={styles.caption}>
-              Choose a source cluster to investigate. Cluster numbers are group
-              identifiers, not cell-type annotations.
+              Select a cell group to explore its genes. Numbers identify groups,
+              not cell types.
             </p>
             <div
               className={styles.clusterGrid}
@@ -792,8 +814,33 @@ export function ScientificResultContent({
                           </button>
                         </td>
                         <td>{gene.score.toFixed(3)}</td>
-                        <td>{percent(gene.detectionFraction)}</td>
-                        <td>{percent(gene.otherDetectionFraction)}</td>
+                        <td>
+                          <div className={styles.detectionValue}>
+                            <span>{percent(gene.detectionFraction)}</span>
+                            <span className={styles.detectionTrack}>
+                              <i
+                                style={{
+                                  width: `${gene.detectionFraction * 100}%`,
+                                }}
+                              />
+                            </span>
+                          </div>
+                        </td>
+                        <td>
+                          <div className={styles.detectionValue}>
+                            <span>{percent(gene.otherDetectionFraction)}</span>
+                            <span
+                              className={styles.detectionTrack}
+                              data-muted="true"
+                            >
+                              <i
+                                style={{
+                                  width: `${gene.otherDetectionFraction * 100}%`,
+                                }}
+                              />
+                            </span>
+                          </div>
+                        </td>
                       </tr>
                     ))}
                 </tbody>

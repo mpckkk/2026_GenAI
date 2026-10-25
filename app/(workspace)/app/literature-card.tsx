@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { AnalysisReview, LiteratureRun } from "@/app/core/analysis";
 import { AnalysisReviewForm } from "./scientific-card";
+import { ResultHeader } from "./result-card";
 import styles from "./scientific-card.module.css";
 
 const kindLabels = {
@@ -79,10 +80,11 @@ export function LiteratureCard({
       data-analysis-id={run.id}
       aria-label="Literature evidence card"
     >
-      <header className={styles.header}>
-        <strong>Published evidence</strong>
-        <span>Curated source collection</span>
-      </header>
+      <ResultHeader
+        icon="leaf"
+        title="Published evidence"
+        detail="Curated sources"
+      />
       <div className={styles.body}>
         <h3>
           {result.results.length
@@ -94,27 +96,29 @@ export function LiteratureCard({
             ? `${result.results.length} relevant ${result.results.length === 1 ? "passage" : "passages"}. Each has a source and a specific role in your interpretation.`
             : "This is a gap in the available collection, not proof that evidence does not exist."}
         </p>
-        <p className={styles.caption}>
-          A relevant paper does not automatically support a cell-type label.
-          Check whether each passage applies to this dataset.
-        </p>
+
         {result.results.length > 0 && (
           <ol className={styles.sources}>
-            {result.results.map((hit) => (
+            {result.results.map((hit, index) => (
               <li className={styles.source} key={hit.id}>
-                <span className={styles.sourceTag}>
-                  {kindLabels[hit.kind]} ·{" "}
-                  {hit.compatibility.species === "exact"
-                    ? "Same species"
-                    : "General evidence"}
-                  {hit.compatibility.genome === "exact"
-                    ? " · Matching genome build"
-                    : ""}
-                </span>
+                <div className={styles.sourceHeading}>
+                  <span className={styles.sourceNumber}>
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className={styles.sourceTag}>
+                    {kindLabels[hit.kind]} ·{" "}
+                    {hit.compatibility.species === "exact"
+                      ? "Same species"
+                      : "General evidence"}
+                    {hit.compatibility.genome === "exact"
+                      ? " · Matching genome build"
+                      : ""}
+                  </span>
+                </div>
                 <h4>{hit.title}</h4>
                 <p>{hit.summary}</p>
-                <p>
-                  <strong>Applicability:</strong> {hit.applicability}
+                <p className={styles.applicability}>
+                  <strong>Why it matters</strong> {hit.applicability}
                 </p>
                 <a href={hit.url} target="_blank" rel="noopener noreferrer">
                   Read source passage ↗
@@ -154,7 +158,7 @@ export function LiteratureCard({
                     )
                   }
                 >
-                  Draft a question about this evidence
+                  Discuss this passage
                 </button>
               </li>
             ))}

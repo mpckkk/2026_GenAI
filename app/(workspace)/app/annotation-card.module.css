@@ -1,40 +1,18 @@
 .card {
-  min-width: 0;
-  max-width: 100%;
-  margin: 16px 0;
+  composes: surface from "./result-card.module.css";
+  margin: 8px 0;
   overflow: hidden;
-  border: 1px solid #d9e1d8;
-  border-radius: 10px;
-  background: #fff;
-  overflow-wrap: anywhere;
 }
 
-.header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px 16px;
-  padding: 15px 20px;
-  border-bottom: 1px solid #e2e9e0;
-  background: #f3f7f1;
-  font-size: 12px;
-  color: #52634f;
-}
-
-.header strong {
-  color: #244e28;
-  font-weight: 600;
-}
 .body {
-  padding: 20px;
+  padding: 24px;
   min-width: 0;
 }
 .body h3 {
   margin: 0 0 8px;
-  font-size: 20px;
+  font-size: 23px;
   font-weight: 600;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.6px;
 }
 .caption {
   color: #626960;
@@ -44,9 +22,9 @@
 }
 .counts {
   display: flex;
-  gap: 8px 20px;
+  gap: 12px 24px;
   flex-wrap: wrap;
-  margin: 18px 0 12px;
+  margin: 12px 0 0;
   font-size: 12px;
   color: #5a6258;
 }
@@ -58,8 +36,8 @@
 .clusters {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 7px;
-  margin: 16px 0 22px;
+  gap: 8px;
+  margin: 16px 0 28px;
 }
 .clusters button {
   min-width: 0;
@@ -68,20 +46,46 @@
   text-align: left;
   border: 1px solid #dfe3dc;
   border-radius: 7px;
-  padding: 9px;
+  padding: 12px;
   background: #fff;
   color: #333;
   font-size: 12px;
 }
 .clusters button strong {
-  font-weight: 600;
+  font-weight: 400;
+  color: #65776b;
+  font-size: 11px;
 }
+.clusters button .clusterLabel {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 4px 0;
+  color: #2c4032;
+}
+.overview {
+  border: 1px solid #e3eae5;
+  border-radius: 10px;
+  padding: 18px;
+  margin: 24px 0 20px;
+}
+.selectedLabel {
+  margin: 0 0 7px;
+  font-size: 12px;
+  color: #5f7466;
+}
+.clusterHeading h4 {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: -0.5px;
+}
+
 .clusters button span {
   font-size: 11px;
 }
 .clusters button small {
   color: #6b7067;
-  font-size: 10px;
+  font-size: 11px;
 }
 .clusters button[aria-pressed="true"] {
   border-color: #326b37;
@@ -106,7 +110,6 @@
   justify-content: space-between;
   gap: 12px;
 }
-.clusterHeading h4,
 .review h4 {
   font-size: 15px;
   font-weight: 600;
@@ -195,9 +198,12 @@
 }
 .evidenceCounts {
   grid-column: 1;
-  color: #6a7265;
-  font-size: 10px;
+  display: grid;
+  gap: 8px;
+  color: #657269;
+  font-size: 11px;
   line-height: 1.6;
+  margin-top: 6px;
 }
 .candidateBody {
   padding: 0 13px 13px;
@@ -221,12 +227,12 @@
   text-align: left;
 }
 .button[data-primary="true"] {
-  background: #245d2c;
-  border-color: #245d2c;
+  background: #193e28;
+  border-color: #193e28;
   color: #fff;
 }
 .button:hover:not(:disabled) {
-  border-color: #245d2c;
+  border-color: #193e28;
 }
 .button:disabled,
 .geneButton:disabled {
@@ -293,7 +299,7 @@
 }
 .geneDetails {
   margin-top: 4px;
-  font-size: 10px;
+  font-size: 11px;
   max-width: 220px;
   line-height: 1.6;
 }
@@ -362,7 +368,7 @@
 }
 .review {
   border-top: 1px solid #e2e8dc;
-  padding: 20px;
+  padding: 24px;
   background: #fcfdfb;
 }
 .saved {
@@ -384,7 +390,7 @@
 .saved small,
 .history small {
   color: #6b7465;
-  font-size: 10px;
+  font-size: 11px;
 }
 .history {
   font-size: 12px;
@@ -458,7 +464,6 @@
   .review {
     padding: 16px;
   }
-  .header,
   .methods {
     padding: 14px 16px;
   }
@@ -466,15 +471,15 @@
     font-size: 18px;
   }
   .clusters {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
   .clusters button {
     padding: 8px 6px;
     font-size: 11px;
   }
   .clusters button span {
-    font-size: 10px;
+    font-size: 11px;
   }
   .counts {
     gap: 8px 13px;
@@ -501,7 +506,7 @@
     grid-row: 3;
   }
   .score {
-    font-size: 10px;
+    font-size: 11px;
   }
   .score strong {
     font-size: 12px;
@@ -511,5 +516,27 @@
   }
   .button {
     font-size: 11px;
+  }
+}
+
+@container (max-width: 470px) {
+  .clusters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .clusterHeading {
+    flex-wrap: wrap;
+  }
+  .candidate > summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .score {
+    white-space: normal;
+  }
+  .candidate > summary::after {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .evidenceCounts {
+    grid-column: 1;
   }
 }

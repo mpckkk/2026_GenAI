@@ -6,7 +6,7 @@ import type {
 } from "@/app/core/agent-response.mjs";
 import type { PlantDefinition } from "@/app/core/plants";
 import { MarkdownMessage } from "@/app/components/markdown-message";
-import { ContextDetails, ResearchEntryContent } from "./conversation-entry";
+import { ContextDetails } from "./conversation-entry";
 import { WorkspaceIcon, type IconName } from "./workspace-icons";
 import type { EvidenceReviewReceipt } from "@/app/core/evidence";
 import { EvidenceCard } from "./evidence-card";
@@ -15,6 +15,7 @@ import { AnnotationCard } from "./annotation-card";
 import { LiteratureCard } from "./literature-card";
 import type { ScientificResult } from "@/app/core/scientific-data";
 import type { GuidedAction } from "./next-actions";
+import { ResultHeader } from "./result-card";
 import styles from "./agent-response.module.css";
 
 // New visual types join this finite registry after their contracts/tools exist.
@@ -125,13 +126,11 @@ export function AgentResponse({
             data-response-card={block.type}
             data-record-id={entry.id}
           >
-            <header className={styles.header}>
-              <span className={styles.icon}>
-                <WorkspaceIcon name={definition.icon} size={19} />
-              </span>
-              <span>{definition.label}</span>
-              <span className={styles.source}>Saved by you</span>
-            </header>
+            <ResultHeader
+              icon={definition.icon}
+              title={definition.label}
+              detail="Saved by you"
+            />
             <div className={styles.body}>
               {entry.kind === "context" ? (
                 <>
@@ -159,11 +158,36 @@ export function AgentResponse({
                   </details>
                 </>
               ) : (
-                <ResearchEntryContent
-                  entry={entry}
-                  plants={plants}
-                  markers={[]}
-                />
+                <>
+                  <p className={styles.eyebrow}>
+                    {plants.find((plant) => plant.id === entry.speciesId)
+                      ?.commonName ?? entry.speciesId}{" "}
+                    · {entry.genes.length}{" "}
+                    {entry.genes.length === 1 ? "gene" : "genes"}
+                  </p>
+                  <h3>{entry.label || "Your marker set"}</h3>
+                  <ul className={styles.geneChips} aria-label="Parsed markers">
+                    {entry.genes.map((gene) => (
+                      <li key={gene}>
+                        <code>{gene}</code>
+                      </li>
+                    ))}
+                  </ul>
+                  <details className={styles.sampleDetails}>
+                    <summary>Original marker text</summary>
+                    <pre className={styles.rawMarkers}>{entry.markersRaw}</pre>
+                  </details>
+                  {entry.context ? (
+                    <details className={styles.sampleDetails}>
+                      <summary>Sample context saved with these markers</summary>
+                      <ContextDetails context={entry.context} plants={plants} />
+                    </details>
+                  ) : (
+                    <p className={styles.species}>
+                      No sample context saved with these genes.
+                    </p>
+                  )}
+                </>
               )}
             </div>
             <footer className={styles.footer}>

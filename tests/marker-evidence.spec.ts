@@ -151,13 +151,15 @@ test("real agent retrieves published root evidence and researcher saves an immut
     run.candidates[0].records.every((r) => r.sourceUrl.endsWith("#p0230")),
   ).toBe(true);
   const card = page.getByRole("region", { name: "Marker evidence card" });
-  await card.getByText("Endodermis", { exact: true }).click();
+  await expect(
+    card.getByRole("heading", { name: "Endodermis", exact: true }),
+  ).toBeVisible();
   await expect(
     card.getByRole("link", { name: "Source paragraph ↗" }),
   ).toHaveCount(2);
   await card.getByText("Reference, method and limits", { exact: true }).click();
   await expect(card).toContainText("Glycine_max_v2.1.52");
-  await expect(card).toContainText("Counts are not confidence");
+  await expect(card).toContainText("Marker overlap, not a confidence score.");
   await card.getByText("Reference, method and limits", { exact: true }).click();
   await card.scrollIntoViewIfNeeded();
   await page.screenshot({

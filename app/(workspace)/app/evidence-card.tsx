@@ -8,6 +8,7 @@ import type {
 } from "@/app/core/evidence";
 import type { ResearchEntry } from "@/app/core/research";
 import { appendResearch } from "./actions";
+import { ResultHeader, CountBar } from "./result-card";
 import styles from "./agent-response.module.css";
 
 const statusLabels = {
@@ -95,27 +96,59 @@ export function EvidenceCard({
       data-response-card="marker_evidence"
       data-evidence-id={result.id}
     >
-      <header className={styles.header}>
-        <span>Marker evidence</span>
-        <span className={styles.source}>Published reference</span>
-      </header>
+      <ResultHeader
+        icon="leaf"
+        title="Marker evidence"
+        detail="Published reference"
+      />
       <div className={styles.body}>
-        <h3>{result.marker.label || "Saved markers"}</h3>
-        <p className={styles.evidenceStatus}>{statusLabels[result.status]}</p>
-        <div className={styles.evidenceFacts}>
-          <div>
-            <strong>{queried ? result.matchedGenes.length : "—"}</strong>
-            <span>of {result.marker.genes.length} submitted genes matched</span>
-          </div>
-          <div>
-            <strong>{queried ? result.candidates.length : "—"}</strong>
-            <span>candidate cell types</span>
-          </div>
-        </div>
-        <p className={styles.species}>
-          {result.marker.context?.tissue || "Tissue unknown"} · Exact marker
-          overlap · Counts are not confidence
+        <p className={styles.eyebrow}>
+          {result.marker.label || "Saved markers"} <span>·</span>{" "}
+          {result.marker.context?.tissue || "Tissue not specified"}
         </p>
+        <div className={styles.resultHero}>
+          <div>
+            <p className={styles.resultLabel}>
+              {result.status === "matches_found"
+                ? "Candidate cell type"
+                : "Reference lookup"}
+            </p>
+            <h3 className={styles.resultTitle}>
+              {result.status === "matches_found"
+                ? result.candidates.length === 1
+                  ? result.candidates[0].cellType
+                  : `${result.candidates.length} possible cell types`
+                : statusLabels[result.status]}
+            </h3>
+            <p className={styles.resultDescription}>
+              {result.status === "matches_found"
+                ? "Your markers overlap with published evidence. Review the genes before choosing a label."
+                : result.status === "no_matches"
+                  ? "None of your genes matched this tissue reference. Try another reference or keep the label open."
+                  : "The lookup needs compatible sample details before genes can be compared."}
+            </p>
+          </div>
+          {queried && (
+            <div className={styles.matchMetric}>
+              <div>
+                <strong>{result.matchedGenes.length}</strong>
+                <span> / {result.marker.genes.length}</span>
+              </div>
+              <CountBar
+                segments={[
+                  { count: result.matchedGenes.length, tone: "match" },
+                  {
+                    count:
+                      result.marker.genes.length - result.matchedGenes.length,
+                    tone: "neutral",
+                  },
+                ]}
+                label={`${result.matchedGenes.length} of ${result.marker.genes.length} submitted genes matched`}
+              />
+              <span>genes matched</span>
+            </div>
+          )}
+        </div>
         {result.issues.length > 0 && (
           <ul className={styles.evidenceIssues}>
             {result.issues.map((issue) => (
@@ -126,9 +159,17 @@ export function EvidenceCard({
         {result.candidates.length > 0 && (
           <div className={styles.candidates} aria-label="Candidate cell types">
             {result.candidates.map((candidate) => (
-              <details key={candidate.cellType} className={styles.candidate}>
+              <details
+                key={candidate.cellType}
+                className={styles.candidate}
+                open={result.candidates.length === 1 ? true : undefined}
+              >
                 <summary>
-                  <span>{candidate.cellType}</span>
+                  <span>
+                    {result.candidates.length === 1
+                      ? "Matching genes"
+                      : candidate.cellType}
+                  </span>
                   <span>
                     {candidate.matchedGenes.length} matching{" "}
                     {candidate.matchedGenes.length === 1 ? "gene" : "genes"}
@@ -138,7 +179,7 @@ export function EvidenceCard({
                   {candidate.records.map((record) => (
                     <li key={record.id}>
                       <code>{record.geneId}</code>
-                      <span>{record.stage}</span>
+
                       <a
                         href={record.sourceUrl}
                         target="_blank"
@@ -150,7 +191,9 @@ export function EvidenceCard({
                       </a>
                       <details>
                         <summary>Evidence details</summary>
-                        <p>{record.method}</p>
+                        <p>
+                          {record.stage} · {record.method}
+                        </p>
                       </details>
                     </li>
                   ))}
@@ -329,7 +372,9 @@ export function EvidenceCard({
         </details>
       </div>
       <footer className={styles.footer}>
-        <span>Evidence assistance · Researcher review required</span>
+        <span className={styles.footerNote}>
+          Marker overlap, not a confidence score.
+        </span>
         <button
           type="button"
           disabled={actionsDisabled}

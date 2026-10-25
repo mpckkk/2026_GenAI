@@ -1,33 +1,16 @@
 .card {
-  border: 1px solid #dedede;
-  border-radius: 10px;
-  background: #fff;
+  composes: surface from "./result-card.module.css";
   overflow: hidden;
-  margin: 16px 0;
-  min-width: 0;
-}
-.header {
-  padding: 16px 20px;
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #ededed;
-  font-size: 12px;
-  color: #666;
-}
-.header strong {
-  font-weight: 600;
-  color: #333;
+  margin: 8px 0;
 }
 .body {
-  padding: 20px;
+  padding: 24px;
 }
 .body h3 {
-  font-size: 20px;
+  font-size: 23px;
   font-weight: 600;
   margin: 0 0 8px;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.6px;
 }
 .caption {
   font-size: 12px;
@@ -36,6 +19,9 @@
   margin: 8px 0;
 }
 .facts {
+  padding: 16px 0;
+  border-top: 1px solid #e9eeea;
+  border-bottom: 1px solid #e9eeea;
   display: flex;
   flex-wrap: wrap;
   gap: 16px 32px;
@@ -46,7 +32,7 @@
   gap: 4px;
 }
 .facts strong {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
 }
 .facts span {
@@ -55,11 +41,15 @@
 }
 .plot {
   position: relative;
-  margin: 16px 0;
+  margin: 20px 0;
+  background: #f7faf7;
+  border-radius: 12px;
+  border: 1px solid #e6ede7;
+  padding: 16px 12px 8px;
 }
 .canvas {
   width: 100%;
-  height: 300px;
+  height: 320px;
   display: block;
   cursor: crosshair;
 }
@@ -71,16 +61,16 @@
 .axisY {
   position: absolute;
   top: 50%;
-  left: -8px;
+  left: -3px;
   transform: rotate(-90deg);
   font-size: 11px;
   color: #666;
 }
 .plotReadout {
   min-height: 22px;
-  margin: 8px 0;
+  margin: 8px 12px;
   font-size: 12px;
-  color: #555;
+  color: #5f7264;
 }
 .clusterGrid {
   display: grid;
@@ -89,9 +79,9 @@
   margin: 16px 0;
 }
 .clusterGrid button {
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 8px;
+  border: 1px solid #dce6df;
+  border-radius: 8px;
+  padding: 10px;
   background: #fff;
   text-align: left;
   color: #333;
@@ -106,8 +96,9 @@
 }
 .clusterGrid button[aria-pressed="true"] {
   border-color: #1b5e20;
-  background: #f2f7f2;
+  background: #eef6f0;
   color: #1b5e20;
+  box-shadow: inset 0 0 0 1px #397452;
 }
 .clusterGrid button:focus-visible,
 .button:focus-visible {
@@ -133,8 +124,8 @@
   border-color: #333;
 }
 .button[data-primary="true"] {
-  background: #111;
-  border-color: #111;
+  background: #193e28;
+  border-color: #193e28;
   color: #fff;
 }
 .button:disabled {
@@ -142,7 +133,9 @@
 }
 .tableWrap {
   overflow-x: auto;
-  margin: 16px 0;
+  max-width: 100%;
+  margin: 20px 0;
+  scrollbar-width: thin;
 }
 .table {
   width: 100%;
@@ -241,9 +234,67 @@
 }
 .dotplot {
   display: block;
-  min-width: 360px;
-  width: 100%;
+  margin: 0 auto;
 }
+.dotLegend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px 40px;
+  padding: 20px 0;
+  margin: 12px 0;
+  border-top: 1px solid #e7ede8;
+  border-bottom: 1px solid #e7ede8;
+  font-size: 11px;
+  color: #5f6f64;
+}
+.dotLegend > div {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+.dotLegend small {
+  color: #68776d;
+  font-size: 10px;
+}
+.dotSizes {
+  display: flex;
+  align-items: end;
+  gap: 18px;
+}
+.dotSizes > span {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+}
+.dotSizes i {
+  display: block;
+  border-radius: 50%;
+  background: #679477;
+}
+.detectionValue {
+  display: grid;
+  gap: 6px;
+  min-width: 64px;
+}
+.detectionTrack {
+  height: 4px;
+  width: 80px;
+  max-width: 100%;
+  background: #e9efeb;
+  display: block;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.detectionTrack i {
+  display: block;
+  height: 100%;
+  background: #4c815e;
+}
+.detectionTrack[data-muted="true"] i {
+  background: #a6b7ac;
+}
+
 .sources {
   list-style: none;
   margin: 16px 0 0;
@@ -252,9 +303,9 @@
   gap: 16px;
 }
 .source {
-  padding: 16px;
-  border: 1px solid #e3e3e3;
-  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #dfe8e1;
+  border-radius: 10px;
 }
 .source h4 {
   font-size: 15px;
@@ -273,12 +324,39 @@
   text-underline-offset: 3px;
   font-size: 12px;
 }
+.sourceHeading {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.sourceNumber {
+  font-size: 21px;
+  letter-spacing: -1px;
+  color: #72917d;
+  font-variant-numeric: tabular-nums;
+}
 .sourceTag {
   font-size: 11px;
-  color: #666;
+  color: #496852;
 }
+.source .applicability {
+  border-left: 2px solid #aac5b2;
+  background: #f5f9f6;
+  padding: 10px 12px;
+  border-radius: 0 6px 6px 0;
+}
+.applicability strong {
+  display: block;
+  font-size: 11px;
+  color: #496852;
+  margin-bottom: 4px;
+}
+.source > .button {
+  margin-top: 14px;
+}
+
 .review {
-  padding: 20px;
+  padding: 24px;
   border-top: 1px solid #ededed;
 }
 .review h4 {
@@ -310,14 +388,9 @@
   .body {
     padding: 16px;
   }
-  .header,
   .details,
   .review {
     padding: 14px 16px;
-  }
-  .header {
-    align-items: flex-start;
-    gap: 8px;
   }
   .clusterGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -332,6 +405,25 @@
     gap: 16px;
   }
   .facts strong {
-    font-size: 20px;
+    font-size: 23px;
+  }
+}
+
+.card :is(button, summary, a, input, select, textarea):focus-visible {
+  outline: 2px solid #397452;
+  outline-offset: 3px;
+}
+@container (max-width:440px) {
+  .clusterGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .facts {
+    gap: 20px;
+  }
+  .facts strong {
+    font-size: 22px;
+  }
+  .source {
+    padding: 16px;
   }
 }
