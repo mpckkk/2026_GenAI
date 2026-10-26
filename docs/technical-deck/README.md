@@ -5,6 +5,7 @@ A ten-slide implementation walkthrough, separate from the [four-slide pitch](../
 - [Presentation PDF](Celloras-Technical-Deck.pdf)
 - [Editable PowerPoint](Celloras-Technical-Deck.pptx)
 - [Speaker notes and code sources](speaker-notes.md)
+- [Visual workflow PNG](Celloras-Technical-Flow.png) · [Diagram scope and generation notes](flowchart-notes.md)
 
 The deck covers deployment topology, the agent runtime interface, turn execution and typed output, H5AD upload states, data ownership, numerical annotation, Zetaris SQL retrieval, Meterless H-MEM persistence, recovery, and measured scaling limits. Diagrams, protocol examples and four tables remain editable.
 
