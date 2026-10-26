@@ -1,5 +1,7 @@
 # Foundation verification — 2026-10-23
 
+- HTML technical flowchart: real Chromium checks passed for 16 readable nodes, source-linked selection, keyboard selection, zoom/fit, SVG export and zero browser errors. Desktop and dark-theme screenshots were inspected, along with the 390px pan/zoom view; the page itself has no horizontal overflow. The exported SVG contains resolved colors and editable text. The browser print output was rendered and inspected as one A3 landscape page. Private verification artifacts remain in `.artifacts/technical-flowchart-html/`. This checks the standalone diagram, not new inference or scientific accuracy.
+
 - Activity heading follow-up: `cc5985a` replaces “Sponsor activity” with “Tools used”. Targeted lint and whitespace checks passed. After deployment, an authenticated browser check confirmed the new heading, absence of the old heading, retained service attribution and readable desktop/390px layouts without overflow or browser errors. Screenshots were inspected in `.artifacts/activity-tools-label/`. This wording-only change did not rerun inference.
 
 ## Plain-language activity — 2026-10-26

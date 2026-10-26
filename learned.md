@@ -1,5 +1,7 @@
 # Engineering notes
 
+- For technical flowcharts, the user prefers deterministic HTML/SVG with real text and connectors over generated raster illustrations. Keep the worker, model runtime, scientific computation and persistence boundaries distinct; put deeper explanations inline on selection.
+
 - Keep sponsor attribution factual and subtle in the product. Use a functional heading such as “Tools used”; explain each service's actual contribution without calling the interface a sponsor showcase.
 
 - An activity page must explain the question, action, purpose and outcome before exposing implementation details. Put source links and actual result counts beside the explanation, with raw events available on demand. Simpler wording must not turn a format check into scientific validation or an empty memory search into evidence.

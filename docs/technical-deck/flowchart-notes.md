@@ -1,5 +1,13 @@
 # Technical workflow image
 
+## HTML version — preferred
+
+The user's preferred format is now the [interactive HTML flowchart](https://celloras.com/technical-flow.html). Its single source is [public/technical-flow.html](../../public/technical-flow.html): self-contained HTML/CSS/JavaScript and SVG, with no external dependencies. It separates worker orchestration from the runtime interface and includes source-linked explanations for all 16 nodes. Zoom/pan, fit, keyboard selection, theme adaptation, SVG download and browser printing are included.
+
+The HTML view supersedes the generated image for technical review. It is a schematic of implemented boundaries, not live activity or a measured plot. It does not execute analysis or contact providers. The existing PDF/PowerPoint decks were not regenerated.
+
+## Earlier generated image
+
 [Flowchart PNG](Celloras-Technical-Flow.png), created with the built-in image-generation tool on 26 October 2026. This is a presentation schematic, not a screenshot or measured cell plot. The existing PDF/PowerPoint deck has not been regenerated.
 
 The central Agent node compresses the Celloras worker and runtime boundary. The worker authorizes and executes tools; the model requests them and interprets results. H-MEM runs within the worker and restores its state from PostgreSQL. The diagram highlights one ordinary analysis loop; guided actions may execute before the first model invocation. Access checks also protect upload/import, even though the simplified branch shows access next to chat admission.

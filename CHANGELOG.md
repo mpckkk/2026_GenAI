@@ -1,5 +1,7 @@
 # Changelog
 
+- Added a self-contained HTML technical flowchart with editable SVG text, the worker/runtime boundary, selectable implementation details, zoom/pan, SVG export and print layout.
+
 - Renamed the activity section to “Tools used” so the interface describes the work, with service attribution retained in the details.
 
 ## Activity in plain language — 2026-10-26
