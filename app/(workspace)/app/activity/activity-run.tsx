@@ -15,61 +15,16 @@ import {
   durationLabel,
   Status,
 } from "./activity-dashboard";
+import {
+  groupSteps,
+  sponsorForStep,
+  sponsors,
+  stepStatus,
+  timeOfDay,
+  type Step,
+} from "./activity-steps";
+import { SponsorActivity } from "./sponsor-activity";
 import styles from "./activity.module.css";
-
-type Step = {
-  id: string;
-  first: ActivityEvent;
-  last: ActivityEvent;
-  events: ActivityEvent[];
-  data: ActivityData;
-  children: Step[];
-};
-
-function groupSteps(events: ActivityEvent[]) {
-  const spans = new Map<string, Step>();
-  for (const event of events) {
-    const existing = spans.get(event.spanId);
-    if (existing) {
-      existing.last = event;
-      existing.events.push(event);
-      existing.data = { ...existing.data, ...event.data };
-    } else
-      spans.set(event.spanId, {
-        id: event.spanId,
-        first: event,
-        last: event,
-        events: [event],
-        data: event.data,
-        children: [],
-      });
-  }
-  const roots: Step[] = [];
-  for (const step of spans.values()) {
-    const parent = step.first.parentSpanId
-      ? spans.get(step.first.parentSpanId)
-      : undefined;
-    // An absent parent is still an actual recorded step and remains visible.
-    if (parent && parent !== step && parent.first.parentSpanId !== step.id)
-      parent.children.push(step);
-    else roots.push(step);
-  }
-  return { roots, count: spans.size };
-}
-
-function stepStatus(step: Step, run: ActivityRunDetail["run"]) {
-  if (step.last.phase === "started") {
-    if (run.status === "cancelled") return "cancelled";
-    if (
-      step.last.interrupted ||
-      run.status === "completed" ||
-      run.status === "failed"
-    )
-      return "interrupted";
-    return "running";
-  }
-  return step.last.phase;
-}
 
 const stepIcons: Record<ActivityEvent["kind"], IconName> = {
   queue: "chat",
@@ -81,14 +36,6 @@ const stepIcons: Record<ActivityEvent["kind"], IconName> = {
   response: "chat",
   cleanup: "label",
 };
-
-function timeOfDay(value: string) {
-  return new Date(value).toLocaleTimeString(undefined, {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
-}
 
 function fact(label: string, value: ReactNode) {
   return value === undefined || value === null ? null : (
@@ -110,6 +57,7 @@ function StepData({
   const reference = data.reference;
   return (
     <dl className={styles.dataList}>
+      {fact("Provider", data.provider)}
       {fact("Operation", data.operation)}
       {fact(
         "Dataset",
@@ -185,7 +133,7 @@ function StepData({
                 : undefined,
             )}
             {fact(
-              "Query ID",
+              "Request ID",
               reference.requestId ? (
                 <code>{reference.requestId}</code>
               ) : undefined,
@@ -238,12 +186,15 @@ function TimelineStep({
   depth?: number;
 }) {
   const status = stepStatus(step, detail.run);
+  const sponsor = sponsorForStep(step);
   const duration = step.last.durationMs ?? step.data.durationMs;
   const hasDetails =
     Object.keys(step.data).length > 0 || step.events.length > 1;
   return (
     <li
       className={styles.step}
+      id={`activity-step-${step.id}`}
+      tabIndex={-1}
       data-activity-kind={step.first.kind}
       data-activity-status={status}
     >
@@ -254,7 +205,14 @@ function TimelineStep({
         />
       </span>
       <div className={styles.stepHeader}>
-        <h3>{step.last.name}</h3>
+        <div className={styles.stepTitle}>
+          <h3>{step.last.name}</h3>
+          {sponsor && (
+            <span className={styles.sponsorTag} data-sponsor={sponsor}>
+              {sponsors[sponsor].name}
+            </span>
+          )}
+        </div>
         <div className={styles.stepTiming}>
           <Status status={status} />
           {duration !== undefined && <span>{durationLabel(duration)}</span>}
@@ -559,8 +517,8 @@ export function ActivityRun({ turnId }: { turnId: string }) {
                   <strong>This request stopped before it finished.</strong>
                 </p>
                 <p>
-                The recorded steps remain available below. You can retry from
-                the conversation.
+                  The recorded steps remain available below. You can retry from
+                  the conversation.
                 </p>
                 {detail.run.errorCode && (
                   <p>
@@ -580,6 +538,9 @@ export function ActivityRun({ turnId }: { turnId: string }) {
                 remain available below.
               </p>
             </div>
+          )}
+          {detail.run.recordingVersion !== null && (
+            <SponsorActivity steps={grouped.all} detail={detail} />
           )}
           {detail.run.recordingVersion === null ? (
             <div className={styles.notice}>

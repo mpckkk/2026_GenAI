@@ -13,6 +13,7 @@ export type ActivityPhase =
   "started" | "completed" | "failed" | "cancelled" | "info";
 /** Deliberately excludes raw model/provider payloads, credentials and hidden reasoning. */
 export interface ActivityData {
+  provider?: string;
   datasetId?: string;
   artifactVersion?: string;
   operation?: string;

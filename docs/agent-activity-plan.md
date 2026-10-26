@@ -26,3 +26,15 @@ The root integration also updates `infra/agent/Dockerfile` to include the shared
 ## Delivery record
 
 Implemented in `8e841af`; deployed with migration 011. The real local journey and 24 PostgreSQL checks passed. Fresh public H5AD → annotation → plot → review → H-MEM recall passed with live Zetaris and 51 recorded events. The acceptance receipt is `docs/evidence/agent-activity-public-2026-10-26.json`. Documentation updates also include `docs/submission.md`, `docs/sponsor-explanation.md` and `docs/technical-deck/README.md`; the exported decks were not regenerated. Amigospace's demo/checklist page was updated and confirmed at revision 5.
+
+## Sponsor visibility follow-up — 2026-10-26
+
+Show each sponsor's actual role, start time, duration, outcome and original receipt near the top of a request. Distinguish reference preparation from evidence used by an analysis; distinguish a memory check with no matches from recalled decisions. No sponsor attribution without a recorded provider/runtime. Old receipts stay unchanged.
+
+Ordered file ledger (root owns this follow-up):
+
+1. Update `app/core/activity.ts`, `app/adapters/activity-events.mjs` and `infra/agent/worker.mjs`: allow a bounded provider name and record the selected reference/memory provider at operation start, so running and failed calls remain attributable. No migration or provider configuration changes.
+2. Create `app/(workspace)/app/activity/activity-steps.ts` and `sponsor-activity.tsx`; update `activity-run.tsx`, `activity-dashboard.tsx` and `activity.module.css` in that directory: share the existing step grouping, show sponsor summaries with real receipts, label matching timeline steps, and open evidence inline through accessible anchors.
+3. Update `tests/agent-activity.spec.ts` for sponsor/source navigation in the real journey. Run lint/build/type checks, the real local workflow and a read-only public receipt check at desktop/mobile widths. Verify counts against saved events, not UI fixtures. Update `README.md`, `docs/verification.md`, `CHANGELOG.md`, `learned.md` and this ledger with observed results; push, verify deployment, then save the outcome in Amigospace.
+
+No renames, deletions, new infrastructure, scientific output changes, invented queries or retrospective event writes.

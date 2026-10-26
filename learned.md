@@ -1,5 +1,8 @@
 # Engineering notes
 
+- Sponsor visibility needs an actual operation, purpose, time, outcome and source link. A badge or service-health state alone does not show use. Attribute providers at the operation start so failures remain identifiable; never turn a bundled reference into a Zetaris call or an empty memory search into a recalled decision. Repeated reference loads are calls, not additional unique marker evidence.
+- Restarting a host development process requires its explicit data/runtime environment, not just `.env`. For this Mac checkout, dataset mounts and the OpenShell `host-config` selection were launch overrides; probe runtime health before starting real browser acceptance.
+
 - An activity dashboard needs durable events at execution boundaries, not parsed server logs or a model-written retrospective. Commit admission and terminal status with the request; retain measured starts/ends and distinguish interrupted spans from completed work. Historical requests without instrumentation must stay explicitly incomplete.
 - Published-workbook checksums and the canonical curated-reference checksum identify different objects. Compare source-delivery receipts with `contentSha256`, while retaining the workbook hash separately. A reference availability check is not automatically a remote query receipt.
 - A runtime's end-to-end duration may include sandbox provisioning and cleanup. Label it as runtime execution, and leave model/token/cost fields unknown when the adapter does not report them. Keep evidence links independently owner-checked rather than trusting IDs in a saved context snapshot.

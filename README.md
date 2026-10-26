@@ -96,6 +96,8 @@ Open **Agent activity** in the workspace sidebar, or **View activity** below a c
 
 Expand a step to see its actual inputs and output counts, dataset version, source checksum, Zetaris query receipt or recalled review link. Saved results open the original conversation and its visual cards. **Download activity JSON** exports that request's recorded evidence for a demo or audit.
 
+**Sponsor activity** shows each recorded provider's role, outcome, start time and duration. Zetaris links to the exact reference query and analysis it supported; Meterless H-MEM links to the recalled review; NVIDIA OpenShell appears for actual sandboxed agent calls. Each evidence link opens the corresponding timeline step inline. Reference checks stay distinct from annotation evidence, and a memory check with no matches stays distinct from a recalled decision. Missing use is labelled **No call recorded**.
+
 Migration `011_agent_activity.sql` stores append-only events in the existing PostgreSQL database. Admission and final status commit with the chat turn; execution records use the same ownership checks and a bounded metadata schema. Recording surrounds the runtime interface, so OpenShell and API runtimes share it. No separate Langfuse server is required. This is Celloras's native activity dashboard; the optional NVIDIA trace exporter remains unconnected.
 
 Older conversations explicitly show that detailed activity was not recorded. Unfinished steps on stopped requests remain interrupted. Model names appear only when configured or reported; token usage, cost and hidden model reasoning are not collected. Context-preparation events become visible when their transaction commits.

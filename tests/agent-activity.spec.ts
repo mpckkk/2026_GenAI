@@ -228,7 +228,51 @@ test("owned activity records real annotation, source verification, memory, cance
       has: page.getByRole("heading", { name: reference!.name, exact: true }),
     })
     .first();
-  await referenceStep.locator("summary").click();
+  const sponsorRegion = page.getByRole("region", {
+    name: "Sponsor activity",
+    exact: true,
+  });
+  await expect(sponsorRegion).toBeVisible();
+  const zetarisCard = sponsorRegion.getByRole("article", {
+    name: "Zetaris",
+    exact: true,
+  });
+  const memoryCard = sponsorRegion.getByRole("article", {
+    name: "Meterless H-MEM",
+    exact: true,
+  });
+  await expect(memoryCard).toContainText("No matching saved decisions");
+  expect(completedSpan(complete, "memory").data.provider).toBe(
+    "Meterless H-MEM",
+  );
+  await expect(
+    sponsorRegion.getByRole("article", {
+      name: "NVIDIA OpenShell",
+      exact: true,
+    }),
+  ).toContainText("Answer returned");
+  if (reference!.data.reference!.provider === "Zetaris") {
+    await expect(zetarisCard).toContainText(
+      `${reference!.data.reference!.recordCount} marker associations retrieved`,
+    );
+    await zetarisCard
+      .getByRole("link", { name: "View query evidence" })
+      .click();
+    await expect(page).toHaveURL(
+      new RegExp(`#activity-step-${reference!.spanId}$`),
+    );
+    await expect(referenceStep.locator(":scope > details")).toHaveAttribute(
+      "open",
+      "",
+    );
+    await expect(referenceStep).toBeFocused();
+  } else {
+    await expect(zetarisCard).toContainText("No call recorded");
+    await expect(
+      zetarisCard.getByRole("link", { name: "View query evidence" }),
+    ).toHaveCount(0);
+    await referenceStep.locator("summary").click();
+  }
   await expect(referenceStep).toContainText(
     reference!.data.reference!.contentSha256!,
   );
@@ -366,6 +410,23 @@ test("owned activity records real annotation, source verification, memory, cance
   await expect(
     memoryRegion.getByRole("link", { name: /View original review/ }),
   ).toHaveAttribute("href", canonicalHref);
+  const recalledSponsor = page.getByRole("article", {
+    name: "Meterless H-MEM",
+    exact: true,
+  });
+  await expect(recalledSponsor).toContainText("1 saved decision recalled");
+  await expect(
+    recalledSponsor.getByRole("link", { name: /Open recalled review/ }),
+  ).toHaveAttribute("href", canonicalHref);
+  await recalledSponsor
+    .getByRole("link", { name: "View memory evidence" })
+    .click();
+  await expect(page).toHaveURL(
+    new RegExp(`#activity-step-${memorySpan.spanId}$`),
+  );
+  await expect(
+    page.locator(`[id="activity-step-${memorySpan.spanId}"] > details`),
+  ).toHaveAttribute("open", "");
   await page.screenshot({
     path: info.outputPath("04-hmem-source-desktop.png"),
     fullPage: true,
@@ -425,6 +486,9 @@ test("owned activity records real annotation, source verification, memory, cance
       '[data-activity-kind="model"][data-activity-status="cancelled"]',
     ),
   ).toBeVisible();
+  await expect(
+    page.getByRole("article", { name: "NVIDIA OpenShell", exact: true }),
+  ).toContainText("Call cancelled");
   await page.screenshot({
     path: info.outputPath("06-running-cancellation-mobile.png"),
     fullPage: true,

@@ -245,6 +245,7 @@ async function claim() {
           kind: "reference",
           parentSpanId: "context",
           name: "Check marker reference",
+          data: { reference: { provider: references.name } },
           summary:
             "Checking the configured marker reference and its integrity.",
         },
@@ -343,6 +344,7 @@ async function claim() {
               kind: "reference",
               parentSpanId: "context",
               name: "Load annotation reference",
+              data: { reference: { provider: references.name } },
               summary: `Loading the annotation reference through ${references.name}.`,
             },
             () => references.load(options),
@@ -361,6 +363,7 @@ async function claim() {
         kind: "memory",
         parentSpanId: "context",
         name: "Recall saved decisions",
+        data: { provider: "Meterless H-MEM" },
         summary:
           "Meterless H-MEM is checking saved decisions from this experiment.",
       },
@@ -611,6 +614,7 @@ async function execute(turn) {
                   kind: "reference",
                   parentSpanId: spanId,
                   name: "Retrieve marker evidence",
+                  data: { reference: { provider: references.name } },
                   summary: `Loading marker associations through ${references.name}.`,
                 },
                 () => references.load(options),
@@ -700,6 +704,7 @@ async function execute(turn) {
                       kind: "reference",
                       parentSpanId: spanId,
                       name: "Match published markers",
+                      data: { reference: { provider: references.name } },
                       summary:
                         "Retrieving the configured reference and matching the submitted genes.",
                     },

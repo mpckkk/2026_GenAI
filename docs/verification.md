@@ -1,5 +1,12 @@
 # Foundation verification — 2026-10-23
 
+## Sponsor visibility — 2026-10-26
+
+- Added sponsor summaries backed by saved activity events, with source/result links, actual timestamps/durations and inline timeline navigation. Earlier recorded H-MEM start messages remain readable without changing historical events. Unrelated providers and bundled local references receive no sponsor attribution.
+- Production build, lint, typecheck and diff whitespace checks passed. The expanded real browser workflow passed in 59.5 seconds: annotation, correct absence of local Zetaris use, explicit H-MEM provider, no-match and recalled-decision states, exact source navigation/focus, OpenShell outcome, queued/running cancellation, reload/export and account isolation. Local desktop/mobile screenshots were inspected; mobile overflow check passed. The 24 existing real PostgreSQL transaction checks also passed.
+- Two initial local attempts stopped before inference: the restarted app lacked its dataset launch override, then the worker used the Docker client configuration instead of the host gateway configuration. Restored explicit local paths and confirmed actual OpenShell health before the passing run. No provider fallback or database reset was used.
+- Local acceptance uses the bundled published reference; it does not prove a local Zetaris deployment. Public verification against the existing real Zetaris and H-MEM traces follows deployment. No new biological validation or new public inference is implied by this presentation change.
+
 ## Submission audit — 2026-10-26
 
 - Read all ten expanded rule sections on the binding event page and the Resource Center's Official Rules draft, Submission Requirements and Strong Submission Examples. The drafts explicitly defer to the event page. The binding technology rules require Zetaris/Meterless and permit any model/API, so the draft's Nightshift-primary condition was not used to change the verified runtime. [Rule coverage and remaining gates](submission.md#event-rule-audit--26-october-2026).

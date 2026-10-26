@@ -1,5 +1,11 @@
 # Changelog
 
+## Sponsor activity at a glance — 2026-10-26
+
+- Added a sponsor section to request activity with actual roles, outcomes, start times, durations and direct evidence links for Zetaris, Meterless H-MEM and NVIDIA OpenShell.
+- Labelled sponsor calls in the timeline. Multiple calls remain individually inspectable; reference checks and analysis evidence are distinct, as are empty memory searches and recalled decisions.
+- Record reference and memory providers when a call starts, retaining attribution if it fails or is cancelled. Existing events and scientific results remain unchanged.
+
 ## Visible agent activity — 2026-10-26
 
 - Added a full-page activity dashboard with searchable owned requests, live status, timed nested steps, inline inputs/evidence, canonical outputs and JSON export. Chat responses link directly to their activity.

@@ -334,6 +334,216 @@
 .section {
   margin-top: 38px;
 }
+.sponsorHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin-bottom: 20px;
+}
+.sponsorHeading h2 {
+  font-size: 19px;
+  letter-spacing: -0.02em;
+}
+.sponsorHeading p {
+  margin-top: 5px;
+  font-size: 13px;
+  color: #6b786f;
+}
+.sponsorHeading > span {
+  font-size: 11px;
+  color: #7a857e;
+}
+.sponsorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  align-items: start;
+  gap: 14px;
+}
+.sponsorCard {
+  --sponsor-ink: #276148;
+  --sponsor-tint: #edf5ef;
+  border: 1px solid #dce6df;
+  border-radius: 12px;
+  padding: 22px;
+  background: linear-gradient(155deg, #f6faf7, #fff 50%);
+  min-width: 0;
+}
+.sponsorCard[data-sponsor="hmem"],
+.sponsorTag[data-sponsor="hmem"] {
+  --sponsor-ink: #596291;
+  --sponsor-tint: #f0f1f8;
+}
+.sponsorCard[data-sponsor="openshell"],
+.sponsorTag[data-sponsor="openshell"] {
+  --sponsor-ink: #52652d;
+  --sponsor-tint: #f1f5e9;
+}
+.sponsorCard[data-empty="true"] {
+  background: #fafbfa;
+}
+.sponsorBrand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.sponsorIcon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  color: var(--sponsor-ink);
+  background: var(--sponsor-tint);
+}
+.sponsorBrand h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
+.sponsorBrand p {
+  font-size: 11px;
+  color: #78847c;
+  margin-top: 3px;
+}
+.sponsorOutcome {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.03em;
+  margin-top: 24px;
+}
+.sponsorDescription {
+  font-size: 12px;
+  color: #647268;
+  line-height: 1.65;
+  margin-top: 10px;
+}
+.sponsorEvidence {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  align-content: start;
+  font-size: 11px;
+  color: #748177;
+  overflow-wrap: anywhere;
+}
+.sponsorEvidence:empty {
+  display: none;
+}
+.sponsorEvidence a {
+  color: var(--sponsor-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sponsorTiming {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 18px;
+  font-size: 11px;
+  color: #748177;
+  font-variant-numeric: tabular-nums;
+}
+.sponsorReceipt {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px 0 0;
+  border-top: 1px solid #e4eae5;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sponsor-ink);
+}
+.sponsorReceipt:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sponsorCalls {
+  margin-top: 14px;
+  font-size: 11px;
+  color: #68786e;
+}
+.sponsorCalls > summary {
+  cursor: pointer;
+  padding: 3px 0;
+}
+.sponsorCalls ol {
+  list-style: none;
+  padding: 8px 0 0;
+  margin: 0;
+}
+.sponsorCalls li + li {
+  border-top: 1px solid #e6ece7;
+}
+.sponsorCalls a {
+  display: grid;
+  gap: 5px;
+  padding: 10px 0;
+}
+.sponsorCalls a:hover > span:first-child {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sponsorCalls a > span:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  font-size: 10px;
+  color: #8a948e;
+}
+.sponsorCalls .status {
+  font-size: 10px;
+}
+.sponsorAbsent {
+  margin-top: 24px;
+  font-size: 12px;
+  color: #78847c;
+}
+.sponsorAbsent h4 {
+  font-size: 17px;
+  color: #59685e;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.sponsorTag {
+  --sponsor-ink: #276148;
+  --sponsor-tint: #edf5ef;
+  display: inline-flex;
+  color: var(--sponsor-ink);
+  background: var(--sponsor-tint);
+  font-size: 10px;
+  font-weight: 500;
+  border-radius: 4px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+.stepTitle {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+.step:target {
+  background: #f5f9f5;
+  border-radius: 6px;
+}
+.step {
+  scroll-margin-top: 24px;
+}
+.step:focus-visible {
+  outline: 2px solid #8bae95;
+  outline-offset: 6px;
+}
+.sponsorReceipt:focus-visible,
+.sponsorCalls summary:focus-visible,
+.sponsorCalls a:focus-visible {
+  outline: 2px solid #39724c;
+  outline-offset: 4px;
+}
 .sectionHeading {
   display: flex;
   justify-content: space-between;
@@ -636,6 +846,18 @@
   }
 }
 @media (max-width: 680px) {
+  .sponsorCard {
+    padding: 20px;
+  }
+  .sponsorOutcome {
+    min-height: 0;
+    font-size: 21px;
+    margin-top: 20px;
+  }
+  .sponsorDescription,
+  .sponsorEvidence {
+    min-height: 0;
+  }
   .page {
     padding: 26px 20px 48px;
   }

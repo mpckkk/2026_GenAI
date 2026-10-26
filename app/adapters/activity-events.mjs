@@ -12,6 +12,7 @@ const KINDS = new Set([
 ]);
 const PHASES = new Set(["started", "completed", "failed", "cancelled", "info"]);
 const FIELDS = new Set([
+  "provider",
   "datasetId",
   "artifactVersion",
   "operation",

@@ -227,7 +227,7 @@ export function ActivityDashboard({
           <h1>Agent activity</h1>
           <p className={styles.description}>
             Follow each request from the first step to the final answer. See the
-            tools, evidence, and saved results behind it.
+            tools, sponsor calls, evidence, and saved results behind it.
           </p>
         </div>
         <Link href="/app" className={styles.button}>
