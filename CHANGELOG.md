@@ -1,5 +1,7 @@
 # Changelog
 
+- Restored orchestrator responsibilities and reviewed the flowchart against the source. Clarified runtime status, H-MEM execution inside the orchestrator, review persistence through PostgreSQL, and the tool/evidence loop.
+
 - Renamed the flowchart’s central service to “Agent orchestrator” with “Node.js service” underneath.
 
 - Fit the flowchart to both screen width and height on initial load. Zoom controls scale from that fitted size and remain clear of the diagram. No tests run, per instruction.

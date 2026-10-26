@@ -1,5 +1,7 @@
 # Foundation verification — 2026-10-23
 
+- Flowchart correctness review: compared labels and connections with queue/orchestrator, runtime adapters, H5AD importer, scientific tools, Zetaris, saved reviews, H-MEM and activity implementations. Corrected the review persistence path and clarified process/provider boundaries. Rendered the static page for visual inspection. No automated tests or new inference were run. See `docs/technical-deck/flowchart-notes.md` for source mapping and omitted branches.
+
 - The user subsequently requested a plain static black-and-white flowchart and explicitly asked for no flowchart tests. Removed controls, JavaScript and detail panels; no tests were run for this simplification. Earlier interaction checks below describe the superseded version.
 
 - Flowchart layout follow-up: real Chromium checks passed at 390, 768, 1440 and 1680px with no nested scrolling or horizontal page overflow. The desktop diagram fits the initial viewport; mobile offers a readable step selector. The background remains white under a dark system preference. All 16 nodes, click/keyboard selection, SVG download and browser printing passed with no browser errors. Desktop/mobile screenshots inspected; receipts are in ignored `.artifacts/technical-flowchart-layout/`. Normal page scrolling remains for the details below the chart.

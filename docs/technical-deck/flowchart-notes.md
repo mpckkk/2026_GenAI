@@ -6,6 +6,24 @@ The user's preferred format is a [plain HTML flowchart](https://celloras.com/tec
 
 The HTML view supersedes the generated image for technical review. It is a schematic of implemented boundaries, not live activity or a measured plot. It does not execute analysis or contact providers. The existing PDF/PowerPoint decks were not regenerated.
 
+## Implementation review, 26 October 2026
+
+The diagram shows the successful agent-requested tool loop. A guided action may run its tool before the first model call. It is a logical request/data-flow diagram, not a deployment topology or a complete error-state chart. Access checks also protect uploads, reviews and activity reads; those checks are not repeated as separate boxes.
+
+| Diagram element | Checked implementation |
+| --- | --- |
+| Access and durable queue | `app/adapters/chat.ts`, `app/core/chat.ts` |
+| Agent orchestrator | `infra/agent/worker.mjs`: Node.js service claims a queued request, builds context, invokes the configured runtime, runs up to four tool calls and saves the response. |
+| Runtime adapter | `app/adapters/agent-openshell.mjs`, `app/gateway/nightshift.mjs`: OpenShell/Codex is the previously verified route; Nightshift implements the HTTP contract but awaits live acceptance. Vercel is still a placeholder, not a working gateway. |
+| Tool call and results loop | `app/services/analysis-tools.mjs`, `app/services/marker-evidence.mjs`: numerical analysis or retrieved evidence returns to the model. Results are saved before their card references are rendered. |
+| H5AD import | `infra/science/h5ad/importer.py`: requires selected raw counts and existing groups/UMAP. It does not perform new clustering. The upload API authenticates and checks project ownership. |
+| Zetaris | `app/adapters/zetaris-reference.mjs`: queries the marker table and verifies returned reference content. This is the deployed reference path; the local default is the separately configured published reference. Zetaris does not serve every tool or the expression matrix. |
+| Researcher review and H-MEM | `app/adapters/analysis.ts`, `app/adapters/research-memory.mjs`: explicit reviews are saved in PostgreSQL. On a later request H-MEM runs inside the orchestrator, loads owned reviews and persisted state, then returns relevant decisions with their sources. |
+| Visual answer | `app/services/agent-response.mjs`, `app/(workspace)/app/agent-response.tsx`: schema and owned result IDs are checked, then predefined React cards render canonical results. |
+| Activity | `infra/agent/activity.mjs`, `app/adapters/activity-events.mjs`, `app/adapters/activity.ts`: execution events are stored in PostgreSQL and read through owned dashboard endpoints. They are observable actions, not hidden reasoning. |
+
+Restored “Context · tools · persistence” below the service name. Clarified H-MEM's execution location, changed the review-to-memory path to pass through PostgreSQL, and labelled the loop “Tool call?” / “Results + evidence” so literature retrieval is covered too. Source review and a rendered visual inspection were performed; no automated tests or new inference were run.
+
 ## Earlier generated image
 
 [Flowchart PNG](Celloras-Technical-Flow.png), created with the built-in image-generation tool on 26 October 2026. This is a presentation schematic, not a screenshot or measured cell plot. The existing PDF/PowerPoint deck has not been regenerated.

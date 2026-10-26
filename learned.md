@@ -1,5 +1,7 @@
 # Engineering notes
 
+- Keep a component’s responsibilities when renaming it or adding implementation details. In the flowchart, researcher reviews persist in PostgreSQL before H-MEM loads them on later requests; H-MEM is a module inside the orchestrator.
+
 - Fit the flowchart against both viewport dimensions on initial load, reserving room for the zoom buttons. A width cap alone can make it taller than the screen.
 
 - Do not use em dashes in new user-facing copy or replies. The user permits only small zoom in/out buttons around this otherwise plain flowchart.
