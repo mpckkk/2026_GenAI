@@ -1,6 +1,7 @@
 # Foundation verification — 2026-10-23
 
 - HTML technical flowchart: real Chromium checks passed for 16 readable nodes, source-linked selection, keyboard selection, zoom/fit, SVG export and zero browser errors. Desktop and dark-theme screenshots were inspected, along with the 390px pan/zoom view; the page itself has no horizontal overflow. The exported SVG contains resolved colors and editable text. The browser print output was rendered and inspected as one A3 landscape page. Private verification artifacts remain in `.artifacts/technical-flowchart-html/`. This checks the standalone diagram, not new inference or scientific accuracy.
+- Release `4642d4b` deployed successfully. The same real browser checks passed at [the public HTML flowchart](https://celloras.com/technical-flow.html) on 26 October 2026 at 22:14 UTC, including HTTP 200, all 16 nodes, keyboard/click selection, zoom, SVG export, dark mode, mobile page width and browser printing. No application login is required to view this public architecture diagram.
 
 - Activity heading follow-up: `cc5985a` replaces “Sponsor activity” with “Tools used”. Targeted lint and whitespace checks passed. After deployment, an authenticated browser check confirmed the new heading, absence of the old heading, retained service attribution and readable desktop/390px layouts without overflow or browser errors. Screenshots were inspected in `.artifacts/activity-tools-label/`. This wording-only change did not rerun inference.
 
