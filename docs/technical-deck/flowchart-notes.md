@@ -2,7 +2,7 @@
 
 ## HTML version — preferred
 
-The user's preferred format is a [plain HTML flowchart](https://celloras.com/technical-flow.html). Its single source is [public/technical-flow.html](../../public/technical-flow.html): a white page with black text, SVG shapes and arrows. It separates worker orchestration from the runtime interface. There are no scripts, interactive panels, custom scrolling or external dependencies.
+The user's preferred format is a [plain HTML flowchart](https://celloras.com/technical-flow.html). Its single source is [public/technical-flow.html](../../public/technical-flow.html): a white page with black text, SVG shapes and arrows. It separates worker orchestration from the runtime interface. Two small buttons zoom the diagram in and out. There are no interactive panels, custom scroll areas or external dependencies.
 
 The HTML view supersedes the generated image for technical review. It is a schematic of implemented boundaries, not live activity or a measured plot. It does not execute analysis or contact providers. The existing PDF/PowerPoint decks were not regenerated.
 

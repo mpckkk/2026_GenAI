@@ -1,5 +1,7 @@
 # Changelog
 
+- Added small black-and-white zoom in/out buttons to the flowchart, as requested. Zoom ranges from 50% to 300% and uses normal page scrolling. No tests run, per instruction.
+
 - Removed the flowchart title, subtitle, stage headings and legend. The page contains only black-and-white shapes, arrows and their labels.
 
 - Simplified the technical flowchart to a normal white HTML page with black text, static SVG shapes and arrows. Removed scripts, controls and detail panels at the user’s request.

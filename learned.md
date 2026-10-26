@@ -1,5 +1,7 @@
 # Engineering notes
 
+- Do not use em dashes in new user-facing copy or replies. The user permits only small zoom in/out buttons around this otherwise plain flowchart.
+
 - The technical flowchart page should contain only the diagram: no heading, introduction, stage banner or surrounding legend. Use pure black and white.
 
 - For this technical flowchart, keep the result ultra simple: black text and shapes on a normal white page. Do not add interactive controls, panels or flowchart tests; the user explicitly rejected that scope.
