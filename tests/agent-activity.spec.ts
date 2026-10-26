@@ -213,21 +213,46 @@ test("owned activity records real annotation, source verification, memory, cance
   );
 
   await expect(
-    page.getByRole("heading", { name: "Saved results", exact: true }),
+    page.getByRole("heading", { name: "Results", exact: true }),
   ).toBeVisible({ timeout: 30000 });
   const results = page.getByRole("region", {
-    name: "Saved results",
+    name: "Results",
     exact: true,
   });
   await expect(
     results.getByRole("link", { name: /Cell-type annotation/ }),
   ).toHaveAttribute("href", canonicalHref);
-  const referenceStep = page
-    .locator('[data-activity-kind="reference"]')
-    .filter({
-      has: page.getByRole("heading", { name: reference!.name, exact: true }),
-    })
-    .first();
+  const referenceStep = page.locator(
+    `[id="activity-step-${reference!.spanId}"]`,
+  );
+  await expect(
+    page.getByRole("region", { name: "Request outcome", exact: true }),
+  ).toContainText("Compared 12 cell groups");
+  await expect(
+    page.getByRole("region", { name: "Request outcome", exact: true }),
+  ).toContainText("too little evidence to name");
+  await expect(
+    page.getByRole("heading", { name: "Receive your question", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("An agent worker accepted the saved request.", {
+      exact: true,
+    }),
+  ).toBeHidden();
+  const defaultSteps = await page
+    .getByRole("list", { name: "Recorded agent steps", exact: true })
+    .innerText();
+  expect(defaultSteps).not.toMatch(
+    /\b(inference|runtime|sandbox|worker|checksum)\b/i,
+  );
+  await page
+    .getByRole("region", { name: "Request outcome", exact: true })
+    .scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath("02a-plain-outcome.png") });
+  await page
+    .getByRole("heading", { name: "Receive your question", exact: true })
+    .scrollIntoViewIfNeeded();
+  await page.screenshot({ path: info.outputPath("02b-plain-steps.png") });
   const sponsorRegion = page.getByRole("region", {
     name: "Sponsor activity",
     exact: true,
@@ -241,7 +266,7 @@ test("owned activity records real annotation, source verification, memory, cance
     name: "Meterless H-MEM",
     exact: true,
   });
-  await expect(memoryCard).toContainText("No matching saved decisions");
+  await expect(memoryCard).toContainText("No earlier decisions matched");
   expect(completedSpan(complete, "memory").data.provider).toBe(
     "Meterless H-MEM",
   );
@@ -253,11 +278,9 @@ test("owned activity records real annotation, source verification, memory, cance
   ).toContainText("Answer returned");
   if (reference!.data.reference!.provider === "Zetaris") {
     await expect(zetarisCard).toContainText(
-      `${reference!.data.reference!.recordCount} marker associations retrieved`,
+      `${reference!.data.reference!.recordCount} reference entries retrieved`,
     );
-    await zetarisCard
-      .getByRole("link", { name: "View query evidence" })
-      .click();
+    await zetarisCard.getByRole("link", { name: "See source check" }).click();
     await expect(page).toHaveURL(
       new RegExp(`#activity-step-${reference!.spanId}$`),
     );
@@ -267,12 +290,18 @@ test("owned activity records real annotation, source verification, memory, cance
     );
     await expect(referenceStep).toBeFocused();
   } else {
-    await expect(zetarisCard).toContainText("No call recorded");
+    await expect(zetarisCard).toContainText("No use recorded");
     await expect(
-      zetarisCard.getByRole("link", { name: "View query evidence" }),
+      zetarisCard.getByRole("link", { name: "See source check" }),
     ).toHaveCount(0);
-    await referenceStep.locator("summary").click();
+    await referenceStep.locator(":scope > details > summary").click();
   }
+  await expect(
+    referenceStep.getByText(reference!.data.reference!.contentSha256!, {
+      exact: true,
+    }),
+  ).toBeHidden();
+  await referenceStep.getByText("Technical details", { exact: true }).click();
   await expect(referenceStep).toContainText(
     reference!.data.reference!.contentSha256!,
   );
@@ -311,7 +340,7 @@ test("owned activity records real annotation, source verification, memory, cance
 
   // Check the linked result opens the actual persisted answer/card.
   await page
-    .getByRole("region", { name: "Saved results", exact: true })
+    .getByRole("region", { name: "Results", exact: true })
     .getByRole("link")
     .click();
   await expect(page).toHaveURL(`${origin}${canonicalHref}`);
@@ -398,12 +427,12 @@ test("owned activity records real annotation, source verification, memory, cance
   await page.goto(`/app/activity/${recalled.id}`);
   await expect(
     page.getByRole("heading", {
-      name: "Reviews the agent recalled",
+      name: "Earlier decisions found",
       exact: true,
     }),
   ).toBeVisible();
   const memoryRegion = page.getByRole("region", {
-    name: "Reviews the agent recalled",
+    name: "Earlier decisions found",
     exact: true,
   });
   await expect(memoryRegion).toContainText("Meterless H-MEM");
@@ -414,12 +443,12 @@ test("owned activity records real annotation, source verification, memory, cance
     name: "Meterless H-MEM",
     exact: true,
   });
-  await expect(recalledSponsor).toContainText("1 saved decision recalled");
+  await expect(recalledSponsor).toContainText("1 earlier decision found");
   await expect(
-    recalledSponsor.getByRole("link", { name: /Open recalled review/ }),
+    recalledSponsor.getByRole("link", { name: /Open original decision/ }),
   ).toHaveAttribute("href", canonicalHref);
   await recalledSponsor
-    .getByRole("link", { name: "View memory evidence" })
+    .getByRole("link", { name: "See earlier decisions" })
     .click();
   await expect(page).toHaveURL(
     new RegExp(`#activity-step-${memorySpan.spanId}$`),
@@ -435,11 +464,13 @@ test("owned activity records real annotation, source verification, memory, cance
   await page.reload();
   await expect(
     page.getByRole("heading", {
-      name: "Reviews the agent recalled",
+      name: "Earlier decisions found",
       exact: true,
     }),
   ).toBeVisible();
-  await page.locator('[data-activity-kind="memory"] summary').click();
+  await page
+    .locator('[data-activity-kind="memory"] > details > summary')
+    .click();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -488,7 +519,7 @@ test("owned activity records real annotation, source verification, memory, cance
   ).toBeVisible();
   await expect(
     page.getByRole("article", { name: "NVIDIA OpenShell", exact: true }),
-  ).toContainText("Call cancelled");
+  ).toContainText("This step was cancelled");
   await page.screenshot({
     path: info.outputPath("06-running-cancellation-mobile.png"),
     fullPage: true,

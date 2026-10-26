@@ -27,10 +27,10 @@ export function Status({ status }: { status: string }) {
   const names: Record<string, string> = {
     completed: "Completed",
     running: "Running",
-    queued: "Queued",
+    queued: "Waiting to start",
     failed: "Failed",
     cancelled: "Cancelled",
-    interrupted: "Interrupted",
+    interrupted: "Outcome unknown",
     info: "Recorded",
   };
   return (
@@ -226,8 +226,8 @@ export function ActivityDashboard({
           <p className={styles.eyebrow}>Behind each answer</p>
           <h1>Agent activity</h1>
           <p className={styles.description}>
-            Follow each request from the first step to the final answer. See the
-            tools, sponsor calls, evidence, and saved results behind it.
+            Open a question to see what Celloras did, what it found, and which
+            services helped.
           </p>
         </div>
         <Link href="/app" className={styles.button}>
@@ -354,7 +354,7 @@ export function ActivityDashboard({
                         <span>
                           {run.recordingVersion === null
                             ? "Detailed activity not recorded"
-                            : `${run.toolCount} ${run.toolCount === 1 ? "tool" : "tools"}`}
+                            : `${run.toolCount} ${run.toolCount === 1 ? "analysis" : "analyses"}`}
                         </span>
                         {run.durationMs !== null && (
                           <span>{durationLabel(run.durationMs)}</span>
@@ -385,7 +385,7 @@ export function ActivityDashboard({
               <p>
                 {query
                   ? "Try another experiment, status, or search."
-                  : "Send a message in an experiment, then follow its tools and results here."}
+                  : "Send a message in an experiment, then follow its actions and results here."}
               </p>
               {query ? (
                 <button

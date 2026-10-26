@@ -24,6 +24,7 @@ import {
   type Step,
 } from "./activity-steps";
 import { SponsorActivity } from "./sponsor-activity";
+import { annotationOutcome, describeStep } from "./activity-copy";
 import styles from "./activity.module.css";
 
 const stepIcons: Record<ActivityEvent["kind"], IconName> = {
@@ -176,6 +177,121 @@ function StepData({
   );
 }
 
+function StepEvidence({
+  step,
+  detail,
+}: {
+  step: Step;
+  detail: ActivityRunDetail;
+}) {
+  const result = detail.results.find((item) => item.id === step.data.resultId);
+  const memories = detail.memory.filter((item) =>
+    step.data.sourceIds?.includes(item.source),
+  );
+  return (
+    <div className={styles.plainEvidence}>
+      <dl className={styles.dataList}>
+        {fact(
+          "Data used",
+          step.data.datasetId
+            ? detail.dataset?.id === step.data.datasetId
+              ? (detail.dataset.name ?? "Attached experiment dataset")
+              : "Dataset recorded in technical details"
+            : undefined,
+        )}
+        {fact("Cell group", step.data.cluster)}
+        {step.data.genes?.length
+          ? fact("Genes compared", step.data.genes.join(", "))
+          : null}
+        {fact(
+          "Source service",
+          step.data.reference?.provider ?? step.data.provider,
+        )}
+        {fact("Reference entries returned", step.data.reference?.recordCount)}
+        {step.data.reference?.recordCount !== undefined &&
+          fact(
+            "What an entry means",
+            "A published link between a gene and a possible cell type.",
+          )}
+        {step.data.reference?.retrievedAt &&
+          fact("Source retrieved", dateLabel(step.data.reference.retrievedAt))}
+        {result &&
+          fact(
+            "Result",
+            <Link href={result.href}>Open {result.title.toLowerCase()} ↗</Link>,
+          )}
+      </dl>
+      {memories.length > 0 && (
+        <ul className={styles.memoryList}>
+          {memories.map((item) => (
+            <li key={item.source}>
+              <MemoryContent content={item.content} />
+              <Link href={item.href}>Open original decision ↗</Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function RequestOutcome({
+  detail,
+  steps,
+}: {
+  detail: ActivityRunDetail;
+  steps: Step[];
+}) {
+  if (detail.run.status !== "completed") return null;
+  const analysis = steps.findLast(
+    (step) =>
+      step.first.kind === "tool" &&
+      step.data.operation === "annotation" &&
+      stepStatus(step, detail.run) === "completed" &&
+      detail.results.some((result) => result.id === step.data.resultId),
+  );
+  const annotation = analysis ? annotationOutcome(analysis.data) : null;
+  const result = analysis
+    ? detail.results.find((item) => item.id === analysis.data.resultId)
+    : null;
+  const memory = steps.findLast(
+    (step) =>
+      step.first.kind === "memory" &&
+      stepStatus(step, detail.run) === "completed",
+  );
+  const count = memory?.data.memoryCount;
+  const onlyRecall =
+    detail.run.toolCount === 0 && count !== undefined && count > 0;
+  return (
+    <section className={styles.requestOutcome} aria-label="Request outcome">
+      <div>
+        <p className={styles.eyebrow}>The outcome</p>
+        <h2>
+          {annotation?.title ??
+            (onlyRecall
+              ? `Found ${count} earlier ${count === 1 ? "decision" : "decisions"}`
+              : "Your answer is ready")}
+        </h2>
+        <p>
+          {annotation?.summary ??
+            (onlyRecall
+              ? "The agent received the earlier decision with a link back to the original review."
+              : "Follow the steps below to see what information and actions led to this answer.")}
+        </p>
+      </div>
+      {result ? (
+        <Link className={styles.textLink} href={result.href}>
+          Open the cell-type suggestions →
+        </Link>
+      ) : detail.response ? (
+        <Link className={styles.textLink} href={detail.response.href}>
+          Read the answer →
+        </Link>
+      ) : null}
+    </section>
+  );
+}
+
 function TimelineStep({
   step,
   detail,
@@ -186,6 +302,7 @@ function TimelineStep({
   depth?: number;
 }) {
   const status = stepStatus(step, detail.run);
+  const copy = describeStep(step, detail);
   const sponsor = sponsorForStep(step);
   const duration = step.last.durationMs ?? step.data.durationMs;
   const hasDetails =
@@ -206,7 +323,7 @@ function TimelineStep({
       </span>
       <div className={styles.stepHeader}>
         <div className={styles.stepTitle}>
-          <h3>{step.last.name}</h3>
+          <h3>{copy.title}</h3>
           {sponsor && (
             <span className={styles.sponsorTag} data-sponsor={sponsor}>
               {sponsors[sponsor].name}
@@ -217,45 +334,36 @@ function TimelineStep({
           <Status status={status} />
           {duration !== undefined && <span>{durationLabel(duration)}</span>}
           <time dateTime={step.first.createdAt}>
-            {timeOfDay(step.first.createdAt)}
+            Started {timeOfDay(step.first.createdAt)}
           </time>
         </div>
       </div>
-      <p className={styles.stepSummary}>
-        {status === "interrupted"
-          ? `${step.last.summary} Completion was not recorded before this request stopped.`
-          : status === "cancelled" && step.last.phase === "started"
-            ? "This step was still open when the request was cancelled."
-            : step.last.summary}
-      </p>
+      {copy.purpose && <p className={styles.stepSummary}>{copy.purpose}</p>}
+      <p className={styles.stepOutcome}>{copy.outcome}</p>
       {hasDetails && (
         <details className={styles.stepDetails}>
-          <summary>
-            {step.first.kind === "reference"
-              ? "View source verification"
-              : step.first.kind === "tool"
-                ? "View inputs and result"
-                : step.first.kind === "memory"
-                  ? "View recalled sources"
-                  : "View details"}
-          </summary>
+          <summary>See evidence and details</summary>
           <div className={styles.detailBody}>
-            <StepData data={step.data} detail={detail} />
-            {step.events.length > 1 && (
-              <ol
-                className={styles.eventHistory}
-                aria-label={`${step.last.name} recorded events`}
-              >
-                {step.events.map((event) => (
-                  <li key={event.id}>
-                    <time dateTime={event.createdAt}>
-                      {timeOfDay(event.createdAt)}
-                    </time>
-                    <p>{event.summary}</p>
-                  </li>
-                ))}
-              </ol>
-            )}
+            <StepEvidence step={step} detail={detail} />
+            <details className={styles.technicalDetails}>
+              <summary>Technical details</summary>
+              <StepData data={step.data} detail={detail} />
+              {step.events.length > 1 && (
+                <ol
+                  className={styles.eventHistory}
+                  aria-label={`${step.last.name} recorded events`}
+                >
+                  {step.events.map((event) => (
+                    <li key={event.id}>
+                      <time dateTime={event.createdAt}>
+                        {timeOfDay(event.createdAt)}
+                      </time>
+                      <p>{event.summary}</p>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </details>
           </div>
         </details>
       )}
@@ -427,7 +535,8 @@ export function ActivityRun({ turnId }: { turnId: string }) {
           </p>
           <h1>Request activity</h1>
           <p className={styles.description}>
-            The recorded steps, sources, and results for this request.
+            What Celloras did to answer this question, with the results and
+            sources behind each step.
           </p>
         </div>
         {detail && (
@@ -469,6 +578,15 @@ export function ActivityRun({ turnId }: { turnId: string }) {
           <section className={styles.request} aria-labelledby="request-heading">
             <h2 id="request-heading">You asked</h2>
             <p>{detail.run.prompt}</p>
+            {detail.dataset && (
+              <div className={styles.inputData}>
+                <WorkspaceIcon name="flask" size={13} />
+                <span>
+                  Data for this request:{" "}
+                  {detail.dataset.name ?? "Attached experiment dataset"}
+                </span>
+              </div>
+            )}
           </section>
           <dl className={styles.runFacts}>
             <div>
@@ -478,7 +596,7 @@ export function ActivityRun({ turnId }: { turnId: string }) {
               </dd>
             </div>
             <div>
-              <dt>{active ? "Elapsed since start" : "Duration"}</dt>
+              <dt>{active ? "Time so far" : "Time taken"}</dt>
               <dd>
                 {active && detail.run.startedAt
                   ? durationLabel(observedAt - Date.parse(detail.run.startedAt))
@@ -486,20 +604,12 @@ export function ActivityRun({ turnId }: { turnId: string }) {
               </dd>
             </div>
             <div>
-              <dt>Tools used</dt>
+              <dt>Analyses run</dt>
               <dd>
                 {detail.run.recordingVersion === null
                   ? "Not recorded"
                   : detail.run.toolCount}
               </dd>
-            </div>
-            <div>
-              <dt>Runtime</dt>
-              <dd>{detail.run.runtime ?? "Not reported"}</dd>
-            </div>
-            <div>
-              <dt>Model</dt>
-              <dd>{detail.run.model ?? "Not reported"}</dd>
             </div>
             <div>
               <dt>Submitted</dt>
@@ -510,6 +620,7 @@ export function ActivityRun({ turnId }: { turnId: string }) {
               </dd>
             </div>
           </dl>
+          <RequestOutcome detail={detail} steps={grouped.all} />
           {detail.run.status === "failed" && (
             <div className={styles.notice} data-error="true">
               <div>
@@ -520,11 +631,6 @@ export function ActivityRun({ turnId }: { turnId: string }) {
                   The recorded steps remain available below. You can retry from
                   the conversation.
                 </p>
-                {detail.run.errorCode && (
-                  <p>
-                    Error: <code>{detail.run.errorCode}</code>
-                  </p>
-                )}
               </div>
               <Link href={conversationHref} className={styles.textLink}>
                 Open conversation →
@@ -598,7 +704,7 @@ export function ActivityRun({ turnId }: { turnId: string }) {
               aria-labelledby="results-heading"
             >
               <div className={styles.sectionHeading}>
-                <h2 id="results-heading">Saved results</h2>
+                <h2 id="results-heading">Results</h2>
                 <span>
                   {detail.results.length}{" "}
                   {detail.results.length === 1 ? "result" : "results"}
@@ -625,7 +731,7 @@ export function ActivityRun({ turnId }: { turnId: string }) {
               aria-labelledby="memory-heading"
             >
               <div className={styles.sectionHeading}>
-                <h2 id="memory-heading">Reviews the agent recalled</h2>
+                <h2 id="memory-heading">Earlier decisions found</h2>
                 <span>Meterless H-MEM</span>
               </div>
               <ul className={styles.memoryList}>
@@ -657,14 +763,16 @@ export function ActivityRun({ turnId }: { turnId: string }) {
             </section>
           )}
           <footer className={styles.footer}>
-            <span>
-              Request <code>{detail.run.id}</code>
-            </span>
-            {detail.dataset && (
-              <span>
-                Dataset <code>{detail.dataset.name ?? detail.dataset.id}</code>
-              </span>
-            )}
+            <details className={styles.technicalDetails}>
+              <summary>Technical details of this request</summary>
+              <dl className={styles.dataList}>
+                {fact("Request ID", <code>{detail.run.id}</code>)}
+                {fact("Runtime", detail.run.runtime ?? "Not reported")}
+                {fact("Model", detail.run.model ?? "Not reported")}
+                {fact("Error code", detail.run.errorCode)}
+                {fact("Dataset version", detail.dataset?.artifactVersion)}
+              </dl>
+            </details>
             <button
               className={styles.textLink}
               style={{

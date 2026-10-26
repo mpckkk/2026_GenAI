@@ -1,5 +1,11 @@
 # Changelog
 
+## Activity in plain language — 2026-10-26
+
+- Lead each request with its question, data and actual outcome; annotation counts explain suggestions, competing possibilities and missing evidence.
+- Explain each action, purpose and result without requiring infrastructure vocabulary. Sponsor cards describe each service's contribution and link to the recorded evidence.
+- Keep original event wording, IDs and checksums inside explicit technical disclosures. Historical records, JSON exports and scientific results are unchanged.
+
 ## Sponsor activity at a glance — 2026-10-26
 
 - Added a sponsor section to request activity with actual roles, outcomes, start times, durations and direct evidence links for Zetaris, Meterless H-MEM and NVIDIA OpenShell.

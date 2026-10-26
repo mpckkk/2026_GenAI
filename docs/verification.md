@@ -1,5 +1,12 @@
 # Foundation verification — 2026-10-23
 
+## Plain-language activity — 2026-10-26
+
+- The request view now starts with the original question, input data and observed outcome. Annotation counts explain suggested names, competing possibilities and insufficient evidence. Every known operation has a readable action, purpose and outcome; raw event wording, IDs and checksums require an explicit technical disclosure. Unknown operations retain their recorded wording. No stored events, API contracts or scientific outputs changed.
+- Production build and lint passed. The extended real browser workflow passed in 53.7 seconds with a fresh account, actual OpenShell/Codex calls, annotation, provisional review, H-MEM recall, queued/running cancellation, ownership, reload and JSON export. It checked plain-language steps, actual 7/1/4 annotation counts, hidden technical records, explicit proof navigation and the original review link. Desktop and 390px screenshots were inspected; no overflow or browser errors were observed. Local reference delivery is bundled published data, not Zetaris.
+- The first local attempt completed its numerical annotation but failed while the agent generated its answer (`agent_execution_failed`). An isolated real Codex/OpenShell probe then passed, followed by the complete passing browser workflow. No runtime configuration change or provider fallback was used; the cause of the initial model failure was not established. Private screenshots and receipts remain in ignored `.artifacts/activity-plain-local2/`.
+- Public deployment verification is pending for this change.
+
 ## Sponsor visibility — 2026-10-26
 
 - Added sponsor summaries backed by saved activity events, with source/result links, actual timestamps/durations and inline timeline navigation. Earlier recorded H-MEM start messages remain readable without changing historical events. Unrelated providers and bundled local references receive no sponsor attribution.

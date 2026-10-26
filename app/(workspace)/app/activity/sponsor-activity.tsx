@@ -15,55 +15,55 @@ import {
 import styles from "./activity.module.css";
 
 function callPurpose(step: Step, steps: Step[]) {
-  if (step.first.kind === "memory") return "Recall saved decisions";
-  if (step.first.kind === "model") return "Run the agent";
+  if (step.first.kind === "memory") return "Look for earlier decisions";
+  if (step.first.kind === "model") return "Work on the answer";
   const parent = steps.find((entry) => entry.id === step.first.parentSpanId);
   if (parent?.first.kind === "tool")
     return parent.data.operation === "annotation"
-      ? "Evidence for annotation"
-      : "Evidence for marker lookup";
+      ? "Get evidence for naming cell groups"
+      : "Get evidence for the gene comparison";
   return step.first.name === "Check marker reference"
-    ? "Check marker source"
-    : "Prepare reference data";
+    ? "Check the published gene list"
+    : "Prepare the gene reference";
 }
 
 function outcome(sponsor: Sponsor, step: Step, detail: ActivityRunDetail) {
   const status = stepStatus(step, detail.run);
   if (status === "running") return "In progress";
-  if (status === "failed") return "Call failed";
-  if (status === "cancelled") return "Call cancelled";
-  if (status === "interrupted") return "Completion not recorded";
-  if (status !== "completed") return "Call recorded";
+  if (status === "failed") return "This step failed";
+  if (status === "cancelled") return "This step was cancelled";
+  if (status === "interrupted") return "Outcome not recorded";
+  if (status !== "completed") return "Step recorded";
   if (sponsor === "zetaris") {
     const count = step.data.reference?.recordCount;
     return count === undefined
-      ? "Reference retrieved"
-      : `${count} marker associations retrieved`;
+      ? "Reference check finished"
+      : `${count} reference entries retrieved`;
   }
   if (sponsor === "hmem") {
     const count = step.data.memoryCount;
     return count === undefined
-      ? "Memory checked"
+      ? "Earlier decisions checked"
       : count === 0
-        ? "No matching saved decisions"
-        : `${count} saved ${count === 1 ? "decision" : "decisions"} recalled`;
+        ? "No earlier decisions matched"
+        : `${count} earlier ${count === 1 ? "decision" : "decisions"} found`;
   }
   return step.data.decision === "Return answer"
     ? "Answer returned"
     : step.data.decision?.startsWith("Request ")
-      ? "Next tool requested"
-      : "Agent call completed";
+      ? "Next analysis requested"
+      : "Agent step finished";
 }
 
 function roleDescription(sponsor: Sponsor, step: Step, steps: Step[]) {
   if (sponsor === "hmem")
-    return "Searches this experiment’s saved reviews for decisions relevant to your request.";
+    return "Finds decisions already recorded in this experiment, so the agent can refer back to them.";
   if (sponsor === "openshell")
-    return "Runs the agent in an isolated sandbox to interpret context, request tools, or answer.";
+    return "Runs the agent in a separate, restricted environment while it works on your question.";
   const parent = steps.find((entry) => entry.id === step.first.parentSpanId);
   return parent?.first.kind === "tool"
-    ? "Queries published markers for this analysis and verifies the reference checksum."
-    : "Loads and checks the marker reference while preparing the agent’s context.";
+    ? "Each entry links a gene to a possible cell type. This analysis uses those links as evidence for naming cell groups."
+    : "Loads the published list of genes linked to possible cell types, ready for the agent to use.";
 }
 
 function SponsorCard({
@@ -127,18 +127,18 @@ function SponsorCard({
             {completed &&
               sponsor === "zetaris" &&
               primary.data.reference?.contentSha256 && (
-                <span>Reference checksum verified</span>
+                <span>Source version checked</span>
               )}
             {result && (
               <Link href={result.href}>
-                Used in {result.title.toLowerCase()} ↗
+                Open the analysis that used this evidence ↗
               </Link>
             )}
             {memories.length > 0 && (
               <Link href={memories[0].href}>
-                Open recalled review
+                Open original decision
                 {memories.length > 1
-                  ? ` · ${memories.length} sources in step`
+                  ? ` · ${memories.length} decisions in step`
                   : ""}{" "}
                 ↗
               </Link>
@@ -147,10 +147,9 @@ function SponsorCard({
               <span>
                 {primary.data.model
                   ? `Model: ${primary.data.model}`
-                  : "Runtime includes sandbox setup and execution"}
+                  : "Time includes starting the environment and running the agent"}
               </span>
             )}
-            {primary.data.errorCode && <code>{primary.data.errorCode}</code>}
           </div>
           <div className={styles.sponsorTiming}>
             <Status status={status!} />
@@ -168,16 +167,16 @@ function SponsorCard({
             onClick={() => revealStep(primary)}
           >
             {sponsor === "zetaris"
-              ? "View query evidence"
+              ? "See source check"
               : sponsor === "hmem"
-                ? "View memory evidence"
-                : "View agent call"}
+                ? "See earlier decisions"
+                : "See agent step"}
             <span aria-hidden="true">↓</span>
           </a>
           {calls.length > 1 && (
             <details className={styles.sponsorCalls}>
-              <summary>{calls.length} recorded calls in this request</summary>
-              <ol aria-label={`${brand.name} calls`}>
+              <summary>{calls.length} steps in this request</summary>
+              <ol aria-label={`${brand.name} steps`}>
                 {calls.map((call) => (
                   <li key={call.id}>
                     <a href={stepHref(call)} onClick={() => revealStep(call)}>
@@ -197,7 +196,7 @@ function SponsorCard({
         </>
       ) : (
         <div className={styles.sponsorAbsent}>
-          <h4>No call recorded</h4>
+          <h4>No use recorded</h4>
           <p>This request has no recorded use of {brand.name}.</p>
         </div>
       )}
@@ -220,7 +219,7 @@ export function SponsorActivity({
       <div className={styles.sponsorHeading}>
         <div>
           <h2 id="sponsors-heading">Sponsor activity</h2>
-          <p>What each technology did for this request.</p>
+          <p>What each service contributed, with links to the work it did.</p>
         </div>
         <span>Times in {Intl.DateTimeFormat().resolvedOptions().timeZone}</span>
       </div>

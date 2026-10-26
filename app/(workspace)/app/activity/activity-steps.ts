@@ -73,17 +73,17 @@ export function timeOfDay(value: string) {
 export const sponsors = {
   zetaris: {
     name: "Zetaris",
-    role: "Published marker evidence",
+    role: "Published evidence for naming cells",
     icon: "search",
   },
   hmem: {
     name: "Meterless H-MEM",
-    role: "Memory of your decisions",
+    role: "Earlier research decisions",
     icon: "book",
   },
   openshell: {
     name: "NVIDIA OpenShell",
-    role: "Agent execution",
+    role: "Where the agent runs",
     icon: "activity",
   },
 } as const;

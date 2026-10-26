@@ -40,3 +40,15 @@ Ordered file ledger (root owns this follow-up):
 No renames, deletions, new infrastructure, scientific output changes, invented queries or retrospective event writes.
 
 Delivered as `b337e45`. Build/lint/typecheck, the extended real local browser workflow and 24 PostgreSQL checks passed. A read-only public browser check verified the existing annotation and recall traces at desktop and mobile widths after deployment. Created `docs/evidence/sponsor-activity-ui-2026-10-26.json` from that check's safe receipt; original events and result lists are unchanged. See `docs/verification.md` for scope and observed setup failures.
+
+## Plain-language activity — 2026-10-26
+
+The default view must explain the question, actions, outcomes and sponsor contributions to a reader with no prior product or technical context. Keep original events immutable and show raw records only through an explicit technical disclosure. Describe failed, cancelled, incomplete and unrecorded steps honestly.
+
+File ledger and order:
+
+1. CREATE `app/(workspace)/app/activity/activity-copy.ts`: derive readable action/result/purpose descriptions from the recorded kind, status and metadata. Explain annotation counts and unknown outcomes without inventing reasoning.
+2. UPDATE `app/(workspace)/app/activity/activity-run.tsx`, `activity-steps.ts`, `sponsor-activity.tsx`, `activity-dashboard.tsx` and `activity.module.css` in the same directory: lead with the request and actual result, simplify every step and sponsor role, name the input data, and keep original technical records expandable inline.
+3. UPDATE `tests/agent-activity.spec.ts`: retain real workflow verification while checking plain-language outcomes and explicit technical proof navigation. UPDATE `README.md`, `CHANGELOG.md`, `learned.md`, `docs/verification.md` and this ledger with observed acceptance. Verify actual existing public annotation/recall traces and mobile rendering, then push/deploy and confirm in Amigospace. If a public verification receipt is exported, CREATE `docs/evidence/plain-activity-ui-2026-10-26.json` from the safe observed result.
+
+No schema/worker changes, historical rewrites, renames or deletions. Presentation is derived from the same owned API data and JSON export remains unchanged. Unknown operations retain their recorded wording instead of receiving invented explanations.
