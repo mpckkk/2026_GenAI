@@ -1,5 +1,7 @@
 # Foundation verification — 2026-10-23
 
+- Activity heading follow-up: `cc5985a` replaces “Sponsor activity” with “Tools used”. Targeted lint and whitespace checks passed. After deployment, an authenticated browser check confirmed the new heading, absence of the old heading, retained service attribution and readable desktop/390px layouts without overflow or browser errors. Screenshots were inspected in `.artifacts/activity-tools-label/`. This wording-only change did not rerun inference.
+
 ## Plain-language activity — 2026-10-26
 
 - The request view now starts with the original question, input data and observed outcome. Annotation counts explain suggested names, competing possibilities and insufficient evidence. Every known operation has a readable action, purpose and outcome; raw event wording, IDs and checksums require an explicit technical disclosure. Unknown operations retain their recorded wording. No stored events, API contracts or scientific outputs changed.
