@@ -1,5 +1,7 @@
 # Engineering notes
 
+- Keep the short pitch separate from the technical audit. Explain what the agent evaluates and recommends; calling it only a coordinator hides its purpose. A source diagram must distinguish connected references, measured data, researcher memory and planned connectors.
+
 - A mixed-audience pitch needs a real research question before platform terminology. Follow one verified dataset, result and decision; explain biological motivation without claiming the demo measured that outcome. Label demonstration reviews and distinguish broad sequencing-market forecasts from the addressable software market.
 
 - Explain an agent through the work it performs: question, tool actions and reviewable result. A sponsor-only diagram or test counters do not explain user value. Show the without/with workflow and one actual sourced reply.

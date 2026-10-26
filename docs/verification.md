@@ -1,5 +1,14 @@
 # Foundation verification — 2026-10-23
 
+## Technical companion and actual agent screenshot — 2026-10-26
+
+- Added a separate nine-slide technical deck with source diagrams, actual Zetaris and H-MEM roles, numerical annotation, ownership/storage boundaries, the supplied judging weights and current gaps. H5AD upload remains explicitly in progress at this snapshot.
+- Kept pitch slide 1 unchanged: old/new rendered PNG SHA-256 both `57b33c64eff53f0bdb03af71a3db44cb647b31f710b1eeb7cc78781ef1bb2006`. Updated slide 2's agent-role wording and slide 3's actual conversation image.
+- Logged into the public demo through Keycloak and submitted a real request to show the saved cell map. Agent turn `7d65780e-45ae-42c3-9ee3-0f2b112d767a` completed and returned the existing annotation card. Waited for all 7,496 plotted points to load before capture. No response or scientific result was fabricated; this was recall/display of the stored result, not a new annotation benchmark.
+- Both decks passed package/geometry/Inter-font/first-party re-import validation. The technical deck has editable native tables on slides 7–8. All 13 slides and corresponding PDF pages were visually inspected; PDF fonts embed Inter. Source links and implementation limits are in speaker notes. PowerPoint desktop execution was not tested.
+- Uploaded actual PPTX/PDF bytes to Amigospace and confirmed committed results: new technical deck nodes at revision 1, existing pitch nodes at revision 7. Source paths are `docs/technical-deck/` and `docs/pitchdeck/`.
+
+
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
 ## Concrete soybean pitch — 2026-10-26

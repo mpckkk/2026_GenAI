@@ -1,5 +1,10 @@
 # Changelog
 
+## Technical companion and real agent conversation — 2026-10-26
+
+- Added a separate nine-slide technical deck covering the real architecture, source inputs, Zetaris, annotation, Meterless H-MEM, ownership, judging evidence and implementation gaps.
+- Kept the pitch’s first slide unchanged. Added an actual agent conversation with its interactive annotation card to slide 3 and clarified that the agent analyses and recommends while the researcher reviews and corrects.
+
 ## Pitch restored — 2026-10-26
 
 - Restored the prior four-slide pitch at the user’s request. Technical workflow detail is being prepared as a separate companion deck.
