@@ -1,5 +1,7 @@
 # Engineering notes
 
+- Keep pitch screenshots, counts, review wording and activity links tied to the same verified experiment. A saved review paraphrase must not be presented as a verbatim agent quote.
+
 - Keep a component’s responsibilities when renaming it or adding implementation details. In the flowchart, researcher reviews persist in PostgreSQL before H-MEM loads them on later requests; H-MEM is a module inside the orchestrator.
 
 - Fit the flowchart against both viewport dimensions on initial load, reserving room for the zoom buttons. A width cap alone can make it taller than the screen.

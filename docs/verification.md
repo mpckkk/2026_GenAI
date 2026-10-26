@@ -1,5 +1,7 @@
 # Foundation verification — 2026-10-23
 
+- Pitch deck update: preserved the approved opening and revised slides 2 to 4 around the recorded uploaded-H5AD experiment, Zetaris annotation query, provisional Root hair review and H-MEM recall. Package, geometry, Inter font and re-import checks passed. All four slide previews and PDF pages were visually inspected. PDF embeds Inter; links point to the recorded experiment/activity. No new inference or application change was made. Microsoft PowerPoint execution was not tested.
+
 - Flowchart correctness review: compared labels and connections with queue/orchestrator, runtime adapters, H5AD importer, scientific tools, Zetaris, saved reviews, H-MEM and activity implementations. Corrected the review persistence path and clarified process/provider boundaries. Rendered the static page for visual inspection. No automated tests or new inference were run. See `docs/technical-deck/flowchart-notes.md` for source mapping and omitted branches.
 
 - The user subsequently requested a plain static black-and-white flowchart and explicitly asked for no flowchart tests. Removed controls, JavaScript and detail panels; no tests were run for this simplification. Earlier interaction checks below describe the superseded version.
