@@ -1,5 +1,7 @@
 # Engineering notes
 
+- A mixed-audience pitch needs a real research question before platform terminology. Follow one verified dataset, result and decision; explain biological motivation without claiming the demo measured that outcome. Label demonstration reviews and distinguish broad sequencing-market forecasts from the addressable software market.
+
 - Explain an agent through the work it performs: question, tool actions and reviewable result. A sponsor-only diagram or test counters do not explain user value. Show the without/with workflow and one actual sourced reply.
 
 - A submission deck must fit the event rubric and requested pitch length. Four slides can cover problem/value, workflow, sponsor architecture and proof; avoid adding a cover or appendix when the user asks for a very short pitch.

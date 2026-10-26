@@ -1,6 +1,10 @@
 # Celloras demo
 
-The complete public workflow passed on 2026-10-25: annotation through Zetaris, measured-marker comparison, explicit researcher review, H-MEM recall and correction. Use the [simple 2:40 video script](submission.md#simple-video-script--target-240) to tell the story through one Root hair candidate, its evidence and the researcher's remembered decision. The video and deck are still pending.
+The complete public workflow passed on 2026-10-25: annotation through Zetaris, measured-marker comparison, explicit researcher review, H-MEM recall and correction. Use the [simple 2:40 video script](submission.md#simple-video-script--target-240) to tell the story through one Root hair candidate, its evidence and the researcher's remembered decision. The [four-slide deck](pitchdeck/README.md) is ready; the video still needs recording.
+
+## The concrete research task
+
+Find root-hair candidates in the published soybean root atlas. Root hairs help plants absorb water and nutrients; identifying the corresponding cells is a step toward studying their biology. The demo reanalyses GSE270392, follows group 6 (388 nuclei), inspects its two measured supporting genes and recalls the saved demonstration review. It does not measure nutrient uptake or a treatment response. [Biological motivation](https://pubmed.ncbi.nlm.nih.gov/27812010/) · [Dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE270392).
 
 ## Open the ready demo
 

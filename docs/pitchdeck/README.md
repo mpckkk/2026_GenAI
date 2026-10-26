@@ -4,10 +4,14 @@
 
 **Four slides, roughly two minutes.** No separate cover or appendix.
 
-1. **The agent:** Celloras runs plant cell annotation and returns a map, marker evidence and sources.
-2. **Without / with Celloras:** compare coordinating scripts, reference lookup and notes with asking, reviewing and recalling in one conversation.
-3. **What the agent does:** retrieve published markers through Zetaris, measure gene expression with scientific tools, recall reviewed decisions through Meterless H-MEM.
-4. **An actual answer:** the agent recalls the researcher's latest decision and links to its source; the computed candidate stays separate.
+1. **The real use case:** identify root-hair candidates in a published soybean root dataset; explain their role in water and nutrient uptake.
+2. **Without / with Celloras:** compare the work needed to investigate that same cell group.
+3. **The agent investigates:** group 6 contains 388 nuclei; two measured genes support a Root hair candidate. Zetaris supplies the reference and Meterless H-MEM recalls reviewed decisions.
+4. **The research journal:** show the actual corrected recall answer, with a source link and the unresolved demo review. Include the broader single-cell sequencing market forecast as context.
+
+This is a real reanalysis of GSE270392, not a customer testimonial or a nutrient-treatment experiment. The saved review was entered for demonstration. Celloras has not established improved nutrient uptake, crop yield, classification accuracy or measured time savings.
+
+The biological motivation comes from [research on soybean root hairs and nutrient availability](https://pubmed.ncbi.nlm.nih.gov/27812010/). The actual input is the [published atlas dataset](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE270392). [MarketsandMarkets](https://www.marketsandmarkets.com/Market-Reports/single-cell-sequencing-market-244864213.html) forecasts the global single-cell sequencing market at $3.46B in 2030, versus $1.95B in 2025. That broader industry includes equipment, consumables, software and services; it does not size the plant-annotation software market.
 
 ## Fit to the judging criteria
 
@@ -15,7 +19,7 @@ The [official rubric](https://hackathon.genai.works/event/open-agent-hackathon-2
 
 | Criterion    | Points | Where the deck addresses it                                                         |
 | ------------ | -----: | ----------------------------------------------------------------------------------- |
-| Impact       |     30 | Slides 1–2: a defined research task and an explicit without/with comparison         |
+| Impact       |     30 | Slides 1–2: a concrete soybean root-hair investigation and without/with comparison         |
 | Technical    |     20 | Slide 3: agent, scientific tools and provider roles; checks linked in notes         |
 | Innovation   |     15 | Slides 3–4: evidence-backed analysis with sourced, correction-aware research memory |
 | Demo         |     15 | Slides 1 and 4: actual annotation map and an actual agent response                  |

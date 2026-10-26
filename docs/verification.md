@@ -2,6 +2,13 @@
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 
+## Concrete soybean pitch — 2026-10-26
+
+- Reframed the same four slides around the actual group-6 root-hair investigation: 7,496 total nuclei, 388 in the group and two supporting genes. Retained the true unresolved demonstration review and sourced recall. Added cited biological motivation and scoped the market forecast to the broader single-cell sequencing industry.
+- Checked counts, genes and review state against the existing demo and method records; no new scientific run or application change was required. The narration distinguishes published-data reanalysis from a nutrient-treatment experiment or customer testimonial.
+- Package, geometry, Inter font-policy and exact-file re-import checks passed without findings. Inspected all four final slides and PDF pages; the PDF embeds Inter. Native Microsoft PowerPoint execution was not tested. The spoken script is 186 words, with supporting detail separate.
+- PowerPoint SHA-256: `d0bd7857879981bca62b8d2d9445f28e47d168f871e78ed213704cb16888b3db`. Private build receipts remain under ignored `.artifacts/pitchdeck/`.
+
 ## Agent and workflow comparison pitch — 2026-10-26
 
 - Reframed the four slides around the agent, an explicit without/with Celloras comparison, its concrete tool actions and an actual sourced decision-recall answer. Zetaris and Meterless H-MEM appear alongside the work they perform. Numerical checks stay in notes, not the closing slide.
