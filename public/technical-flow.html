@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
 <title>Celloras · Technical workflow</title>
 <style>
-  :root { color-scheme: light; --paper:#fbfcfa; --ink:#18372b; --muted:#617369; --line:#c9d5cc; --node:#fff; --sage:#ecf4ed; --green:#39704f; --purple:#6d5b97; --lavender:#f2eef9; --amber:#8e681d; --sand:#fff5dc; --soft:#f4f7f3; }
+  :root { color-scheme: light; --paper:#fff; --ink:#18372b; --muted:#617369; --line:#c9d5cc; --node:#fff; --sage:#ecf4ed; --green:#39704f; --purple:#6d5b97; --lavender:#f2eef9; --amber:#8e681d; --sand:#fff5dc; --soft:#f4f7f3; }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--paper); color:var(--ink); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
   .page { max-width:1800px; margin:auto; padding:30px 34px 24px; }
@@ -22,10 +22,9 @@
   button:hover { background:var(--sage); }
   button:disabled { cursor:default; opacity:.4; }
   button:focus-visible, a:focus-visible { outline:3px solid var(--green); outline-offset:3px; }
-  output { min-width:43px; text-align:center; font-size:12px; font-variant-numeric:tabular-nums; }
-  .viewport { overflow:auto; height:min(72vh,1050px); min-height:440px; position:relative; scrollbar-color:var(--line) transparent; touch-action:pan-x pan-y; overscroll-behavior:contain; }
-  .viewport.dragging { cursor:grabbing; user-select:none; }
-  .diagram { display:block; width:1600px; height:1050px; max-width:none; margin-inline:auto; }
+  .viewport { width:100%; }
+  .diagram { display:block; width:100%; height:auto; margin-inline:auto; }
+  @media (min-width:701px) { .diagram { max-height:max(420px,calc(100svh - 230px)); } }
   .diagram text { font-family:inherit; fill:var(--ink); }
   .diagram .stage { font-size:17px; font-weight:600; letter-spacing:1.2px; fill:var(--muted); }
   .diagram .stage-rule { stroke:var(--line); stroke-width:1; }
@@ -48,15 +47,15 @@
   .diagram .small-label { font-size:15px; fill:var(--muted); }
   .diagram .guide { fill:none; stroke:var(--line); stroke-width:1; stroke-dasharray:3 8; }
   .detail { border-top:1px solid var(--line); padding:20px 0 10px; display:grid; grid-template-columns:minmax(170px,250px) 1fr; gap:25px; scroll-margin-top:20px; }
+  .step-picker { display:none; }
   .detail-label { color:var(--muted); font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin:0 0 5px; }
   .detail h2 { font-size:19px; line-height:1.3; margin:0; font-weight:600; }
   .detail p { margin:0; font-size:14px; line-height:1.65; max-width:100ch; }
   .detail .facts { color:var(--muted); font-size:12px; margin-top:8px; }
   .detail a { color:var(--green); text-underline-offset:3px; }
   footer { border-top:1px solid var(--line); margin-top:16px; padding-top:14px; display:flex; gap:20px; justify-content:space-between; flex-wrap:wrap; color:var(--muted); font-size:12px; line-height:1.5; }
-  @media (prefers-color-scheme:dark) { :root { color-scheme:dark; --paper:#111b16; --ink:#e3eee6; --muted:#a9bdb0; --line:#3b5142; --node:#19271f; --sage:#20382a; --green:#a1ceae; --purple:#c3b1ed; --lavender:#29253b; --amber:#d9b65e; --sand:#39321c; --soft:#18251e; } }
-  @media (max-width:700px) { .page { padding:22px 15px; } header { align-items:flex-start; } .revision { display:none; } .hint { flex-basis:100%; } .toolbar { gap:10px; } .controls { justify-content:flex-end; width:100%; } button { min-height:42px; } .detail { grid-template-columns:1fr; gap:10px; } .viewport { min-height:470px; height:65vh; } }
-  @media print { :root { color-scheme:light; --paper:#fff; --ink:#18372b; --muted:#617369; --line:#c9d5cc; --node:#fff; --sage:#ecf4ed; --green:#39704f; --purple:#6d5b97; --lavender:#f2eef9; --amber:#8e681d; --sand:#fff5dc; } @page { size:A3 landscape; margin:10mm; } .page { padding:0; } .toolbar,.detail,footer,.revision { display:none; } .viewport { height:auto; min-height:0; overflow:visible; } .diagram { width:100%!important; height:230mm!important; } header { margin-bottom:10px; } * { print-color-adjust:exact; -webkit-print-color-adjust:exact; } }
+  @media (max-width:700px) { .page { padding:22px 15px; } header { align-items:flex-start; } .revision { display:none; } .hint { flex-basis:100%; } .toolbar { gap:10px; } .controls { justify-content:flex-end; width:100%; } button { min-height:42px; } .detail { grid-template-columns:1fr; gap:10px; } .step-picker { display:block; margin-bottom:14px; font-size:12px; color:var(--muted); } .step-picker select { display:block; width:100%; margin-top:6px; min-height:44px; padding:8px; font:inherit; font-size:14px; color:var(--ink); background:#fff; border:1px solid var(--line); border-radius:6px; } }
+  @media print { :root { color-scheme:light; --paper:#fff; --ink:#18372b; --muted:#617369; --line:#c9d5cc; --node:#fff; --sage:#ecf4ed; --green:#39704f; --purple:#6d5b97; --lavender:#f2eef9; --amber:#8e681d; --sand:#fff5dc; } @page { size:A3 landscape; margin:10mm; } .page { padding:0; } .toolbar,.detail,footer,.revision { display:none; } .viewport { height:auto; min-height:0; overflow:visible; } .diagram { width:100%!important; height:230mm!important; max-height:none; } header { margin-bottom:10px; } * { print-color-adjust:exact; -webkit-print-color-adjust:exact; } }
 </style>
 </head>
 <body>
@@ -66,17 +65,13 @@
     <div class="revision">Current implementation<br>26 October 2026</div>
   </header>
   <div class="toolbar" aria-label="Flowchart controls">
-    <span class="hint">Select a step to inspect it. Drag the background or scroll to move.</span>
+    <span class="hint">Select a step to read its details below.</span>
     <div class="controls">
-      <button id="zoom-out" type="button" aria-label="Zoom out">−</button>
-      <output id="zoom-value" aria-label="Zoom level">100%</output>
-      <button id="zoom-in" type="button" aria-label="Zoom in">+</button>
-      <button id="fit" type="button">Fit</button>
       <button id="export" type="button">Download SVG</button>
       <button id="print" type="button">Print / PDF</button>
     </div>
   </div>
-  <div class="viewport" id="viewport" aria-label="Scrollable technical workflow">
+  <div class="viewport" id="viewport" aria-label="Technical workflow">
     <svg class="diagram" id="diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1050" role="group" aria-labelledby="diagram-title diagram-desc">
       <title id="diagram-title">Celloras request and analysis flow</title>
       <desc id="diagram-desc">A researcher submits an owned request. The worker prepares context, consults an interchangeable agent runtime and executes requested scientific tools. Tools read private numerical data and Zetaris evidence. Results return to the agent until an answer is ready. Saved reviews inform later requests through H-MEM. Execution creates durable activity records.</desc>
@@ -130,7 +125,7 @@
     </svg>
   </div>
   <section class="detail" id="details" aria-labelledby="detail-title" aria-live="polite">
-    <div><div class="detail-label">Selected step</div><h2 id="detail-title">Celloras worker</h2></div>
+    <div><label class="step-picker">Inspect a step<select id="step-picker"></select></label><div class="detail-label">Selected step</div><h2 id="detail-title">Celloras worker</h2></div>
     <div><p id="detail-body"></p><p class="facts" id="detail-facts"></p><p class="facts"><a id="detail-source" target="_blank" rel="noopener noreferrer">View implementation ↗</a></p></div>
   </section>
   <footer><span>H5AD input requires existing groups and UMAP. The matrix stays in numerical files.</span><span>Live runtime: OpenShell + Codex. Additional model providers require adapters.</span></footer>
@@ -140,7 +135,6 @@
   'use strict';
   const svg = document.getElementById('diagram');
   const group = document.getElementById('nodes');
-  const viewport = document.getElementById('viewport');
   const base = 'https://github.com/mpckkk/2026_GenAI/blob/celloras.com/';
   const NS = 'http://www.w3.org/2000/svg';
   const nodes = [
@@ -181,8 +175,12 @@
     a.addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();select(n.id);}});
     group.appendChild(a);
   });
+  const picker=document.getElementById('step-picker');
+  nodes.forEach(n=>{const option=document.createElement('option');option.value=n.id;option.textContent=n.title.join(' ');picker.appendChild(option);});
+  picker.addEventListener('change',()=>select(picker.value));
   function select(id) {
     const n=map.get(id);if(!n)return;
+    picker.value=id;
     group.querySelectorAll('[data-node]').forEach(a=>a.setAttribute('aria-current',String(a.dataset.node===id)));
     document.getElementById('detail-title').textContent=n.title.join(' ');
     document.getElementById('detail-body').textContent=n.body;
@@ -190,27 +188,7 @@
     document.getElementById('detail-source').href=base+n.source.split('/').map(encodeURIComponent).join('/');
   }
   select('worker');
-  let zoom=1, manuallyZoomed=false;
-  const output=document.getElementById('zoom-value');
-  function setZoom(next, center=true) {
-    const old=zoom;zoom=Math.max(.2,Math.min(2,next));
-    const cx=(viewport.scrollLeft+viewport.clientWidth/2)/old;
-    const cy=(viewport.scrollTop+viewport.clientHeight/2)/old;
-    svg.style.width=1600*zoom+'px';svg.style.height=1050*zoom+'px';
-    output.value=Math.round(zoom*100)+'%';
-    document.getElementById('zoom-out').disabled=zoom<=.2;
-    document.getElementById('zoom-in').disabled=zoom>=2;
-    if(center){viewport.scrollLeft=cx*zoom-viewport.clientWidth/2;viewport.scrollTop=cy*zoom-viewport.clientHeight/2;}
-  }
-  function fit(initial=false){manuallyZoomed=false;setZoom(initial&&viewport.clientWidth<700?.65:Math.min(viewport.clientWidth/1600,viewport.clientHeight/1050),false);viewport.scrollLeft=0;viewport.scrollTop=0;}
-  document.getElementById('zoom-in').onclick=()=>{manuallyZoomed=true;setZoom(zoom+.15);};
-  document.getElementById('zoom-out').onclick=()=>{manuallyZoomed=true;setZoom(zoom-.15);};
-  document.getElementById('fit').onclick=()=>fit();
   document.getElementById('print').onclick=()=>window.print();
-  let drag;
-  viewport.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==0||e.target.closest('[data-node]'))return;drag={x:e.clientX,y:e.clientY,left:viewport.scrollLeft,top:viewport.scrollTop};viewport.setPointerCapture(e.pointerId);viewport.classList.add('dragging');});
-  viewport.addEventListener('pointermove',e=>{if(!drag)return;viewport.scrollLeft=drag.left-(e.clientX-drag.x);viewport.scrollTop=drag.top-(e.clientY-drag.y);});
-  const end=()=>{drag=null;viewport.classList.remove('dragging');};viewport.addEventListener('pointerup',end);viewport.addEventListener('pointercancel',end);
   document.getElementById('export').onclick=()=>{
     const clone=svg.cloneNode(true),styles=getComputedStyle(document.documentElement);
     const palette=['paper','ink','muted','line','node','sage','green','purple','lavender','amber','sand'];
@@ -225,9 +203,6 @@
     const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml'}));
     const link=document.createElement('a');link.href=url;link.download='Celloras-Technical-Flow.svg';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   };
-  let previous=viewport.clientWidth;
-  new ResizeObserver(()=>{if(previous===viewport.clientWidth)return;previous=viewport.clientWidth;if(!manuallyZoomed)fit(true);}).observe(viewport);
-  fit(true);
 })();
 </script>
 </body>

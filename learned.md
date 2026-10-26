@@ -1,5 +1,7 @@
 # Engineering notes
 
+- Keep the technical flowchart on a white background regardless of system theme. Scale the full diagram into view; nested pan/scroll areas obscure the overview. Provide readable step selection on narrow screens.
+
 - For technical flowcharts, the user prefers deterministic HTML/SVG with real text and connectors over generated raster illustrations. Keep the worker, model runtime, scientific computation and persistence boundaries distinct; put deeper explanations inline on selection.
 
 - Keep sponsor attribution factual and subtle in the product. Use a functional heading such as “Tools used”; explain each service's actual contribution without calling the interface a sponsor showcase.
