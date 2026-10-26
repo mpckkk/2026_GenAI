@@ -1,5 +1,15 @@
 # Foundation verification — 2026-10-23
 
+## Submission audit — 2026-10-26
+
+- Read all ten expanded rule sections on the binding event page and the Resource Center's Official Rules draft, Submission Requirements and Strong Submission Examples. The drafts explicitly defer to the event page. The binding technology rules require Zetaris/Meterless and permit any model/API, so the draft's Nightshift-primary condition was not used to change the verified runtime. [Rule coverage and remaining gates](submission.md#event-rule-audit--26-october-2026).
+- GitHub reports a public repository with `main` as default; the submitted application link must target `celloras.com`. The inspected HackOS team has two members. No selected track or completed submission was confirmed; no team/form changes were made.
+- A new clean checkout at `cc437d2`, without the working checkout's `.env`, `node_modules` or scientific/runtime state, passed `npm ci --no-audit --no-fund`, `npm run setup`, `docker compose config --quiet` and `npm run build` using Node 24.19.0. Setup generated private local secrets. This verifies dependency installation, configuration and production compilation, not a new isolated Keycloak/Zetaris/OpenShell installation. Earlier real service/browser acceptance remains separately recorded below.
+- Gitleaks 8.30.1 scanned all 52 commits reachable from `celloras.com`: no findings, 2.73 MB scanned. The wider all-ref scan covered 53 commits/140.64 MB and flagged two entries in `origin/main`'s committed pydeck source map; both values were verified as entries in the source map's JavaScript symbol-name array, not credential assignments. No branch history or unrelated files were changed. Redacted reports remain in ignored `.artifacts/submission-audit/`.
+- Live readiness returned `ready`; app, importer, PostgreSQL/Keycloak and all four Zetaris containers were healthy. The current worker was running. Existing actual annotation/H-MEM receipts establish working features; container health alone is not treated as inference proof.
+- Updated README sections for what was built, data used, three actual input/output examples, dependency versions, clean-clone commands, public source download and explicit sponsor activation. Added a recording gate to hide credential screens/tokens and preserve one request's identity from submission through visible activity and result.
+- The final narrated video, its public link check, final track/roster/rights declarations and submission receipt remain pending. No full submission-compliance certification is claimed.
+
 ## Native activity dashboard — public acceptance, 2026-10-26
 
 - Release `8e841af` deployed through Dokploy; migration 011 applied, Linux app/worker started and readiness returned 200. GitHub [Foundation checks passed](https://github.com/mpckkk/2026_GenAI/actions/runs/40315183963).

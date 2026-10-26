@@ -2,7 +2,7 @@
 
 Technical review companion: [PDF](technical-deck/Celloras-Technical-Deck.pdf), [editable PowerPoint](technical-deck/Celloras-Technical-Deck.pptx), [notes and sources](technical-deck/speaker-notes.md). The short pitch remains four slides.
 
-Requirements below follow the user's submission instructions supplied on 2026-10-25. Required technology: **Zetaris and one Meterless Engine in a working feature**. Celloras uses **H-MEM**. Cursor and NVIDIA are optional, and there are no event credits to claim. The working OpenShell/Codex runtime remains in place; optional Nightshift/Nemotron setup does not block this submission.
+Required technology: **Zetaris and one Meterless Engine in a working feature**. Celloras uses **H-MEM** and contributes NVIDIA OpenShell for sandbox execution. The binding event-page rules, checked on 26 October, require Zetaris and Meterless and allow any model/API. The older Resource Center draft mentions mandatory Nightshift but explicitly defers to the event page. See the audit below; no unverified Nightshift or Nemotron run is claimed.
 
 ## Four deliverables
 
@@ -15,14 +15,46 @@ Requirements below follow the user's submission instructions supplied on 2026-10
 
 Use the code URL **https://github.com/mpckkk/2026_GenAI/tree/celloras.com** in the GitHub field. It points to the application branch and meets the stated `github.com` domain requirement. Confirm the form accepts that branch URL before final submission. The live app is https://celloras.com; it is a separate demo link.
 
+## Event rule audit — 26 October 2026
+
+Read all ten expanded sections of the [binding event page](https://hackathon.genai.works/event/open-agent-hackathon-2026#rules). The [Resource Center Official Rules draft](https://hackathon.genai.works/resources?id=01a08ff1-54cc-709a-bfe7-6b34452b676b) and [Submission Requirements](https://hackathon.genai.works/resources?id=01a08ff1-54c3-70c5-b262-31e75dfd1e60) defer to that page when they disagree. In particular, event rules 5.1–5.3 require the two sponsors and permit any model/API; they do not impose the draft's Nightshift-primary condition. Preserve the verified OpenShell path. The [Strong Submission Examples](https://hackathon.genai.works/resources?id=01a08ff1-5601-7225-9eb4-f4a33f7ad374) are illustrative guidance, not a mandatory multi-agent template.
+
+| Event section            | Evidence or remaining action                                                                                                                                                                                                                           |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1. Eligibility           | The team must confirm each member's age, single-account status and cash-prize eligibility. Repository tests cannot establish these personal facts.                                                                                                     |
+| 2. Teams                 | HackOS shows two members, within the permitted size. The leader must confirm the roster before creating the first submission; no team changes were made during this audit.                                                                             |
+| 3. Tracks                | Select one primary track in the final form. Suggested fit: **The Agent That Can Explain Why**. The inspected team view did not show a selected track, so it is not marked confirmed.                                                                   |
+| 4. Build window          | First implementation commit `694d1a8` is dated 23 October, inside the window. Declare earlier planning, supplied branding and third-party code/data separately.                                                                                        |
+| 5. Technology            | Actual Zetaris retrieval and Meterless H-MEM recall passed in one owned experiment. NVIDIA OpenShell supplies the verified runtime. See [sponsor evidence](sponsor-explanation.md).                                                                    |
+| 6. Deliverables          | Public branch, README, pitch/engineering decks and sponsor explanation exist. **Final video and form submission are pending.** Include both decks so architecture, stack, scope and future work accompany the short pitch.                             |
+| 7. Judging               | [Coverage mapping](pitchdeck/README.md#fit-to-the-judging-criteria) uses the published rubric. It records evidence, not predicted scores.                                                                                                              |
+| 8. Prizes                | No Nemotron-award eligibility is claimed. Prize distribution and any recipient tax obligations remain team matters.                                                                                                                                    |
+| 9. Intellectual property | Data/dependency provenance and the vendored H-MEM license are documented. The team must confirm rights to all submitted assets and accept the event's promotional license when submitting. Public availability alone is not a blanket dataset license. |
+| 10. Schedule             | Submit before **27 October 2026, 23:45 UTC**, and check for announced changes. This audit did not submit or certify the entry.                                                                                                                         |
+
+The README now explicitly covers what was built, data used, setup/dependencies and three observed input/output examples. A clean checkout at `cc437d2` passed dependency installation, generated-secret setup, Compose validation and a production build on 26 October. This checks bootstrap/build reproducibility; it does not claim a second isolated sponsor installation. The live complete workflow has its separate [acceptance receipt](evidence/agent-activity-public-2026-10-26.json).
+
+Gitleaks 8.30.1 scanned all 52 commits reachable from `celloras.com` with no findings. A wider 53-commit scan also inspected `origin/main` and flagged two entries in a vendored pydeck source map; both were verified as JavaScript symbol names in its `names` array, not credential values. No history was rewritten. `.env.example` contains placeholders, while `.env` and runtime/session artifacts are ignored. This automated check does not replace reviewing the finished video and deck pixels.
+
+The remaining final gates are the recording/link check, form track/roster declarations, rights confirmation and submission receipt. Do not describe the entry as fully submitted or all rules certified before those gates pass.
+
+## Secret-free recording gate
+
+1. Sign in **before** capture. Record only the Celloras content area, with unrelated tabs/notifications hidden. Keep the login panel, environment files, terminal, admin consoles and browser network/storage panels out of the recording, including during transitions.
+2. Show one request from **Send / Annotate all groups** through running activity to its completed map. Open **View activity** on that same request and expand the actual Zetaris retrieval receipt. A request ID and content checksum are provenance identifiers; never display API credentials or query cursor tokens.
+3. Save an explicitly illustrative review, ask for recall, and show its H-MEM source link. Use the same experiment throughout. Prepared footage must be labelled **Earlier actual run**; label any shortened wait rather than implying an unmeasured speedup.
+4. Inspect the exported video from start to finish, including its thumbnail, for keys, tokens, passwords and personal data. Verify 1–4 minute duration, readable text/audio and a judge-accessible video link. Also open both deck links and the exact GitHub branch without repository-owner access.
+
+**Recording status: pending.** Existing screenshots and successful runs prove the workflow, not the existence of a finished video.
+
 ## Organizer readiness checklist — verified 26 October
 
-| Requirement | Visible proof |
-| --- | --- |
-| Working end-to-end version | Fresh H5AD upload → annotation → measured-marker plot → review → recall in [the activity demo](https://celloras.com/app/projects/7bdae43c-5cd2-4203-a571-e73b445985db). |
-| Sponsors connected and tested | The annotation trace contains the real Zetaris query, 42 associations and verified hash; the recall trace contains the exact Meterless H-MEM review source. |
-| Understandable agent activity | [Agent activity dashboard](https://celloras.com/app/activity?projectId=7bdae43c-5cd2-4203-a571-e73b445985db): three completed requests, timed steps, inline input/output/source details, original-result links and JSON export. |
-| Sample inputs and outputs ready | The 29 MB sample, 7,496-cell map, annotation, two-gene plot and recalled review are saved. [Recorded proof](evidence/agent-activity-public-2026-10-26.json). |
+| Requirement                     | Visible proof                                                                                                                                                                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Working end-to-end version      | Fresh H5AD upload → annotation → measured-marker plot → review → recall in [the activity demo](https://celloras.com/app/projects/7bdae43c-5cd2-4203-a571-e73b445985db).                                                         |
+| Sponsors connected and tested   | The annotation trace contains the real Zetaris query, 42 associations and verified hash; the recall trace contains the exact Meterless H-MEM review source.                                                                     |
+| Understandable agent activity   | [Agent activity dashboard](https://celloras.com/app/activity?projectId=7bdae43c-5cd2-4203-a571-e73b445985db): three completed requests, timed steps, inline input/output/source details, original-result links and JSON export. |
+| Sample inputs and outputs ready | The 29 MB sample, 7,496-cell map, annotation, two-gene plot and recalled review are saved. [Recorded proof](evidence/agent-activity-public-2026-10-26.json).                                                                    |
 
 For the video, open **View activity** under the annotation answer, expand **Retrieve marker evidence**, then show **Recall saved decisions** on the later request. These are persisted records of the actual execution. Recording and uploading the final 1–4 minute narrated video remain outstanding; the working feature and its sample outputs are ready.
 

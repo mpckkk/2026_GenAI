@@ -60,7 +60,7 @@ The runtime requires only Node built-ins. Docker/R are import-time dependencies.
 
 The source **RNA `data` slot is identical to raw `counts`**; treating it as log-normalized would be incorrect. The source SCT assay has 23,775 features. Its corrected counts remain separate, and every exported SCT `data` value was checked against `log1p(SCT counts)`. The 3,320 × 7,496 SCT residual matrix is retained in the original RDS but is not exposed by these operations. No source matrix is overwritten or renormalized in place.
 
-The current limited marker reference uses a different genome build. This dataset's generated candidate genes must not be automatically presented as validated against that reference. Literature interpretation requires compatible, sourced evidence and explicit uncertainty.
+The current annotation panel uses 41 exact Wm82v4 genes from the authors' root reference, delivered through Zetaris in production. The separate legacy root/nodule lookup uses `Glycine_max_v2.1.52`; generated genes must not be silently matched across those builds. See [annotation methods](annotation-method.md) and [reference scope](soybean-reference.md).
 
 ## Verification against the real data
 

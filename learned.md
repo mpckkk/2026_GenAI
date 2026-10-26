@@ -128,3 +128,5 @@
 - The annotation result must lead with the actual cell map when a visual result is requested. Use the saved suggestions with the exact version-checked measured embedding, retain unresolved/ambiguous groups, and export the same figure. A marker-only result has no cell coordinates and must not receive an invented UMAP.
 
 - Keep chat suggestions quiet and compact. Upload belongs in the composer toolbar; repeating the selected group in each action wastes space and creates a second competing control area. Preserve the selected context once, concise verb labels and narrow-screen keyboard/touch access.
+
+- Event resources can contradict the binding event page. On 26 October the Resource Center draft required Nightshift, while the expanded binding rules allowed any model/API and required Zetaris plus Meterless. Record exact source links and precedence instead of switching a working runtime based on the draft. A clean build, a live workflow, a finished recording and a submitted entry are distinct checks.

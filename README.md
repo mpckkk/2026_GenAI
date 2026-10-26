@@ -6,6 +6,12 @@
 
 An agent-driven workspace for plant single-cell research, starting with soybean. All work lives on [`celloras.com`](https://github.com/mpckkk/2026_GenAI/tree/celloras.com).
 
+## What we built
+
+Plant researchers need to connect measured genes, published cell markers and earlier research decisions to identify cell groups. Celloras puts that work in one conversation: upload a count dataset, ask the agent to annotate it, inspect the map and evidence, then save and later recall a reviewed decision.
+
+**Judge entry point:** [live app](https://celloras.com) · [verified request and activity](https://celloras.com/app/activity/3ff0f30e-3655-4e83-8b4e-08f703054b46) · [pitch](docs/pitchdeck/Celloras-Pitch-Deck.pdf) · [engineering deck](docs/technical-deck/Celloras-Technical-Deck.pdf). Sign in before opening a saved request. The final 1–4 minute video is pending; [submission status](docs/submission.md) tracks the remaining checks.
+
 Sign in and add a single-cell dataset, or open the prepared soybean demo. Explore the cell map with the agent, compare marker evidence, and save plant/sample context, marker sets, notes and reviewed cell-type decisions as structured conversation entries. PostgreSQL retains the research records and chat history. Generic plant and provider interfaces allow other plants and integrations to be added with appropriate references and validation.
 
 The implemented chat runtime uses Codex CLI inside NVIDIA OpenShell. Real model responses have been verified through OpenShell v0.1.5 both in a Linux MicroVM on Apple Silicon and on the native Ubuntu production server. Browser acceptance is recorded separately in [verification](docs/verification.md).
@@ -13,6 +19,28 @@ The implemented chat runtime uses Codex CLI inside NVIDIA OpenShell. Real model 
 The real soybean root dataset supports UMAP inspection, marker ranking, expression overlays, dot plots and provisional cell-type annotation. Annotation compares measured expression with 41 exact Wm82v4 marker genes from the atlas authors' published root reference. Cards show candidates, supporting and conflicting evidence, missing markers and unresolved cases. Researchers save their own labels separately. The method has not been independently validated; see [annotation methods and limits](docs/annotation-method.md).
 
 Published marker lookup for roots and mature nodules and curated literature retrieval provide additional cited context with explicit genome compatibility. Coverage is a limited versioned reference, not the full atlas. See [reference scope](docs/soybean-reference.md).
+
+## Data used
+
+| Input                                            | Role and source                                                                                                                                                                                                                      |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Soybean root counts, 7,496 nuclei × 40,127 genes | [GSE270392](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE270392); existing groups and UMAP. The 29 MB demo H5AD is our lossless conversion of the deposited RDS. [Download, conversion and checksums](docs/h5ad-source.md). |
+| Published root marker panel                      | 42 associations, 41 distinct Wm82v4 genes, nine cell types; retrieved through Zetaris. [Source tables, method and limits](docs/annotation-method.md).                                                                                |
+| Researcher decisions                             | Explicit, project-owned reviews recalled by Meterless H-MEM. Prepared demo reviews are labelled illustrative; they are not independent biological validation.                                                                        |
+
+Large source files stay outside Git. Source counts and published evidence remain separate from model explanations and researcher decisions.
+
+## Demo inputs and observed outputs
+
+Open [Soybean H5AD · activity demo](https://celloras.com/app/projects/7bdae43c-5cd2-4203-a571-e73b445985db) after signing in. These are abridged observations from actual requests on 26 October, not answers returned by a sample-mode stub.
+
+| Request                                                                          | Observed result                                                                                                                  | Activity                                                                             |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Choose **Annotate all groups** after importing the root H5AD                     | Map of all 7,496 nuclei; 7 suggested, 1 ambiguous and 4 unresolved groups. A real Zetaris query supplied 42 marker associations. | [Annotation](https://celloras.com/app/activity/3ff0f30e-3655-4e83-8b4e-08f703054b46) |
+| Compare `Glyma.01G224900` and `Glyma.17G030700` across the groups                | Measured two-gene dot plot; group 6 has a provisional Root hair candidate.                                                       | [Comparison](https://celloras.com/app/activity/a478d8b2-4094-499e-a524-fe68af2e6b21) |
+| Ask what was decided for group 6 in that annotation run, after saving the review | H-MEM recalls the explicit provisional review and links to its source. The numerical annotation stays unchanged.                 | [Recall](https://celloras.com/app/activity/ee487b10-71e8-45c7-82d0-c857bc47588f)     |
+
+[Machine-readable acceptance receipt](docs/evidence/agent-activity-public-2026-10-26.json). On a fresh experiment, save a review before asking for recall. New runs get their own IDs; the model's wording can differ.
 
 ## Required sponsor integrations
 
@@ -25,7 +53,7 @@ The complete public workflow passed: annotation → measured-marker plot → res
 
 See the [sponsor explanation and tests](docs/sponsor-explanation.md), [setup](docs/configuration.md#sponsor-integrations) and [submission preparation](docs/submission.md). Reproduce the complete journey with `npm run demo:workflow` using the [documented environment](docs/demo.md#prepare-the-complete-workflow). The [pitch deck](docs/pitchdeck/README.md) and separate [technical deck](docs/technical-deck/README.md) are available in PowerPoint and PDF; the final video remains to be recorded.
 
-Cursor and NVIDIA are optional under the supplied submission rules. The existing OpenShell runtime is working. Nightshift has a selectable adapter but no verified live inference; Nemotron, NeMo Files and NVIDIA tracing remain optional pending work.
+The [binding event rules](https://hackathon.genai.works/event/open-agent-hackathon-2026#rules), checked on 26 October, require Zetaris and Meterless and allow any model/API. NVIDIA contributes the working OpenShell runtime. Nightshift has a selectable adapter but no verified live inference; Nemotron, NeMo Files and NVIDIA tracing remain pending. [Rule-source reconciliation](docs/submission.md#event-rule-audit--26-october-2026).
 
 ## Research workflow
 
@@ -79,20 +107,32 @@ The [prepared activity demo](https://celloras.com/app/activity?projectId=7bdae43
 Use Node 22.22.0 (`.nvmrc`), npm, Docker Compose and an installed Codex CLI. Start the workspace first; `setup` creates an ignored `.env` and refuses to overwrite an existing one.
 
 ```sh
+git clone --branch celloras.com --single-branch https://github.com/mpckkk/2026_GenAI.git
+cd 2026_GenAI
 npm ci
 npm run setup
 docker compose up -d --build h5ad-importer app
 ```
 
-To enable the real root demo, download the GEO file linked in the dataset guide and import its verified public source before opening it (requires Docker and the pinned R image described in the import guide):
+Dependencies: Next.js/React and the Node libraries are pinned in [package.json](package.json) and [package-lock.json](package-lock.json). Compose pins PostgreSQL, Keycloak and OpenShell; the H5AD importer uses Python 3.12 with [pinned packages](infra/science/h5ad/requirements.txt). H-MEM's [source and Apache-2.0 license](third_party/meterless-hmem/README.md) are bundled. The verified model path needs your own Codex account; the live sponsor path needs your own Zetaris installation and read-only application access. No Colab notebook is used.
+
+To enable the real root demo, download the public 297 MB RDS once and import it (requires Docker and the pinned R image described in the [import guide](docs/dataset-import.md)):
 
 ```sh
-npm run data:import -- --source /absolute/path/GSE270392_Gm_atlas_Root.rna.seurat.obj.rds.gz
+mkdir -p .artifacts/datasets/GSE270392
+curl --fail --location --retry 2 \
+  --output .artifacts/datasets/GSE270392/GSE270392_Gm_atlas_Root.rna.seurat.obj.rds.gz \
+  https://ftp.ncbi.nlm.nih.gov/geo/series/GSE270nnn/GSE270392/suppl/GSE270392_Gm_atlas_Root.rna.seurat.obj.rds.gz
+npm run data:import
 ```
+
+The importer checks the pinned source checksum. It refuses to overwrite an existing dataset. For the upload demonstration, follow the [H5AD conversion and download configuration](docs/h5ad-source.md#reproduce-the-actual-file).
+
+**Enable the sponsor feature:** follow [Zetaris setup](docs/configuration.md#sponsor-integrations), ingest the exported marker reference, run the real SQL probe and select `CELLORAS_REFERENCE_PROVIDER=zetaris`. The new-install default, `published`, reads the bundled reference locally; it does **not** prove Zetaris integration. Production uses Zetaris and fails explicitly if it is unavailable. H-MEM runs in the worker without a hosted service key.
 
 Compose mounts the directory selected by `CELLORAS_DATASET_DIR` (locally `.artifacts/scientific-data`) read-only into the app and worker. The separate `h5ad-importer` service processes owned uploads; it needs no model credential. Upload staging and private imported bundles use `CELLORAS_UPLOAD_DIR` and `CELLORAS_UPLOADED_DATASET_DIR`. Configure the optional downloadable sample using the [H5AD setup](docs/configuration.md#h5ad-uploads-and-demo-download). It does not mount the private OpenShell directory as scientific data. The curated paper collection is bundled; `npm run literature:import` explicitly refreshes it from verified primary sources. Large dataset bytes remain outside Git.
 
-Open [localhost:3100](http://localhost:3100). Keycloak serves [login](http://localhost:3100/login) and [registration](http://localhost:3100/register), using email/password without first/last name fields. The local Keycloak admin is `admin`; its generated password is `KEYCLOAK_ADMIN_PASSWORD` in `.env`.
+Open [localhost:3100](http://localhost:3100) and register a local researcher account. Keycloak serves [login](http://localhost:3100/login) and [registration](http://localhost:3100/register), using email/password without first/last name fields. Setup generates local administrative secrets in the ignored `.env`; there are no shared setup credentials in this README. Keep that file, operator logins and browser session files private.
 
 The default agent setup uses Docker. Use a dedicated operator account for a server's Codex login; it is separate from researchers' Keycloak accounts.
 
@@ -149,6 +189,12 @@ Browser tests use local Google Chrome, real Keycloak users and persisted test re
 `/api/health/live` reports process liveness. `/api/health/ready` checks schema, Keycloak and the bundled references. `/app/health` separately shows worker availability and pending integrations. New chat turns require a ready worker heartbeat within 30 seconds; existing records remain accessible when it is offline. The scientific `/api/chat` authorizes ownership and queues the same annotation action using `projectId`, `submissionId`, `datasetId` and an optional `cluster`; unsupported gene-only requests return 400.
 
 See [architecture](docs/architecture.md), [configuration](docs/configuration.md), [verification](docs/verification.md), [implementation plan](PLAN.md) and the [Amigospace project](https://space.heyamigo.org/items/6223ea67-f6b0-4dfd-b8f5-0325f391d4e0).
+
+## Build provenance and limitations
+
+The first Celloras implementation commit is `694d1a8` (23 October 2026), within the event's build window. Earlier project planning, the user-supplied Celloras logo, published datasets, marker tables, literature and third-party libraries are inputs to the project, not newly authored scientific sources or dependencies. They are credited in the linked source documents and dependency manifests. Development used Codex assistance for implementation, documentation and verification. The team remains responsible for the submission and its claims.
+
+Celloras currently uses one tool-using agent with server-side validation, numerical tools and persistent research memory. It does not claim a multi-agent critic system. Saved outputs remain inspectable during a provider outage; new inference fails visibly. There is no credential-free simulated agent mode. Independent biological validation, additional plant/reference panels, more runtime adapters and production backup/retention work remain future improvements.
 
 ## Deployment status
 

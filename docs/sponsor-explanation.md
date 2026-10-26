@@ -2,7 +2,7 @@
 
 Celloras helps researchers investigate plant single-cell data through conversation. It starts with soybean roots: the agent runs expression analysis, presents provisional cell-type candidates and their evidence, then preserves the researcher's review for later work.
 
-The required sponsor pair is **Zetaris + Meterless H-MEM**, following the submission instructions supplied on 2026-10-25. Each has a distinct job in this workflow.
+The required sponsor pair is **Zetaris + Meterless H-MEM**. The [binding event rules](https://hackathon.genai.works/event/open-agent-hackathon-2026#rules), checked on 26 October, require Zetaris and Meterless and allow any model/API. Each has a distinct job in this workflow.
 
 ## Zetaris: retrieve the published reference
 
@@ -44,3 +44,5 @@ The latest uploaded-data rehearsal also exposes both integrations in [Celloras's
 ## Submission text
 
 Celloras uses Zetaris to query a versioned soybean marker reference through a read-only SQL connection, verify its contents and preserve source provenance in agent-generated annotation cards. We implemented Meterless's H-MEM Engine to recall researchers' saved cell-type decisions and reasoning across conversations, with project isolation, correction history and source receipts. Real agent tests demonstrate reference retrieval and annotation through Zetaris, plus H-MEM recall beyond recent context, correction and isolation. Scientific candidates and researcher decisions remain separate so remembered interpretations cannot become published evidence.
+
+NVIDIA OpenShell runs the verified Codex CLI adapter in a sandbox on the Linux server. The runtime interface also has an HTTP adapter for Nightshift, but live Nightshift/Nemotron inference is not part of the demonstrated result. Development used Codex assistance; this submission does not claim Cursor usage or the Nemotron award. Celloras's native activity dashboard records the actual tool and runtime steps without exposing credentials or hidden model reasoning.
