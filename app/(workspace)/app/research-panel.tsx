@@ -136,13 +136,16 @@ export function ResearchPanel({
   return (
     <div className={styles.panel}>
       {dataset && (
-        <section
-          className={styles.panelSection}
-          aria-label="Published dataset context"
-        >
-          <h3>Published dataset</h3>
+        <section className={styles.panelSection} aria-label="Dataset context">
+          <h3>
+            {dataset.source.kind === "uploaded-h5ad"
+              ? "Your dataset"
+              : "Published dataset"}
+          </h3>
           <p className={styles.scopeNote}>
-            Source metadata · {dataset.source.accession}
+            {dataset.source.kind === "uploaded-h5ad"
+              ? dataset.source.filename
+              : `Source metadata · ${dataset.source.accession}`}
           </p>
           <dl className={styles.contextList}>
             <div>
@@ -157,7 +160,7 @@ export function ResearchPanel({
               <dd>{dataset.tissue}</dd>
             </div>
             <div>
-              <dt>Nuclei</dt>
+              <dt>Cells / nuclei</dt>
               <dd>{dataset.nCells.toLocaleString("en-GB")}</dd>
             </div>
             <div>
@@ -165,17 +168,20 @@ export function ResearchPanel({
               <dd>{dataset.genomeBuild}</dd>
             </div>
           </dl>
-          <a
-            className={styles.textAction}
-            href={dataset.source.paperUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read atlas paper ↗
-          </a>
+          {dataset.source.paperUrl && (
+            <a
+              className={styles.textAction}
+              href={dataset.source.paperUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read atlas paper ↗
+            </a>
+          )}
           <p className={styles.scopeNote}>
-            Published research data. Source cluster IDs are group identifiers,
-            not new cell-type annotations.
+            {dataset.source.kind === "uploaded-h5ad"
+              ? "Cell groups and coordinates from your uploaded file."
+              : "Published research data. Source cluster IDs are group identifiers, not new cell-type annotations."}
           </p>
         </section>
       )}

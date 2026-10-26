@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { LocalScientificData } from "../adapters/scientific-data.mjs";
 import { CuratedLiterature } from "../adapters/literature.mjs";
 import { MarkerAnnotationEngine } from "../adapters/annotation-engine.mjs";
@@ -128,6 +130,32 @@ async function researchHealth(): Promise<ServiceHealth[]> {
         check: async () => {
           const h = await scientific.health();
           return `${h.datasetCount} verified dataset · local sparse CPU analysis`;
+        },
+      },
+      {
+        name: "H5AD imports",
+        check: async () => {
+          if (!process.env.CELLORAS_UPLOAD_DIR)
+            throw new Error("uploads_unconfigured");
+          await database().query(
+            "SELECT id,status,manifest_sha256 FROM dataset_uploads LIMIT 0",
+          );
+          const heartbeat = JSON.parse(
+            await readFile(
+              path.join(
+                /* turbopackIgnore: true */ process.env.CELLORAS_UPLOAD_DIR,
+                ".worker-health.json",
+              ),
+              "utf8",
+            ),
+          );
+          if (
+            heartbeat.status !== "ready" ||
+            typeof heartbeat.updatedAt !== "number" ||
+            Math.abs(Date.now() / 1000 - heartbeat.updatedAt) > 45
+          )
+            throw new Error("import_worker_unavailable");
+          return "Chunked H5AD uploads · validation and import worker connected";
         },
       },
       {

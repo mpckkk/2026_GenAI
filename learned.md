@@ -1,5 +1,9 @@
 # Engineering notes
 
+- A durable upload offset belongs to the database commit, not the temporary file length. Sync the chunk before committing the offset, truncate any uncommitted tail before a retry, and prove recovery using real interrupted bytes. Validate per-chunk hashes and freeze a whole-file checksum before importing.
+- User-uploaded scientific bundles must never enter a shared public catalog. Resolve immutable project attachments after ownership checks for every map, tool execution and agent context; distinguish uploader-declared counts/build from independently verified provenance.
+- A file named H5AD may contain normalized expression without a raw-count layer. Inspect its actual matrices, gene IDs, existing groups and UMAP; require an explicit raw-count declaration and reject non-integer data instead of guessing.
+
 - Keep the short pitch separate from the technical audit. Explain what the agent evaluates and recommends; calling it only a coordinator hides its purpose. A source diagram must distinguish connected references, measured data, researcher memory and planned connectors.
 
 - A mixed-audience pitch needs a real research question before platform terminology. Follow one verified dataset, result and decision; explain biological motivation without claiming the demo measured that outcome. Label demonstration reviews and distinguish broad sequencing-market forecasts from the addressable software market.

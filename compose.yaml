@@ -63,14 +63,64 @@ services:
       ZETARIS_API_TOKEN: ${ZETARIS_API_TOKEN:-}
       ZETARIS_ORG_ID: ${ZETARIS_ORG_ID:-}
       ZETARIS_REFERENCE_TABLE: ${ZETARIS_REFERENCE_TABLE:-}
+      CELLORAS_UPLOADED_DATASET_DIR: /uploaded-datasets
       CELLORAS_DATASET_DIR: /datasets
     volumes:
+      - ${CELLORAS_UPLOADED_DATASET_DIR:-./.artifacts/uploaded-datasets}:/uploaded-datasets:ro
       - ${CELLORAS_DATASET_DIR:-./.artifacts/scientific-data}:/datasets:ro
       - ${OPENSHELL_CONFIG_DIR:-./.artifacts/openshell/worker-config}:/config
       - ${CELLORAS_AGENT_METADATA_FILE:-./.artifacts/openshell/agent-metadata.json}:/run/celloras/metadata.json:ro
     extra_hosts: ["host.docker.internal:host-gateway"]
     depends_on:
       migrate: { condition: service_completed_successfully }
+  upload-storage-init:
+    image: node:22.22.0-bookworm-slim
+    user: "0:0"
+    environment:
+      STORAGE_UID: ${CELLORAS_WORKER_UID:-1000}
+      STORAGE_GID: ${CELLORAS_WORKER_GID:-1000}
+    command:
+      [
+        "node",
+        "-e",
+        "const f=require('fs');for(const p of ['/uploads','/uploaded-datasets']){f.mkdirSync(p,{recursive:true});f.chownSync(p,Number(process.env.STORAGE_UID),Number(process.env.STORAGE_GID));f.chmodSync(p,0o700)}",
+      ]
+    volumes:
+      - ${CELLORAS_UPLOAD_DIR:-./.artifacts/dataset-uploads}:/uploads
+      - ${CELLORAS_UPLOADED_DATASET_DIR:-./.artifacts/uploaded-datasets}:/uploaded-datasets
+  h5ad-importer:
+    build: { context: ., dockerfile: infra/science/h5ad/Dockerfile }
+    user: "${CELLORAS_WORKER_UID:-1000}:${CELLORAS_WORKER_GID:-1000}"
+    restart: unless-stopped
+    cpus: 1.0
+    mem_limit: 4g
+    read_only: true
+    tmpfs: ["/tmp:rw,nosuid,nodev,size=256m"]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    environment:
+      DATABASE_URL: postgresql://celloras:${APP_DB_PASSWORD:?Required}@postgres:5432/celloras
+      CELLORAS_UPLOAD_DIR: /uploads
+      CELLORAS_UPLOADED_DATASET_DIR: /uploaded-datasets
+      CELLORAS_H5AD_TIMEOUT_SECONDS: 900
+      CELLORAS_H5AD_MEMORY_GIB: 3
+    volumes:
+      - ${CELLORAS_UPLOAD_DIR:-./.artifacts/dataset-uploads}:/uploads
+      - ${CELLORAS_UPLOADED_DATASET_DIR:-./.artifacts/uploaded-datasets}:/uploaded-datasets
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      upload-storage-init: { condition: service_completed_successfully }
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import json,time;h=json.load(open('/uploads/.worker-health.json'));assert h['status']=='ready' and time.time()-h['updatedAt']<45",
+        ]
+      interval: 15s
+      timeout: 3s
+      retries: 3
   postgres:
     image: postgres:17.11-alpine
     environment:
@@ -138,8 +188,13 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
   app:
+    user: "${CELLORAS_WORKER_UID:-1000}:${CELLORAS_WORKER_GID:-1000}"
     build: { context: ., target: runtime }
     environment:
+      CELLORAS_H5AD_DEMO_FILE: ${CELLORAS_H5AD_DEMO_FILE:-}
+      CELLORAS_H5AD_DEMO_SHA256: ${CELLORAS_H5AD_DEMO_SHA256:-}
+      CELLORAS_UPLOAD_DIR: /uploads
+      CELLORAS_UPLOADED_DATASET_DIR: /uploaded-datasets
       CELLORAS_DATASET_DIR: /datasets
       CELLORAS_AGENT_RUNTIME: ${CELLORAS_AGENT_RUNTIME:-openshell}
       CELLORAS_REFERENCE_PROVIDER: ${CELLORAS_REFERENCE_PROVIDER:-published}
@@ -156,9 +211,12 @@ services:
       KEYCLOAK_CLIENT_ID: celloras
       KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET:?Required}
     volumes:
+      - ${CELLORAS_UPLOAD_DIR:-./.artifacts/dataset-uploads}:/uploads
+      - ${CELLORAS_UPLOADED_DATASET_DIR:-./.artifacts/uploaded-datasets}:/uploaded-datasets:ro
       - ${CELLORAS_DATASET_DIR:-./.artifacts/scientific-data}:/datasets:ro
     ports: ["127.0.0.1:3100:3100"]
     depends_on:
+      upload-storage-init: { condition: service_completed_successfully }
       migrate: { condition: service_completed_successfully }
       keycloak: { condition: service_healthy }
     healthcheck:

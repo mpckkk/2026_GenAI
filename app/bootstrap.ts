@@ -1,5 +1,8 @@
 import { PostgresAnalysis } from "./adapters/analysis";
-import { LocalScientificData } from "./adapters/scientific-data.mjs";
+import { ProjectScientificData } from "./adapters/project-scientific-data.mjs";
+import { database } from "./adapters/database";
+import { PostgresDatasetUploads } from "./adapters/dataset-upload";
+import { DatasetUploadService } from "./services/dataset-upload";
 import { AnalysisService } from "./services/analysis";
 import "server-only";
 import { KeycloakAuth } from "./adapters/auth";
@@ -35,9 +38,13 @@ export const services = {
     new PostgresMarkerImports(),
     plants,
   ),
+  datasetUploads: new DatasetUploadService(
+    access,
+    new PostgresDatasetUploads(),
+  ),
   analysis: new AnalysisService(
     access,
-    new PostgresAnalysis(new LocalScientificData()),
+    new PostgresAnalysis(new ProjectScientificData({ database })),
   ),
   chat,
   annotation: new AnnotationService(access, chat),

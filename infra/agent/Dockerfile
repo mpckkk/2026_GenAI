@@ -26,7 +26,7 @@ COPY third_party/meterless-hmem/README.md ./third_party/meterless-hmem/README.md
 COPY app/adapters/marker-reference.mjs ./app/adapters/marker-reference.mjs
 COPY app/services/marker-evidence.mjs ./app/services/marker-evidence.mjs
 COPY data/references/ ./data/references/
-COPY app/adapters/annotation-engine.mjs app/adapters/scientific-data.mjs app/adapters/literature.mjs ./app/adapters/
+COPY app/adapters/project-scientific-data.mjs app/adapters/annotation-engine.mjs app/adapters/scientific-data.mjs app/adapters/literature.mjs ./app/adapters/
 COPY app/services/analysis-tools.mjs ./app/services/analysis-tools.mjs
 COPY data/datasets/ ./data/datasets/
 COPY data/literature/ ./data/literature/

@@ -10,7 +10,10 @@ export class ScientificDataError extends Error {
 }
 
 export class LocalScientificData implements ScientificData {
-  constructor(options?: { directory?: string });
+  constructor(options?: {
+    directory?: string;
+    entries?: { id: string; manifestSha256: string }[];
+  });
   health: ScientificData["health"];
   catalog: ScientificData["catalog"];
   run: ScientificData["run"];

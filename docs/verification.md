@@ -1,5 +1,15 @@
 # Foundation verification — 2026-10-23
 
+## Owned H5AD upload and local import — 2026-10-26
+
+- Applied migration `010_dataset_uploads.sql` to the real local PostgreSQL database. Started Keycloak and the bounded Linux H5AD import container; its heartbeat is exposed in service health.
+- A real Keycloak browser session downloaded the checksum-verified 28,919,346-byte soybean H5AD, created an experiment, uploaded it in 8 MiB chunks, paused after 16 MiB, reloaded, rejected a different same-name file, resumed, selected the matrix/genes/groups/UMAP and reached ready. The imported dataset contains 7,496 nuclei, 40,127 genes and 12 source groups. A separately registered account received 404 for the upload. The download and imported source SHA-256 both matched `f4c9395d190ce8e073e36ee531664c82e8bd7adaf9b29dfe64fa593088c74890`.
+- Bad chunk checksums returned 400 and stale offsets returned 409. A separate owned upload received an additional 34-byte uncommitted tail after its first 8 MiB. The stored offset remained unchanged; resuming truncated that tail and produced the exact original file checksum, followed by successful real inspection. This exercises recovery across file bytes, database offsets, HTTP and the import worker.
+- The scoped scientific provider read the ready imported bundle and executed the actual annotation engine: 7 suggested, 1 ambiguous and 4 unresolved groups, matching the original root data. The local engine check used the configured published reference; it does not establish a live Zetaris/agent workflow for the new upload. Foreign owner, foreign project and a substituted public dataset ID were denied. The existing public catalog still contained only its original dataset and returned all 7,496 points.
+- Host production Next.js build, TypeScript and lint passed. The local production build's readiness endpoint returned 200. Desktop/mobile browser checks and receipts are in ignored `.artifacts/h5ad-ui/`; no sessions or traces are committed. Public deployment and a real uploaded-data agent conversation are a separate acceptance gate.
+- Initial browser creation failed with PostgreSQL SQLSTATE `53100`: Docker's guest disk was full. Removing individually identified, reclaimable old Celloras build-cache records restored space without deleting containers, images or volumes. The storage-initializer now uses the existing Node base image rather than an unnecessary dependency install.
+
+
 ## Technical companion and actual agent screenshot — 2026-10-26
 
 - Added a separate nine-slide technical deck with source diagrams, actual Zetaris and H-MEM roles, numerical annotation, ownership/storage boundaries, the supplied judging weights and current gaps. H5AD upload remains explicitly in progress at this snapshot.

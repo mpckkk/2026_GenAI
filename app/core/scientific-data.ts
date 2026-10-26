@@ -12,13 +12,21 @@ export interface ScientificDataset {
   nCells: number;
   nGenes: number;
   artifactVersion: string;
-  source: { accession: string; url: string; paperUrl: string; sha256: string };
+  source: {
+    accession: string;
+    url: string;
+    paperUrl: string;
+    sha256: string;
+    kind?: "uploaded-h5ad";
+    filename?: string;
+  };
 }
 
 export interface ScientificCluster {
   id: string;
   nCells: number;
-  publishedLabel: string;
+  publishedLabel: string | null;
+  sourceValue?: string;
 }
 
 export interface ScientificPoint {

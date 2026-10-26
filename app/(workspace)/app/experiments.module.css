@@ -45,6 +45,21 @@
 .heading > .primaryButton {
   flex-shrink: 0;
 }
+.headingActions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 9px;
+}
+@media (max-width: 900px) {
+  .heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .headingActions {
+    flex-wrap: wrap;
+  }
+}
 .primaryButton:hover:not(:disabled) {
   background: #194620;
 }

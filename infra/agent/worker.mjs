@@ -1,4 +1,5 @@
 import { LocalScientificData } from "../../app/adapters/scientific-data.mjs";
+import { ProjectScientificData } from "../../app/adapters/project-scientific-data.mjs";
 import { MarkerAnnotationEngine } from "../../app/adapters/annotation-engine.mjs";
 import { CuratedLiterature } from "../../app/adapters/literature.mjs";
 import { runAnalysis } from "../../app/services/analysis-tools.mjs";
@@ -34,6 +35,10 @@ const runtime =
 const references = configuredReferences();
 const markerReference = references.marker;
 const scientific = new LocalScientificData();
+const projectScientific = new ProjectScientificData({
+  database: pool,
+  publicData: scientific,
+});
 const literature = new CuratedLiterature();
 const annotation = new MarkerAnnotationEngine({
   scientificData: scientific,
@@ -233,7 +238,11 @@ async function claim() {
     if (binding.rows[0]) {
       try {
         snapshot.dataset =
-          (await scientific.catalog()).find(
+          (
+            await projectScientific
+              .forProject(turn.owner_id, turn.project_id)
+              .catalog()
+          ).find(
             (d) =>
               d.id === binding.rows[0].dataset_id &&
               d.artifactVersion === binding.rows[0].artifact_version,
@@ -421,6 +430,14 @@ async function execute(turn) {
       return output;
     };
     const snapshot = turn.context_snapshot;
+    const scopedScientific = projectScientific.forProject(
+      turn.owner_id,
+      turn.project_id,
+    );
+    const scopedAnnotation = new MarkerAnnotationEngine({
+      scientificData: scopedScientific,
+      loadReference: references.load,
+    });
     const completedCards = [];
     let steps = 0,
       lookedUp = false;
@@ -433,9 +450,9 @@ async function execute(turn) {
       log("tool.started", { turnId: turn.id, tool: action.operation });
       const result = await runAnalysis(
         pool,
-        scientific,
+        scopedScientific,
         literature,
-        annotation,
+        scopedAnnotation,
         {
           projectId: turn.project_id,
           ownerId: turn.owner_id,

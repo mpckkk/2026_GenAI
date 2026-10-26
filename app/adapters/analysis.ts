@@ -1,6 +1,6 @@
 import "server-only";
 import { database } from "./database";
-import type { ScientificData } from "../core/scientific-data";
+import type { ProjectScientificData } from "./project-scientific-data.mjs";
 import { AnalysisError, analysisRun } from "../core/analysis.mjs";
 import type {
   AnalysisWorkspace,
@@ -24,7 +24,7 @@ async function requireOwner(userId: string, projectId: string) {
   if (!owned.rows[0]) throw new ProjectNotFoundError();
 }
 export class PostgresAnalysis implements AnalysisRepository {
-  constructor(private readonly data: ScientificData) {}
+  constructor(private readonly data: ProjectScientificData) {}
   async workspace(
     userId: string,
     projectId: string,
@@ -39,10 +39,12 @@ export class PostgresAnalysis implements AnalysisRepository {
         dataset: null,
         available: false,
         reason:
-          "This experiment has no dataset attached. Open the soybean root demo to explore real cells.",
+          "This experiment has no dataset attached. Upload an H5AD dataset to explore your cells.",
       };
     try {
-      const dataset = (await this.data.catalog()).find(
+      const dataset = (
+        await this.data.forProject(userId, projectId).catalog()
+      ).find(
         (d) =>
           d.id === attached.rows[0].dataset_id &&
           d.artifactVersion === attached.rows[0].artifact_version,
@@ -59,7 +61,9 @@ export class PostgresAnalysis implements AnalysisRepository {
     }
   }
   async startDemo(userId: string) {
-    const dataset = (await this.data.catalog()).find((d) => d.id === DEMO);
+    const dataset = (await this.data.publicData.catalog()).find(
+      (d) => d.id === DEMO,
+    );
     if (!dataset) throw new AnalysisError("scientific_data_unavailable");
     const c = await database().connect();
     try {
@@ -135,7 +139,7 @@ export class PostgresAnalysis implements AnalysisRepository {
       !("payload" in result)
     )
       throw new AnalysisError("analysis_input_invalid");
-    const map = await this.data.run({
+    const map = await this.data.forProject(userId, projectId).run({
       datasetId: result.dataset.id,
       operation: "inspect",
     });

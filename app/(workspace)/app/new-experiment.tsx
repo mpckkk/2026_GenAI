@@ -84,7 +84,7 @@ export function NewExperiment({ error }: { error?: string }) {
   return (
     <>
       <button
-        className={styles.primaryButton}
+        className={styles.secondaryButton}
         type="button"
         onClick={open}
         disabled={!hydrated}
@@ -162,7 +162,8 @@ function CreationFields({
         </button>
       </div>
       <p id="create-description">
-        Add sample details and markers in the conversation.
+        Start a conversation for your research. You can add a dataset or marker
+        list inside the experiment.
       </p>
       <label className={styles.nameLabel} htmlFor="project-name">
         Experiment name

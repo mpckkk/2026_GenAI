@@ -52,6 +52,9 @@ function publicDataset(manifest, artifactVersion) {
       url: d.source.url,
       paperUrl: d.source.paperUrl,
       sha256: d.source.sha256,
+      ...(d.source.kind
+        ? { kind: d.source.kind, filename: d.source.filename }
+        : {}),
     },
   };
 }
@@ -59,7 +62,7 @@ const expressionMethod = {
   id: "rna-log1p-cp10k-v1",
   label: "Raw RNA counts · log1p counts per 10,000",
   description:
-    "For each nucleus, divide each raw RNA gene count by that nucleus's total raw RNA count, multiply by 10,000 and take log1p. Include zeros in group means. Detection is the fraction of nuclei with raw count > 0. Source RNA.data duplicates raw counts, so it is not treated as normalized expression.",
+    "For each nucleus, divide each raw RNA gene count by that nucleus's total raw RNA count, multiply by 10,000 and take log1p. Include zeros in group means. Detection is the fraction of nuclei with raw count > 0. The selected raw-count layer is normalized for these displays; a pre-normalized matrix is not used as raw counts.",
   assay: "RNA",
   layer: "counts",
   parameters: {
@@ -71,7 +74,8 @@ const expressionMethod = {
 };
 
 export class LocalScientificData {
-  constructor({ directory = process.env.CELLORAS_DATASET_DIR } = {}) {
+  constructor({ directory = process.env.CELLORAS_DATASET_DIR, entries } = {}) {
+    this.explicitEntries = entries;
     // This is an explicitly configured, read-only runtime mount. Turbopack must
     // not trace the working directory (including local secrets and source data)
     // while trying to resolve an environment-dependent external dataset path.
@@ -89,7 +93,9 @@ export class LocalScientificData {
         "Scientific dataset storage is not configured",
       );
     try {
-      const catalog = await json(path.join(this.directory, "catalog.json"));
+      const catalog = this.explicitEntries
+        ? { version: 1, datasets: this.explicitEntries }
+        : await json(path.join(this.directory, "catalog.json"));
       if (
         catalog.version !== 1 ||
         !Array.isArray(catalog.datasets) ||
@@ -162,8 +168,11 @@ export class LocalScientificData {
         manifest.dataset.id !== entry.id ||
         manifest.backend !== "local-sparse-cpu" ||
         manifest.endianness !== "little" ||
-        manifest.files["source/original.rds.gz"].sha256 !==
-          manifest.dataset.source.sha256
+        manifest.files[
+          manifest.dataset.source.kind === "uploaded-h5ad"
+            ? "source/original.h5ad"
+            : "source/original.rds.gz"
+        ]?.sha256 !== manifest.dataset.source.sha256
       )
         throw new Error("Invalid manifest/source provenance");
       const fingerprints = { "manifest.json": await stat(manifestPath) };
@@ -285,15 +294,28 @@ export class LocalScientificData {
       return {
         ...base,
         method: {
-          id: "published-seurat-embedding-v1",
-          label: "Published atlas · preserved clusters and UMAP",
+          id:
+            data.dataset.source.kind === "uploaded-h5ad"
+              ? "uploaded-h5ad-embedding-v1"
+              : "published-seurat-embedding-v1",
+          label:
+            data.dataset.source.kind === "uploaded-h5ad"
+              ? "Your dataset · preserved groups and UMAP"
+              : "Published atlas · preserved clusters and UMAP",
           description:
-            "Display the authors' existing UMAP and seurat_clusters without recomputing an embedding or assigning biological cell types. Original PCA, Harmony, metadata and RDS are retained with checksums.",
+            data.dataset.source.kind === "uploaded-h5ad"
+              ? "Display the uploaded dataset’s selected groups and existing UMAP. Importing does not recompute an embedding or assign cell types. The original H5AD and selection are retained with checksums."
+              : "Display the authors' existing UMAP and seurat_clusters without recomputing an embedding or assigning biological cell types. Original PCA, Harmony, metadata and RDS are retained with checksums.",
           assay: "RNA",
           layer: "counts",
           parameters: {
-            embedding: "published UMAP",
-            clusterField: "seurat_clusters",
+            embedding:
+              data.dataset.source.kind === "uploaded-h5ad"
+                ? "uploaded UMAP"
+                : "published UMAP",
+            clusterField:
+              data.manifest.importer?.selection?.groupColumn ||
+              "seurat_clusters",
             backend: "local-sparse-cpu",
           },
         },

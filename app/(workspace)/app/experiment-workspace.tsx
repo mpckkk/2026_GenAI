@@ -59,7 +59,9 @@ export function ExperimentWorkspace({
           plants.find((item) => item.id === science.dataset?.speciesId)
             ?.commonName ?? science.dataset.species,
           science.dataset.tissue,
-          "Published dataset",
+          science.dataset.source.kind === "uploaded-h5ad"
+            ? "Your dataset"
+            : "Published dataset",
         ].join(" · ")
       : "Add sample context";
 

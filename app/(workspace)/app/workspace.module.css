@@ -441,7 +441,8 @@
   margin-top: 28px;
   max-width: 400px;
 }
-.chatSuggestions button {
+.chatSuggestions button,
+.chatSuggestions .datasetStart {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -453,13 +454,16 @@
   border: 1px solid #e4e7e4;
   border-radius: 8px;
 }
-.chatSuggestions button span {
+.chatSuggestions button span,
+.chatSuggestions .datasetStart span {
   flex: 1;
 }
-.chatSuggestions button svg {
+.chatSuggestions button svg,
+.chatSuggestions .datasetStart svg {
   flex-shrink: 0;
 }
-.chatSuggestions button:hover:not(:disabled) {
+.chatSuggestions button:hover:not(:disabled),
+.chatSuggestions .datasetStart:hover {
   background: #f6f8f6;
   border-color: #becbbf;
 }

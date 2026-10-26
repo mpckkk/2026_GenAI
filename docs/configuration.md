@@ -2,16 +2,18 @@
 
 Celloras separates reviewed application definitions, operator configuration, credentials and research data.
 
-| Setting                                    | Source of truth                                        | Consumer                                          |
-| ------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------- |
-| Enabled plants and suggested tissues       | Versioned `app/plant-catalog.ts`                       | Validated `ConfiguredPlantCatalog`                |
-| URLs, database and Keycloak settings       | Ignored `.env`, explicitly mapped by Compose           | Server-side application adapters                  |
-| Sample context, markers and reviewed calls | PostgreSQL research entries                            | Owned research service and agent context snapshot |
-| Chat prompts, replies and execution state  | PostgreSQL `agent_turns` / `agent_workers`             | Chat service and worker                           |
-| Gateway/provider behavior                  | `infra/agent`, generated private gateway configuration | OpenShell execution adapter                       |
-| Provider bearer credential                 | Private OpenShell gateway credential storage           | Gateway/supervisor provider mediation             |
-| Operator account routing ID and expiry     | Private `agent-metadata.json`                          | Worker and sandbox bootstrap                      |
-| Production secrets                         | Operator-managed secret store                          | Only the service that requires them               |
+| Setting                                       | Source of truth                                        | Consumer                                          |
+| --------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------- |
+| Enabled plants and suggested tissues          | Versioned `app/plant-catalog.ts`                       | Validated `ConfiguredPlantCatalog`                |
+| URLs, database and Keycloak settings          | Ignored `.env`, explicitly mapped by Compose           | Server-side application adapters                  |
+| Sample context, markers and reviewed calls    | PostgreSQL research entries                            | Owned research service and agent context snapshot |
+| Chat prompts, replies and execution state     | PostgreSQL `agent_turns` / `agent_workers`             | Chat service and worker                           |
+| Dataset upload state and explicit selections  | PostgreSQL `dataset_uploads`                           | Owned upload API and H5AD importer                |
+| Original H5AD files and private count bundles | Durable operator-selected directories                  | Importer writes; owned scientific provider reads  |
+| Gateway/provider behavior                     | `infra/agent`, generated private gateway configuration | OpenShell execution adapter                       |
+| Provider bearer credential                    | Private OpenShell gateway credential storage           | Gateway/supervisor provider mediation             |
+| Operator account routing ID and expiry        | Private `agent-metadata.json`                          | Worker and sandbox bootstrap                      |
+| Production secrets                            | Operator-managed secret store                          | Only the service that requires them               |
 
 The initial plant ID is `glycine-max`. Species are stored as data, not SQL enums. Tissue suggestions are not a biological ontology. Genome versions and identifier namespaces are declared sample context; future reference adapters must validate compatibility. Adding a plant requires reviewed references/mappings and evaluation alongside the catalog entry.
 
@@ -75,6 +77,66 @@ npm run agent:verify -- --home=/var/lib/celloras/openshell
 Merge the generated nonsecret runtime settings into the deployment manager’s persisted environment, preserving unrelated settings. Set `CELLORAS_DATASET_DIR=/var/lib/celloras/scientific-data` only after publishing and verifying the dataset catalog, manifest and every file checksum there. Then build/start the app and worker using the same Compose files and project. `CELLORAS_AGENT_HOME` is also accepted by setup and verification. Without `--settings-file`, setup retains the local behavior of updating `.env`; custom homes are supported for Docker, while the Mac MicroVM retains its managed local home.
 
 The production gateway publishes only on host loopback; the worker connects with mTLS. Keep the private agent home, metadata and settings file outside source control. Renewal uses the same durable home, runtime and Compose options, followed by the real probe before worker activation. Renew the current production access credential before **2026-10-30 13:46 UTC**; the server does not hold a refresh credential.
+
+## H5AD uploads and demo download
+
+The `h5ad-importer` service runs separately from the agent. It consumes the PostgreSQL upload queue, inspects the actual H5AD, waits for the user's explicit field selection, then publishes an immutable sparse-count bundle. It needs database access and its two data mounts; it does not use a model credential or execute file-provided code. Migration **010** adds the upload queue. Deploy the migration, app, agent worker and importer together.
+
+| Setting                                       | Host configuration                                                                                     | Container use                                                                 |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| `CELLORAS_UPLOAD_DIR`                         | Local default `.artifacts/dataset-uploads`; production example `/var/lib/celloras/dataset-uploads`     | `/uploads`, writable by app and importer                                      |
+| `CELLORAS_UPLOADED_DATASET_DIR`               | Local default `.artifacts/uploaded-datasets`; production example `/var/lib/celloras/uploaded-datasets` | `/uploaded-datasets`, writable by importer; read-only in app and agent worker |
+| `CELLORAS_H5AD_DEMO_FILE`                     | Exact path visible to the app process; optional                                                        | Example `/datasets/examples/soybean-root-gse270392.h5ad`                      |
+| `CELLORAS_H5AD_DEMO_SHA256`                   | Expected lowercase SHA-256 of that exact sample file                                                   | Required alongside the sample path                                            |
+| `CELLORAS_WORKER_UID` / `CELLORAS_WORKER_GID` | Shared filesystem owner; defaults `1000:1000`                                                          | App, agent worker and importer use the same configured identity               |
+| `CELLORAS_H5AD_TIMEOUT_SECONDS`               | Importer environment, set to `900` in Compose                                                          | Per-file child-process deadline                                               |
+| `CELLORAS_H5AD_MEMORY_GIB`                    | Importer environment, set to `3` in Compose                                                            | Per-file child-process memory limit within the 4 GiB service limit            |
+
+Compose's `upload-storage-init` creates the two upload directory roots and sets their owner/mode. It does not recursively change existing data. The importer has one CPU, a 4 GiB container limit, a read-only root filesystem, a 256 MiB temporary filesystem, dropped capabilities and no privilege escalation. It exposes no HTTP port. The app's upload endpoint receives 8 MiB chunks; configure the reverse proxy to permit that request size.
+
+The host-path variables select bind mounts; Compose supplies `/uploads` and `/uploaded-datasets` to processes inside containers. A host `npm run dev` instead needs actual host paths in its environment. Likewise, `CELLORAS_H5AD_DEMO_FILE` must name an app-visible path: a container path for Compose, an absolute host path for host development.
+
+### Prepare the small soybean sample
+
+Generate the real 29 MB file using the [source conversion instructions](h5ad-source.md#reproduce-the-actual-file). The conversion preserves all 7,496 nuclei, 40,127 genes, original raw counts, cell groups and UMAP from the verified GSE270392 root RDS. It does not manufacture cells or labels, and it is not an author-deposited H5AD.
+
+For the default local dataset mount, copy the generated file into its public-example directory:
+
+```sh
+mkdir -p .artifacts/scientific-data/examples
+cp .artifacts/h5ad-validation/soybean-root-gse270392.h5ad .artifacts/scientific-data/examples/soybean-root-gse270392.h5ad
+```
+
+Set these nonsecret values in the app's environment, preserving other settings:
+
+```dotenv
+CELLORAS_H5AD_DEMO_FILE=/datasets/examples/soybean-root-gse270392.h5ad
+CELLORAS_H5AD_DEMO_SHA256=f4c9395d190ce8e073e36ee531664c82e8bd7adaf9b29dfe64fa593088c74890
+```
+
+That checksum belongs to the verified sample build; a regenerated file has its own receipt and must use its actual checksum. Do not disable verification to accommodate different bytes. The file is served from the existing read-only public-data mount but is not inserted into the scientific catalog.
+
+After authentication, `GET /api/datasets/demo-h5ad` streams this one configured file as `celloras-soybean-root-demo.h5ad`; `HEAD` reports availability and size. The app verifies its hash before serving it and returns `X-Content-SHA256`. No request parameter can select another file. The upload view offers **Download soybean root** when the endpoint is available. Unconfigured downloads return 404; missing or altered files fail explicitly. Private researcher uploads are never served through this endpoint.
+
+Start the importer with the app:
+
+```sh
+docker compose up -d --build h5ad-importer app
+```
+
+For the sample, select raw count matrix `X`, gene index `_index`, group column `seurat_clusters`, embedding `X_umap`, soybean/root and `Wm82v4`. Explicitly confirm raw RNA counts. Import requires existing groups and UMAP; it does not perform read alignment, quality control, clustering or embedding computation. Files can contain other layers, but normalized expression must not be selected as raw counts. Exact gene IDs and the declared species, tissue and genome must match an annotation reference before annotation can run.
+
+### Limits, state and deployment
+
+Uploads are limited to 4 GiB per file and use durable, checksummed chunks. A paused upload resumes from its last committed offset after the same file is selected. Inspection/import accept at most 100,000 cells, 100,000 genes, 100 million nonzero values and 2–100 groups. Raw counts must be finite nonnegative integers, with a positive total for every cell. Existing two-dimensional UMAP coordinates are required. Duplicate gene IDs/coordinates, external or soft HDF5 links, virtual datasets and unsupported encodings fail explicitly. [Detailed format and numerical checks](h5ad-source.md#import-contract-and-resource-limits).
+
+The queue moves through `uploading → inspect_queued → inspecting → awaiting_selection → import_queued → importing → ready`, or `failed`. Every queued file is scoped to its owner and project. The worker verifies the completed source hash before import, checks ownership again at publication and attaches the immutable dataset in the same transaction as `ready`. An experiment keeps one dataset; upload a different one into a new experiment. Private uploads are resolved only through owned project attachments, never the public dataset catalog.
+
+`/app/health` reports **H5AD imports** from a fresh importer heartbeat and the migration check. The heartbeat contains only status and time. Worker logs record upload ID, stage and success/failure. An interrupted import fails after its lease/deadline expires; no unfinished artifact is treated as ready. Original uploads, selected fields and verified imported files are retained. Capacity planning must include staging, the retained original inside the bundle and derived sparse arrays. Retention and backup policy remain operator work.
+
+Before a production release, create and configure both upload directories **outside Dokploy's replaceable checkout**. Publish the sample under `/var/lib/celloras/scientific-data/examples/` and verify its checksum before configuring the download. Preserve the existing `/var/lib/celloras/scientific-data` catalog, OpenShell state, sponsor configuration and PostgreSQL volume. Persist the new environment variables in Dokploy, then deploy using the existing `compose.yaml` + `compose.prod.yaml` project. Do not rely on a checkout-local `.artifacts` path for researcher data.
+
+Local browser upload, the Linux importer and full numerical/map preservation have passed; the imported dataset reproduced the existing annotation results using the local published reference. Public acceptance of a newly uploaded dataset through the agent, Zetaris and H-MEM is still pending. The earlier prepared public dataset/sponsor workflow has separate recorded acceptance. After deployment, verify sample download, upload, import, owned map access, a real agent annotation with Zetaris provenance, saved review and H-MEM recall before treating the new workflow as production-ready. Keep additive schema and uploaded artifacts on rollback; older app versions cannot read new private dataset bindings, so roll forward if those records have been created.
 
 ## Scientific integrations
 

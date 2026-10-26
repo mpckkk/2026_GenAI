@@ -6,7 +6,7 @@
 
 An agent-driven workspace for plant single-cell research, starting with soybean. All work lives on [`celloras.com`](https://github.com/mpckkk/2026_GenAI/tree/celloras.com).
 
-Sign in, open an experiment, and talk with the agent. Save plant/sample context, marker sets, notes and reviewed cell-type decisions as structured conversation entries. PostgreSQL retains the research records and chat history. Generic plant and provider interfaces allow other plants and integrations to be added with appropriate references and validation.
+Sign in and add a single-cell dataset, or open the prepared soybean demo. Explore the cell map with the agent, compare marker evidence, and save plant/sample context, marker sets, notes and reviewed cell-type decisions as structured conversation entries. PostgreSQL retains the research records and chat history. Generic plant and provider interfaces allow other plants and integrations to be added with appropriate references and validation.
 
 The implemented chat runtime uses Codex CLI inside NVIDIA OpenShell. Real model responses have been verified through OpenShell v0.1.5 both in a Linux MicroVM on Apple Silicon and on the native Ubuntu production server. Browser acceptance is recorded separately in [verification](docs/verification.md).
 
@@ -23,13 +23,25 @@ The hackathon submission uses **Zetaris and the Meterless H-MEM Engine** in the 
 
 The complete public workflow passed: annotation → measured-marker plot → researcher review → H-MEM recall → correction, with Zetaris and H-MEM in the same experiment. [Open the prepared demo](https://celloras.com/app/projects/786e3d61-c1b5-4255-aae3-0d3d58f69320) after using **Use demo credentials** on [login](https://celloras.com/login). Follow the [short walkthrough](docs/demo.md#open-the-ready-demo).
 
-See the [sponsor explanation and tests](docs/sponsor-explanation.md), [setup](docs/configuration.md#sponsor-integrations) and [submission preparation](docs/submission.md). Reproduce the complete journey with `npm run demo:workflow` using the [documented environment](docs/demo.md#prepare-the-complete-workflow). The [pitch deck is ready in PowerPoint and PDF](docs/pitchdeck/README.md); the final video remains to be recorded.
+See the [sponsor explanation and tests](docs/sponsor-explanation.md), [setup](docs/configuration.md#sponsor-integrations) and [submission preparation](docs/submission.md). Reproduce the complete journey with `npm run demo:workflow` using the [documented environment](docs/demo.md#prepare-the-complete-workflow). The [pitch deck](docs/pitchdeck/README.md) and separate [technical deck](docs/technical-deck/README.md) are available in PowerPoint and PDF; the final video remains to be recorded.
 
 Cursor and NVIDIA are optional under the supplied submission rules. The existing OpenShell runtime is working. Nightshift has a selectable adapter but no verified live inference; Nemotron, NeMo Files and NVIDIA tracing remain optional pending work.
 
 ## Research workflow
 
-Start with **Explore soybean root demo**: 7,496 real nuclei, 12 source clusters and suggested next actions in chat. Choose **Annotate all clusters**, inspect a candidate's measured marker evidence and alternatives, then accept, correct, reject or leave its label unresolved with your rationale. You can also select a cluster, inspect expression, retrieve cited evidence and save an interpretation. Dataset import instructions are in [dataset import](docs/dataset-import.md); the walkthrough is in [the demo guide](docs/demo.md).
+**Bring a dataset:** choose **Add dataset** and select an `.h5ad` file. For a small real example, sign in and use **Download soybean root** in the upload view. The authenticated `/api/datasets/demo-h5ad` endpoint serves the configured 29 MB sample; the download button appears only when that file is available.
+
+1. Choose the file and **Upload & check file**. Transfers use 8 MiB chunks; pause and resume the same file without restarting the upload.
+2. Choose its raw-count matrix, exact gene IDs, existing cell groups and UMAP. Confirm tissue, genome build and that the selected matrix contains raw RNA counts. For the sample, use `X`, **Gene index**, `seurat_clusters`, `X_umap`, **root** and `Wm82v4`.
+3. Open the imported experiment, inspect the cell map and ask Celloras to suggest cell types. Compare the measured marker evidence, then accept, correct, reject or leave a label unresolved with your rationale. Further questions can retrieve published evidence and recall saved decisions.
+
+The sample contains 7,496 real soybean root nuclei and 40,127 genes. It is a lossless conversion of the published GSE270392 RDS into H5AD, preserving raw RNA counts, existing groups and the original UMAP. It is not an author-deposited H5AD or raw sequencing reads. [Source, checksums and reproduction](docs/h5ad-source.md).
+
+Uploads accept files up to **4 GiB**, with at most 100,000 cells, 100,000 genes, 100 million nonzero counts and 2–100 existing groups. An existing two-dimensional UMAP is required. Import does not perform read alignment, QC, clustering or UMAP. The current annotation panel supports **soybean root, Wm82v4, exact Glyma IDs**; other tissues/builds can be imported for exploration but are not silently mapped to this panel.
+
+Local browser upload, Linux import and exact count/map preservation have passed. The imported dataset also reproduced the 7 suggested, 1 ambiguous and 4 unresolved groups with the local published reference. The new upload → agent → Zetaris → review journey on the public deployment remains to be verified; the existing prepared public workflow above has already passed.
+
+**Start immediately:** **Explore soybean root demo** opens the existing published dataset with suggested next actions in chat. Choose **Annotate all clusters**, inspect expression or retrieve papers. The administrator's original RDS import instructions remain in [dataset import](docs/dataset-import.md); the walkthrough is in [the demo guide](docs/demo.md).
 
 For your own marker table, open an experiment and choose **Upload markers** above the composer. Upload a CSV exported from Excel or choose **Use example**, check the group/gene columns and sample context, then import and select **Find cell-type evidence**. The original file, grouped genes and context are saved together. See [CSV format and limits](docs/marker-upload.md).
 
@@ -57,7 +69,7 @@ Use Node 22.22.0 (`.nvmrc`), npm, Docker Compose and an installed Codex CLI. Sta
 ```sh
 npm ci
 npm run setup
-docker compose up -d --build app
+docker compose up -d --build h5ad-importer app
 ```
 
 To enable the real root demo, download the GEO file linked in the dataset guide and import its verified public source before opening it (requires Docker and the pinned R image described in the import guide):
@@ -66,7 +78,7 @@ To enable the real root demo, download the GEO file linked in the dataset guide 
 npm run data:import -- --source /absolute/path/GSE270392_Gm_atlas_Root.rna.seurat.obj.rds.gz
 ```
 
-Compose mounts the directory selected by `CELLORAS_DATASET_DIR` (locally `.artifacts/scientific-data`) read-only into the app and worker. It does not mount the private OpenShell directory as scientific data. The curated paper collection is bundled; `npm run literature:import` explicitly refreshes it from verified primary sources. Large dataset bytes remain outside Git.
+Compose mounts the directory selected by `CELLORAS_DATASET_DIR` (locally `.artifacts/scientific-data`) read-only into the app and worker. The separate `h5ad-importer` service processes owned uploads; it needs no model credential. Upload staging and private imported bundles use `CELLORAS_UPLOAD_DIR` and `CELLORAS_UPLOADED_DATASET_DIR`. Configure the optional downloadable sample using the [H5AD setup](docs/configuration.md#h5ad-uploads-and-demo-download). It does not mount the private OpenShell directory as scientific data. The curated paper collection is bundled; `npm run literature:import` explicitly refreshes it from verified primary sources. Large dataset bytes remain outside Git.
 
 Open [localhost:3100](http://localhost:3100). Keycloak serves [login](http://localhost:3100/login) and [registration](http://localhost:3100/register), using email/password without first/last name fields. The local Keycloak admin is `admin`; its generated password is `KEYCLOAK_ADMIN_PASSWORD` in `.env`.
 
@@ -103,10 +115,12 @@ Compose persists application data in `celloras_postgres-data`. `docker compose d
 For host app development, stop the Compose `app` service and run:
 
 ```sh
-docker compose up -d postgres keycloak
+docker compose up -d postgres keycloak h5ad-importer
 npm run db:migrate
 npm run dev
 ```
+
+Host development also needs the upload paths in `.env`; use an absolute host path for `CELLORAS_H5AD_DEMO_FILE`, while the Compose app uses its container path. See [H5AD configuration](docs/configuration.md#h5ad-uploads-and-demo-download).
 
 Ports are app 3100, Keycloak 8180 and PostgreSQL 5434. Changing the app URL also requires updating Keycloak's exact callback/logout URLs. For an existing realm, `npm run auth:configure` applies the current theme and signup configuration while preserving user data. `npm run brand:sync` copies the supplied logo and Celloras favicon into the auth theme; builds run it automatically.
 

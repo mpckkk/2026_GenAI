@@ -311,7 +311,11 @@ export function ScientificCard({
                 ? "Gene expression"
                 : "Expression comparison"
         }
-        detail="Published dataset"
+        detail={
+          run.result.dataset.source.kind === "uploaded-h5ad"
+            ? "Your dataset"
+            : "Published dataset"
+        }
       />
       {loaded ? (
         <>
@@ -475,7 +479,7 @@ function Umap({
         ref={canvas}
         className={styles.canvas}
         role="img"
-        aria-label={`Published UMAP of ${number.format(points.length)} nuclei${expression ? `, colored by ${expression.gene} expression` : ", with selectable source clusters"}. Select a cluster using the buttons below.`}
+        aria-label={`UMAP of ${number.format(points.length)} cells or nuclei${expression ? `, colored by ${expression.gene} expression` : ", with selectable groups"}. Select a group using the buttons below.`}
         onPointerMove={(event) => setHover(nearest(event))}
         onPointerLeave={() => setHover(null)}
         onClick={(event) => {
@@ -680,7 +684,7 @@ export function ScientificResultContent({
       <div className={styles.body}>
         <h3>
           {result.operation === "inspect"
-            ? "Explore the soybean root"
+            ? "Explore your cell map"
             : result.operation === "markers"
               ? `Genes enriched in cluster ${result.payload.cluster}`
               : result.operation === "expression"
@@ -688,13 +692,20 @@ export function ScientificResultContent({
                 : "Compare expression across groups"}
         </h3>
         <p className={styles.caption}>
-          {dataset.species} · {dataset.tissue} · {dataset.source.accession}
+          {dataset.species} · {dataset.tissue} ·{" "}
+          {dataset.source.kind === "uploaded-h5ad"
+            ? dataset.source.filename
+            : dataset.source.accession}
         </p>
         {result.operation === "inspect" && (
           <div className={styles.facts}>
             <div>
               <strong>{number.format(dataset.nCells)}</strong>
-              <span>nuclei</span>
+              <span>
+                {dataset.source.kind === "uploaded-h5ad"
+                  ? "cells / nuclei"
+                  : "nuclei"}
+              </span>
             </div>
             <div>
               <strong>{result.payload.clusters.length}</strong>
@@ -801,7 +812,7 @@ export function ScientificResultContent({
                             onClick={() =>
                               onRun({
                                 label: `Show ${gene.geneId}`,
-                                prompt: `Show ${gene.geneId} expression on the published UMAP for ${dataset.title}. Explain expression beyond the selected cluster.`,
+                                prompt: `Show ${gene.geneId} expression on the saved UMAP for ${dataset.title}. Explain expression beyond the selected cluster.`,
                                 action: {
                                   operation: "expression",
                                   datasetId: dataset.id,
@@ -923,23 +934,31 @@ export function ScientificResultContent({
             <code>{dataset.source.sha256}</code>
           </dd>
         </dl>
-        <p>
-          <a
-            href={dataset.source.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Source file (GEO) ↗
-          </a>
-          {" · "}
-          <a
-            href={dataset.source.paperUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Atlas paper ↗
-          </a>
-        </p>
+        {(dataset.source.url || dataset.source.paperUrl) && (
+          <p>
+            {dataset.source.url && (
+              <a
+                href={dataset.source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {dataset.source.kind === "uploaded-h5ad"
+                  ? "Uploaded source file"
+                  : "Source file (GEO) ↗"}
+              </a>
+            )}
+            {dataset.source.url && dataset.source.paperUrl ? " · " : null}
+            {dataset.source.paperUrl && (
+              <a
+                href={dataset.source.paperUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Atlas paper ↗
+              </a>
+            )}
+          </p>
+        )}
         {result.warnings.length > 0 && (
           <ul>
             {result.warnings.map((warning) => (

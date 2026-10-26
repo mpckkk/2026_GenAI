@@ -22,11 +22,16 @@ export default async function ExperimentsPage({
           <h1>Experiments</h1>
           <p>
             {projects.length
-              ? "Pick up where you left off, or start a new conversation."
-              : "Your research conversations, in one place."}
+              ? "Continue your analysis, or bring a new dataset."
+              : "Start with your data. Explore the cells with Celloras."}
           </p>
         </div>
-        <NewExperiment error={error} />
+        <div className={styles.headingActions}>
+          <NewExperiment error={error} />
+          <Link href="/app/upload" className={styles.primaryButton}>
+            <WorkspaceIcon name="plus" size={17} /> Add dataset
+          </Link>
+        </div>
       </header>
       <section aria-label="Your experiments" className={styles.saved}>
         {projects.length ? (
@@ -59,10 +64,10 @@ export default async function ExperimentsPage({
             <span className={styles.emptyIcon}>
               <WorkspaceIcon name="chat" size={25} />
             </span>
-            <h2>Start your first experiment</h2>
+            <h2>Meet the cells in your dataset</h2>
             <p>
-              Create a conversation for your research, or try the soybean demo
-              below.
+              Add a soybean .h5ad file to explore your cell map and get
+              evidence-backed cell-type suggestions.
             </p>
           </div>
         )}

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -110,6 +111,8 @@ function failedTurnMessage(code: string | null) {
       return "This analysis needs a valid source cluster or gene selection. Choose a group on the cell map or a gene in the marker table, then try again.";
     case "scientific_gene_missing":
       return "The requested gene was not found in this dataset. Select a gene from its marker table, or check the exact gene ID and genome build.";
+    case "annotation_reference_incompatible":
+      return "This dataset’s tissue or genome build does not match the available annotation reference (soybean root, Wm82v4). You can explore the cell map and gene expression; cell-type suggestions need a compatible reference.";
     case "analysis_unavailable":
       return "This saved analysis is unavailable to this conversation. Open the dataset overview and start a new analysis.";
     case "literature_unavailable":
@@ -551,15 +554,19 @@ export function AgentChat({
     },
   ];
   const dataset = science.dataset;
+  const annotationCompatible =
+    dataset?.speciesId === "glycine-max" &&
+    dataset.tissue === "root" &&
+    dataset.genomeBuild === "Wm82v4";
   const cluster =
     selection?.datasetId === dataset?.id ? selection?.cluster : null;
   let nextDescription =
-    "Start with the published cell map. Then choose a group to investigate its genes.";
+    "Start with your cell map. Then choose a group to investigate its genes.";
   let nextActions: GuidedAction[] = dataset
     ? [
         {
           label: "Explore cell groups",
-          prompt: `Show the published UMAP and source clusters for ${dataset.title}. Help me choose a group to investigate and distinguish source cluster IDs from biological annotations.`,
+          prompt: `Show the saved UMAP and cell groups for ${dataset.title}. Help me choose a group to investigate and distinguish existing group IDs from biological annotations.`,
           action: { operation: "inspect", datasetId: dataset.id },
         },
       ]
@@ -575,14 +582,14 @@ export function AgentChat({
             : [];
     const literature: GuidedAction = {
       label: "Find papers",
-      prompt: `Find compatible published evidence for this soybean root analysis${cluster ? ` of source cluster ${cluster}` : ""}${genes.length ? ` and genes ${genes.join(", ")}` : ""}. Distinguish study context from evidence supporting a cell identity, and explain gaps.`,
+      prompt: `Find compatible published evidence for this ${dataset.species} ${dataset.tissue} analysis${cluster ? ` of source cluster ${cluster}` : ""}${genes.length ? ` and genes ${genes.join(", ")}` : ""}. Distinguish study context from evidence supporting a cell identity, and explain gaps.`,
       action: {
         operation: "literature",
         datasetId: dataset.id,
         ...(genes.length ? { genes } : {}),
         query: genes.length
-          ? `soybean root markers annotation ${genes.join(" ")}`
-          : "soybean root single cell atlas annotation methods",
+          ? `${dataset.species} ${dataset.tissue} markers annotation ${genes.join(" ")}`
+          : `${dataset.species} ${dataset.tissue} single cell atlas annotation methods`,
       },
     };
     if (latestScience.operation === "dotplot") {
@@ -655,6 +662,7 @@ export function AgentChat({
   }
   if (
     dataset &&
+    annotationCompatible &&
     !latestAnswer?.responseDocument?.blocks.some(
       (block) => block.type === "annotation_result",
     )
@@ -711,6 +719,13 @@ export function AgentChat({
                 "The dataset service is currently unavailable."}{" "}
               Earlier results remain saved.{" "}
               <a href="/app/health">Check service status</a>
+            </div>
+          )}
+          {dataset && !annotationCompatible && (
+            <div className={styles.chatNotice} role="status">
+              Your cell map and gene expression are ready to explore. Cell-type
+              annotation currently requires soybean root data with genome build
+              Wm82v4; this dataset is {dataset.tissue}, {dataset.genomeBuild}.
             </div>
           )}
           {pollError && (
@@ -916,16 +931,26 @@ export function AgentChat({
               </p>
               <h3>
                 {dataset
-                  ? "Your soybean root dataset is ready."
-                  : "Let’s give your research some context."}
+                  ? "Your cells are ready to explore."
+                  : "Start with your cells."}
               </h3>
               <p>
                 {dataset
-                  ? "Start with a map of the published nuclei. Choose a group, explore its genes, and follow the evidence. No prompt needed."
-                  : "Upload a marker CSV below, try the soybean example, or discuss a question with Celloras."}
+                  ? "Explore the cell map or ask Celloras to suggest cell types. Each result brings the measurements and evidence into this conversation."
+                  : "Add a single-cell dataset to see your cell map and investigate what each group could be. You can also bring a marker list or ask a research question."}
               </p>
               {!dataset && (
                 <div className={styles.chatSuggestions}>
+                  <Link
+                    href={`/app/upload?projectId=${projectId}`}
+                    className={styles.datasetStart}
+                  >
+                    <WorkspaceIcon name="plus" size={18} />
+                    <span>
+                      Add dataset <small>· .h5ad</small>
+                    </span>
+                    <WorkspaceIcon name="chevron" size={15} />
+                  </Link>
                   <button type="button" onClick={onOpenContext}>
                     <WorkspaceIcon name="plus" size={18} />
                     <span>Add sample context</span>
@@ -1030,6 +1055,16 @@ export function AgentChat({
           )}
           <div className={styles.chatComposerFooter}>
             <div className={styles.composerTools}>
+              {!dataset && (
+                <Link
+                  className={styles.composerContext}
+                  href={`/app/upload?projectId=${projectId}`}
+                  title="Add a single-cell dataset"
+                >
+                  <WorkspaceIcon name="plus" size={16} />
+                  <span>Add dataset</span>
+                </Link>
+              )}
               <MarkerUpload
                 projectId={projectId}
                 canAsk={canRun}
