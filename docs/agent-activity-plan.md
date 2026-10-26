@@ -38,3 +38,5 @@ Ordered file ledger (root owns this follow-up):
 3. Update `tests/agent-activity.spec.ts` for sponsor/source navigation in the real journey. Run lint/build/type checks, the real local workflow and a read-only public receipt check at desktop/mobile widths. Verify counts against saved events, not UI fixtures. Update `README.md`, `docs/verification.md`, `CHANGELOG.md`, `learned.md` and this ledger with observed results; push, verify deployment, then save the outcome in Amigospace.
 
 No renames, deletions, new infrastructure, scientific output changes, invented queries or retrospective event writes.
+
+Delivered as `b337e45`. Build/lint/typecheck, the extended real local browser workflow and 24 PostgreSQL checks passed. A read-only public browser check verified the existing annotation and recall traces at desktop and mobile widths after deployment. Created `docs/evidence/sponsor-activity-ui-2026-10-26.json` from that check's safe receipt; original events and result lists are unchanged. See `docs/verification.md` for scope and observed setup failures.

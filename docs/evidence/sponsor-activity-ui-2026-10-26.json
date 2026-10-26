@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-26T16:50:29.712Z",
+  "origin": "https://celloras.com",
+  "sourceRelease": "b337e45",
+  "requests": [
+    {
+      "id": "3ff0f30e-3655-4e83-8b4e-08f703054b46",
+      "eventCount": 19,
+      "zetarisCalls": 3,
+      "referenceRequestId": "f1dcdd5e-a869-45ac-a6eb-771ffc8d6d1b",
+      "referenceCount": 42,
+      "memoryCount": 0,
+      "eventsUnchanged": true,
+      "resultsUnchanged": true
+    },
+    {
+      "id": "ee487b10-71e8-45c7-82d0-c857bc47588f",
+      "eventCount": 15,
+      "zetarisCalls": 2,
+      "referenceRequestId": "3828a14e-8e93-49b8-bf5e-3eb3d4bcb19c",
+      "referenceCount": 42,
+      "memoryCount": 1,
+      "eventsUnchanged": true,
+      "resultsUnchanged": true
+    }
+  ],
+  "checks": [
+    "Actual persisted receipts unchanged",
+    "Provider names and purposes visible",
+    "Exact start times and record counts",
+    "Each Zetaris call individually linked",
+    "Query evidence opens inline and receives keyboard focus",
+    "Recalled original review opens",
+    "OpenShell actual runtime outcome",
+    "Desktop and 390px mobile screenshots",
+    "No horizontal overflow",
+    "No browser errors"
+  ]
+}
