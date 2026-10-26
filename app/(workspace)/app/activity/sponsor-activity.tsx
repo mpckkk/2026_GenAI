@@ -218,7 +218,7 @@ export function SponsorActivity({
     <section className={styles.section} aria-labelledby="sponsors-heading">
       <div className={styles.sponsorHeading}>
         <div>
-          <h2 id="sponsors-heading">Sponsor activity</h2>
+          <h2 id="sponsors-heading">Tools used</h2>
           <p>What each service contributed, with links to the work it did.</p>
         </div>
         <span>Times in {Intl.DateTimeFormat().resolvedOptions().timeZone}</span>

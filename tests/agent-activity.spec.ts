@@ -254,7 +254,7 @@ test("owned activity records real annotation, source verification, memory, cance
     .scrollIntoViewIfNeeded();
   await page.screenshot({ path: info.outputPath("02b-plain-steps.png") });
   const sponsorRegion = page.getByRole("region", {
-    name: "Sponsor activity",
+    name: "Tools used",
     exact: true,
   });
   await expect(sponsorRegion).toBeVisible();

@@ -1,5 +1,7 @@
 # Engineering notes
 
+- Keep sponsor attribution factual and subtle in the product. Use a functional heading such as “Tools used”; explain each service's actual contribution without calling the interface a sponsor showcase.
+
 - An activity page must explain the question, action, purpose and outcome before exposing implementation details. Put source links and actual result counts beside the explanation, with raw events available on demand. Simpler wording must not turn a format check into scientific validation or an empty memory search into evidence.
 
 - Sponsor visibility needs an actual operation, purpose, time, outcome and source link. A badge or service-health state alone does not show use. Attribute providers at the operation start so failures remain identifiable; never turn a bundled reference into a Zetaris call or an empty memory search into a recalled decision. Repeated reference loads are calls, not additional unique marker evidence.

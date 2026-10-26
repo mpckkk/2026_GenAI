@@ -1,5 +1,7 @@
 # Changelog
 
+- Renamed the activity section to “Tools used” so the interface describes the work, with service attribution retained in the details.
+
 ## Activity in plain language — 2026-10-26
 
 - Lead each request with its question, data and actual outcome; annotation counts explain suggestions, competing possibilities and missing evidence.
