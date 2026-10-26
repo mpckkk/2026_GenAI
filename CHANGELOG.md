@@ -1,5 +1,9 @@
 # Changelog
 
+## Pitch restored — 2026-10-26
+
+- Restored the prior four-slide pitch at the user’s request. Technical workflow detail is being prepared as a separate companion deck.
+
 ## Concrete soybean use case — 2026-10-26
 
 - Grounded the four-slide pitch and video opening in the actual root-hair investigation: 7,496 nuclei, group 6 with 388 nuclei, two supporting genes and the saved review. Added sourced biological motivation and clearly scoped market context.
