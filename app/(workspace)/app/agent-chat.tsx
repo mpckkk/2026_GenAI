@@ -25,6 +25,7 @@ import { MarkerUpload } from "./marker-upload";
 import type { ScientificSelection } from "./scientific-card";
 import { WorkspaceIcon } from "./workspace-icons";
 import styles from "./workspace.module.css";
+import activityStyles from "./activity/activity.module.css";
 
 type RequestError = { message: string; code?: string; operation: string };
 type Attempt = {
@@ -920,6 +921,15 @@ export function AgentChat({
                       )}
                     </div>
                   )}
+                  <Link
+                    href={`/app/activity/${turn.id}`}
+                    className={activityStyles.chatActivity}
+                    aria-label={`View activity for: ${turn.prompt.slice(0, 100)}`}
+                  >
+                    <WorkspaceIcon name="activity" size={13} />
+                    View activity
+                    <WorkspaceIcon name="chevron" size={11} />
+                  </Link>
                 </li>
               ))}
             </ol>

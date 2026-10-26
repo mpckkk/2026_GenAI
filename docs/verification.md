@@ -1,5 +1,14 @@
 # Foundation verification — 2026-10-23
 
+## Native agent activity — local acceptance, 2026-10-26
+
+- Applied additive migration 011 to real PostgreSQL. Twenty-four database checks passed: admission/terminal atomicity, strict metadata, immutable history, idempotent replay/conflicting payload denial, ownership, cancellation/failure and legacy behavior. All 639 pre-migration turns retained a null recording version. Synthetic database fixtures were rolled back completely.
+- The real production-build browser journey passed in 50.2 seconds with a fresh Keycloak account, actual OpenShell/Codex worker and scientific dataset. Annotation turn `543d878a-215a-4d17-81b6-e56a9566e7c7` produced result `e47bece8-a258-45df-96bb-b6de45deead6`. The dashboard displayed actual start/end events, source checksums, canonical results, H-MEM recalled review/source, JSON export and durable reloads. Search/status/experiment filters, queued and running cancellation, anonymous 401, foreign-account 404 and malformed-filter denial passed. No browser runtime errors were observed.
+- Production build, TypeScript and lint passed. Desktop and 390px screenshots show inline evidence and no horizontal overflow. Local reference delivery was **Published reference**, not Zetaris; public sponsor acceptance is a separate gate. Model name remained correctly unreported when the adapter did not supply it. Receipts and screenshots are in ignored `.artifacts/activity-acceptance-prod3/`.
+- Preserved failed diagnostic runs: the development server repeatedly reloaded all workspace routes; production mode removed that interference. Two test-only locator mistakes were corrected without changing product behavior (native select accessible names and Next's route-announcer alert). The final complete journey passed. A local Docker rebuild filled its guest filesystem; build-cache-only cleanup restored PostgreSQL writes without deleting images, containers or volumes. The local worker used the existing Mac OpenShell gateway; the public release separately verifies the Linux container.
+
+Reproduce the real browser check with `npx playwright test tests/agent-activity.spec.ts` after the documented database, auth, dataset, app and agent setup. This check creates its own users and experiments and performs real inference; it does not mock sponsor/model responses. Existing histories are not backfilled, and token/cost/hidden-reasoning capture is outside this dashboard.
+
 ## Public uploaded-data workflow — 2026-10-26
 
 - Source release `e153cf8` deployed through the existing Dokploy project. Migration 010 and storage initialization completed; app/importer health and the agent worker were ready. Upload staging, private bundles and the checksum-verified demo file are outside the replaceable checkout. Existing public scientific data and sponsor settings were preserved.

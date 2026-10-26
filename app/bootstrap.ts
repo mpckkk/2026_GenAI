@@ -22,6 +22,8 @@ import { PostgresChat } from "./adapters/chat";
 import { ChatService } from "./services/chat";
 import { PostgresMarkerImports } from "./adapters/marker-import";
 import { MarkerImportService } from "./services/marker-import";
+import { PostgresActivity } from "./adapters/activity";
+import { ActivityService } from "./services/activity";
 
 const projects = new PostgresProjects();
 const access = new AccessService(projects);
@@ -47,6 +49,7 @@ export const services = {
     new PostgresAnalysis(new ProjectScientificData({ database })),
   ),
   chat,
+  activity: new ActivityService(access, new PostgresActivity()),
   annotation: new AnnotationService(access, chat),
   memory: new HmemMemory(),
   data: new ZetarisData(),

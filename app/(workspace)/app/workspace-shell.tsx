@@ -44,6 +44,17 @@ export function WorkspaceShell({
             <WorkspaceIcon name="grid" size={18} />
             <span>All experiments</span>
           </Link>
+          <Link
+            href="/app/activity"
+            onClick={closeNavigation}
+            className={styles.sidebarLink}
+            aria-current={
+              pathname.startsWith("/app/activity") ? "page" : undefined
+            }
+          >
+            <WorkspaceIcon name="activity" size={18} />
+            <span>Agent activity</span>
+          </Link>
         </nav>
         <div className={styles.sidebarSectionLabel}>Experiments</div>
         <nav aria-label="Your experiments" className={styles.projectNavigation}>

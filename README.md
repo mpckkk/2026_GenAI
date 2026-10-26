@@ -62,6 +62,16 @@ The server validates card types and resolves record IDs within the owned experim
 
 A turn shows queued/running/completed/failed/cancelled status. Repeating the same submission returns its saved result; changed content requires a new submission. Each experiment permits one active turn. Cancellation targets that turn's sandbox. A failed or interrupted execution is not automatically repeated, and another turn cannot start while sandbox cleanup is outstanding.
 
+## See what the agent did
+
+Open **Agent activity** in the workspace sidebar, or **View activity** below a chat turn. The dashboard lists your requests with search, experiment/status filters and live updates. Open a request to follow its timed steps: experiment context, Meterless H-MEM recall, scientific tools, reference retrieval, model calls, answer validation and the saved response.
+
+Expand a step to see its actual inputs and output counts, dataset version, source checksum, Zetaris query receipt or recalled review link. Saved results open the original conversation and its visual cards. **Download activity JSON** exports that request's recorded evidence for a demo or audit.
+
+Migration `011_agent_activity.sql` stores append-only events in the existing PostgreSQL database. Admission and final status commit with the chat turn; execution records use the same ownership checks and a bounded metadata schema. Recording surrounds the runtime interface, so OpenShell and API runtimes share it. No separate Langfuse server is required. This is Celloras's native activity dashboard; the optional NVIDIA trace exporter remains unconnected.
+
+Older conversations explicitly show that detailed activity was not recorded. Unfinished steps on stopped requests remain interrupted. Model names appear only when configured or reported; token usage, cost and hidden model reasoning are not collected. Context-preparation events become visible when their transaction commits.
+
 ## Run locally
 
 Use Node 22.22.0 (`.nvmrc`), npm, Docker Compose and an installed Codex CLI. Start the workspace first; `setup` creates an ignored `.env` and refuses to overwrite an existing one.

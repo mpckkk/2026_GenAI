@@ -1,5 +1,9 @@
 # Engineering notes
 
+- An activity dashboard needs durable events at execution boundaries, not parsed server logs or a model-written retrospective. Commit admission and terminal status with the request; retain measured starts/ends and distinguish interrupted spans from completed work. Historical requests without instrumentation must stay explicitly incomplete.
+- Published-workbook checksums and the canonical curated-reference checksum identify different objects. Compare source-delivery receipts with `contentSha256`, while retaining the workbook hash separately. A reference availability check is not automatically a remote query receipt.
+- A runtime's end-to-end duration may include sandbox provisioning and cleanup. Label it as runtime execution, and leave model/token/cost fields unknown when the adapter does not report them. Keep evidence links independently owner-checked rather than trusting IDs in a saved context snapshot.
+
 - A durable upload offset belongs to the database commit, not the temporary file length. Sync the chunk before committing the offset, truncate any uncommitted tail before a retry, and prove recovery using real interrupted bytes. Validate per-chunk hashes and freeze a whole-file checksum before importing.
 - User-uploaded scientific bundles must never enter a shared public catalog. Resolve immutable project attachments after ownership checks for every map, tool execution and agent context; distinguish uploader-declared counts/build from independently verified provenance.
 - A file named H5AD may contain normalized expression without a raw-count layer. Inspect its actual matrices, gene IDs, existing groups and UMAP; require an explicit raw-count declaration and reject non-integer data instead of guessing.

@@ -19,6 +19,12 @@ import {
 import { resolveAgentResponse } from "../../app/services/agent-response.mjs";
 import { ResearchMemory } from "../../app/adapters/research-memory.mjs";
 import { NightshiftAgent } from "../../app/gateway/nightshift.mjs";
+import {
+  activityFor,
+  analysisCompletion,
+  referenceCompletion,
+  safeErrorCode,
+} from "./activity.mjs";
 
 const workerId = randomUUID();
 const pool = new Pool({
@@ -40,10 +46,6 @@ const projectScientific = new ProjectScientificData({
   publicData: scientific,
 });
 const literature = new CuratedLiterature();
-const annotation = new MarkerAnnotationEngine({
-  scientificData: scientific,
-  loadReference: references.load,
-});
 const memory = new ResearchMemory();
 let stopping = false,
   activeController;
@@ -127,7 +129,7 @@ function boundedContext(previous, research) {
 
 async function claim() {
   const client = await pool.connect();
-  let claimedId;
+  let claimedTurn;
   try {
     await client.query("BEGIN");
     const result = await client.query(`SELECT t.* FROM agent_turns t
@@ -142,7 +144,16 @@ async function claim() {
       await client.query("COMMIT");
       return null;
     }
-    claimedId = turn.id;
+    claimedTurn = turn;
+    const activity = activityFor(client, turn);
+    await activity.event({
+      spanId: "context",
+      kind: "context",
+      phase: "started",
+      name: "Prepare research context",
+      summary:
+        "Loading this experiment's saved context, dataset and available results.",
+    });
     const previous = await client.query(
       `SELECT prompt,response_text,response_document FROM agent_turns
       WHERE project_id=$1 AND owner_id=$2 AND status='completed' AND position < $3
@@ -228,7 +239,24 @@ async function claim() {
         entryId: result.id,
       })),
     );
-    snapshot.evidenceReference = (await markerReference.health()).source;
+    snapshot.evidenceReference = (
+      await activity.step(
+        {
+          kind: "reference",
+          parentSpanId: "context",
+          name: "Check marker reference",
+          summary:
+            "Checking the configured marker reference and its integrity.",
+        },
+        () => markerReference.health(),
+        (checked) => ({
+          summary: "The marker reference passed its integrity check.",
+          data: checked.source.delivery
+            ? { reference: checked.source.delivery }
+            : {},
+        }),
+      )
+    ).source;
     const binding = await client.query(
       "SELECT dataset_id,artifact_version FROM project_datasets WHERE project_id=$1",
       [turn.project_id],
@@ -307,6 +335,20 @@ async function claim() {
     );
     snapshot.annotationReviews = annotationReviews.rows;
     try {
+      const annotation = new MarkerAnnotationEngine({
+        scientificData: scientific,
+        loadReference: (options) =>
+          activity.step(
+            {
+              kind: "reference",
+              parentSpanId: "context",
+              name: "Load annotation reference",
+              summary: `Loading the annotation reference through ${references.name}.`,
+            },
+            () => references.load(options),
+            referenceCompletion,
+          ),
+      });
       snapshot.annotation = await annotation.health();
     } catch {
       snapshot.annotation = { status: "unavailable" };
@@ -314,11 +356,52 @@ async function claim() {
 
     const name = runtimeName === "openshell" ? sandboxName(turn.id) : null;
     snapshot.agentRuntime = runtimeName;
-    snapshot.researchMemory = await memory.recall(client, {
-      ownerId: turn.owner_id,
-      projectId: turn.project_id,
-      turnId: turn.id,
-      query: turn.prompt,
+    snapshot.researchMemory = await activity.step(
+      {
+        kind: "memory",
+        parentSpanId: "context",
+        name: "Recall saved decisions",
+        summary:
+          "Meterless H-MEM is checking saved decisions from this experiment.",
+      },
+      () =>
+        memory.recall(client, {
+          ownerId: turn.owner_id,
+          projectId: turn.project_id,
+          turnId: turn.id,
+          query: turn.prompt,
+        }),
+      (recalled) => ({
+        summary: recalled.decisions.length
+          ? `Meterless H-MEM recalled ${recalled.decisions.length} saved ${recalled.decisions.length === 1 ? "decision with its source" : "decisions with their sources"}.`
+          : "Meterless H-MEM checked this experiment; no matching saved decisions were found.",
+        data: {
+          memoryCount: recalled.decisions.length,
+          sourceIds: recalled.decisions.map((d) => d.source),
+        },
+      }),
+    );
+    await activity.event({
+      spanId: "context",
+      kind: "context",
+      phase: "completed",
+      name: "Prepare research context",
+      summary: "The experiment context is ready for the agent.",
+      data: {
+        runtime: runtimeName,
+        ...(snapshot.dataset
+          ? {
+              datasetId: snapshot.dataset.id,
+              artifactVersion: snapshot.dataset.artifactVersion,
+            }
+          : {}),
+        contextCounts: {
+          turns: snapshot.conversation.length,
+          researchEntries: snapshot.records.length,
+          analysisRuns: snapshot.analysisResults.length,
+          markers: snapshot.records.filter((r) => r.kind === "markers").length,
+        },
+      },
     });
     await client.query(
       `UPDATE agent_turns SET status='running',progress='Starting agent',
@@ -334,14 +417,19 @@ async function claim() {
     return { ...turn, sandbox_name: name, context_snapshot: snapshot };
   } catch (error) {
     await client.query("ROLLBACK");
-    if (
-      claimedId &&
-      typeof error.code === "string" &&
-      /^(memory_|zetaris_|reference_provider_)/.test(error.code)
-    ) {
+    if (claimedTurn) {
+      await activityFor(client, claimedTurn).event({
+        spanId: "context-failure",
+        kind: "context",
+        phase: "failed",
+        name: "Prepare research context",
+        summary:
+          "Context preparation failed and its transaction was rolled back; the agent did not run.",
+        data: { errorCode: safeErrorCode(error) },
+      });
       await client.query(
         "UPDATE agent_turns SET status='failed',error_code=$2,progress='Research service needs attention',finished_at=now(),updated_at=now() WHERE id=$1 AND status='queued'",
-        [claimedId, error.code],
+        [claimedTurn.id, safeErrorCode(error)],
       );
     }
     throw error;
@@ -355,15 +443,26 @@ async function recover() {
   await pool.query(`UPDATE agent_turns SET status='failed',error_code='worker_interrupted',
     progress='Agent was interrupted',finished_at=now(),updated_at=now()
     WHERE status='running' AND heartbeat_at < now()-interval '60 seconds'`);
-  const cleanup = await pool.query(`SELECT id,sandbox_name FROM agent_turns
+  const cleanup =
+    await pool.query(`SELECT id,owner_id,project_id,activity_version,sandbox_name FROM agent_turns
     WHERE status IN ('completed','failed','cancelled') AND sandbox_name IS NOT NULL ORDER BY updated_at LIMIT 1`);
   for (const turn of cleanup.rows) {
     if (turn.sandbox_name !== sandboxName(turn.id)) continue;
     try {
       // Historical sandbox leases always belong to OpenShell, even after switching runtime.
-      await (
-        runtimeName === "openshell" ? runtime : new OpenShellCodex()
-      ).remove(turn.sandbox_name);
+      await activityFor(pool, turn).step(
+        {
+          kind: "cleanup",
+          name: "Remove retained sandbox",
+          summary:
+            "Retrying cleanup of the isolated runtime left by this request.",
+        },
+        () =>
+          (runtimeName === "openshell" ? runtime : new OpenShellCodex()).remove(
+            turn.sandbox_name,
+          ),
+        () => ({ summary: "The retained sandbox was removed." }),
+      );
       await pool.query(
         "UPDATE agent_turns SET sandbox_name=NULL WHERE id=$1 AND status IN ('completed','failed','cancelled')",
         [turn.id],
@@ -381,6 +480,7 @@ async function recover() {
 }
 
 async function execute(turn) {
+  const activity = activityFor(pool, turn);
   const controller = new AbortController();
   activeController = controller;
   let progress = "Starting agent",
@@ -411,14 +511,48 @@ async function execute(turn) {
   log("turn.started", { turnId: turn.id });
   try {
     const run = async (experiment, message) => {
-      const output = await runtime.run({
-        name: turn.sandbox_name,
-        prompt: JSON.stringify({ experiment, message }),
-        signal: controller.signal,
-        progress: (value) => {
-          progress = value;
+      const prompt = JSON.stringify({ experiment, message });
+      const output = await activity.step(
+        {
+          kind: "model",
+          name: "Agent inference",
+          summary:
+            "The agent is reviewing the available context and deciding whether to request a tool or return an answer.",
+          data: {
+            runtime: runtimeName,
+            ...(runtime.model ? { model: runtime.model } : {}),
+            inputBytes: Buffer.byteLength(prompt),
+          },
         },
-      });
+        () =>
+          runtime.run({
+            name: turn.sandbox_name,
+            prompt,
+            signal: controller.signal,
+            progress: (value) => {
+              progress = value;
+            },
+          }),
+        (answer) => {
+          const action = answer.blocks.find((b) =>
+            ["run_scientific_tool", "lookup_marker_evidence"].includes(b.type),
+          );
+          return {
+            summary: action
+              ? `The agent requested ${action.operation || "marker evidence"}.`
+              : "The agent returned an answer for validation.",
+            data: {
+              outputCounts: { blocks: answer.blocks.length },
+              decision: action
+                ? `Request ${action.operation || "marker evidence"}`
+                : "Return answer",
+              ...(runtime.lastReceipt?.returnedModel
+                ? { model: runtime.lastReceipt.returnedModel }
+                : {}),
+            },
+          };
+        },
+      );
       if (runtime.lastReceipt) {
         experiment.inferenceReceipts ??= [];
         experiment.inferenceReceipts.push(runtime.lastReceipt);
@@ -434,10 +568,6 @@ async function execute(turn) {
       turn.owner_id,
       turn.project_id,
     );
-    const scopedAnnotation = new MarkerAnnotationEngine({
-      scientificData: scopedScientific,
-      loadReference: references.load,
-    });
     const completedCards = [];
     let steps = 0,
       lookedUp = false;
@@ -448,19 +578,61 @@ async function execute(turn) {
           ? "Finding cited evidence"
           : `Computing ${action.operation}`;
       log("tool.started", { turnId: turn.id, tool: action.operation });
-      const result = await runAnalysis(
-        pool,
-        scopedScientific,
-        literature,
-        scopedAnnotation,
+      const toolData = {
+        operation: action.operation,
+        datasetId: action.datasetId,
+        ...(snapshot.dataset?.artifactVersion
+          ? { artifactVersion: snapshot.dataset.artifactVersion }
+          : {}),
+        ...(action.cluster ? { cluster: action.cluster } : {}),
+        ...(action.genes?.length ? { genes: action.genes } : {}),
+      };
+      const names = {
+        annotation: "Annotate cell groups",
+        inspect: "Create cell map",
+        markers: "Compare marker genes",
+        expression: "Plot gene expression",
+        dotplot: "Compare gene expression",
+        literature: "Find literature evidence",
+      };
+      const result = await activity.step(
         {
-          projectId: turn.project_id,
-          ownerId: turn.owner_id,
-          turnId: turn.id,
-          action,
-          step: steps++,
-          signal: controller.signal,
+          kind: "tool",
+          name: names[action.operation] || "Run scientific tool",
+          summary: `Running ${action.operation} on the attached dataset.`,
+          data: toolData,
         },
+        async (spanId) => {
+          const scopedAnnotation = new MarkerAnnotationEngine({
+            scientificData: scopedScientific,
+            loadReference: (options) =>
+              activity.step(
+                {
+                  kind: "reference",
+                  parentSpanId: spanId,
+                  name: "Retrieve marker evidence",
+                  summary: `Loading marker associations through ${references.name}.`,
+                },
+                () => references.load(options),
+                referenceCompletion,
+              ),
+          });
+          return runAnalysis(
+            pool,
+            scopedScientific,
+            literature,
+            scopedAnnotation,
+            {
+              projectId: turn.project_id,
+              ownerId: turn.owner_id,
+              turnId: turn.id,
+              action,
+              step: steps++,
+              signal: controller.signal,
+            },
+          );
+        },
+        analysisCompletion,
       );
       const card = {
         type: analysisCardType(action.operation),
@@ -510,14 +682,53 @@ async function execute(turn) {
           turnId: turn.id,
           tool: "lookup_marker_evidence",
         });
-        const evidence = await runMarkerEvidence(pool, markerReference, {
-          projectId: turn.project_id,
-          ownerId: turn.owner_id,
-          turnId: turn.id,
-          markerEntryId: lookup.entryId,
-          availableCards: snapshot.availableCards,
-          signal: controller.signal,
-        });
+        const evidence = await activity.step(
+          {
+            kind: "tool",
+            name: "Look up marker evidence",
+            summary:
+              "Matching the saved marker list against published references.",
+            data: { operation: "marker_evidence", sourceIds: [lookup.entryId] },
+          },
+          (spanId) =>
+            runMarkerEvidence(
+              pool,
+              {
+                lookup: (marker) =>
+                  activity.step(
+                    {
+                      kind: "reference",
+                      parentSpanId: spanId,
+                      name: "Match published markers",
+                      summary:
+                        "Retrieving the configured reference and matching the submitted genes.",
+                    },
+                    () => markerReference.lookup(marker),
+                    (found) => ({
+                      summary: "The published marker comparison is ready.",
+                      data: {
+                        reference: found.source.delivery ?? {
+                          provider: "Published reference",
+                          contentSha256: found.source.referenceSha256,
+                        },
+                      },
+                    }),
+                  ),
+              },
+              {
+                projectId: turn.project_id,
+                ownerId: turn.owner_id,
+                turnId: turn.id,
+                markerEntryId: lookup.entryId,
+                availableCards: snapshot.availableCards,
+                signal: controller.signal,
+              },
+            ),
+          (saved) => ({
+            summary: `Saved marker evidence with ${saved.candidates.length} candidate cell types.`,
+            data: { resultId: saved.id, outputCounts: { results: 1 } },
+          }),
+        );
         snapshot.evidenceResults = [evidence];
         const card = { type: "marker_evidence", entryId: evidence.id };
         snapshot.availableCards.push(card);
@@ -546,12 +757,31 @@ async function execute(turn) {
         output.blocks.push(card);
       }
     }
-    document = await resolveAgentResponse(pool, {
-      response: output,
-      projectId: turn.project_id,
-      ownerId: turn.owner_id,
-      availableCards: snapshot.availableCards,
-    });
+    document = await activity.step(
+      {
+        kind: "response",
+        name: "Validate answer and cards",
+        summary:
+          "Checking the response schema and resolving every card against owned, saved results.",
+        data: { outputCounts: { blocks: output.blocks.length } },
+      },
+      () =>
+        resolveAgentResponse(pool, {
+          response: output,
+          projectId: turn.project_id,
+          ownerId: turn.owner_id,
+          availableCards: snapshot.availableCards,
+        }),
+      (resolved) => ({
+        summary: "The answer and its cards passed validation.",
+        data: {
+          outputCounts: {
+            blocks: resolved.blocks.length,
+            characters: responseText(resolved).length,
+          },
+        },
+      }),
+    );
     response = responseText(document);
   } catch (error) {
     code =

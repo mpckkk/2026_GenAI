@@ -14,6 +14,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 COPY infra/agent/ ./infra/agent/
 COPY app/adapters/agent-openshell.mjs ./app/adapters/agent-openshell.mjs
+COPY app/adapters/activity-events.mjs ./app/adapters/activity-events.mjs
 COPY app/core/agent-response.mjs app/core/analysis.mjs ./app/core/
 COPY app/services/agent-response.mjs ./app/services/agent-response.mjs
 COPY app/adapters/research-memory.mjs ./app/adapters/research-memory.mjs
