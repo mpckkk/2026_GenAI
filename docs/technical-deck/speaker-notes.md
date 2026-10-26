@@ -1,88 +1,117 @@
-# Celloras technical companion — speaker notes
+# Celloras engineering deck: speaker notes and implementation sources
 
-## Slide 1
+Snapshot: 26 October 2026. These notes describe implemented contracts and distinguish observed acceptance from extension targets.
 
-The browser authenticates through Keycloak. PostgreSQL stores owner-scoped jobs. The worker runs the server-side OpenShell/Codex agent, validates typed tool requests and saves canonical results. Scientific tools retrieve the reference through Zetaris and measure the count matrix outside the model. H-MEM supplies reviewed decisions as context at turn start. The model explains and recommends, and returns typed card/result IDs. The browser resolves only completed owned results. The diagram groups services by responsibility; it does not imply H-MEM is an external server or Zetaris runs the count matrix.
+## 1. Deployment topology
 
-Sources:
+This deployment topology shows the verified public Linux path. Traefik terminates TLS for app and Keycloak. PostgreSQL stores both job queues and durable research state. The Python importer claims its own jobs and writes immutable private files. The application and agent mount those files read-only. The Node worker invokes numerical tools and imports the Meterless H-MEM runtime in-process. OpenShell is one execution adapter, not the definition of Celloras agent orchestration. The public deployment uses OpenShell 0.1.5 and Codex CLI 0.163.0. The gateway holds the provider bearer credential, while the worker gets account/expiry metadata and mTLS access. Separate arrows are not intended as an exhaustive network ACL. Current infrastructure is a single Linux host with durable bind mounts and PostgreSQL storage.
+
+Implementation sources:
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/compose.yaml
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/compose.prod.yaml
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/infra/agent/worker.mjs
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/services/analysis-tools.mjs
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/services/agent-response.mjs
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/architecture.md
-
-## Slide 2
-
-This is an actual authenticated agent conversation captured from celloras.com on 26 October 2026. No reply text, analysis result or map was fabricated. The agent was asked to show the saved annotation card and briefly explain it. It uses the existing React annotation card with computed cell-type suggestions and unresolved groups. Captured content is a cropped viewport of that actual turn. The underlying annotation was completed on 25 October. The screenshot shows the product interaction, not a fresh independent accuracy evaluation.
-
-Sources:
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/(workspace)/app/annotation-card.tsx
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/core/agent-response.schema.json
-
-## Slide 3
-
-This separates measured data, marker associations, literature context and researcher interpretation. GSE270392 and soybean-atlas.com describe the same underlying published atlas and are not independent confirmation. The numeric panel includes associations originally supported by Arabidopsis orthology, with that provenance retained, but Celloras does not currently perform live ortholog mapping. The root/nodule paper is in the literature collection; its gene build is not automatically transferred to the Wm82v4 panel. Guide ingestion is abstract-only. H5AD uploads now enter an owned inspection/import queue and retain the original counts and UMAP. The public uploaded-file workflow passed on 26 October. SoyBase and broader nodule annotation remain planned, not active reference adapters. All count-matrix data stays numeric rather than being embedded as text.
-
-Sources:
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/data/datasets/gse270392-root-rna-v1.json
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/data/references/soybean-annotation-v1.json
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/data/literature/soybean-v1.json
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/literature.md
-
-## Slide 4
-
-Official Zetaris hackathon self-hosted stack 2.4.3.1 runs on the Linux server in a separate Compose project. The app uses a dedicated SELECT-only account and private network API. CELLORAS.marker_reference_v1 is a Lightning filestore table over a mounted JSON array. The actual adapter runs fixed operator-owned SQL through /api/v1.0/query/sql/start, validates the pinned full canonical content SHA, closes the query cursor and saves a non-secret delivery receipt. The model cannot supply SQL. One pinned table is demonstrated, not multi-source federation or matrix ingestion. Public annotation run af2c9005-6be1-4f7c-baf4-dede8d06155c has query receipt f7fbb611-05df-4f96-83c8-efe2e60e8d32. SQL on the slide uses an explanatory placeholder for the pinned reference id.
-
-Sources:
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/zetaris-reference.mjs
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/configuration.md
 
-## Slide 5
+## 2. Agent runtime interface
 
-The deterministic engine consumes compatible species, tissue and Wm82v4 data, never source cell labels. Means include zeros. It calculates across-group gene z-scores and divides the sum for available genes by each cell type reference gene count. Supporting genes must meet detection >=0.1, cluster-rest mean log delta >=0.1, and z>=0.5. A candidate requires at least two supporting genes, >=50% reference availability and score>=0.5. A competitor within 0.25 makes the result ambiguous. Group 6 is supported by Glyma.01G224900 and Glyma.17G030700. 2,952 independent base-R numerical comparisons passed within 1e-10. This checks implementation arithmetic, not general biological accuracy. The source-label comparison uses the same study; no independent benchmark has been demonstrated. The 25-nucleus group 8_2 disagreement remains visible. The dot plot is an actual stored analysis.
+The working worker dispatches through a runtime object with health() and run({name,prompt,signal,progress}). This is the implemented JavaScript adapter boundary, shown in interface notation, not a claim that a formal TypeScript AgentRuntime declaration already exists. The shared AgentResponse schema carries tool requests and final card references. Both OpenShellCodex and NightshiftAgent implement this shape. Nightshift uses an HTTP API and proves the code architecture is not CLI-only, but its live acceptance is pending. Additional CLI and official OpenAI/Anthropic/OpenRouter/Vercel adapters are extension targets, not working integrations claimed by this deck. A new adapter must translate its provider output into AgentResponse, handle cancellation/progress and be added to the runtime selector. The browser cannot choose runtime, model or provider. Existing OpenShell cleanup leases retain their original runtime semantics when the configured runtime changes. OpenShell-specific remove() is lifecycle cleanup, not a required sandbox operation for an HTTP adapter. The VercelModelGateway is an explicit unavailable placeholder and is not on the verified chat path.
 
-Sources:
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
+Implementation sources:
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/infra/agent/worker.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/agent-openshell.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/gateway/nightshift.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/core/agent-response.schema.json
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/gateway/vercel.ts
+
+## 3. Turn execution and typed output
+
+The first five boxes compress the turn loop. HTTP admission locks the owned project. The unique project/submission identity replays an identical request and conflicts on changed content. A partial index permits one queued/running turn per project. Claiming uses FOR UPDATE SKIP LOCKED, then snapshots completed conversation, project records, dataset handles and H-MEM recall. A suggested UI action may execute before the first model invocation, while freeform model output can request a typed scientific action. The broker authorizes ownership, active turn, cancellation and immutable artifact version before computation and persistence. It appends canonical result handles and invokes the runtime again. Each OpenShell model invocation creates and removes a fresh sandbox, so application context carries continuity. A final response must contain nonempty Markdown. Intermediate responses permit at most one tool request. There are at most four tools overall and at most one legacy marker lookup. Invalid or foreign card references fail the entire new response. Atomic completion stores the resolved response document and text projection only for the still-owned active turn. Completed-result endpoints exclude failed or cancelled originating turns. The UI polls about every 1.8 seconds rather than streaming model tokens. JSON on the slide illustrates the real schema with an explicit placeholder UUID.
+
+Implementation sources:
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/chat.ts
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/infra/agent/worker.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/core/agent-response.schema.json
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/services/analysis-tools.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/services/agent-response.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/(workspace)/app/agent-response.tsx
+
+## 4. H5AD upload and import state machine
+
+This custom resumable protocol creates an owned upload, accepts bounded binary PATCH chunks, then queues inspection with POST complete. Each chunk has a SHA-256 and exact expected offset. A stale offset returns 409. Writes lock project/upload rows, truncate bytes beyond the committed database offset, write and sync, then commit the new offset. The browser first/last-1-MiB fingerprint is only a resume identity check. Whole-file hashing occurs in the worker after completion and again before import. Explicit selection includes count matrix, gene column, grouping column, UMAP, species, tissue, genome build and rawCountsConfirmed. The independent Python worker claims with SKIP LOCKED. It rejects unsafe HDF5 links/filters, malformed sparse encodings, duplicate IDs/coordinates, noninteger/negative/nonfinite counts and zero library totals. It requires existing groups and 2D UMAP. A 900-second/3-GiB child process runs in a one-CPU/4-GiB container with a read-only root, 256-MiB tmpfs, dropped capabilities and no-new-privileges. Stale working states fail after timeout plus 60 seconds instead of replaying. File publication uses rename before the final PG attachment transaction, so a failure can leave an unbound artifact. This is not a distributed filesystem/database transaction.
+
+Implementation sources:
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/core/dataset-upload.ts
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/dataset-upload.ts
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/api/projects/[projectId]/dataset-uploads/[uploadId]/route.ts
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/infra/science/h5ad/worker.py
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/infra/science/h5ad/importer.py
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/db/migrations/010_dataset_uploads.sql
+
+## 5. Data model and ownership
+
+PostgreSQL handles canonical records and authorization. The private scientific provider joins owned projects, attachments and ready upload records, requiring exact owner and manifest version. The private upload never joins the public dataset catalog. Artifact version is the manifest SHA. First bundle load verifies manifest, original source and all declared file sizes/hashes, then cached reads check file fingerprints. The provider caches at most two private bundles. Files include manifest.json, source/original.h5ad, source/selection.json, genes.json, uint32 gene pointers/cell indices, float64 raw values/library sums/group count and log sums, uint32 detected counts, clusters.json and embedding.json. The importer uses two matrix passes, block processing and memory-mapped gene-major outputs without densifying the entire sparse source. Raw counts remain numeric rather than text embeddings. App and worker mounts are read-only. Source counts, measurements and subsequent review decisions remain distinct. Source species/tissue/build/raw-count meaning are declared by the uploader and structurally checked, not independently biologically certified.
+
+Implementation sources:
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/db/migrations/003_agent_chat.sql
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/db/migrations/006_scientific_analysis.sql
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/db/migrations/007_annotation.sql
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/db/migrations/010_dataset_uploads.sql
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/project-scientific-data.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/scientific-data.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/infra/science/h5ad/importer.py
+
+## 6. Deterministic annotation pipeline
+
+MarkerAnnotationEngine depends on ScientificData through inspect and per-gene dotplot operations. Exact species, tissue and genome build compatibility is required. The Wm82v4 soybean root panel contains 42 associations but 41 distinct genes across nine cell types. Duplicate gene associations preserve provenance but count once in a type score. The raw-count transformation uses a 10,000 library-size factor and log1p. All group means include zeros. Group gene z-scores use population standard deviation with equal group weighting. Group-versus-rest expression weighs cells. Missing reference features contribute zero to the score because the denominator retains the complete distinct-gene reference count. Contrary enrichment requires rest detection at least 10%, delta at most -0.1 and z at most -0.5. A candidate requires the gates shown. A competitor with at least one supporting gene within 0.25 score units, or an eligible winner below the overall leading candidate, makes the result ambiguous. With no eligible candidate the group remains unresolved. Published cell labels never enter runtime scoring. The model cannot overwrite measurements, but can reason about the result, recommend follow-up and explain uncertainty. This implementation has no batch adjustment, per-cell classifier, significance test or independent biological accuracy benchmark.
+
+Implementation sources:
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/annotation-engine.mjs
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/scientific-data.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
 
-## Slide 6
+## 7. Zetaris reference protocol
 
-Meterless official H-MEM reference revision 1742dec56a66e58eef9dda2d2b865823758ca8cd is vendored with its license and reproducible runtime. On an owned turn, Celloras synchronises explicit saved reviews, superseding only the same annotation-run/cluster or marker-entry target. The reference hashed embeddings and hybrid retrieval rank relevant records; exact named-group selection is application logic. Up to five memories reach the model with canonical source links. PostgreSQL retains the engine snapshot and append-only ledger. Memory is not paper retrieval or biological validation. Automatic mining, dreaming and semantic conflict resolution are disabled. All 13 upstream conformance checks passed; a real public review beyond 31 newer notes was recalled, and correction/account-isolation checks passed. Screenshot records the 25 October demonstration correction.
+The full endpoints are POST /api/v1.0/query/sql/start and DELETE /api/v1.0/query/sql/close/{queryToken}. The adapter sends bearer authentication, organization ID and an application-generated X-Request-ID, not a server-signed attestation. The table is operator-configured. The reference ID comes from the pinned, verified application reference. Model output never supplies SQL. The adapter requires a token, totalCount 42 and exactly one complete page, sorts records, verifies contiguous indexes, checks each declared document hash and reconstructs/rehashes the full reference. There is no cursor pagination. The API response bound is 1 MiB, query timeout 15 seconds, cleanup timeout 5 seconds, redirects rejected. Cleanup runs once a token is available; truncated/unparseable replies may prevent token extraction. Any validation, provider or cleanup failure stops the operation with no provider fallback. HTTPS is default, with explicit private-network HTTP opt-in for the separate self-hosted Zetaris 2.4.3.1 stack. Current integration reads one versioned Lightning filestore reference table, not full atlas federation or researcher matrix storage. The reference health check also runs during turn claim, so a Zetaris outage can block ordinary chat admission/execution beyond just annotation.
 
-Sources:
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/research-memory.mjs
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/third_party/meterless-hmem/README.md
+Implementation sources:
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/zetaris-reference.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/scripts/prepare-zetaris-reference.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/annotation-engine.mjs
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
 
-## Slide 7
+## 8. Meterless H-MEM state and retrieval
 
-Keycloak handles login and credentials. The app enforces ownership before project/data/model/memory operations. Agent output must satisfy a JSON schema; cards reference canonical owned records, never arbitrary model-written HTML or fabricated chart payloads. The worker limits scientific tools to four per turn and saves JSON activity events with run identifiers. Failed/cancelled turns cannot expose completed result endpoints. H5AD uploads use checksummed 8 MiB chunks, PostgreSQL queue state and a bounded Python importer. The imported bundle is immutable and private to the owned experiment; the app and agent mount it read-only. The count matrix stays in numeric files, not a vector database. Curated literature currently uses lexical search, while H-MEM uses its reference hashed-embedding retrieval only for explicit reviews. NeMo Files and an NVIDIA observability dashboard are not active.
+The actual upstream Meterless H-MEM runtime is vendored at revision 1742dec56a66e58eef9dda2d2b865823758ca8cd and imported as ES2022 modules in the existing Node worker. It is not an external hosted memory service. On owned turn claim the adapter checks project/owner/active-turn predicates, locks project memory state, validates the engine revision, restores state and syncs explicit saved reviews. Supersession applies only to the same annotation run plus group or the same marker-entry target. Canonical tables retain all reviews, including ones superseded before H-MEM next ran. The adapter prevents upstream semantic correction guesses from superseding unrelated targets. Retrieval uses the upstream deterministic 64-dimensional token-hash embedder plus keyword/entity/tag/domain/layer/recency factors. Named-group filters use threshold zero; general hybrid retrieval uses 0.2. Maximum five memories enter the snapshot with source IDs and URLs. State, new ledger rows and the recalled context commit with the turn claim. The ledger trigger prohibits UPDATE/DELETE. Explicit review corrections do not mutate numeric results or old answer snapshots. Limits are 2,000 current targets, 10,000 stored records and 24,000 query characters. Automatic mining, dreaming, sleep and semantic conflict resolution are disabled. State-version migration is not automatic.
 
-Sources:
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/services/analysis-tools.mjs
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/services/agent-response.mjs
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/core/agent-response.schema.json
+Implementation sources:
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/research-memory.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/third_party/meterless-hmem/runtime/index.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/third_party/meterless-hmem/manifest.json
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/db/migrations/009_research_memory.sql
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/infra/agent/worker.mjs
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/research-memory.mjs
 
-## Slide 8
+## 9. Failure handling and observability
 
-The points are copied from the user-provided judging screenshot: Demo 15, Product & UX 10, Sponsor Tech 10. These are rubric weights, not awarded scores or an inferred complete rubric. The user supplied updated submission instructions requiring only Zetaris and a Meterless Engine in a working feature, with Cursor and NVIDIA optional. Celloras uses Zetaris, Meterless H-MEM and NVIDIA OpenShell. It does not claim Cursor usage, a working Nemotron call or an NVIDIA observability dashboard. The 26 October uploaded-file acceptance used the same project for H5AD upload, annotation, a real reference receipt, supporting gene plot, an illustrative saved review and H-MEM recall. The separate 25 October prepared workflow also proved correction recall. The current video is still to be recorded. The prepared workflow script resumes saved verified turns; replay is not a new benchmark or fresh inference for every step.
+Worker heartbeat runs every three seconds. New admissions require a ready worker heartbeat under 30 seconds old. A stale running turn fails after 60 seconds. Database loss aborts execution. OpenShell sandbox execution is bounded to 180 seconds and output is bounded. Cleanup failure retains sandbox_name and blocks the project until exact deletion succeeds. Historical cleanup continues through OpenShell even if the current runtime selector changes. Failed or cancelled turns get neither response_document nor response_text, and completed-result endpoints exclude their numerical artifacts. Those artifacts may remain internal audit records. Explicit retry creates a new model turn; uncertain HTTP retries preserve the original identity. Importer jobs have their own timeout/recovery boundary and never automatically re-import a stale job. Logs are structured JSON correlation events. Application health is not proof of successful inference. OpenTelemetry dashboards, distributed tracing and production alerting are not implemented by this flow. Reference availability during turn claim currently couples ordinary chat to Zetaris health, an explicit reliability tradeoff.
 
-Sources:
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/demo.md
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
+Implementation sources:
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/infra/agent/worker.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/chat.ts
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/agent-openshell.mjs
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/dataset-upload.ts
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/infra/science/h5ad/worker.py
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/architecture.md
 
-## Slide 9
+## 10. Measured coverage and scaling limits
 
-Public upload workflow accepted on 26 October 2026, source release e153cf8. The real browser downloaded the verified 28,919,346-byte sample, uploaded and inspected it, explicitly selected raw counts/groups/UMAP and imported all 7,496 nuclei and 40,127 genes. The OpenShell/Codex agent annotated the owned dataset, returned its 7,496-cell map, compared two measured genes, and recalled a saved illustrative review through Meterless H-MEM. Annotation run f21b6943-c980-454b-8870-643773341ae9 retains Zetaris request e37392b3-f96d-4ee6-82e9-73fe75b301a2. The sample is a transparent lossless H5AD conversion of the published GSE270392 root RDS, not an author-deposited H5AD or raw sequencing reads. Native SOTA Root.scRNA.h5ad has normalized noninteger values and SoyZH13 IDs and is unsuitable for this Wm82v4 raw-count workflow. Limits include existing groups/UMAP and compatible soybean-root reference identifiers; no FASTQ processing, QC, new clustering, new embedding, automatic cross-build mapping or independent biological accuracy benchmark is claimed. The 4 GiB upload ceiling has not been load-tested. Broader local MicroVM freeform tests have shown intermittent execution failures, separate from this passing public Linux workflow. The video remains to be recorded.
+The tracked receipt docs/evidence/h5ad-public-2026-10-26.json links upload e3c86263-e5aa-4af6-9475-a0858c0d7ba0, annotation run f21b6943-c980-454b-8870-643773341ae9, Zetaris application request e37392b3-f96d-4ee6-82e9-73fe75b301a2 and H-MEM review source annotation-review:272f903e-e478-4bec-a57f-60d9380288fb in the same owned experiment. The 28,919,346-byte sample is a transparent lossless conversion of GSE270392 root RDS, not raw FASTQ or an author-deposited H5AD. All 11,480,487 raw nonzero values and 7,496 coordinates/groups survived import. The numerical engine independently matched 2,952 R comparisons within 1e-10. This checks arithmetic, not scientific generalization. Result: seven suggested groups, one ambiguous and four unresolved. The illustrative saved review left computed evidence unchanged. Separate checks cover stale offsets, chunk SHA failures, foreign ownership, resume and an uncommitted 34-byte tail. Configured caps are 4 GiB upload, 100,000 cells, 100,000 genes and 100 million nonzeros, not measured capacity. The importer uses one CPU/four-GiB container and the runtime worker processes sequentially in each process. SQL SKIP LOCKED is a concurrency primitive, not proof of multi-worker throughput. Horizontal deployment would need shared artifact storage, coordinated runtime configuration, capacity scheduling and load acceptance. New plants need compatible reference/data adapters and source validation, not just changing a display name.
 
-Sources:
+Implementation sources:
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/evidence/h5ad-public-2026-10-26.json
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/verification.md
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/h5ad-source.md
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/configuration.md
-https://celloras.com/app/projects/fd21eefc-6a63-4c06-89fd-007ed138c77f
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/core/scientific-data.ts
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/core/annotation.ts
+https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/architecture.md

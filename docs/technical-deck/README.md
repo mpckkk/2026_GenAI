@@ -1,17 +1,15 @@
-# Celloras technical companion
+# Celloras engineering deck
 
-A separate nine-slide explanation of the implementation, alongside the [four-slide pitch](../pitchdeck/README.md).
+A ten-slide implementation walkthrough, separate from the [four-slide pitch](../pitchdeck/README.md).
 
 - [Presentation PDF](Celloras-Technical-Deck.pdf)
 - [Editable PowerPoint](Celloras-Technical-Deck.pptx)
-- [Speaker notes and sources](speaker-notes.md)
+- [Speaker notes and code sources](speaker-notes.md)
 
-The deck covers the agent/tool boundary, a real conversation with the annotation card, data sources, Zetaris SQL retrieval, numerical annotation, Meterless H-MEM, storage and ownership, evidence against the supplied judging criteria, and remaining work.
+The deck covers deployment topology, the agent runtime interface, turn execution and typed output, H5AD upload states, data ownership, numerical annotation, Zetaris SQL retrieval, Meterless H-MEM persistence, recovery, and measured scaling limits. Diagrams, protocol examples and four tables remain editable.
 
-The architecture diagrams, text and two tables are editable. Product screenshots and measured plots are embedded images from the real demo. The conversation screenshot was captured from public agent turn `7d65780e-45ae-42c3-9ee3-0f2b112d767a` on 26 October 2026. It displays the previously computed annotation rather than claiming a new analysis.
+The agent runtime boundary supports CLI and HTTP adapters. OpenShell/Codex is the verified implementation. Nightshift implements the same broker protocol through HTTP but still needs live acceptance. Official OpenAI/Anthropic APIs, OpenRouter, Vercel routing and other CLIs are extension targets. A new adapter must implement the runtime contract and join the server-side selector; the deck does not claim those integrations already work.
 
-This is an implementation snapshot, not the video or the short pitch. The complete public H5AD upload → agent annotation → Zetaris → review → Meterless H-MEM workflow passed on 26 October 2026. [Open the verified experiment](https://celloras.com/app/projects/fd21eefc-6a63-4c06-89fd-007ed138c77f) or inspect the [acceptance receipt](../evidence/h5ad-public-2026-10-26.json). The selected input is a transparent H5AD conversion of the verified GSE270392 root counts. The native SOTA H5AD uses logged values and SoyZH13 gene IDs and is unsuitable for the current Wm82v4 raw-count workflow.
+The source-backed workflow passed on 26 October 2026: an owned H5AD upload, agent annotation, real Zetaris reference retrieval, a saved review and Meterless H-MEM recall. [Open the verified experiment](https://celloras.com/app/projects/fd21eefc-6a63-4c06-89fd-007ed138c77f) or inspect the [acceptance receipt](../evidence/h5ad-public-2026-10-26.json). The sample is a lossless conversion of published GSE270392 root counts. It preserves existing groups and UMAP. No raw FASTQ processing or independent biological accuracy benchmark is claimed.
 
-Rubric values are the supplied weights (Demo 15, Product & UX 10, Sponsor Tech 10), not scores awarded to Celloras. Zetaris and a Meterless Engine are the required sponsor pair. NVIDIA OpenShell is also used; Cursor usage is not claimed.
-
-Validation: structural/package checks, Inter font policy, native tables on slides 7–8, first-party re-import, and rendered-slide review. PDF export also receives page-by-page visual inspection.
+The engineering limits are explicit: one pinned Zetaris reference table, H-MEM over explicit reviews, a single deployment host with local volumes, and a 4 GiB upload ceiling that has not been load-tested. The deck separates configuration limits from measured evidence.
