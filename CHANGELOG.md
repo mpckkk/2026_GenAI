@@ -1,5 +1,7 @@
 # Changelog
 
+- Fit the flowchart to both screen width and height on initial load. Zoom controls scale from that fitted size and remain clear of the diagram. No tests run, per instruction.
+
 - Added small black-and-white zoom in/out buttons to the flowchart, as requested. Zoom ranges from 50% to 300% and uses normal page scrolling. No tests run, per instruction.
 
 - Removed the flowchart title, subtitle, stage headings and legend. The page contains only black-and-white shapes, arrows and their labels.

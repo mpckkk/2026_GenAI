@@ -1,5 +1,7 @@
 # Engineering notes
 
+- Fit the flowchart against both viewport dimensions on initial load, reserving room for the zoom buttons. A width cap alone can make it taller than the screen.
+
 - Do not use em dashes in new user-facing copy or replies. The user permits only small zoom in/out buttons around this otherwise plain flowchart.
 
 - The technical flowchart page should contain only the diagram: no heading, introduction, stage banner or surrounding legend. Use pure black and white.

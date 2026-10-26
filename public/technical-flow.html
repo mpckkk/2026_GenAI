@@ -9,7 +9,7 @@
   :root { color-scheme:light; }
   * { box-sizing:border-box; }
   body { margin:0; background:#fff; color:#000; font-family:Arial,Helvetica,sans-serif; }
-  main { max-width:1700px; margin:auto; padding:16px; }
+  main { width:min(100%, calc((100svh - 88px) * 16 / 9 + 32px)); margin:auto; padding:16px; }
   .zoom { position:fixed; right:16px; bottom:16px; display:flex; gap:6px; }
   .zoom button { width:40px; height:40px; border:1px solid #000; border-radius:4px; background:#fff; color:#000; font:24px Arial,sans-serif; cursor:pointer; }
   .zoom button:disabled { opacity:.35; cursor:default; }
@@ -79,14 +79,16 @@
   const zoomIn = document.getElementById('zoom-in');
   let zoom = 1;
   function resizeChart() {
-    chart.style.maxWidth = 'none';
-    chart.style.width = Math.min(document.documentElement.clientWidth, 1700) * zoom + 'px';
+    const availableHeight = Math.max(1, window.innerHeight - 88);
+    const fittedWidth = Math.min(document.documentElement.clientWidth, availableHeight * 16 / 9 + 32);
+    chart.style.width = (fittedWidth - 32) * zoom + 32 + 'px';
     zoomOut.disabled = zoom <= 0.5;
     zoomIn.disabled = zoom >= 3;
   }
   zoomOut.addEventListener('click', () => { zoom = Math.max(0.5, zoom - 0.25); resizeChart(); });
   zoomIn.addEventListener('click', () => { zoom = Math.min(3, zoom + 0.25); resizeChart(); });
   window.addEventListener('resize', resizeChart);
+  resizeChart();
 </script>
 </body>
 </html>
