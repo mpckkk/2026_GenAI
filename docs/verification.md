@@ -1,5 +1,15 @@
 # Foundation verification — 2026-10-23
 
+## Public uploaded-data workflow — 2026-10-26
+
+- Source release `e153cf8` deployed through the existing Dokploy project. Migration 010 and storage initialization completed; app/importer health and the agent worker were ready. Upload staging, private bundles and the checksum-verified demo file are outside the replaceable checkout. Existing public scientific data and sponsor settings were preserved.
+- The actual browser downloaded the 28,919,346-byte H5AD, uploaded it into [Soybean H5AD · video demo](https://celloras.com/app/projects/fd21eefc-6a63-4c06-89fd-007ed138c77f), confirmed count/gene/group/UMAP/build fields and imported all 7,496 nuclei and 40,127 genes. The source SHA matched the verified conversion. Public upload ID: `e3c86263-e5aa-4af6-9475-a0858c0d7ba0`.
+- Real OpenShell/Codex annotation turn `99d92aaa-32b0-4cb0-8c95-61212fb791b2` completed. Run `f21b6943-c980-454b-8870-643773341ae9` returned 7 suggested, 1 ambiguous and 4 unresolved groups. Zetaris query `e37392b3-f96d-4ee6-82e9-73fe75b301a2` delivered all 42 hash-verified reference associations. Both the map API and rendered SVG contained 7,496 cells. Group 6 suggested Root hair, with 388 nuclei and two measured supporting genes.
+- A real second turn produced the supporting-gene dot plot. A clearly labelled illustrative review accepted Root hair provisionally, with independent verification still required. H-MEM recall turn `1cbd56fc-5cd6-4a33-be98-cf842d84bedb` returned that exact saved review and source link. The canonical numerical result remained unchanged. Desktop map/evidence/receipt and 390px mobile recall screenshots were inspected; mobile had no horizontal overflow.
+- Nonsecret run evidence is committed in [the public acceptance receipt](evidence/h5ad-public-2026-10-26.json); screenshots and resumable browser state stay in ignored `.artifacts/h5ad-public/`. An initial sign-in hit the deployment startup window; a map assertion initially used a five-second test timeout. Reopening the same completed turn proved the map and the check was adjusted to await it. No additional annotation inference was submitted to work around the test timeout.
+- Updated the technical deck to show H5AD as working, with the public proof and remaining scientific work. Package/font/geometry/re-import checks passed; all nine PDF pages were inspected, and the two screenshot readability issues were corrected and rechecked. The pitch first slide was not changed.
+- This proves the supported uploaded-file workflow with live Zetaris and Meterless H-MEM, not biological accuracy on unseen data. The sample is a lossless format conversion, not a native author H5AD. The 4 GiB ceiling is configured but not load-tested; existing groups/UMAP and compatible root/Wm82v4 identifiers remain required for this annotation panel.
+
 ## Owned H5AD upload and local import — 2026-10-26
 
 - Applied migration `010_dataset_uploads.sql` to the real local PostgreSQL database. Started Keycloak and the bounded Linux H5AD import container; its heartbeat is exposed in service health.
@@ -9,7 +19,6 @@
 - Host production Next.js build, TypeScript and lint passed. The local production build's readiness endpoint returned 200. Desktop/mobile browser checks and receipts are in ignored `.artifacts/h5ad-ui/`; no sessions or traces are committed. Public deployment and a real uploaded-data agent conversation are a separate acceptance gate.
 - Initial browser creation failed with PostgreSQL SQLSTATE `53100`: Docker's guest disk was full. Removing individually identified, reclaimable old Celloras build-cache records restored space without deleting containers, images or volumes. The storage-initializer now uses the existing Node base image rather than an unnecessary dependency install.
 
-
 ## Technical companion and actual agent screenshot — 2026-10-26
 
 - Added a separate nine-slide technical deck with source diagrams, actual Zetaris and H-MEM roles, numerical annotation, ownership/storage boundaries, the supplied judging weights and current gaps. H5AD upload remains explicitly in progress at this snapshot.
@@ -17,7 +26,6 @@
 - Logged into the public demo through Keycloak and submitted a real request to show the saved cell map. Agent turn `7d65780e-45ae-42c3-9ee3-0f2b112d767a` completed and returned the existing annotation card. Waited for all 7,496 plotted points to load before capture. No response or scientific result was fabricated; this was recall/display of the stored result, not a new annotation benchmark.
 - Both decks passed package/geometry/Inter-font/first-party re-import validation. The technical deck has editable native tables on slides 7–8. All 13 slides and corresponding PDF pages were visually inspected; PDF fonts embed Inter. Source links and implementation limits are in speaker notes. PowerPoint desktop execution was not tested.
 - Uploaded actual PPTX/PDF bytes to Amigospace and confirmed committed results: new technical deck nodes at revision 1, existing pitch nodes at revision 7. Source paths are `docs/technical-deck/` and `docs/pitchdeck/`.
-
 
 Status is updated from actual runs, not inferred from configuration. Sections below record successive releases; older scope statements describe that release, not the current implementation.
 

@@ -4,7 +4,7 @@
 
 - Added resumable 8 MiB uploads, checksum validation, explicit H5AD data selection and a bounded Linux import worker. Each experiment receives one immutable private dataset.
 - Connected imported data to existing cell maps, marker/expression tools and annotation, with ownership checks throughout the app and agent worker. Added an authenticated checksum-verified soybean demo download and importer service health.
-- Verified the real local browser upload and recovery path; the downloaded demo is a transparent format conversion of published GSE270392 raw counts, groups and UMAP.
+- Verified local upload/recovery and the complete public H5AD → agent annotation → Zetaris → illustrative review → H-MEM workflow. The downloaded demo is a transparent format conversion of published GSE270392 raw counts, groups and UMAP.
 
 ## Technical companion and real agent conversation — 2026-10-26
 

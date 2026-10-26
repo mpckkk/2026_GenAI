@@ -1,0 +1,58 @@
+{
+  "checkedAt": "2026-10-26T00:50:59.932Z",
+  "url": "https://celloras.com/app/projects/fd21eefc-6a63-4c06-89fd-007ed138c77f",
+  "projectId": "fd21eefc-6a63-4c06-89fd-007ed138c77f",
+  "uploadId": "e3c86263-e5aa-4af6-9475-a0858c0d7ba0",
+  "datasetId": "upload-e3c86263-e5aa-4af6-9475-a0858c0d7ba0",
+  "source": {
+    "filename": "soybean-root-gse270392.h5ad",
+    "bytes": 28919346,
+    "sha256": "f4c9395d190ce8e073e36ee531664c82e8bd7adaf9b29dfe64fa593088c74890"
+  },
+  "sourceCommit": "e153cf8",
+  "annotation": {
+    "turnId": "99d92aaa-32b0-4cb0-8c95-61212fb791b2",
+    "runId": "f21b6943-c980-454b-8870-643773341ae9",
+    "reference": {
+      "provider": "Zetaris",
+      "requestId": "e37392b3-f96d-4ee6-82e9-73fe75b301a2",
+      "recordCount": 42,
+      "retrievedAt": "2026-10-26T00:48:00.938Z",
+      "contentSha256": "0aee9d9a7eba874fdcf1e6edfefc970fa651f4fc516f6f249d02dafeab535485"
+    },
+    "group6": {
+      "suggestedLabel": "Root hair",
+      "nCells": 388,
+      "genes": ["Glyma.01G224900", "Glyma.17G030700"]
+    },
+    "mapPoints": 7496
+  },
+  "counts": {
+    "clusterCount": 12,
+    "suggestedCount": 7,
+    "ambiguousCount": 1,
+    "unresolvedCount": 4
+  },
+  "comparison": {
+    "turnId": "04e88095-b965-4fff-ad97-e4853919c6a1",
+    "runId": "38707d03-31ee-464c-85bb-05c4790a3de0",
+    "genes": ["Glyma.01G224900", "Glyma.17G030700"]
+  },
+  "review": {
+    "id": "272f903e-e478-4bec-a57f-60d9380288fb",
+    "note": "Illustrative demo review: keep Root hair provisional for group 6. Measured support includes Glyma.01G224900 and Glyma.17G030700. Confirm with independent evidence before treating this as a validated identity.",
+    "decision": "accepted"
+  },
+  "memory": {
+    "turnId": "1cbd56fc-5cd6-4a33-be98-cf842d84bedb",
+    "source": "annotation-review:272f903e-e478-4bec-a57f-60d9380288fb",
+    "href": "/app/projects/fd21eefc-6a63-4c06-89fd-007ed138c77f?chatBefore=15#turn-99d92aaa-32b0-4cb0-8c95-61212fb791b2"
+  },
+  "resultUnchanged": true,
+  "limitations": [
+    "Prepared review explicitly says illustrative demo review.",
+    "Exploratory annotation is not an independently validated biological identity.",
+    "H5AD is a lossless conversion of published GSE270392 root counts and coordinates.",
+    "The 4 GiB upload ceiling has not been load-tested."
+  ]
+}
