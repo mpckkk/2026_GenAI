@@ -1,0 +1,17 @@
+[engine]
+# Reachable only inside the private Docker network. Compose publishes no ports.
+public_listen = "0.0.0.0:8088"
+fabric_listen = "127.0.0.1:11435"
+control_socket = "/run/meterless/runtime.sock"
+core_socket = "/run/meterless/core.sock"
+models_dir = "/var/lib/meterless/models"
+log_dir = "/var/log/meterless"
+llama_server_bin = "/usr/lib/meterless/llama-server"
+llama_cpp_ref = ""
+engine_pool_size = 1
+node_bin = "/usr/local/bin/node"
+engine_dir = "/usr/lib/meterless/engine"
+
+[memory]
+system_reserve_mb = 10240
+emergency_headroom_mb = 6144

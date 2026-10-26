@@ -1,6 +1,15 @@
 # Sponsor integration — 2026-10-25
 
-## Submission requirements correction
+## Current requirement and runtime status, 2026-10-27
+
+The latest organizer correction supplied by the user explicitly requires Nightshift as the AI provider, in addition to Zetaris and one Meterless Engine. This supersedes the older optional-Nightshift plan below.
+
+Confirmed additions: `infra/nightshift/Dockerfile`, `infra/nightshift/config.toml`, `infra/nightshift/lanes.toml`, `infra/nightshift/compose.yaml`, and `infra/nightshift/README.md`. The official ARM64 runtime runs with userspace QEMU and a native Node engine on the existing x86_64 server. No privileged container, host emulation registration, published host port or laptop dependency is introduced. Vendor code remains unmodified and outside Git.
+
+Sequence: verify the real API and auth boundary; configure an upstream provider; pass the existing structured inference probe; verify a fresh annotation and recall workflow; explicitly activate the adapter. The real API checks pass. Actual inference returns `no_provider_configured`, so activation remains blocked on a model API key. OpenShell remains active. No source files are deleted or renamed, and the private pitch planning file must remain untracked.
+
+
+## Historical submission interpretation, 25 October
 
 The user's latest submission instructions require **Zetaris and one Meterless Engine in a working feature**. Celloras uses **H-MEM** as that Engine. Cursor and NVIDIA are optional; there are no event credits to claim. Nightshift/Nemotron setup is optional work, not a submission blocker. This supersedes earlier interpretations of the Academy setup lesson. Preserve existing working OpenShell execution while prioritizing the two required integrations and their evidence.
 
@@ -21,7 +30,7 @@ Required deliverables: a 1–4 minute demo video, a slide deck covering problem/
 
 S1 reconciles the user's requirements against the source and recorded live acceptance; each sponsor claim needs a code pointer and actual result. S2 defines the continuous evidence → researcher review → recall → correction rehearsal and the video/deck content. Verify relative links and actual repository visibility/branch. No runtime changes, deletions or renames in this pass. The outline is not a completed recording or slide deck; both remain open deliverables. The next implementation work, if rehearsal exposes a gap, must have its own inspected file ledger and real acceptance check.
 
-Implementation status: H-MEM local and public acceptance complete (real browser/agent/DB, isolated source recall and correction); seven existing scientific/evidence journeys passed. Zetaris is installed on Linux with all nine vendor checks passed; its real adapter verifies the 42-record reference through a dedicated read-only account. It is selected in production, and a real public annotation completed with unchanged numerical results and saved Zetaris provenance. Optional Nightshift still needs runtime setup; Nemotron execution is not verified. OpenShell remains selected. Exact observations are in `docs/verification.md`.
+Implementation status on 25 October: H-MEM local and public acceptance complete (real browser/agent/DB, isolated source recall and correction); seven existing scientific/evidence journeys passed. Zetaris is installed on Linux with all nine vendor checks passed; its real adapter verifies the 42-record reference through a dedicated read-only account. It is selected in production, and a real public annotation completed with unchanged numerical results and saved Zetaris provenance. Optional Nightshift still needs runtime setup; Nemotron execution is not verified. OpenShell remains selected. Exact observations are in `docs/verification.md`.
 
 ## Outcome and boundaries
 

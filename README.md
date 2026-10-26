@@ -53,7 +53,7 @@ The complete public workflow passed: annotation → measured-marker plot → res
 
 See the [sponsor explanation and tests](docs/sponsor-explanation.md), [setup](docs/configuration.md#sponsor-integrations) and [submission preparation](docs/submission.md). Reproduce the complete journey with `npm run demo:workflow` using the [documented environment](docs/demo.md#prepare-the-complete-workflow). The [pitch deck](docs/pitchdeck/README.md) and separate [technical deck](docs/technical-deck/README.md) are available in PowerPoint and PDF; the final video remains to be recorded.
 
-The [binding event rules](https://hackathon.genai.works/event/open-agent-hackathon-2026#rules), checked on 26 October, require Zetaris and Meterless and allow any model/API. NVIDIA contributes the working OpenShell runtime. Nightshift has a selectable adapter but no verified live inference; Nemotron, NeMo Files and NVIDIA tracing remain pending. [Rule-source reconciliation](docs/submission.md#event-rule-audit--26-october-2026).
+The latest organizer correction requires **Zetaris, one Meterless Engine, and Nightshift as the AI provider**. Zetaris and H-MEM have working-feature evidence. The [Nightshift server deployment](infra/nightshift/README.md) passes API health, authentication and discovery checks, but actual inference still needs a provider API key and acceptance. OpenShell remains the active agent runtime. Nemotron, NeMo Files and NVIDIA tracing remain pending. The [26 October rule audit](docs/submission.md#event-rule-audit--26-october-2026) records an earlier interpretation.
 
 ## Research workflow
 

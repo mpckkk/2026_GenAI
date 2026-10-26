@@ -1,0 +1,37 @@
+name: celloras-nightshift
+services:
+  nightshift:
+    image: celloras-nightshift:1.5.1
+    platform: linux/amd64
+    build: .
+    container_name: celloras-nightshift
+    init: true
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 4g
+    cpus: 2
+    volumes:
+      - state:/var/lib/meterless
+    tmpfs:
+      - /run/meterless:uid=10001,gid=10001,mode=0750
+      - /var/log/meterless:uid=10001,gid=10001,mode=0750
+      - /tmp:mode=1777
+    networks:
+      celloras:
+        aliases: [nightshift]
+    healthcheck:
+      # Process liveness only. A real completion is required before activation.
+      test: [CMD, /usr/local/bin/node, -e, "fetch('http://127.0.0.1:8088/healthz',{signal:AbortSignal.timeout(4000)}).then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+volumes:
+  state:
+    name: celloras-nightshift-state
+networks:
+  celloras:
+    external: true
+    name: ${CELLORAS_NETWORK:?Set the existing Celloras Docker network}

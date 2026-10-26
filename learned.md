@@ -1,5 +1,10 @@
 # Engineering notes
 
+- The latest organizer correction supplied on 27 October explicitly requires Nightshift in addition to Zetaris and a Meterless Engine. Older optional-Nightshift notes below are historical and must not drive the current submission plan.
+- Nightshift's installer architecture is not the full portability story. Its unmodified ARM64 daemon can boot on the x86_64 server under explicit userspace QEMU while its JavaScript engine uses native Node 22.16.0. This custom deployment passes real API/auth/discovery checks; inference remains unverified until a provider is configured. Keep the runtime token separate from the upstream model API key.
+- The free Mac M1-M4 edition is not a verified API-hosting solution: current website setup/CLI docs say it has no endpoint, contradicting the GitHub editions table. Check the shipped runtime instead of inferring capability from a table.
+
+
 - Keep pitch screenshots, counts, review wording and activity links tied to the same verified experiment. A saved review paraphrase must not be presented as a verbatim agent quote.
 
 - Keep a component’s responsibilities when renaming it or adding implementation details. In the flowchart, researcher reviews persist in PostgreSQL before H-MEM loads them on later requests; H-MEM is a module inside the orchestrator.

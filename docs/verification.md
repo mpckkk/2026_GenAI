@@ -1,5 +1,14 @@
 # Foundation verification — 2026-10-23
 
+## Nightshift server setup, 27 October 2026 (local time)
+
+- Inspected and SHA-256 verified Meterless's official `meterless-runtime_1.5.1-1_arm64.deb`. Its core is an ARM64 binary; the Celloras server is Linux x86_64. The custom container runs that unmodified daemon through userspace QEMU and its shipped JavaScript engine through native Node 22.16.0. This does not establish vendor support for x86_64.
+- Built and started the reproducible `infra/nightshift` Compose service on the existing server. It runs as UID 10001 with a read-only root filesystem, no capabilities, no privileged mode, no Docker socket, no public ports and a persistent state volume. It joins the existing Celloras Docker network. No host-wide binfmt registration was added.
+- At 2026-10-26 23:27 UTC, real requests from the running Celloras worker to `http://nightshift:8088` returned health 200, invalid-token 401, authenticated model discovery 200, and completion 400 with `no_provider_configured`. Model routes are a catalog, not proof that model weights or provider credentials are available.
+- The runtime was restarted and its generated token was retained. The temporary trial container was removed after the persistent service passed. The [sanitized server receipt](evidence/nightshift-server-2026-10-27.json) records the checks; no keys, tokens or researcher data are included.
+- **Still blocked:** a real cloud-provider API key, successful structured inference, a fresh annotation/recall workflow and Nightshift activity attribution. Celloras remains on its verified OpenShell runtime. No existing experiment, database record or application runtime setting was changed. This service check does not establish Nightshift hackathon eligibility by itself.
+
+
 - Pitch deck update: preserved the approved opening and revised slides 2 to 4 around the recorded uploaded-H5AD experiment, Zetaris annotation query, provisional Root hair review and H-MEM recall. Package, geometry, Inter font and re-import checks passed. All four slide previews and PDF pages were visually inspected. PDF embeds Inter; links point to the recorded experiment/activity. No new inference or application change was made. Microsoft PowerPoint execution was not tested.
 
 - Flowchart correctness review: compared labels and connections with queue/orchestrator, runtime adapters, H5AD importer, scientific tools, Zetaris, saved reviews, H-MEM and activity implementations. Corrected the review persistence path and clarified process/provider boundaries. Rendered the static page for visual inspection. No automated tests or new inference were run. See `docs/technical-deck/flowchart-notes.md` for source mapping and omitted branches.

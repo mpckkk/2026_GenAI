@@ -1,0 +1,5 @@
+# This deployment uses cloud providers. No local GPU lanes are configured.
+[defaults]
+backend = "llamacpp"
+ubatch = 512
+batch = 2048

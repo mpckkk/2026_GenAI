@@ -1,0 +1,62 @@
+{
+  "checkedAt": "2026-10-26T23:27:46.868781+00:00",
+  "runtimeVersion": "1.5.1",
+  "hostArchitecture": "x86_64",
+  "execution": "official ARM64 meterlessd via qemu-aarch64-static; native Node 22.16.0",
+  "vendorPackageSha256": "c89deb611f114f1fa2a8cee9ad5039b25412ea279f691d10683fec6645af05c3",
+  "imageId": "sha256:df9c1c54b3917a5c0b903d987b4c8d85dfeab4a62617fbfaa6d8e1e3cb094689",
+  "privateNetworkChecksFrom": "running Celloras agent worker",
+  "checks": [
+    {
+      "name": "health",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "name": "invalid_token",
+      "httpStatus": 401,
+      "error": "unauthorized"
+    },
+    {
+      "name": "models",
+      "httpStatus": 200,
+      "routes": [
+        "meterless/auto",
+        "meterless/fast",
+        "meterless/deep",
+        "meterless/cheap",
+        "meterless/local",
+        "meterless/fusion",
+        "meterless/cluster",
+        "meterless/text",
+        "meterless/code",
+        "meterless/vision",
+        "meterless/perception",
+        "meterless/image",
+        "meterless/video",
+        "meterless/speech",
+        "meterless/transcribe",
+        "meterless/music",
+        "meterless/mesh",
+        "meterless/texture",
+        "meterless/embed",
+        "meterless/judge"
+      ]
+    },
+    {
+      "name": "completion",
+      "httpStatus": 400,
+      "errorCode": "no_provider_configured",
+      "hasAnswer": false
+    }
+  ],
+  "publishedPorts": {},
+  "readOnlyRootFilesystem": true,
+  "privileged": false,
+  "runtimeUser": "10001:10001",
+  "activeCellorasRuntime": "openshell",
+  "inferenceVerified": false,
+  "blocker": "A cloud provider API key has not been configured.",
+  "restartVerifiedAt": "2026-10-26T23:28:51.761623+00:00",
+  "tokenRetainedAfterRestart": true
+}

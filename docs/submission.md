@@ -1,8 +1,15 @@
 # Hackathon submission preparation
 
+## Latest organizer correction, supplied 27 October
+
+The user supplied a newer organizer message explicitly requiring **Zetaris, a Meterless Engine in a working feature, and Nightshift as the AI provider**. The demo must include one real Nightshift request, and the README needs at least three sample inputs and outputs. Treat this as the current submission target; the older rule audit below records conflicting earlier guidance.
+
+Zetaris and H-MEM have workflow evidence. The Nightshift server API is installed and responds correctly, but its first successful inference is blocked on provider configuration. Do not submit a successful health check, a model catalog, or an older OpenShell response as proof of Nightshift inference.
+
+
 Technical review companion: [PDF](technical-deck/Celloras-Technical-Deck.pdf), [editable PowerPoint](technical-deck/Celloras-Technical-Deck.pptx), [notes and sources](technical-deck/speaker-notes.md). The short pitch remains four slides.
 
-Required technology: **Zetaris and one Meterless Engine in a working feature**. Celloras uses **H-MEM** and contributes NVIDIA OpenShell for sandbox execution. The binding event-page rules, checked on 26 October, require Zetaris and Meterless and allow any model/API. The older Resource Center draft mentions mandatory Nightshift but explicitly defers to the event page. See the audit below; no unverified Nightshift or Nemotron run is claimed.
+Required technology for the current plan: **Zetaris, one Meterless Engine, and Nightshift as the AI provider**. Celloras uses **H-MEM** as its Engine and currently runs Codex through NVIDIA OpenShell. The Nightshift deployment is ready for provider configuration; no successful Nightshift or Nemotron inference is claimed. The dated audit below preserves the earlier rule conflict.
 
 ## Four deliverables
 
