@@ -5,6 +5,7 @@
 - Added a full-page activity dashboard with searchable owned requests, live status, timed nested steps, inline inputs/evidence, canonical outputs and JSON export. Chat responses link directly to their activity.
 - Persisted actual context, H-MEM, reference, tool, runtime and response-validation events. Queue and terminal transitions commit atomically; failed/cancelled work stays visible. Existing conversations remain explicitly uninstrumented.
 - Kept recording independent of CLI/API runtimes and the optional NVIDIA exporter. Added strict metadata projection and ownership checks without another infrastructure service.
+- Deployed and verified a fresh public H5AD → annotation → plot → review → H-MEM workflow: three completed requests, 51 events, live Zetaris query provenance and a source-linked recalled decision. Updated the organizer checklist and demo links.
 
 ## Owned H5AD import — 2026-10-26
 

@@ -22,3 +22,7 @@ The root integration also updates `infra/agent/Dockerfile` to include the shared
 - Cancellation/failure stays visible; an unclosed step on a terminal request is labelled interrupted, never completed.
 - Historical requests have no fabricated step history.
 - The public demo has fresh recorded inputs, visual results and readable trace evidence suitable for the organizer checklist. Recording the final video remains a separate deliverable.
+
+## Delivery record
+
+Implemented in `8e841af`; deployed with migration 011. The real local journey and 24 PostgreSQL checks passed. Fresh public H5AD → annotation → plot → review → H-MEM recall passed with live Zetaris and 51 recorded events. The acceptance receipt is `docs/evidence/agent-activity-public-2026-10-26.json`. Documentation updates also include `docs/submission.md`, `docs/sponsor-explanation.md` and `docs/technical-deck/README.md`; the exported decks were not regenerated. Amigospace's demo/checklist page was updated and confirmed at revision 5.

@@ -1,5 +1,13 @@
 # Foundation verification — 2026-10-23
 
+## Native activity dashboard — public acceptance, 2026-10-26
+
+- Release `8e841af` deployed through Dokploy; migration 011 applied, Linux app/worker started and readiness returned 200. GitHub [Foundation checks passed](https://github.com/mpckkk/2026_GenAI/actions/runs/40315183963).
+- A new [Soybean H5AD · activity demo](https://celloras.com/app/projects/7bdae43c-5cd2-4203-a571-e73b445985db) completed the real 28,919,346-byte download/upload, explicit data selection, import, agent annotation, two-gene dot plot, illustrative provisional review and H-MEM recall. It preserves the existing demo. All 7,496 map points remain; annotation produced 7 suggested, 1 ambiguous and 4 unresolved groups.
+- [Annotation activity](https://celloras.com/app/activity/3ff0f30e-3655-4e83-8b4e-08f703054b46) retains 19 events and the actual nested Zetaris receipt `f1dcdd5e-a869-45ac-a6eb-771ffc8d6d1b`: 42 associations and the verified canonical reference hash. [Review recall activity](https://celloras.com/app/activity/ee487b10-71e8-45c7-82d0-c857bc47588f) retains H-MEM source `annotation-review:adbcacc8-62f6-452f-a1da-87d559bb8ff1` and its canonical original-turn link. The original numerical result is unchanged.
+- All three requests completed with 51 events in total; every recorded start has an actual terminal event. Live model execution was observed in the dashboard. The browser exported the same annotation trace, followed saved results and inspected the source/review details. Desktop and 390px dashboard/expanded-step screenshots were inspected without overflow. Public model name correctly remains unknown; no tokens/cost estimates were invented.
+- [Nonsecret acceptance evidence](evidence/agent-activity-public-2026-10-26.json) records inputs, result IDs, sponsor receipts and trace URLs. Private screenshots/checkpoints remain in ignored `.artifacts/activity-public/`. No hidden reasoning or credentials are included. This is evidence of the working supported workflow, not independent biological validation. The final narrated submission video remains outstanding.
+
 ## Native agent activity — local acceptance, 2026-10-26
 
 - Applied additive migration 011 to real PostgreSQL. Twenty-four database checks passed: admission/terminal atomicity, strict metadata, immutable history, idempotent replay/conflicting payload denial, ownership, cancellation/failure and legacy behavior. All 639 pre-migration turns retained a null recording version. Synthetic database fixtures were rolled back completely.

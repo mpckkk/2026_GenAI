@@ -72,6 +72,8 @@ Migration `011_agent_activity.sql` stores append-only events in the existing Pos
 
 Older conversations explicitly show that detailed activity was not recorded. Unfinished steps on stopped requests remain interrupted. Model names appear only when configured or reported; token usage, cost and hidden model reasoning are not collected. Context-preparation events become visible when their transaction commits.
 
+The [prepared activity demo](https://celloras.com/app/activity?projectId=7bdae43c-5cd2-4203-a571-e73b445985db) has fresh uploaded-data annotation, marker comparison and H-MEM recall traces with live Zetaris receipts. Sign in using **Use demo credentials**. [Acceptance evidence](docs/evidence/agent-activity-public-2026-10-26.json) and the [real browser check](tests/agent-activity.spec.ts) document the working flow.
+
 ## Run locally
 
 Use Node 22.22.0 (`.nvmrc`), npm, Docker Compose and an installed Codex CLI. Start the workspace first; `setup` creates an ignored `.env` and refuses to overwrite an existing one.

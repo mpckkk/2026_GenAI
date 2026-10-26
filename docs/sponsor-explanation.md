@@ -37,6 +37,10 @@ The [complete public demo](demo.md#open-the-ready-demo) now captures both sponso
 
 Run `CELLORAS_DEMO_URL=https://celloras.com npm run demo:workflow` to resume this prepared demonstration through real authentication. The [script](../scripts/prepare-workflow-demo.mjs) requires actual Zetaris provenance on the public deployment and stops on failures or later researcher edits.
 
+## Visible sponsor activity
+
+The latest uploaded-data rehearsal also exposes both integrations in [Celloras's activity dashboard](https://celloras.com/app/activity?projectId=7bdae43c-5cd2-4203-a571-e73b445985db). Open the annotation request's **Retrieve marker evidence** step for the actual Zetaris query receipt and checksum. Open the later recall request's **Recall saved decisions** step for the exact H-MEM source and original review. The [26 October receipt](evidence/agent-activity-public-2026-10-26.json) records all three completed requests and their persisted events. This is the native Celloras dashboard, separate from the optional NVIDIA exporter.
+
 ## Submission text
 
 Celloras uses Zetaris to query a versioned soybean marker reference through a read-only SQL connection, verify its contents and preserve source provenance in agent-generated annotation cards. We implemented Meterless's H-MEM Engine to recall researchers' saved cell-type decisions and reasoning across conversations, with project isolation, correction history and source receipts. Real agent tests demonstrate reference retrieval and annotation through Zetaris, plus H-MEM recall beyond recent context, correction and isolation. Scientific candidates and researcher decisions remain separate so remembered interpretations cannot become published evidence.

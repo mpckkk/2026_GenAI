@@ -1,0 +1,165 @@
+{
+  "version": "public-agent-activity-v1",
+  "checkedAt": "2026-10-26T11:31:07.227Z",
+  "origin": "https://celloras.com",
+  "projectId": "7bdae43c-5cd2-4203-a571-e73b445985db",
+  "url": "https://celloras.com/app/projects/7bdae43c-5cd2-4203-a571-e73b445985db",
+  "activityUrl": "https://celloras.com/app/activity?projectId=7bdae43c-5cd2-4203-a571-e73b445985db",
+  "uploadId": "e046bcf8-addc-4692-bb0c-b83e57107ce0",
+  "datasetId": "upload-e046bcf8-addc-4692-bb0c-b83e57107ce0",
+  "datasetVersion": "cee7c1d6195bc900f2eec8bfcf1432be7e5e6dd41571bdf6831b3664409fc4d2",
+  "source": {
+    "filename": "soybean-root-gse270392.h5ad",
+    "bytes": 28919346,
+    "sha256": "f4c9395d190ce8e073e36ee531664c82e8bd7adaf9b29dfe64fa593088c74890"
+  },
+  "annotation": {
+    "turnId": "3ff0f30e-3655-4e83-8b4e-08f703054b46",
+    "runId": "6faf249a-4a9b-4af0-a462-03369a6f2d52",
+    "reference": {
+      "provider": "Zetaris",
+      "requestId": "f1dcdd5e-a869-45ac-a6eb-771ffc8d6d1b",
+      "recordCount": 42,
+      "retrievedAt": "2026-10-26T11:29:36.647Z",
+      "contentSha256": "0aee9d9a7eba874fdcf1e6edfefc970fa651f4fc516f6f249d02dafeab535485"
+    },
+    "group6": {
+      "suggestedLabel": "Root hair",
+      "nCells": 388,
+      "genes": [
+        "Glyma.01G224900",
+        "Glyma.17G030700"
+      ]
+    },
+    "mapPoints": 7496
+  },
+  "counts": {
+    "clusterCount": 12,
+    "suggestedCount": 7,
+    "ambiguousCount": 1,
+    "unresolvedCount": 4
+  },
+  "comparison": {
+    "turnId": "a478d8b2-4094-499e-a524-fe68af2e6b21",
+    "runId": "48d66949-b0e8-4e03-8722-aeba2f24e32f",
+    "genes": [
+      "Glyma.01G224900",
+      "Glyma.17G030700"
+    ]
+  },
+  "review": {
+    "id": "adbcacc8-62f6-452f-a1da-87d559bb8ff1",
+    "note": "Illustrative demo review: keep Root hair provisional for group 6. Measured support includes Glyma.01G224900 and Glyma.17G030700. Confirm with independent evidence before treating this as a validated identity.",
+    "decision": "accepted"
+  },
+  "memory": {
+    "turnId": "ee487b10-71e8-45c7-82d0-c857bc47588f",
+    "source": "annotation-review:adbcacc8-62f6-452f-a1da-87d559bb8ff1",
+    "href": "/app/projects/7bdae43c-5cd2-4203-a571-e73b445985db?chatBefore=18#turn-3ff0f30e-3655-4e83-8b4e-08f703054b46"
+  },
+  "activity": {
+    "annotation": {
+      "turnId": "3ff0f30e-3655-4e83-8b4e-08f703054b46",
+      "url": "https://celloras.com/app/activity/3ff0f30e-3655-4e83-8b4e-08f703054b46",
+      "status": "completed",
+      "recordingVersion": 1,
+      "runtime": "openshell",
+      "model": null,
+      "durationMs": 24230,
+      "eventCount": 19,
+      "spanCount": 10,
+      "toolCount": 1,
+      "kinds": [
+        "queue",
+        "context",
+        "reference",
+        "memory",
+        "tool",
+        "model",
+        "response"
+      ],
+      "allStartedSpansClosed": true,
+      "canonicalResultIds": [
+        "6faf249a-4a9b-4af0-a462-03369a6f2d52"
+      ]
+    },
+    "comparison": {
+      "turnId": "a478d8b2-4094-499e-a524-fe68af2e6b21",
+      "url": "https://celloras.com/app/activity/a478d8b2-4094-499e-a524-fe68af2e6b21",
+      "status": "completed",
+      "recordingVersion": 1,
+      "runtime": "openshell",
+      "model": null,
+      "durationMs": 19429,
+      "eventCount": 17,
+      "spanCount": 9,
+      "toolCount": 1,
+      "kinds": [
+        "queue",
+        "context",
+        "reference",
+        "memory",
+        "tool",
+        "model",
+        "response"
+      ],
+      "allStartedSpansClosed": true,
+      "canonicalResultIds": [
+        "48d66949-b0e8-4e03-8722-aeba2f24e32f"
+      ]
+    },
+    "recall": {
+      "turnId": "ee487b10-71e8-45c7-82d0-c857bc47588f",
+      "url": "https://celloras.com/app/activity/ee487b10-71e8-45c7-82d0-c857bc47588f",
+      "status": "completed",
+      "recordingVersion": 1,
+      "runtime": "openshell",
+      "model": null,
+      "durationMs": 31270,
+      "eventCount": 15,
+      "spanCount": 8,
+      "toolCount": 0,
+      "kinds": [
+        "queue",
+        "context",
+        "reference",
+        "memory",
+        "model",
+        "response"
+      ],
+      "allStartedSpansClosed": true,
+      "canonicalResultIds": []
+    },
+    "zetaris": {
+      "eventId": "126573ae-c49f-4c60-b217-dba5596c0e9d",
+      "spanId": "ae1c5529-429a-432d-97b6-6388f8d8c48b",
+      "parentSpanId": "2d44ba21-b71b-4c8b-9602-c34bbb84a3e7",
+      "provider": "Zetaris",
+      "requestId": "f1dcdd5e-a869-45ac-a6eb-771ffc8d6d1b",
+      "recordCount": 42,
+      "retrievedAt": "2026-10-26T11:29:36.647Z",
+      "contentSha256": "0aee9d9a7eba874fdcf1e6edfefc970fa651f4fc516f6f249d02dafeab535485"
+    },
+    "hmem": {
+      "eventId": "33dda81a-a5af-49c5-b099-53c368a87378",
+      "source": "annotation-review:adbcacc8-62f6-452f-a1da-87d559bb8ff1",
+      "memoryCount": 1
+    },
+    "liveObservation": {
+      "at": "2026-10-26T11:29:39.479Z",
+      "observedStatus": "running",
+      "eventCount": 15
+    },
+    "exportedActivityVerified": true,
+    "desktopAndMobileChecked": true
+  },
+  "resultUnchanged": true,
+  "limitations": [
+    "Prepared review explicitly says illustrative demo review.",
+    "Exploratory annotation is not an independently validated biological identity.",
+    "H5AD is a lossless conversion of published GSE270392 root counts and coordinates.",
+    "The 4 GiB upload ceiling has not been load-tested.",
+    "Activity records actual inputs, tool steps and receipts; it does not expose hidden model reasoning.",
+    "This workflow alone does not establish cross-account isolation; isolation is checked separately."
+  ]
+}

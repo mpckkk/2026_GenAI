@@ -15,6 +15,17 @@ Requirements below follow the user's submission instructions supplied on 2026-10
 
 Use the code URL **https://github.com/mpckkk/2026_GenAI/tree/celloras.com** in the GitHub field. It points to the application branch and meets the stated `github.com` domain requirement. Confirm the form accepts that branch URL before final submission. The live app is https://celloras.com; it is a separate demo link.
 
+## Organizer readiness checklist — verified 26 October
+
+| Requirement | Visible proof |
+| --- | --- |
+| Working end-to-end version | Fresh H5AD upload → annotation → measured-marker plot → review → recall in [the activity demo](https://celloras.com/app/projects/7bdae43c-5cd2-4203-a571-e73b445985db). |
+| Sponsors connected and tested | The annotation trace contains the real Zetaris query, 42 associations and verified hash; the recall trace contains the exact Meterless H-MEM review source. |
+| Understandable agent activity | [Agent activity dashboard](https://celloras.com/app/activity?projectId=7bdae43c-5cd2-4203-a571-e73b445985db): three completed requests, timed steps, inline input/output/source details, original-result links and JSON export. |
+| Sample inputs and outputs ready | The 29 MB sample, 7,496-cell map, annotation, two-gene plot and recalled review are saved. [Recorded proof](evidence/agent-activity-public-2026-10-26.json). |
+
+For the video, open **View activity** under the annotation answer, expand **Retrieve marker evidence**, then show **Recall saved decisions** on the later request. These are persisted records of the actual execution. Recording and uploading the final 1–4 minute narrated video remain outstanding; the working feature and its sample outputs are ready.
+
 ## One experiment, one research question
 
 The demonstration should answer: **“What are these cells, what supports that interpretation, and what did we decide?”**
