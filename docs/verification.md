@@ -1,5 +1,7 @@
 # Foundation verification — 2026-10-23
 
+- The user subsequently requested a plain static black-and-white flowchart and explicitly asked for no flowchart tests. Removed controls, JavaScript and detail panels; no tests were run for this simplification. Earlier interaction checks below describe the superseded version.
+
 - Flowchart layout follow-up: real Chromium checks passed at 390, 768, 1440 and 1680px with no nested scrolling or horizontal page overflow. The desktop diagram fits the initial viewport; mobile offers a readable step selector. The background remains white under a dark system preference. All 16 nodes, click/keyboard selection, SVG download and browser printing passed with no browser errors. Desktop/mobile screenshots inspected; receipts are in ignored `.artifacts/technical-flowchart-layout/`. Normal page scrolling remains for the details below the chart.
 
 - HTML technical flowchart: real Chromium checks passed for 16 readable nodes, source-linked selection, keyboard selection, zoom/fit, SVG export and zero browser errors. Desktop and dark-theme screenshots were inspected, along with the 390px pan/zoom view; the page itself has no horizontal overflow. The exported SVG contains resolved colors and editable text. The browser print output was rendered and inspected as one A3 landscape page. Private verification artifacts remain in `.artifacts/technical-flowchart-html/`. This checks the standalone diagram, not new inference or scientific accuracy.

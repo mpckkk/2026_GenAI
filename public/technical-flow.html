@@ -6,204 +6,82 @@
 <meta name="color-scheme" content="light">
 <title>Celloras · Technical workflow</title>
 <style>
-  :root { color-scheme: light; --paper:#fff; --ink:#18372b; --muted:#617369; --line:#c9d5cc; --node:#fff; --sage:#ecf4ed; --green:#39704f; --purple:#6d5b97; --lavender:#f2eef9; --amber:#8e681d; --sand:#fff5dc; --soft:#f4f7f3; }
+  :root { color-scheme:light; }
   * { box-sizing:border-box; }
-  body { margin:0; background:var(--paper); color:var(--ink); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
-  .page { max-width:1800px; margin:auto; padding:30px 34px 24px; }
-  header { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:24px; }
-  .brand { font-size:13px; font-weight:650; letter-spacing:.12em; text-transform:uppercase; margin:0 0 10px; color:var(--green); }
-  h1 { font-size:clamp(25px,3vw,39px); line-height:1.12; font-weight:600; letter-spacing:-.04em; margin:0; }
-  .subtitle { color:var(--muted); font-size:14px; margin:10px 0 0; }
-  .revision { font-size:12px; color:var(--muted); text-align:right; flex-shrink:0; }
-  .toolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:11px 0; }
-  .hint { font-size:13px; color:var(--muted); }
-  .controls { display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
-  button { font:inherit; font-size:13px; border:1px solid var(--line); background:var(--node); color:var(--ink); padding:8px 12px; border-radius:7px; cursor:pointer; min-height:36px; }
-  button:hover { background:var(--sage); }
-  button:disabled { cursor:default; opacity:.4; }
-  button:focus-visible, a:focus-visible { outline:3px solid var(--green); outline-offset:3px; }
-  .viewport { width:100%; }
-  .diagram { display:block; width:100%; height:auto; margin-inline:auto; }
-  @media (min-width:701px) { .diagram { max-height:max(420px,calc(100svh - 230px)); } }
-  .diagram text { font-family:inherit; fill:var(--ink); }
-  .diagram .stage { font-size:17px; font-weight:600; letter-spacing:1.2px; fill:var(--muted); }
-  .diagram .stage-rule { stroke:var(--line); stroke-width:1; }
-  .diagram .node-surface { fill:var(--node); stroke:var(--line); stroke-width:1.5; }
-  .diagram .node.agent .node-surface, .diagram .node.result .node-surface { fill:var(--sage); }
-  .diagram .node.reference .node-surface { fill:var(--lavender); }
-  .diagram .node.decision .node-surface { fill:var(--sand); stroke:var(--amber); }
-  .diagram .node-title { font-size:22px; font-weight:600; }
-  .diagram .node-sub { font-size:17px; fill:var(--muted); }
-  .diagram .node { cursor:pointer; }
-  .diagram .node:hover .node-surface, .diagram .node:focus-visible .node-surface { stroke:var(--green); stroke-width:2.5; }
-  .diagram .node:focus-visible { outline:none; }
-  .diagram .node[aria-current="true"] .node-surface { stroke:var(--green); stroke-width:2.5; }
-  .diagram .node[aria-current="true"] .node-title { fill:var(--green); }
-  .diagram .edge { fill:none; stroke:var(--green); stroke-width:2; stroke-linejoin:round; stroke-linecap:round; }
-  .diagram .edge.reference { stroke:var(--purple); }
-  .diagram .edge.record { stroke:var(--muted); stroke-dasharray:5 7; }
-  .diagram .edge-label { font-size:16px; fill:var(--muted); paint-order:stroke fill; stroke:var(--paper); stroke-width:7px; stroke-linejoin:round; }
-  .diagram .branch { font-weight:650; fill:var(--green); }
-  .diagram .small-label { font-size:15px; fill:var(--muted); }
-  .diagram .guide { fill:none; stroke:var(--line); stroke-width:1; stroke-dasharray:3 8; }
-  .detail { border-top:1px solid var(--line); padding:20px 0 10px; display:grid; grid-template-columns:minmax(170px,250px) 1fr; gap:25px; scroll-margin-top:20px; }
-  .step-picker { display:none; }
-  .detail-label { color:var(--muted); font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin:0 0 5px; }
-  .detail h2 { font-size:19px; line-height:1.3; margin:0; font-weight:600; }
-  .detail p { margin:0; font-size:14px; line-height:1.65; max-width:100ch; }
-  .detail .facts { color:var(--muted); font-size:12px; margin-top:8px; }
-  .detail a { color:var(--green); text-underline-offset:3px; }
-  footer { border-top:1px solid var(--line); margin-top:16px; padding-top:14px; display:flex; gap:20px; justify-content:space-between; flex-wrap:wrap; color:var(--muted); font-size:12px; line-height:1.5; }
-  @media (max-width:700px) { .page { padding:22px 15px; } header { align-items:flex-start; } .revision { display:none; } .hint { flex-basis:100%; } .toolbar { gap:10px; } .controls { justify-content:flex-end; width:100%; } button { min-height:42px; } .detail { grid-template-columns:1fr; gap:10px; } .step-picker { display:block; margin-bottom:14px; font-size:12px; color:var(--muted); } .step-picker select { display:block; width:100%; margin-top:6px; min-height:44px; padding:8px; font:inherit; font-size:14px; color:var(--ink); background:#fff; border:1px solid var(--line); border-radius:6px; } }
-  @media print { :root { color-scheme:light; --paper:#fff; --ink:#18372b; --muted:#617369; --line:#c9d5cc; --node:#fff; --sage:#ecf4ed; --green:#39704f; --purple:#6d5b97; --lavender:#f2eef9; --amber:#8e681d; --sand:#fff5dc; } @page { size:A3 landscape; margin:10mm; } .page { padding:0; } .toolbar,.detail,footer,.revision { display:none; } .viewport { height:auto; min-height:0; overflow:visible; } .diagram { width:100%!important; height:230mm!important; max-height:none; } header { margin-bottom:10px; } * { print-color-adjust:exact; -webkit-print-color-adjust:exact; } }
+  body { margin:0; background:#fff; color:#111; font-family:Arial,Helvetica,sans-serif; }
+  main { max-width:1700px; margin:auto; padding:28px; }
+  h1 { margin:0 0 8px; font-size:28px; font-weight:600; }
+  p { margin:0 0 20px; font-size:15px; }
+  svg { display:block; width:100%; height:auto; }
+  svg text { font-family:Arial,Helvetica,sans-serif; fill:#111; }
+  .stage { font-size:17px; font-weight:600; }
+  .stage-rule { stroke:#111; stroke-width:1; }
+  .node-surface { fill:#fff; stroke:#111; stroke-width:1.5; }
+  .node-title { font-size:22px; font-weight:600; }
+  .node-sub { font-size:17px; }
+  .edge { fill:none; stroke:#111; stroke-width:2; stroke-linejoin:round; stroke-linecap:round; }
+  .edge.record { stroke-dasharray:5 7; }
+  .edge-label { font-size:16px; paint-order:stroke fill; stroke:#fff; stroke-width:7px; stroke-linejoin:round; }
+  .branch { font-weight:600; }
+  .small-label { font-size:15px; }
+  @media (max-width:700px) { main { padding:16px; } h1 { font-size:24px; } }
+  @media print { @page { size:A3 landscape; margin:10mm; } main { padding:0; } svg { max-height:230mm; } }
 </style>
 </head>
 <body>
-<main class="page">
-  <header>
-    <div><p class="brand">Celloras / Engineering</p><h1>From research question to evidence.</h1><p class="subtitle">One request, its analysis loop, and the records it leaves behind.</p></div>
-    <div class="revision">Current implementation<br>26 October 2026</div>
-  </header>
-  <div class="toolbar" aria-label="Flowchart controls">
-    <span class="hint">Select a step to read its details below.</span>
-    <div class="controls">
-      <button id="export" type="button">Download SVG</button>
-      <button id="print" type="button">Print / PDF</button>
-    </div>
-  </div>
-  <div class="viewport" id="viewport" aria-label="Technical workflow">
-    <svg class="diagram" id="diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1050" role="group" aria-labelledby="diagram-title diagram-desc">
-      <title id="diagram-title">Celloras request and analysis flow</title>
+<main>
+<h1>Celloras — technical workflow</h1>
+<p>From uploaded data and a research question to an explained result.</p>
+<svg xmlns="http://www.w3.org/2000/svg" class="diagram" id="diagram" viewBox="0 0 1600 1050" role="img" aria-labelledby="diagram-title diagram-desc"><title id="diagram-title">Celloras request and analysis flow</title>
       <desc id="diagram-desc">A researcher submits an owned request. The worker prepares context, consults an interchangeable agent runtime and executes requested scientific tools. Tools read private numerical data and Zetaris evidence. Results return to the agent until an answer is ready. Saved reviews inform later requests through H-MEM. Execution creates durable activity records.</desc>
       <defs>
-        <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="var(--green)"/></marker>
-        <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="var(--purple)"/></marker>
-        <marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="var(--muted)"/></marker>
+        <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#111" /></marker>
+        <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#111" /></marker>
+        <marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#111" /></marker>
       </defs>
       <g aria-hidden="true">
-        <text class="stage" x="30" y="45">01 / INPUT &amp; ACCESS</text><path class="stage-rule" d="M30 65H510"/>
-        <text class="stage" x="560" y="45">02 / AGENT &amp; ANALYSIS</text><path class="stage-rule" d="M560 65H1040"/>
-        <text class="stage" x="1090" y="45">03 / ANSWER &amp; REVIEW</text><path class="stage-rule" d="M1090 65H1570"/>
+        <text class="stage" x="30" y="45">01 / INPUT &amp; ACCESS</text><path class="stage-rule" d="M30 65H510" />
+        <text class="stage" x="560" y="45">02 / AGENT &amp; ANALYSIS</text><path class="stage-rule" d="M560 65H1040" />
+        <text class="stage" x="1090" y="45">03 / ANSWER &amp; REVIEW</text><path class="stage-rule" d="M1090 65H1570" />
         <text class="small-label" x="30" y="360">REQUEST FLOW</text>
         <text class="small-label" x="30" y="635">DATA &amp; EVIDENCE</text>
       </g>
       <g id="edges" aria-hidden="true">
-        <path class="edge" marker-end="url(#arrow-green)" d="M230 450H280"/>
-        <path class="edge" marker-end="url(#arrow-green)" d="M510 450H560"/>
-        <path class="edge" marker-end="url(#arrow-green)" d="M630 380V290"/>
+        <path class="edge" marker-end="url(#arrow-green)" d="M230 450H280" />
+        <path class="edge" marker-end="url(#arrow-green)" d="M510 450H560" />
+        <path class="edge" marker-end="url(#arrow-green)" d="M630 380V290" />
         <text class="edge-label" x="613" y="340" text-anchor="end">Context</text>
-        <path class="edge" marker-end="url(#arrow-green)" d="M750 290V380"/>
+        <path class="edge" marker-end="url(#arrow-green)" d="M750 290V380" />
         <text class="edge-label" x="765" y="335">Action / answer</text>
-        <path class="edge reference" marker-end="url(#arrow-purple)" d="M1040 205H900V350H790V380"/>
+        <path class="edge reference" marker-end="url(#arrow-purple)" d="M1040 205H900V350H790V380" />
         <text class="edge-label" x="918" y="257">Relevant</text><text class="edge-label" x="918" y="278">decisions</text>
-        <path class="edge" marker-end="url(#arrow-green)" d="M820 450H875"/>
-        <path class="edge" marker-end="url(#arrow-green)" d="M1025 450H1080"/>
+        <path class="edge" marker-end="url(#arrow-green)" d="M820 450H875" />
+        <path class="edge" marker-end="url(#arrow-green)" d="M1025 450H1080" />
         <text class="edge-label branch" x="1053" y="435" text-anchor="middle">NO</text>
-        <path class="edge" marker-end="url(#arrow-green)" d="M1300 450H1360"/>
-        <path class="edge" marker-end="url(#arrow-green)" d="M950 515V670"/>
+        <path class="edge" marker-end="url(#arrow-green)" d="M1300 450H1360" />
+        <path class="edge" marker-end="url(#arrow-green)" d="M950 515V670" />
         <text class="edge-label branch" x="968" y="573">YES</text>
-        <path class="edge" marker-end="url(#arrow-green)" d="M850 670V570H790V520"/>
+        <path class="edge" marker-end="url(#arrow-green)" d="M850 670V570H790V520" />
         <text class="edge-label" x="832" y="606" text-anchor="end">Measured results</text>
-        <path class="edge" marker-end="url(#arrow-green)" d="M220 730H270"/>
-        <path class="edge" marker-end="url(#arrow-green)" d="M490 730H540"/>
-        <path class="edge" marker-end="url(#arrow-green)" d="M720 730H800"/>
-        <path class="edge reference" marker-end="url(#arrow-purple)" d="M1160 730H1080"/>
-        <path class="edge" marker-end="url(#arrow-green)" d="M1465 510V680"/>
+        <path class="edge" marker-end="url(#arrow-green)" d="M220 730H270" />
+        <path class="edge" marker-end="url(#arrow-green)" d="M490 730H540" />
+        <path class="edge" marker-end="url(#arrow-green)" d="M720 730H800" />
+        <path class="edge reference" marker-end="url(#arrow-purple)" d="M1160 730H1080" />
+        <path class="edge" marker-end="url(#arrow-green)" d="M1465 510V680" />
         <text class="edge-label" x="1480" y="589">Review</text>
-        <path class="edge reference" marker-end="url(#arrow-purple)" d="M1570 730H1590V205H1320"/>
+        <path class="edge reference" marker-end="url(#arrow-purple)" d="M1570 730H1590V205H1320" />
         <text class="edge-label" x="1450" y="188" text-anchor="middle">Available next time</text>
-        <path class="edge record" marker-end="url(#arrow-muted)" d="M560 495H522V714 M522 746V870H1350V900"/>
-        <path class="edge record" d="M522 714Q508 730 522 746"/>
+        <path class="edge record" marker-end="url(#arrow-muted)" d="M560 495H522V714 M522 746V870H1350V900" />
+        <path class="edge record" d="M522 714Q508 730 522 746" />
         <text class="edge-label" x="540" y="854">Record execution</text>
-        <path class="edge" marker-end="url(#arrow-green)" d="M1130 965H1080"/>
+        <path class="edge" marker-end="url(#arrow-green)" d="M1130 965H1080" />
       </g>
-      <g id="nodes"></g>
+      <g id="nodes"><g class="node "><polygon points="44,400 230,400 216,500 30,500" class="node-surface" /><text class="node-title" x="130" y="444" text-anchor="middle">Ask a question</text><text class="node-sub" x="130" y="478" text-anchor="middle">or choose an action</text></g><g class="node "><rect x="280" y="400" width="230" height="100" rx="11" class="node-surface" /><text class="node-title" x="395" y="432" text-anchor="middle">Check access</text><text class="node-sub" x="395" y="466" text-anchor="middle">Next.js · Keycloak</text><text class="node-sub" x="395" y="490" text-anchor="middle">PostgreSQL queue</text></g><g class="node agent"><rect x="560" y="380" width="260" height="140" rx="11" class="node-surface" /><text class="node-title" x="690" y="444" text-anchor="middle">Celloras worker</text><text class="node-sub" x="690" y="478" text-anchor="middle">Context · tools · persistence</text></g><g class="node agent"><rect x="560" y="160" width="260" height="130" rx="11" class="node-surface" /><text class="node-title" x="690" y="193.5" text-anchor="middle">Agent runtime</text><text class="node-title" x="690" y="220.5" text-anchor="middle">interface</text><text class="node-sub" x="690" y="254.5" text-anchor="middle">CLI or HTTP</text><text class="node-sub" x="690" y="278.5" text-anchor="middle">Live: Codex via OpenShell</text></g><g class="node reference"><rect x="1040" y="150" width="280" height="110" rx="11" class="node-surface" /><text class="node-title" x="1180" y="199" text-anchor="middle">Meterless H-MEM</text><text class="node-sub" x="1180" y="233" text-anchor="middle">Earlier research decisions</text></g><g class="node decision"><polygon points="950,385 1025,450 950,515 875,450" class="node-surface" /><text class="node-title" x="950" y="446" text-anchor="middle">Run an</text><text class="node-title" x="950" y="473" text-anchor="middle">analysis?</text></g><g class="node "><rect x="1080" y="400" width="220" height="100" rx="11" class="node-surface" /><text class="node-title" x="1190" y="444" text-anchor="middle">Validate + save</text><text class="node-sub" x="1190" y="478" text-anchor="middle">Schema · owned result IDs</text></g><g class="node result"><rect x="1360" y="390" width="210" height="120" rx="11" class="node-surface" /><text class="node-title" x="1465" y="432" text-anchor="middle">Visual answer</text><text class="node-sub" x="1465" y="466" text-anchor="middle">Explanation · cell map</text><text class="node-sub" x="1465" y="490" text-anchor="middle">Plots · evidence cards</text></g><g class="node "><polygon points="44,680 220,680 206,780 30,780" class="node-surface" /><text class="node-title" x="125" y="724" text-anchor="middle">Upload H5AD</text><text class="node-sub" x="125" y="758" text-anchor="middle">Resumable chunks</text></g><g class="node "><rect x="270" y="680" width="220" height="100" rx="11" class="node-surface" /><text class="node-title" x="380" y="724" text-anchor="middle">Validate + import</text><text class="node-sub" x="380" y="758" text-anchor="middle">Python worker</text></g><g class="node "><path d="M540,686 C540,665 720,665 720,686 V774 C720,795 540,795 540,774 Z M540,686 C540,707 720,707 720,686" class="node-surface" /><text class="node-title" x="630" y="731" text-anchor="middle">Private dataset</text><text class="node-sub" x="630" y="765" text-anchor="middle">Counts + UMAP</text></g><g class="node agent"><rect x="800" y="670" width="280" height="120" rx="11" class="node-surface" /><text class="node-title" x="940" y="712" text-anchor="middle">Scientific tools</text><text class="node-sub" x="940" y="746" text-anchor="middle">Annotation · comparisons</text><text class="node-sub" x="940" y="770" text-anchor="middle">Gene plots · literature</text></g><g class="node reference"><rect x="1160" y="680" width="180" height="100" rx="11" class="node-surface" /><text class="node-title" x="1250" y="724" text-anchor="middle">Zetaris</text><text class="node-sub" x="1250" y="758" text-anchor="middle">Marker reference</text></g><g class="node "><rect x="1360" y="680" width="210" height="100" rx="11" class="node-surface" /><text class="node-title" x="1465" y="724" text-anchor="middle">Researcher review</text><text class="node-sub" x="1465" y="758" text-anchor="middle">Save or revise decision</text></g><g class="node result"><rect x="560" y="920" width="520" height="90" rx="11" class="node-surface" /><text class="node-title" x="820" y="959" text-anchor="middle">Activity dashboard</text><text class="node-sub" x="820" y="993" text-anchor="middle">Steps · timing · sources · outcomes</text></g><g class="node "><path d="M1130,916 C1130,895 1570,895 1570,916 V994 C1570,1015 1130,1015 1130,994 Z M1130,916 C1130,937 1570,937 1570,916" class="node-surface" /><text class="node-title" x="1350" y="956" text-anchor="middle">PostgreSQL</text><text class="node-sub" x="1350" y="990" text-anchor="middle">Queue · results · reviews · memory · activity</text></g></g>
       <g aria-hidden="true">
         <text class="small-label" x="30" y="975">Solid arrows: request or data flow</text>
         <text class="small-label" x="30" y="1000">Dotted arrow: durable activity recording</text>
       </g>
     </svg>
-  </div>
-  <section class="detail" id="details" aria-labelledby="detail-title" aria-live="polite">
-    <div><label class="step-picker">Inspect a step<select id="step-picker"></select></label><div class="detail-label">Selected step</div><h2 id="detail-title">Celloras worker</h2></div>
-    <div><p id="detail-body"></p><p class="facts" id="detail-facts"></p><p class="facts"><a id="detail-source" target="_blank" rel="noopener noreferrer">View implementation ↗</a></p></div>
-  </section>
-  <footer><span>H5AD input requires existing groups and UMAP. The matrix stays in numerical files.</span><span>Live runtime: OpenShell + Codex. Additional model providers require adapters.</span></footer>
 </main>
-<script>
-(() => {
-  'use strict';
-  const svg = document.getElementById('diagram');
-  const group = document.getElementById('nodes');
-  const base = 'https://github.com/mpckkk/2026_GenAI/blob/celloras.com/';
-  const NS = 'http://www.w3.org/2000/svg';
-  const nodes = [
-    {id:'question',x:30,y:400,w:200,h:100,shape:'input',title:['Ask a question'],sub:['or choose an action'],body:'Ask a question in the experiment or choose a suggested action. A guided action can run before the first model invocation; freeform chat lets the agent request the same tools.',facts:'Input: owned experiment, prompt and optional typed action.',source:'app/services/chat.ts'},
-    {id:'access',x:280,y:400,w:230,h:100,title:['Check access'],sub:['Next.js · Keycloak','PostgreSQL queue'],body:'Keycloak establishes identity. Celloras checks the session and experiment owner, then stores an idempotent request in the PostgreSQL queue. Upload endpoints also enforce access checks.',facts:'One queued or running request per experiment. The browser polls for progress.',source:'app/adapters/chat.ts'},
-    {id:'worker',x:560,y:380,w:260,h:140,kind:'agent',title:['Celloras worker'],sub:['Context · tools · persistence'],body:'Claims the queued request, prepares experiment context and earlier decisions, invokes the configured runtime and authorizes every scientific tool call. Measurements and stored result references return to the agent for interpretation.',facts:'The worker owns cancellation, result persistence and activity recording. At most four tool calls per request.',source:'infra/agent/worker.mjs'},
-    {id:'runtime',x:560,y:160,w:260,h:130,kind:'agent',title:['Agent runtime','interface'],sub:['CLI or HTTP','Live: Codex via OpenShell'],body:'The agent interprets supplied evidence and returns a typed tool request or a final answer. The runtime adapter isolates provider-specific execution from the worker, data services and visual components.',facts:'Verified: OpenShell/Codex. Nightshift HTTP adapter awaits live acceptance. OpenRouter, Vercel and direct provider APIs need adapters.',source:'app/core/chat.ts'},
-    {id:'memory',x:1040,y:150,w:280,h:110,kind:'reference',title:['Meterless H-MEM'],sub:['Earlier research decisions'],body:'Retrieves relevant explicit reviews from this experiment with links to the original decisions. The engine runs inside the worker and restores its state from PostgreSQL; it is not a separate hosted service.',facts:'Later review corrections leave original measurements and previous answers unchanged.',source:'app/adapters/research-memory.mjs'},
-    {id:'decision',x:875,y:385,w:150,h:130,kind:'decision',shape:'diamond',title:['Run an','analysis?'],sub:[],body:'The worker checks the structured agent response for a scientific tool request. If present, it validates and runs the operation, then calls the agent again with the result. Otherwise, it validates the final answer and its visual card references.',facts:'Unknown actions, foreign result IDs and invalid responses fail explicitly.',source:'app/core/agent-response.schema.json'},
-    {id:'validate',x:1080,y:400,w:220,h:100,title:['Validate + save'],sub:['Schema · owned result IDs'],body:'Checks the response schema and resolves each card reference against a stored result owned by the experiment. The final response is committed only for the still-active request.',facts:'This validates response structure and ownership, not the scientific conclusions.',source:'app/services/agent-response.mjs'},
-    {id:'answer',x:1360,y:390,w:210,h:120,kind:'result',title:['Visual answer'],sub:['Explanation · cell map','Plots · evidence cards'],body:'React renders Markdown and predefined interactive cards from canonical results. The model references existing results rather than generating arbitrary UI code or fabricating plot values.',facts:'All executed scientific tools remain inspectable, even if the model omits a card.',source:'app/(workspace)/app/agent-response.tsx'},
-    {id:'upload',x:30,y:680,w:190,h:100,shape:'input',title:['Upload H5AD'],sub:['Resumable chunks'],body:'The researcher uploads a compatible H5AD and explicitly selects its count matrix, gene identifiers, group labels and existing UMAP. Resumable chunks have checksums and exact offsets.',facts:'This workflow starts from a prepared H5AD, not raw FASTQ reads.',source:'app/adapters/dataset-upload.ts'},
-    {id:'import',x:270,y:680,w:220,h:100,title:['Validate + import'],sub:['Python worker'],body:'A separate Python process inspects the H5AD, validates its structure and selected raw counts, then builds an immutable private dataset bundle with sparse indexes and aggregates.',facts:'Existing groups and two-dimensional UMAP are required. No new clustering is performed.',source:'infra/science/h5ad/importer.py'},
-    {id:'dataset',x:540,y:670,w:180,h:120,shape:'cylinder',title:['Private dataset'],sub:['Counts + UMAP'],body:'Original H5AD data and prepared numerical files live in private persistent storage. The app and agent worker read the dataset through an ownership-checked scientific data interface.',facts:'Large matrices stay outside model context. The model receives summaries and result references.',source:'app/adapters/project-scientific-data.mjs'},
-    {id:'tools',x:800,y:670,w:280,h:120,kind:'agent',title:['Scientific tools'],sub:['Annotation · comparisons','Gene plots · literature'],body:'Tools compute numerical measurements and provisional cell-type candidates, or retrieve curated literature passages. Annotation compares gene activity with the compatible published marker reference. Stored summaries return to the agent for reasoning and follow-up.',facts:'Numerical tools read private dataset files. Zetaris supplies marker evidence for annotation and marker lookup, not every tool.',source:'app/services/analysis-tools.mjs'},
-    {id:'zetaris',x:1160,y:680,w:180,h:100,kind:'reference',title:['Zetaris'],sub:['Marker reference'],body:'Executes a real SQL query against the configured published gene-to-cell-type reference table. The adapter checks the complete response and canonical reference hash before annotation uses it.',facts:'Current panel: 42 associations, 41 distinct genes, nine soybean-root cell types. No silent local fallback.',source:'app/adapters/zetaris-reference.mjs'},
-    {id:'review',x:1360,y:680,w:210,h:100,title:['Researcher review'],sub:['Save or revise decision'],body:'The researcher records an explicit decision about the evidence. It remains a separate review record and becomes available to H-MEM for later requests in the experiment.',facts:'An agent answer is not automatically stored as an accepted researcher decision.',source:'app/adapters/research.ts'},
-    {id:'activity',x:560,y:920,w:520,h:90,kind:'result',title:['Activity dashboard'],sub:['Steps · timing · sources · outcomes'],body:'Execution boundaries append real start, completion, failure and cancellation events. The dashboard reads these owned records and explains the work in plain language, with links to results and technical receipts.',facts:'Observable execution is recorded. Hidden reasoning, unreported token use and estimated costs are not invented.',source:'infra/agent/activity.mjs'},
-    {id:'storage',x:1130,y:900,w:440,h:110,shape:'cylinder',title:['PostgreSQL'],sub:['Queue · results · reviews · memory · activity'],body:'Stores application state: requests, conversations, analysis results, explicit researcher reviews, H-MEM state and append-only activity events. Large numerical dataset bytes remain in private files.',facts:'The current deployment is one Linux host with persistent volumes. Multi-worker throughput has not been load-tested.',source:'docs/architecture.md'}
-  ];
-  const map = new Map(nodes.map(n => [n.id,n]));
-  function el(tag, attrs={}, text) { const e=document.createElementNS(NS,tag); for(const [k,v] of Object.entries(attrs)) e.setAttribute(k,String(v)); if(text!==undefined)e.textContent=text; return e; }
-  function addText(parent,cls,x,y,text) { parent.appendChild(el('text',{class:cls,x,y,'text-anchor':'middle'},text)); }
-  nodes.forEach(n => {
-    const a=el('a',{href:'#details','data-node':n.id,class:'node '+(n.kind||''),'aria-label':n.title.join(' ')});
-    let surface;
-    if(n.shape==='diamond') surface=el('polygon',{points:`${n.x+n.w/2},${n.y} ${n.x+n.w},${n.y+n.h/2} ${n.x+n.w/2},${n.y+n.h} ${n.x},${n.y+n.h/2}`});
-    else if(n.shape==='input') surface=el('polygon',{points:`${n.x+14},${n.y} ${n.x+n.w},${n.y} ${n.x+n.w-14},${n.y+n.h} ${n.x},${n.y+n.h}`});
-    else if(n.shape==='cylinder') surface=el('path',{d:`M${n.x},${n.y+16} C${n.x},${n.y-5} ${n.x+n.w},${n.y-5} ${n.x+n.w},${n.y+16} V${n.y+n.h-16} C${n.x+n.w},${n.y+n.h+5} ${n.x},${n.y+n.h+5} ${n.x},${n.y+n.h-16} Z M${n.x},${n.y+16} C${n.x},${n.y+37} ${n.x+n.w},${n.y+37} ${n.x+n.w},${n.y+16}`});
-    else surface=el('rect',{x:n.x,y:n.y,width:n.w,height:n.h,rx:11});
-    surface.setAttribute('class','node-surface');a.appendChild(surface);
-    const total=n.title.length*27+n.sub.length*24+(n.sub.length?7:0);
-    let y=n.y+(n.h-total)/2+23+(n.shape==='cylinder'?7:0);
-    n.title.forEach(t=>{addText(a,'node-title',n.x+n.w/2,y,t);y+=27;});
-    if(n.sub.length)y+=7;
-    n.sub.forEach(t=>{addText(a,'node-sub',n.x+n.w/2,y,t);y+=24;});
-    a.addEventListener('click',e=>{e.preventDefault();select(n.id);});
-    a.addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();select(n.id);}});
-    group.appendChild(a);
-  });
-  const picker=document.getElementById('step-picker');
-  nodes.forEach(n=>{const option=document.createElement('option');option.value=n.id;option.textContent=n.title.join(' ');picker.appendChild(option);});
-  picker.addEventListener('change',()=>select(picker.value));
-  function select(id) {
-    const n=map.get(id);if(!n)return;
-    picker.value=id;
-    group.querySelectorAll('[data-node]').forEach(a=>a.setAttribute('aria-current',String(a.dataset.node===id)));
-    document.getElementById('detail-title').textContent=n.title.join(' ');
-    document.getElementById('detail-body').textContent=n.body;
-    document.getElementById('detail-facts').textContent=n.facts;
-    document.getElementById('detail-source').href=base+n.source.split('/').map(encodeURIComponent).join('/');
-  }
-  select('worker');
-  document.getElementById('print').onclick=()=>window.print();
-  document.getElementById('export').onclick=()=>{
-    const clone=svg.cloneNode(true),styles=getComputedStyle(document.documentElement);
-    const palette=['paper','ink','muted','line','node','sage','green','purple','lavender','amber','sand'];
-    let css=Array.from(document.querySelectorAll('style')).map(s=>s.textContent).join('\n');
-    css=css.slice(css.indexOf('  .diagram text'),css.indexOf('  .detail {'));
-    palette.forEach(k=>css=css.replaceAll('var(--'+k+')',styles.getPropertyValue('--'+k).trim()));
-    const style=el('style');style.textContent=css;clone.prepend(style);
-    clone.querySelectorAll('[aria-current]').forEach(e=>e.removeAttribute('aria-current'));
-    clone.style.width='1600px';clone.style.height='1050px';clone.setAttribute('width','1600');clone.setAttribute('height','1050');
-    clone.style.background=styles.getPropertyValue('--paper').trim();clone.style.fontFamily='Inter,Arial,sans-serif';
-    clone.querySelectorAll('marker path').forEach(p=>{const match=p.getAttribute('fill').match(/var\(--([^)]*)\)/);if(match)p.setAttribute('fill',styles.getPropertyValue('--'+match[1]).trim());});
-    const url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml'}));
-    const link=document.createElement('a');link.href=url;link.download='Celloras-Technical-Flow.svg';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
-  };
-})();
-</script>
 </body>
 </html>

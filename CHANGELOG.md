@@ -1,5 +1,7 @@
 # Changelog
 
+- Simplified the technical flowchart to a normal white HTML page with black text, static SVG shapes and arrows. Removed scripts, controls and detail panels at the user’s request.
+
 - Removed nested scrolling and pan/zoom controls from the technical flowchart. It scales to the available space, stays white in dark mode, and offers a mobile step selector.
 
 - Added a self-contained HTML technical flowchart with editable SVG text, the worker/runtime boundary, selectable implementation details, zoom/pan, SVG export and print layout.

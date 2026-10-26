@@ -1,5 +1,7 @@
 # Engineering notes
 
+- For this technical flowchart, keep the result ultra simple: black text and shapes on a normal white page. Do not add interactive controls, panels or flowchart tests; the user explicitly rejected that scope.
+
 - Keep the technical flowchart on a white background regardless of system theme. Scale the full diagram into view; nested pan/scroll areas obscure the overview. Provide readable step selection on narrow screens.
 
 - For technical flowcharts, the user prefers deterministic HTML/SVG with real text and connectors over generated raster illustrations. Keep the worker, model runtime, scientific computation and persistence boundaries distinct; put deeper explanations inline on selection.
