@@ -1,5 +1,7 @@
 # Changelog
 
+- Removed the flowchart title, subtitle, stage headings and legend. The page contains only black-and-white shapes, arrows and their labels.
+
 - Simplified the technical flowchart to a normal white HTML page with black text, static SVG shapes and arrows. Removed scripts, controls and detail panels at the user’s request.
 
 - Removed nested scrolling and pan/zoom controls from the technical flowchart. It scales to the available space, stays white in dark mode, and offers a mobile step selector.
