@@ -1,0 +1,40 @@
+{
+  "event": "investigation.completed_on_production",
+  "recordedAt": "2026-10-27",
+  "deployment": "https://celloras.com",
+  "provider": "Meterless Nightshift",
+  "model": "nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+  "dataset": "Soybean root, GSE270392 (7,496 nuclei, 12 groups)",
+  "jobs": [
+    {
+      "cluster": "3",
+      "state": "completed",
+      "provider_job_id": "job_mvqouyhb09",
+      "evidence_sha256": "7714cd08eaa1ea351ce51c65978258019d9a7a0f25c18d60e3a78b58592de3b2",
+      "created_at": "2026-10-27T12:55:38Z",
+      "updated_at": "2026-10-27T12:57:10Z"
+    },
+    {
+      "cluster": "3",
+      "state": "completed",
+      "provider_job_id": "job_mvqzpvg00a",
+      "evidence_sha256": "630906d3c944b3466f1eef006f1d464df7a12570cce5331663b1dd4f1d10274a",
+      "created_at": "2026-10-27T17:59:36Z",
+      "updated_at": "2026-10-27T18:01:21Z"
+    },
+    {
+      "cluster": "3",
+      "state": "completed",
+      "provider_job_id": "job_mvr03s2q0c",
+      "evidence_sha256": "762162e3dbf0da43db6dd63ca1db80c5a9f36945e3db3352a16922b42814137d",
+      "created_at": "2026-10-27T18:10:25Z",
+      "updated_at": "2026-10-27T18:12:23Z"
+    }
+  ],
+  "liveCheck": {
+    "at": "2026-10-27",
+    "request": "POST /v1/chat/completions from the app container",
+    "status": 200,
+    "latencyMs": 1257
+  }
+}

@@ -4,12 +4,11 @@
 
 The user supplied a newer organizer message explicitly requiring **Zetaris, a Meterless Engine in a working feature, and Nightshift as the AI provider**. The demo must include one real Nightshift request, and the README needs at least three sample inputs and outputs. Treat this as the current submission target; the older rule audit below records conflicting earlier guidance.
 
-Zetaris and H-MEM have workflow evidence. The Nightshift server API is installed and responds correctly, but its first successful inference is blocked on provider configuration. Do not submit a successful health check, a model catalog, or an older OpenShell response as proof of Nightshift inference.
-
+Zetaris and H-MEM have workflow evidence. Nightshift is working: three investigations completed on the live app on 27 October, running NVIDIA Nemotron 3 Ultra ([receipt](evidence/nightshift-investigations-2026-10-27.json)).
 
 Technical review companion: [PDF](technical-deck/Celloras-Technical-Deck.pdf), [editable PowerPoint](technical-deck/Celloras-Technical-Deck.pptx), [notes and sources](technical-deck/speaker-notes.md). The short pitch remains four slides.
 
-Required technology for the current plan: **Zetaris, one Meterless Engine, and Nightshift as the AI provider**. Celloras uses **H-MEM** as its Engine and currently runs Codex through NVIDIA OpenShell. The Nightshift deployment is ready for provider configuration; no successful Nightshift or Nemotron inference is claimed. The dated audit below preserves the earlier rule conflict.
+Required technology for the current plan: **Zetaris, one Meterless Engine, and Nightshift as the AI provider**. Celloras uses **H-MEM** as its Engine and currently runs Codex through NVIDIA OpenShell. Nightshift runs group investigations on NVIDIA Nemotron 3 Ultra. The dated audit below preserves the earlier rule conflict.
 
 ## Four deliverables
 
@@ -18,7 +17,7 @@ Required technology for the current plan: **Zetaris, one Meterless Engine, and N
 | Demo video, 1–4 minutes  | The agent's main research workflow, actual Zetaris query provenance and H-MEM recall | Recording pending; outline below                                                                  |
 | Slide deck               | Problem, solution, architecture, sponsor use and observed results                    | [PowerPoint and PDF prepared](pitchdeck/README.md)                                                |
 | Public GitHub repository | All code, setup, usage and dependencies in the README                                | Public visibility verified; application is on `celloras.com`, while default branch remains `main` |
-| Sponsor explanation      | Zetaris's role, the H-MEM Engine and a test/demo showing each working                | [Written explanation and test pointers](sponsor-explanation.md) prepared                          |
+| Sponsor explanation      | Zetaris's role, the H-MEM Engine and a test/demo showing each working                | [Written explanation and test pointers](../README.md#how-we-use-the-sponsor-technology) prepared  |
 
 Use the code URL **https://github.com/mpckkk/2026_GenAI/tree/celloras.com** in the GitHub field. It points to the application branch and meets the stated `github.com` domain requirement. Confirm the form accepts that branch URL before final submission. The live app is https://celloras.com; it is a separate demo link.
 
@@ -32,7 +31,7 @@ Read all ten expanded sections of the [binding event page](https://hackathon.gen
 | 2. Teams                 | HackOS shows two members, within the permitted size. The leader must confirm the roster before creating the first submission; no team changes were made during this audit.                                                                             |
 | 3. Tracks                | Select one primary track in the final form. Suggested fit: **The Agent That Can Explain Why**. The inspected team view did not show a selected track, so it is not marked confirmed.                                                                   |
 | 4. Build window          | First implementation commit `694d1a8` is dated 23 October, inside the window. Declare earlier planning, supplied branding and third-party code/data separately.                                                                                        |
-| 5. Technology            | Actual Zetaris retrieval and Meterless H-MEM recall passed in one owned experiment. NVIDIA OpenShell supplies the verified runtime. See [sponsor evidence](sponsor-explanation.md).                                                                    |
+| 5. Technology            | Actual Zetaris retrieval and Meterless H-MEM recall passed in one owned experiment. NVIDIA OpenShell supplies the verified runtime. See [sponsor evidence](../README.md#how-we-use-the-sponsor-technology).                                            |
 | 6. Deliverables          | Public branch, README, pitch/engineering decks and sponsor explanation exist. **Final video and form submission are pending.** Include both decks so architecture, stack, scope and future work accompany the short pitch.                             |
 | 7. Judging               | [Coverage mapping](pitchdeck/README.md#fit-to-the-judging-criteria) uses the published rubric. It records evidence, not predicted scores.                                                                                                              |
 | 8. Prizes                | No Nemotron-award eligibility is claimed. Prize distribution and any recipient tax obligations remain team matters.                                                                                                                                    |

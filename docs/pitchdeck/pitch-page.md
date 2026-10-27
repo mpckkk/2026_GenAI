@@ -29,7 +29,7 @@ Inspect the actual page on desktop and mobile, including map mode changes, navig
 - Root-hair evidence: `Glyma.01G224900` and `Glyma.17G030700`. Review `adbcacc8-62f6-452f-a1da-87d559bb8ff1` explicitly treats the identity as provisional. Recall turn: `ee487b10-71e8-45c7-82d0-c857bc47588f`. The real screenshot retains the illustrative-review qualification.
 - `activity.png` is an unchanged copy of the inspected `.artifacts/activity-public/13-activity-expanded-tool-and-source.png`, showing the real 42-entry Zetaris reference query and annotation result. Captures contain no keys, tokens or login fields.
 - Same-study marker reference means workflow evidence, not an independent accuracy evaluation. Cross-study expression comparison is future work. No novelty, publication-readiness or time-savings benchmark is claimed.
-- Nightshift investigation is implemented but disabled pending a ready model backend and successful live acceptance. The page shows this status; the recorded agent runtime is Codex through OpenShell.
+- Nightshift investigations run on NVIDIA Nemotron 3 Ultra; three completed on the live app on 27 October. The page shows this; the recorded agent runtime is Codex through OpenShell.
 
 ## Browser verification
 

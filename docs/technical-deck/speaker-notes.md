@@ -78,7 +78,7 @@ Implementation sources:
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/zetaris-reference.mjs
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/scripts/prepare-zetaris-reference.mjs
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/app/adapters/annotation-engine.mjs
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
+https://github.com/mpckkk/2026_GenAI/tree/celloras.com#how-we-use-the-sponsor-technology
 
 ## 8. Meterless H-MEM state and retrieval
 

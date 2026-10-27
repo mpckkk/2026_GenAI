@@ -1,5 +1,7 @@
 # Changelog
 
+- Moved the full sponsor explanation into the README with proof per technology, and removed the finished plan documents. Nightshift now shows as working everywhere, with a receipt of three completed investigations on NVIDIA Nemotron 3 Ultra.
+
 - Compacted the README to what it does, sample inputs and outputs, sponsor technology use, data, setup and usage. Removed private workspace links from the repository docs and recorded live Nightshift investigations in the sponsor explanation.
 
 - Rebuilt `/pitch.html` as six browser presentation frames with concise copy, a direct before/after comparison and larger real agent results. Added keyboard and button navigation; mobile uses normal reading order. Retained the actual evidence and explicit pending Nightshift status.

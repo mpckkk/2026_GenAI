@@ -37,6 +37,6 @@ https://celloras.com/app/projects/7bdae43c-5cd2-4203-a571-e73b445985db
 https://celloras.com/app/activity/ee487b10-71e8-45c7-82d0-c857bc47588f
 https://celloras.com/app/activity/3ff0f30e-3655-4e83-8b4e-08f703054b46
 https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/evidence/agent-activity-public-2026-10-26.json
-https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/sponsor-explanation.md
+https://github.com/mpckkk/2026_GenAI/tree/celloras.com#how-we-use-the-sponsor-technology
 https://github.com/mpckkk/2026_GenAI/tree/celloras.com
 
