@@ -107,7 +107,6 @@ The scientific `/api/chat` endpoint now validates a dataset-based request and qu
 - [openid-client authorization-code example](https://github.com/panva/openid-client/blob/main/examples/oidc.ts)
 - [Keycloak hostname configuration](https://www.keycloak.org/server/hostname)
 - [Keycloak realm imports](https://www.keycloak.org/server/importExport)
-- [Saved Celloras architecture](https://space.heyamigo.org/items/aa82709a-dc23-4686-8718-c08a743fdae3)
 
 ## Guided real-data analysis
 
