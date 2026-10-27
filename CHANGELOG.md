@@ -1,5 +1,7 @@
 # Changelog
 
+- Added `/pitch.html`, a six-part visual Celloras story with a real interactive soybean map, recorded agent cards, the reviewed root-hair example, H-MEM recall and inspectable Zetaris activity. Includes responsive layouts, demo links and explicit pending Nightshift status.
+
 - Updated the plain technical flowchart with the optional Nightshift investigation branch, separate review result, unchanged original annotation and explicit model-connection activation gate. Kept the active CLI/HTTP conversation interface, shared memory/activity paths and fitted zoomable layout.
 
 - Added a gated investigation of unclear cell groups: real marker co-detection, native Nightshift comparison jobs, visual reviews, explicit decision linkage and provider activity. Original annotations and the conversation runtime stay intact. Real data and native job admission are verified; activation remains blocked on ready model lanes and a completed review journey.

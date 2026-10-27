@@ -1,5 +1,7 @@
 # Engineering notes
 
+- For the Celloras story page, carry one recorded experiment through the map, agent response, review, recall and tool receipts. Disclose an excerpt as an excerpt; use genuine screenshots for product proof. Keep inactive Nightshift separate from verified Zetaris and H-MEM use.
+
 - The latest organizer correction supplied on 27 October explicitly requires Nightshift in addition to Zetaris and a Meterless Engine. Older optional-Nightshift notes below are historical and must not drive the current submission plan.
 - Nightshift's installer architecture is not the full portability story. Its unmodified ARM64 daemon can boot on the x86_64 server under explicit userspace QEMU while its JavaScript engine uses native Node 22.16.0. This custom deployment passes real API/auth/discovery checks; inference remains unverified until a provider is configured. Keep the runtime token separate from the upstream model API key.
 - The free Mac M1-M4 edition is not a verified API-hosting solution: current website setup/CLI docs say it has no endpoint, contradicting the GitHub editions table. Check the shipped runtime instead of inferring capability from a table.

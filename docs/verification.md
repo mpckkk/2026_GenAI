@@ -1,5 +1,11 @@
 # Foundation verification — 2026-10-23
 
+## Story pitch page, 27 October 2026
+
+- Built `/pitch.html` from the approved six-part story using the real soybean UMAP and product captures from one recorded experiment. No new inference was run. Asset and claim provenance is documented in `docs/pitchdeck/pitch-page.md`.
+- Inspected desktop and mobile browser screenshots, including the actual conversation, recall and closing illustration. All images loaded. Map controls and source disclosure worked; 1440px and 390px layouts had no horizontal overflow, page errors or failed content requests.
+- Nightshift remains visibly pending; this page does not establish successful Nightshift inference or independent biological accuracy. The private planning outline remains untracked.
+
 ## Optional investigation, 27 October 2026
 
 - Final lint and production build (including TypeScript) passed.
