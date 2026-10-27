@@ -336,18 +336,27 @@ function TimelineStep({
         </div>
         <div className={styles.stepTiming}>
           <Status status={status} />
-          {duration !== undefined && <span>{durationLabel(duration)}</span>}
-          <time dateTime={step.first.createdAt}>
-            Started {timeOfDay(step.first.createdAt)}
-          </time>
+          {duration !== undefined && (
+            <time
+              dateTime={step.first.createdAt}
+              title={`Started ${timeOfDay(step.first.createdAt)}`}
+            >
+              {durationLabel(duration)}
+            </time>
+          )}
         </div>
       </div>
-      {copy.purpose && <p className={styles.stepSummary}>{copy.purpose}</p>}
       <p className={styles.stepOutcome}>{copy.outcome}</p>
+      {!hasDetails && copy.purpose && (
+        <p className={styles.stepSummary}>{copy.purpose}</p>
+      )}
       {hasDetails && (
         <details className={styles.stepDetails}>
-          <summary>See evidence and details</summary>
+          <summary>Details</summary>
           <div className={styles.detailBody}>
+            {copy.purpose && (
+              <p className={styles.stepSummary}>{copy.purpose}</p>
+            )}
             <StepEvidence step={step} detail={detail} />
             <details className={styles.technicalDetails}>
               <summary>Technical details</summary>
