@@ -52,3 +52,5 @@ Rollback disables the investigation entry point. Original annotations, reviews a
 ## Implementation status
 
 Packages 1 through 4 are implemented behind a disabled activation flag. Real source-file measurements, ownership/version denial, native job admission and the explicit provider-failure/database/activity path are verified. Package 5 remains incomplete for successful inference, completed-card rendering, save/reload/recall and live cancellation because no model lane is configured. See `docs/verification.md` and its sanitized receipt. Do not present this addition as a working hackathon demo until that gate passes.
+
+Packaging follow-up: `infra/agent/Dockerfile` explicitly copies the three new runtime modules. The initial automatic rollout exposed the omitted COPY entries; the correction was committed separately as `72e9397`. Web compilation alone is not worker-image acceptance.

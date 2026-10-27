@@ -71,5 +71,17 @@
   },
   "acceptance": "Real data and failure path verified. Successful inference and completed review journey are not verified.",
   "databaseIsolation": "Acceptance transaction rolled back; real native failed job retained in Nightshift.",
-  "screenshots": "Authenticated local desktop 1440x1000 and mobile 390x844: entry point visible, explicitly disabled, no document overflow."
+  "screenshots": "Authenticated local desktop 1440x1000 and mobile 390x844: entry point visible, explicitly disabled, no document overflow.",
+  "rollout": {
+    "packagingFix": "72e9397",
+    "workerCreatedAt": "2026-10-27T00:33:28.670064549Z",
+    "workerRestarts": 0,
+    "workerImage": "sha256:8be9d82ac1c8f65f99baa7e1177954f727f00209141e26d9b0bf277a179ea0be",
+    "temporaryModuleOverrides": false,
+    "realProductionChat": "completed",
+    "runtime": "OpenShell",
+    "zetarisReferenceCount": 42,
+    "hmem": "search completed, no matching prior decisions",
+    "nightshiftInvestigationEnabled": false
+  }
 }
