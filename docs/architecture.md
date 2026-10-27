@@ -128,4 +128,4 @@ Migration 007 adds append-only `annotation_reviews`. Accepted labels must be one
 
 Model context includes recent analysis summaries, the latest annotation and up to two explicitly referenced owned annotation runs, plus bounded recent label decisions. The `Saved annotation run: <uuid>` reference created by a card never grants access to another project. This keeps an older annotation available when the researcher has since produced several expression plots.
 
-The public landing uses a separate source-derived UMAP projection and explicitly illustrative botanical art. Public assets contain no account data. The standalone application image must copy `public/` as well as Next's static output; asset provenance is recorded in [landing assets](landing-assets.md).
+The public landing uses a separate source-derived UMAP projection and explicitly illustrative botanical art. Public assets contain no account data. The standalone application image must copy `public/` as well as Next's static output; asset provenance is recorded in landing assets.

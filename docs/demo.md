@@ -1,8 +1,8 @@
 # Celloras demo
 
-The new video starts with **Add dataset** and a real 29 MB soybean H5AD, then follows one group from its cell map to annotation, sources and a remembered review. Use the [3-minute upload video script](submission.md#upload-video-script--target-300). The complete public uploaded-data rehearsal passed on **2026-10-26 at 00:50:59 UTC**: download, browser upload, Linux import, agent annotation through Zetaris, measured-marker comparison, saved review and Meterless H-MEM recall.
+The new video starts with **Add dataset** and a real 29 MB soybean H5AD, then follows one group from its cell map to annotation, sources and a remembered review. Use the 3-minute upload video script. The complete public uploaded-data rehearsal passed on **2026-10-26 at 00:50:59 UTC**: download, browser upload, Linux import, agent annotation through Zetaris, measured-marker comparison, saved review and Meterless H-MEM recall.
 
-The existing prepared public workflow passed on 2026-10-25: annotation through Zetaris, measured-marker comparison, explicit researcher review, H-MEM recall and correction. Its [2:40 prepared-run script](submission.md#simple-video-script--target-240) and saved outputs remain available below. The four-slide pitch and technical companion are ready; the video still needs recording.
+The existing prepared public workflow passed on 2026-10-25: annotation through Zetaris, measured-marker comparison, explicit researcher review, H-MEM recall and correction. Its 2:40 prepared-run script and saved outputs remain available below. The four-slide pitch and technical companion are ready; the video still needs recording.
 
 ## The concrete research task
 
@@ -23,7 +23,7 @@ This is a processed single-cell dataset containing raw RNA counts, not raw seque
 
 A concise annotation prompt is: “Suggest cell types for the groups in my soybean root dataset. Show the cell map, explain which evidence supports the candidates, and flag unresolved groups.” For the recall: “What did I decide about group 6, and why? Cite my saved review and distinguish it from the computed suggestion.”
 
-For the 1–4 minute recording, cut the actual transfer/import/model waits where necessary and label each cut **Processing time shortened**. Never imply the edited duration is analysis latency. When showing a completed rehearsal, label it **Earlier actual run**. Keep the narration focused on identifying the cells and retaining evidence, not setup screens. [Shot-by-shot script](submission.md#upload-video-script--target-300).
+For the 1–4 minute recording, cut the actual transfer/import/model waits where necessary and label each cut **Processing time shortened**. Never imply the edited duration is analysis latency. When showing a completed rehearsal, label it **Earlier actual run**. Keep the narration focused on identifying the cells and retaining evidence, not setup screens. Shot-by-shot script.
 
 **Public rehearsal passed:** 2026-10-26, 00:50:59 UTC. [Open Soybean H5AD · video demo](https://celloras.com/app/projects/fd21eefc-6a63-4c06-89fd-007ed138c77f) after signing in with the advertised demo account. The uploaded 28,919,346-byte file matched SHA-256 `f4c9395d190ce8e073e36ee531664c82e8bd7adaf9b29dfe64fa593088c74890`. The result contains all 7,496 map points, 7 suggested groups, 1 ambiguous group and 4 unresolved groups. Group 6 has the Root hair candidate and the two genes above.
 
