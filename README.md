@@ -8,6 +8,12 @@ Celloras helps plant researchers name the cell groups in their single-cell data,
 
 **[Live app](https://celloras.com) · [Video](https://www.youtube.com/watch?v=9Q0m_sJrHcY) · [Pitch deck](https://celloras.com/deck/Celloras-Pitch.pdf) · [How it works](https://celloras.com/technical-flow.html)**
 
+## For judges
+
+1. **Fastest:** open [celloras.com](https://celloras.com), choose **Use demo credentials** on the sign-in page, then open the soybean root demo. Every request's trace is under **Agent activity**.
+2. **Local, without Zetaris or Nightshift:** the defaults in `.env.example` already run without them. `CELLORAS_REFERENCE_PROVIDER=published` reads the bundled copy of the published marker list, and `CELLORAS_INVESTIGATION_ENABLED=false` turns off the Nightshift investigation. Follow [Setup](#setup).
+3. **The chat agent needs a Codex login** (`codex login`); there is no offline model mode.
+
 ## Screens
 
 <table>
