@@ -27,6 +27,10 @@ Celloras helps plant researchers name the cell groups in their single-cell data,
 <td width="50%"><img src="docs/screens/zetaris.png" alt="Zetaris dashboard showing the CELLORAS marker_reference_v1 table" /><br /><b>Zetaris:</b> the 42 published soybean root markers Celloras queries, with the content hash on every row.</td>
 <td width="50%"><img src="docs/screens/nightshift.png" alt="Nightshift lanes and a completed investigation job" /><br /><b>Nightshift:</b> four NVIDIA Nemotron 3 Ultra cloud lanes and the live group 3 investigation, three attempts.</td>
 </tr>
+<tr>
+<td width="50%"><img src="docs/screens/hmem.png" alt="Meterless H-MEM ledger entries for a saved decision" /><br /><b>Meterless H-MEM:</b> the saved group 6 decision stored as long-term memory, then recalled when the researcher asks about it.</td>
+<td width="50%"></td>
+</tr>
 </table>
 
 ## What it does
