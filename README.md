@@ -6,7 +6,7 @@
 
 Celloras helps plant researchers name the cell groups in their single-cell data, with evidence. Upload a dataset, and an agent maps the cells, suggests cell types from measured expression and published markers, and remembers each decision the researcher makes. Soybean comes first.
 
-**[Live app](https://celloras.com)** · Code lives on the [`celloras.com`](https://github.com/mpckkk/2026_GenAI/tree/celloras.com) branch.
+**[Live app](https://celloras.com)**
 
 ## Screens
 
@@ -74,7 +74,7 @@ Next.js app (UI and API) → PostgreSQL (projects, reviews, agent queue) → wor
 **Dependencies:** Node 22.22.0 (`.nvmrc`) and npm, Docker Compose 28+, Codex CLI. Libraries are pinned in [package.json](package.json). Compose pins PostgreSQL, Keycloak, OpenShell and the Python H5AD importer.
 
 ```sh
-git clone --branch celloras.com --single-branch https://github.com/mpckkk/2026_GenAI.git
+git clone https://github.com/mpckkk/2026_GenAI.git
 cd 2026_GenAI
 npm ci
 npm run setup                 # creates .env with generated secrets
@@ -126,4 +126,4 @@ cluster,gene,tissue,genome_version
 Group A,Glyma.01G224900,root,Wm82v4
 ```
 
-The first implementation commit is `694d1a8` (23 October 2026). The public deployment runs on Dokploy from this branch with `compose.yaml` + `compose.prod.yaml`, and each push deploys automatically.
+The first implementation commit is `694d1a8` (23 October 2026). The public deployment runs on Dokploy from `main` with `compose.yaml` + `compose.prod.yaml`, and each push deploys automatically.
