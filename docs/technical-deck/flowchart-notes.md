@@ -1,10 +1,25 @@
 # Technical workflow image
 
-## HTML version — preferred
+## HTML version (preferred)
 
 The user's preferred format is a [plain HTML flowchart](https://celloras.com/technical-flow.html). Its single source is [public/technical-flow.html](../../public/technical-flow.html): a white page with black text, SVG shapes and arrows. It separates worker orchestration from the runtime interface. Two small buttons zoom the diagram in and out. There are no interactive panels, custom scroll areas or external dependencies.
 
 The HTML view supersedes the generated image for technical review. It is a schematic of implemented boundaries, not live activity or a measured plot. It does not execute analysis or contact providers. The existing PDF/PowerPoint decks were not regenerated.
+
+## Optional investigation, 27 October 2026
+
+Updated `public/technical-flow.html` and these notes, with the change recorded in `CHANGELOG.md`. The existing main flow, fitted initial view and zoom controls stay in place.
+
+The orchestrator now has an explicit **On request: unclear group** branch:
+
+1. Check the saved annotation's ownership and dataset version, query the same Zetaris reference and measure per-cell marker co-detection.
+2. Call the separate investigation HTTP adapter. Nightshift compares three interpretations of the same measured evidence.
+3. Return a separate, validated review. Preserve the original annotation and deliver the review card without another CLI inference call.
+4. Use the existing explicit review, PostgreSQL persistence, H-MEM recall and activity dashboard paths. The dashboard records provider job identifiers as well as steps, timing, sources and outcomes.
+
+The diagram marks this branch **Disabled: model not connected**. Nightshift is installed on the server; real job admission returned `no_ready_lane` with zero generated attempts. Positive inference and the complete review journey still need acceptance before activation. OpenShell/Codex remains the active conversation runtime behind the CLI/HTTP interface. Three interpretations are not three independent scientific validations or a confidence score.
+
+Implementation: `app/services/investigation.mjs`, `app/gateway/nightshift-investigation.mjs`, `app/core/investigation.mjs`, `infra/agent/worker.mjs`, `app/adapters/research-memory.mjs`. The branch is a guided action, not an autonomous tool currently offered to the conversation model. The ordinary model-requested tool loop remains separate. The earlier PDF, PowerPoint and PNG were not regenerated.
 
 ## Implementation review, 26 October 2026
 

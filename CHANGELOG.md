@@ -1,5 +1,7 @@
 # Changelog
 
+- Updated the plain technical flowchart with the optional Nightshift investigation branch, separate review result, unchanged original annotation and explicit model-connection activation gate. Kept the active CLI/HTTP conversation interface, shared memory/activity paths and fitted zoomable layout.
+
 - Added a gated investigation of unclear cell groups: real marker co-detection, native Nightshift comparison jobs, visual reviews, explicit decision linkage and provider activity. Original annotations and the conversation runtime stay intact. Real data and native job admission are verified; activation remains blocked on ready model lanes and a completed review journey.
 
 - Added a private Linux x86_64 container deployment of the official Nightshift 1.5.1 runtime using userspace ARM emulation and native Node. Real health, rejected-token and model-discovery checks pass; inference explicitly reports `no_provider_configured`. Celloras remains on OpenShell until a provider key and real workflow acceptance are available.
