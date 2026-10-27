@@ -1,6 +1,6 @@
 # Celloras hackathon pitch
 
-[PowerPoint](Celloras-Pitch-Deck.pptx) · [PDF](Celloras-Pitch-Deck.pdf) · [Speaker notes](speaker-notes.md)
+[PowerPoint](Celloras-Pitch-Deck.pptx) · [PDF](Celloras-Pitch-Deck.pdf)
 
 **Four slides, roughly two minutes.** No separate cover or appendix.
 

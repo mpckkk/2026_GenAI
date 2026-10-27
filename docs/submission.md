@@ -6,7 +6,7 @@ The user supplied a newer organizer message explicitly requiring **Zetaris, a Me
 
 Zetaris and H-MEM have workflow evidence. Nightshift is working: three investigations completed on the live app on 27 October, running NVIDIA Nemotron 3 Ultra ([receipt](evidence/nightshift-investigations-2026-10-27.json)).
 
-Technical review companion: [PDF](technical-deck/Celloras-Technical-Deck.pdf), [editable PowerPoint](technical-deck/Celloras-Technical-Deck.pptx), [notes and sources](technical-deck/speaker-notes.md). The short pitch remains four slides.
+Technical review companion: [PDF](technical-deck/Celloras-Technical-Deck.pdf), [editable PowerPoint](technical-deck/Celloras-Technical-Deck.pptx). The short pitch remains four slides.
 
 Required technology for the current plan: **Zetaris, one Meterless Engine, and Nightshift as the AI provider**. Celloras uses **H-MEM** as its Engine and currently runs Codex through NVIDIA OpenShell. Nightshift runs group investigations on NVIDIA Nemotron 3 Ultra. The dated audit below preserves the earlier rule conflict.
 
@@ -135,6 +135,6 @@ Label prepared result footage **Earlier actual run**. If waiting is shortened in
 
 ## Deck — four slides
 
-The [editable PowerPoint](pitchdeck/Celloras-Pitch-Deck.pptx) and [PDF](pitchdeck/Celloras-Pitch-Deck.pdf) use four slides: the agent and its visual output, a without/with comparison, the agent’s tools and sponsor roles, and an actual sourced decision-recall answer. [Speaker notes](pitchdeck/speaker-notes.md) contain a roughly two-minute narration and exact sources. The [deck guide](pitchdeck/README.md#fit-to-the-judging-criteria) maps the content to the official 100-point rubric.
+The [editable PowerPoint](pitchdeck/Celloras-Pitch-Deck.pptx) and [PDF](pitchdeck/Celloras-Pitch-Deck.pdf) use four slides: the agent and its visual output, a without/with comparison, the agent’s tools and sponsor roles, and an actual sourced decision-recall answer. The [deck guide](pitchdeck/README.md#fit-to-the-judging-criteria) maps the content to the official 100-point rubric.
 
 Avoid unsupported claims of classification accuracy, full-atlas federation or “weeks to seconds.” Current annotation is exploratory; same-study agreement is not independent validation. Keep this boundary concise in the presentation and link [methods](annotation-method.md) for detail.
