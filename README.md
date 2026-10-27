@@ -13,11 +13,15 @@ Celloras helps plant researchers name the cell groups in their single-cell data,
 <table>
 <tr>
 <td width="50%"><img src="docs/screens/landing.png" alt="Celloras landing page" /><br /><b>Start:</b> open the demo or bring your own dataset.</td>
+<td width="50%"><img src="docs/screens/chat.png" alt="Agent chat answering an annotation request" /><br /><b>Chat:</b> ask in plain words; the agent answers with a cell-type table and the genes behind it.</td>
+</tr>
+<tr>
 <td width="50%"><img src="docs/screens/annotate.png" alt="Soybean root cell map with suggested cell types" /><br /><b>Annotate:</b> 7,496 soybean root cells, with a suggested cell type per group.</td>
+<td width="50%"><img src="docs/screens/investigate.png" alt="Nightshift evidence review for an unclear group" /><br /><b>Investigate:</b> Nightshift on NVIDIA Nemotron compares epidermis and root hair using measured co-detection.</td>
 </tr>
 <tr>
 <td width="50%"><img src="docs/screens/recall.png" alt="Celloras recalling a saved researcher decision" /><br /><b>Recall:</b> H-MEM brings back the researcher's earlier decision with its source.</td>
-<td width="50%"><img src="docs/screens/activity.png" alt="Agent activity timeline with Zetaris and H-MEM steps" /><br /><b>Agent activity:</b> every step, with the Zetaris query receipt and checksum.</td>
+<td width="50%"><img src="docs/screens/activity.png" alt="Agent activity overview with tools used" /><br /><b>Agent activity:</b> what the agent did, the outcome and each sponsor tool's part.</td>
 </tr>
 </table>
 
