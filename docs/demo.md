@@ -2,7 +2,7 @@
 
 The new video starts with **Add dataset** and a real 29 MB soybean H5AD, then follows one group from its cell map to annotation, sources and a remembered review. Use the [3-minute upload video script](submission.md#upload-video-script--target-300). The complete public uploaded-data rehearsal passed on **2026-10-26 at 00:50:59 UTC**: download, browser upload, Linux import, agent annotation through Zetaris, measured-marker comparison, saved review and Meterless H-MEM recall.
 
-The existing prepared public workflow passed on 2026-10-25: annotation through Zetaris, measured-marker comparison, explicit researcher review, H-MEM recall and correction. Its [2:40 prepared-run script](submission.md#simple-video-script--target-240) and saved outputs remain available below. The four-slide pitch and [technical companion](technical-deck/README.md) are ready; the video still needs recording.
+The existing prepared public workflow passed on 2026-10-25: annotation through Zetaris, measured-marker comparison, explicit researcher review, H-MEM recall and correction. Its [2:40 prepared-run script](submission.md#simple-video-script--target-240) and saved outputs remain available below. The four-slide pitch and technical companion are ready; the video still needs recording.
 
 ## The concrete research task
 

@@ -6,8 +6,6 @@ The user supplied a newer organizer message explicitly requiring **Zetaris, a Me
 
 Zetaris and H-MEM have workflow evidence. Nightshift is working: three investigations completed on the live app on 27 October, running NVIDIA Nemotron 3 Ultra ([receipt](evidence/nightshift-investigations-2026-10-27.json)).
 
-Technical review companion: [PDF](technical-deck/Celloras-Technical-Deck.pdf), [editable PowerPoint](technical-deck/Celloras-Technical-Deck.pptx). The short pitch remains four slides.
-
 Required technology for the current plan: **Zetaris, one Meterless Engine, and Nightshift as the AI provider**. Celloras uses **H-MEM** as its Engine and currently runs Codex through NVIDIA OpenShell. Nightshift runs group investigations on NVIDIA Nemotron 3 Ultra. The dated audit below preserves the earlier rule conflict.
 
 ## Four deliverables
@@ -96,7 +94,7 @@ Follow one concrete task: **find root-hair candidates in soybean gene-activity d
 | 2:15–2:45 | Send **Ask about my saved decision**; show the actual response and expand its **Meterless H-MEM** receipt.                                                        | “Later, we ask what we decided and why. Meterless H-MEM retrieves that saved review and links back to it. The agent can continue from the recorded decision instead of making us explain it again.”                              |
 | 2:45–3:00 | Return to the annotated map; show the app and GitHub branch links.                                                                                                | “From a dataset to a visual assessment, inspectable sources and a decision we can return to. Celloras starts with soybean single-cell research.”                                                                                 |
 
-The short video demonstrates both required sponsors through visible working outputs: **Zetaris → the retrieved marker reference** and **Meterless H-MEM → the recalled review**. The agent's actual request/reply and annotation card show the product, rather than an architecture slide. Put the source map, data boundaries and implementation details in the [technical deck](technical-deck/README.md).
+The short video demonstrates both required sponsors through visible working outputs: **Zetaris → the retrieved marker reference** and **Meterless H-MEM → the recalled review**. The agent's actual request/reply and annotation card show the product, rather than an architecture slide. Put the source map, data boundaries and implementation details in the technical deck.
 
 ### Upload recording gate
 
