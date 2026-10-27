@@ -13,11 +13,11 @@ Celloras helps plant researchers name the cell groups in their single-cell data,
 <table>
 <tr>
 <td width="50%"><img src="docs/screens/landing.png" alt="Celloras landing page" /><br /><b>Start:</b> open the demo or bring your own dataset.</td>
-<td width="50%"><img src="public/pitch/conversation.png" alt="Soybean root cell map with suggested cell types" /><br /><b>Annotate:</b> 7,496 soybean root cells, with a suggested cell type per group.</td>
+<td width="50%"><img src="docs/screens/annotate.png" alt="Soybean root cell map with suggested cell types" /><br /><b>Annotate:</b> 7,496 soybean root cells, with a suggested cell type per group.</td>
 </tr>
 <tr>
-<td width="50%"><img src="public/pitch/recall.png" alt="Celloras recalling a saved researcher decision" /><br /><b>Recall:</b> H-MEM brings back the researcher's earlier decision with its source.</td>
-<td width="50%"><img src="public/pitch/activity.png" alt="Agent activity timeline with Zetaris and H-MEM steps" /><br /><b>Agent activity:</b> every step, with the Zetaris query receipt and checksum.</td>
+<td width="50%"><img src="docs/screens/recall.png" alt="Celloras recalling a saved researcher decision" /><br /><b>Recall:</b> H-MEM brings back the researcher's earlier decision with its source.</td>
+<td width="50%"><img src="docs/screens/activity.png" alt="Agent activity timeline with Zetaris and H-MEM steps" /><br /><b>Agent activity:</b> every step, with the Zetaris query receipt and checksum.</td>
 </tr>
 </table>
 
