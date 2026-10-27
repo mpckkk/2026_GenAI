@@ -4,7 +4,6 @@
 - Nightshift's installer architecture is not the full portability story. Its unmodified ARM64 daemon can boot on the x86_64 server under explicit userspace QEMU while its JavaScript engine uses native Node 22.16.0. This custom deployment passes real API/auth/discovery checks; inference remains unverified until a provider is configured. Keep the runtime token separate from the upstream model API key.
 - The free Mac M1-M4 edition is not a verified API-hosting solution: current website setup/CLI docs say it has no endpoint, contradicting the GitHub editions table. Check the shipped runtime instead of inferring capability from a table.
 
-
 - Keep pitch screenshots, counts, review wording and activity links tied to the same verified experiment. A saved review paraphrase must not be presented as a verbatim agent quote.
 
 - Keep a component’s responsibilities when renaming it or adding implementation details. In the flowchart, researcher reviews persist in PostgreSQL before H-MEM loads them on later requests; H-MEM is a module inside the orchestrator.
@@ -158,3 +157,7 @@
 - Keep chat suggestions quiet and compact. Upload belongs in the composer toolbar; repeating the selected group in each action wastes space and creates a second competing control area. Preserve the selected context once, concise verb labels and narrow-screen keyboard/touch access.
 
 - Event resources can contradict the binding event page. On 26 October the Resource Center draft required Nightshift, while the expanded binding rules allowed any model/API and required Zetaris plus Meterless. Record exact source links and precedence instead of switching a working runtime based on the draft. A clean build, a live workflow, a finished recording and a submitted entry are distinct checks.
+
+- Nightshift quality jobs require a Markdown rubric with weighted `## Must`, `## Should` or `## Could` criteria. Plain prose declares no criteria. Native job admission and route discovery are separate from usable inference: an accepted job can terminate with `no_ready_lane` and zero generated attempts. Never treat that as a completed review.
+- Distinguish model selection from biological classification. Preserve the original numerical annotation and all comparison attempts; attach any explicit researcher decision to both source and investigation. Co-detection of selected markers is descriptive, and related cell identities need not be mutually exclusive.
+- A completed evidence review should be delivered directly through the canonical card registry. An extra conversational inference call adds cost and can hide completed work if it fails. Keep normal conversation on its existing runtime.

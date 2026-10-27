@@ -265,6 +265,7 @@ export function ScientificCard({
               body.id !== run.id ||
               !("operation" in body.result) ||
               body.result.operation === "annotation" ||
+              body.result.operation === "investigation" ||
               !("payload" in body.result)
             )
               throw new Error(

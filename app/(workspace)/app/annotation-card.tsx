@@ -61,6 +61,7 @@ export function AnnotationCard({
   const [loaded, setLoaded] = useState<{
     result: AnnotationResult;
     reviews: AnnotationReview[];
+    investigationAvailable: boolean;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
@@ -81,6 +82,7 @@ export function AnnotationCard({
             );
             const body = (await response.json()) as AnalysisRun & {
               annotationReviews?: AnnotationReview[];
+              investigationAvailable?: boolean;
               error?: string;
             };
             if (!response.ok)
@@ -103,6 +105,7 @@ export function AnnotationCard({
               setLoaded({
                 result: body.result,
                 reviews: body.annotationReviews,
+                investigationAvailable: body.investigationAvailable === true,
               });
               setError(null);
             }
@@ -144,6 +147,7 @@ export function AnnotationCard({
           run={run}
           result={loaded.result}
           reviews={loaded.reviews}
+          investigationAvailable={loaded.investigationAvailable}
           onRun={onRun}
           onAsk={onAsk}
           selection={selection}
@@ -176,6 +180,7 @@ function AnnotationContent({
   run,
   result,
   reviews,
+  investigationAvailable,
   onRun,
   onAsk,
   selection,
@@ -185,6 +190,7 @@ function AnnotationContent({
   run: AnnotationRun;
   result: AnnotationResult;
   reviews: AnnotationReview[];
+  investigationAvailable: boolean;
   onRun: (action: GuidedAction) => void;
   onAsk: (question: string) => void;
   selection: ScientificSelection | null;
@@ -341,6 +347,35 @@ function AnnotationContent({
               </span>
             </div>
             <p className={styles.reason}>{cluster.reason}</p>
+            {cluster.status !== "suggested" && (
+              <div className={styles.actions}>
+                <button
+                  type="button"
+                  className={styles.button}
+                  disabled={actionsDisabled || !investigationAvailable}
+                  onClick={() => {
+                    selectContext();
+                    onRun({
+                      label: `Investigate group ${cluster.cluster}`,
+                      prompt: `Saved annotation run: ${run.id}\nInvestigate the unclear identity of group ${cluster.cluster}. Check distinguishing marker signals in individual nuclei, compare the evidence, and show what remains unresolved.`,
+                      action: {
+                        operation: "investigation",
+                        datasetId: result.dataset.id,
+                        cluster: cluster.cluster,
+                        annotationRunId: run.id,
+                      },
+                    });
+                  }}
+                >
+                  Investigate this group ↗
+                </button>
+                <span className={styles.caption}>
+                  {investigationAvailable
+                    ? "Check marker patterns and compare the explanations."
+                    : "Evidence review needs a model connection."}
+                </span>
+              </div>
+            )}
             <div className={styles.candidates} id={candidateListId}>
               {cluster.candidates
                 .slice(0, allCandidates ? undefined : 3)
@@ -723,13 +758,14 @@ const emptyDraft: ReviewDraft = {
   note: "",
 };
 
-function AnnotationReviewPanel({
+export function AnnotationReviewPanel({
   projectId,
   runId,
   cluster,
   initialReviews,
   onAsk,
   actionsDisabled,
+  investigationRunId,
 }: {
   projectId: string;
   runId: string;
@@ -737,6 +773,7 @@ function AnnotationReviewPanel({
   initialReviews: AnnotationReview[];
   onAsk: () => void;
   actionsDisabled: boolean;
+  investigationRunId?: string;
 }) {
   const id = useId();
   const submissionIds = useRef(new Map<string, string>());
@@ -800,6 +837,7 @@ function AnnotationReviewPanel({
               ? draft.cellType.trim()
               : null,
             note: draft.note,
+            ...(investigationRunId ? { investigationRunId } : {}),
           }),
         },
       );

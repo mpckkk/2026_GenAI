@@ -59,6 +59,7 @@ function StepData({
   return (
     <dl className={styles.dataList}>
       {fact("Provider", data.provider)}
+      {fact("Provider job", data.providerJobId)}
       {fact("Operation", data.operation)}
       {fact(
         "Dataset",
@@ -158,6 +159,9 @@ function StepData({
             {fact("Suggested", data.outputCounts.suggested)}
             {fact("Ambiguous", data.outputCounts.ambiguous)}
             {fact("Unresolved", data.outputCounts.unresolved)}
+            {fact("Interpretations", data.outputCounts.attempts)}
+            {fact("Nuclei measured", data.outputCounts.nuclei)}
+            {fact("Genes measured", data.outputCounts.genes)}
           </dl>,
         )}
       {fact(

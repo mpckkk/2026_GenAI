@@ -238,6 +238,13 @@ export class PostgresChat implements ChatRepository {
           throw new ChatSubmissionConflictError();
         return turn(existing.rows[0]);
       }
+      if (
+        input.action?.operation === "investigation" &&
+        process.env.CELLORAS_INVESTIGATION_ENABLED !== "true"
+      )
+        throw new ChatValidationError({
+          action: "Evidence review needs a model connection before it can run.",
+        });
       if (input.action) {
         const bound = await connection.query(
           "SELECT dataset_id FROM project_datasets WHERE project_id=$1",

@@ -81,6 +81,11 @@ export const sponsors = {
     role: "Earlier research decisions",
     icon: "book",
   },
+  nightshift: {
+    name: "Meterless Nightshift",
+    role: "Compare evidence interpretations",
+    icon: "search",
+  },
   openshell: {
     name: "NVIDIA OpenShell",
     role: "Where the agent runs",
@@ -90,6 +95,12 @@ export const sponsors = {
 export type Sponsor = keyof typeof sponsors;
 
 export function sponsorForStep(step: Step): Sponsor | null {
+  if (
+    step.first.kind === "model" &&
+    step.data.provider === "Meterless Nightshift" &&
+    step.data.operation === "investigation"
+  )
+    return "nightshift";
   if (
     step.first.kind === "reference" &&
     step.data.reference?.provider === "Zetaris"

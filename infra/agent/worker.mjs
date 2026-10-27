@@ -1,3 +1,8 @@
+import { NightshiftInvestigation } from "../../app/gateway/nightshift-investigation.mjs";
+import {
+  runInvestigation,
+  cleanupInvestigations,
+} from "../../app/services/investigation.mjs";
 import { LocalScientificData } from "../../app/adapters/scientific-data.mjs";
 import { ProjectScientificData } from "../../app/adapters/project-scientific-data.mjs";
 import { MarkerAnnotationEngine } from "../../app/adapters/annotation-engine.mjs";
@@ -38,6 +43,7 @@ if (!["openshell", "nightshift"].includes(runtimeName))
   throw new Error("agent_runtime_invalid");
 const runtime =
   runtimeName === "openshell" ? new OpenShellCodex() : new NightshiftAgent();
+const investigationProvider = new NightshiftInvestigation();
 const references = configuredReferences();
 const markerReference = references.marker;
 const scientific = new LocalScientificData();
@@ -446,6 +452,13 @@ async function recover() {
   await pool.query(`UPDATE agent_turns SET status='failed',error_code='worker_interrupted',
     progress='Agent was interrupted',finished_at=now(),updated_at=now()
     WHERE status='running' AND heartbeat_at < now()-interval '60 seconds'`);
+  // Disabling new investigations must still reconcile previously submitted jobs.
+  try {
+    await cleanupInvestigations(pool, investigationProvider);
+  } catch {
+    // An optional provider outage must not stop unrelated conversations.
+    log("investigation.cleanup.failed", {});
+  }
   const cleanup =
     await pool.query(`SELECT id,owner_id,project_id,activity_version,sandbox_name FROM agent_turns
     WHERE status IN ('completed','failed','cancelled') AND sandbox_name IS NOT NULL ORDER BY updated_at LIMIT 1`);
@@ -592,6 +605,7 @@ async function execute(turn) {
       };
       const names = {
         annotation: "Annotate cell groups",
+        investigation: "Investigate an unclear cell group",
         inspect: "Create cell map",
         markers: "Compare marker genes",
         expression: "Plot gene expression",
@@ -633,6 +647,23 @@ async function execute(turn) {
               action,
               step: steps++,
               signal: controller.signal,
+              investigate: (input) =>
+                runInvestigation({
+                  connection: pool,
+                  scientific: scopedScientific,
+                  referenceProvider: references,
+                  provider: investigationProvider,
+                  activity,
+                  progress: (value) => {
+                    progress = value;
+                  },
+                  projectId: turn.project_id,
+                  ownerId: turn.owner_id,
+                  turnId: turn.id,
+                  action: input,
+                  signal: controller.signal,
+                  parentSpanId: spanId,
+                }),
             },
           );
         },
@@ -660,6 +691,20 @@ async function execute(turn) {
         [turn.id, workerId, JSON.stringify(snapshot)],
       );
       if (controller.signal.aborted) throw new AgentResponseError("cancelled");
+      // Nightshift already produced this review. Deliver the validated result
+      // directly; another model call must not gate access to completed evidence.
+      if (turn.requested_action?.operation === "investigation") {
+        output = {
+          version: 1,
+          blocks: [
+            {
+              type: "markdown",
+              text: "The evidence review is ready. Compare the measurements and interpretations below, then record your decision.",
+            },
+          ],
+        };
+        break;
+      }
       output = await run(snapshot, turn.prompt);
       const lookup = output.blocks.find(
         (b) => b.type === "lookup_marker_evidence",

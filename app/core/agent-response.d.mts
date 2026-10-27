@@ -3,6 +3,7 @@ import type {
   ScientificRun,
   LiteratureRun,
   AnnotationRun,
+  InvestigationRun,
 } from "./analysis";
 import type { MarkerEvidenceRun } from "./evidence";
 import type { ContextEntry, MarkerEntry } from "./research";
@@ -16,13 +17,14 @@ export type CardReference = {
     | "scientific_result"
     | "literature_result"
     | "annotation_result"
+    | "investigation_result"
     | "lookup_marker_evidence";
   entryId: string;
 };
 export type ScientificToolRequest = {
   type: "run_scientific_tool";
   datasetId: string;
-  operation: ScientificAction["operation"];
+  operation: Exclude<ScientificAction["operation"], "investigation">;
   cluster: string | null;
   genes: string[];
   query: string | null;
@@ -43,6 +45,7 @@ export type ResponseDocument = {
     | { type: "scientific_result"; result: ScientificRun }
     | { type: "literature_result"; result: LiteratureRun }
     | { type: "annotation_result"; result: AnnotationRun }
+    | { type: "investigation_result"; result: InvestigationRun }
   )[];
 };
 export class AgentResponseError extends Error {

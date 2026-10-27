@@ -12,6 +12,7 @@ import type { EvidenceReviewReceipt } from "@/app/core/evidence";
 import { EvidenceCard } from "./evidence-card";
 import { ScientificCard, type ScientificSelection } from "./scientific-card";
 import { AnnotationCard } from "./annotation-card";
+import { InvestigationCard } from "./investigation-card";
 import { LiteratureCard } from "./literature-card";
 import type { ScientificResult } from "@/app/core/scientific-data";
 import type { GuidedAction } from "./next-actions";
@@ -71,6 +72,16 @@ export function AgentResponse({
               review={reviews[block.result.id]}
               onAsk={onAsk}
               actionsDisabled={actionsDisabled}
+            />
+          );
+        if (block.type === "investigation_result")
+          return (
+            <InvestigationCard
+              key={block.result.id}
+              run={block.result}
+              onRun={onRun}
+              onAsk={onAsk}
+              actionsDisabled={scientificActionsDisabled}
             />
           );
         if (block.type === "annotation_result")

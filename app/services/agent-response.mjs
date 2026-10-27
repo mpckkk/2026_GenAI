@@ -61,6 +61,7 @@ export async function resolveAgentResponse(
             "scientific_result",
             "literature_result",
             "annotation_result",
+            "investigation_result",
           ].includes(r.type),
         )
         .map((r) => r.entryId),
@@ -70,9 +71,12 @@ export async function resolveAgentResponse(
   const blocks = parsed.blocks.map((block) => {
     if (block.type === "markdown") return block;
     if (
-      ["scientific_result", "literature_result", "annotation_result"].includes(
-        block.type,
-      )
+      [
+        "scientific_result",
+        "literature_result",
+        "annotation_result",
+        "investigation_result",
+      ].includes(block.type)
     ) {
       const row = analysis.get(block.entryId);
       if (!row || analysisCardType(row.operation) !== block.type)

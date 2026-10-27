@@ -5,6 +5,20 @@ const operations: Record<
   string,
   { title: string; purpose: string; result: string }
 > = {
+  investigation: {
+    title: "Investigate the unclear cell group",
+    purpose:
+      "Measure distinguishing marker signals, then compare interpretations of the evidence with Nightshift.",
+    result:
+      "Saved the evidence review separately from the original annotation.",
+  },
+  co_detection: {
+    title: "Check which marker signals occur together",
+    purpose:
+      "Count nuclei with each selected marker set, both sets or neither. These measurements do not establish cell identity.",
+    result:
+      "Measured the selected marker signals in individual nuclei of this group.",
+  },
   annotation: {
     title: "Suggest names for the cell groups",
     purpose:
@@ -150,6 +164,17 @@ export function describeStep(step: Step, detail: ActivityRunDetail) {
           : operation.result
         : "The analysis is running.";
     }
+  } else if (
+    kind === "model" &&
+    step.data.provider === "Meterless Nightshift" &&
+    step.data.operation === "investigation"
+  ) {
+    title = "Compare interpretations with Nightshift";
+    purpose =
+      "Generate three interpretations of the same measured evidence, then evaluate their quality. Agreement is not biological confidence.";
+    outcome = done
+      ? `Received ${step.data.outputCounts?.attempts ?? 3} interpretations. The visual review preserves their differences and source references.`
+      : "Nightshift is comparing the supplied evidence. The original annotation remains unchanged.";
   } else if (kind === "model") {
     title = "Work out how to answer";
     purpose =

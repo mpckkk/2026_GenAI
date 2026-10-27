@@ -11,7 +11,14 @@ export function parseScientificAction(value) {
     !plain(value) ||
     Object.keys(value).some(
       (k) =>
-        !["operation", "datasetId", "cluster", "genes", "query"].includes(k),
+        ![
+          "operation",
+          "datasetId",
+          "cluster",
+          "genes",
+          "query",
+          "annotationRunId",
+        ].includes(k),
     ) ||
     ![
       "inspect",
@@ -20,12 +27,24 @@ export function parseScientificAction(value) {
       "dotplot",
       "literature",
       "annotation",
+      "investigation",
     ].includes(value.operation) ||
     typeof value.datasetId !== "string" ||
     !/^[a-z0-9][a-z0-9-]{0,79}$/.test(value.datasetId)
   )
     throw new AnalysisError("analysis_input_invalid");
   const result = { operation: value.operation, datasetId: value.datasetId };
+  if (value.annotationRunId !== undefined) {
+    if (
+      value.operation !== "investigation" ||
+      typeof value.annotationRunId !== "string" ||
+      !/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(
+        value.annotationRunId,
+      )
+    )
+      throw new AnalysisError("analysis_input_invalid");
+    result.annotationRunId = value.annotationRunId.toLowerCase();
+  }
   if (value.cluster !== undefined) {
     if (
       typeof value.cluster !== "string" ||
@@ -57,20 +76,25 @@ export function parseScientificAction(value) {
     result.query = value.query.trim();
   }
   if (
+    (result.operation === "investigation" &&
+      (!result.cluster || !result.annotationRunId)) ||
     (result.operation === "markers" && !result.cluster) ||
     (result.operation === "expression" && result.genes?.length !== 1) ||
     (result.operation === "dotplot" && !result.genes?.length) ||
     (result.operation === "literature" && !result.query) ||
     (result.operation !== "literature" && result.query !== undefined) ||
-    (!["markers", "annotation"].includes(result.operation) &&
+    (!["markers", "annotation", "investigation"].includes(result.operation) &&
       result.cluster !== undefined) ||
-    (["inspect", "markers", "annotation"].includes(result.operation) &&
+    (["inspect", "markers", "annotation", "investigation"].includes(
+      result.operation,
+    ) &&
       result.genes?.length)
   )
     throw new AnalysisError("analysis_input_invalid");
   return result;
 }
 export function analysisCardType(operation) {
+  if (operation === "investigation") return "investigation_result";
   if (operation === "literature") return "literature_result";
   if (operation === "annotation") return "annotation_result";
   return "scientific_result";

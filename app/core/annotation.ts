@@ -124,6 +124,7 @@ export interface AnnotationProvider {
 
 /** A researcher decision, never an overwrite of computed evidence. */
 export interface AnnotationReview {
+  investigationRunId?: string | null;
   id: string;
   runId: string;
   cluster: string;

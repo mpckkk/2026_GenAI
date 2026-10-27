@@ -1,0 +1,75 @@
+{
+  "event": "investigation.real_failure_verified",
+  "job": {
+    "state": "failed",
+    "error_code": "nightshift_no_ready_lane",
+    "provider_job_id": "job_mvpy0miu03",
+    "evidence_sha256": "e5e09e380355dd81954374503f02689eb6905723902f03e4e341311b52f8d86a"
+  },
+  "events": [
+    {
+      "kind": "queue",
+      "phase": "started"
+    },
+    {
+      "kind": "reference",
+      "phase": "started",
+      "provider": "Published reference"
+    },
+    {
+      "kind": "reference",
+      "phase": "completed",
+      "provider": "Published reference"
+    },
+    {
+      "kind": "tool",
+      "phase": "started",
+      "operation": "co_detection"
+    },
+    {
+      "kind": "tool",
+      "phase": "completed",
+      "operation": "co_detection"
+    },
+    {
+      "kind": "model",
+      "phase": "started",
+      "operation": "investigation",
+      "provider": "Meterless Nightshift"
+    },
+    {
+      "kind": "model",
+      "phase": "info",
+      "provider": "Meterless Nightshift",
+      "providerJobId": "job_mvpy0miu03"
+    },
+    {
+      "kind": "model",
+      "phase": "failed",
+      "operation": "investigation",
+      "provider": "Meterless Nightshift",
+      "providerJobId": "job_mvpy0miu03"
+    }
+  ],
+  "resultCreated": false,
+  "dataset": "GSE270392 soybean root, Wm82v4",
+  "group": "3",
+  "measurements": {
+    "nuclei": 704,
+    "firstCandidate": "Epidermis",
+    "secondCandidate": "Root hair",
+    "firstOnly": 146,
+    "secondOnly": 129,
+    "both": 80,
+    "neither": 349,
+    "genes": [
+      "Glyma.08G014900",
+      "Glyma.01G128700",
+      "Glyma.20G032500",
+      "Glyma.01G224900"
+    ]
+  },
+  "acceptance": "Real data and failure path verified. Successful inference and completed review journey are not verified.",
+  "databaseIsolation": "Acceptance transaction rolled back; real native failed job retained in Nightshift.",
+  "screenshots": "Authenticated local desktop 1440x1000 and mobile 390x844: entry point visible, explicitly disabled, no document overflow."
+}

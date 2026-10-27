@@ -1,5 +1,16 @@
 # Foundation verification — 2026-10-23
 
+## Optional investigation, 27 October 2026
+
+- Final lint and production build (including TypeScript) passed.
+- Applied additive migration 012 to the real local PostgreSQL database. New reviews can link the original annotation and a separate investigation. Existing results remain readable.
+- Read the real saved soybean-root annotation and measured four distinguishing marker genes in group 3. Independently read the sparse raw-count files: 704 nuclei, 146 with only the selected epidermis markers, 129 with only the selected root-hair markers, 80 with both, 349 with neither. Per-gene detection counts also matched. These are descriptive measurements, not independently validated labels.
+- A different owner's request and a changed attached dataset version were rejected before reference or inference access. The source annotation remained byte-for-byte unchanged. The real H-MEM recall query completed against existing reviews after the provenance-column change; recall of a new completed investigation is still pending.
+- Submitted native Nightshift quality-comparison jobs on the actual Linux server. The runtime accepted three-attempt jobs and the frozen weighted rubric, then reported `no_ready_lane` with zero attempts generated. The application rejected the result. A real database transaction verified the provider job binding, evidence checksum, reference/measurement/model activity and failure state; no investigation result was created. The acceptance transaction was rolled back. No model output was fabricated.
+- Authenticated browser check on a real existing annotation: group 3 displays **Investigate this group**, disabled with the explicit missing-model explanation. Inspected desktop and mobile screenshots; mobile document overflow was false. This does not validate the completed investigation card, which requires a real response.
+- [Sanitized receipt](evidence/investigation-2026-10-27.json). Private credentials, sessions and screenshot files remain in ignored operator storage.
+- Activation remains disabled. Positive inference, the completed card, explicit review linked to it, H-MEM recall of that new linkage, and cancellation during generation still require a configured backend and live acceptance. Existing conversational runtime remains OpenShell; the feature does not change it.
+
 ## Nightshift server setup, 27 October 2026 (local time)
 
 - Inspected and SHA-256 verified Meterless's official `meterless-runtime_1.5.1-1_arm64.deb`. Its core is an ARM64 binary; the Celloras server is Linux x86_64. The custom container runs that unmodified daemon through userspace QEMU and its shipped JavaScript engine through native Node 22.16.0. This does not establish vendor support for x86_64.
@@ -7,7 +18,6 @@
 - At 2026-10-26 23:27 UTC, real requests from the running Celloras worker to `http://nightshift:8088` returned health 200, invalid-token 401, authenticated model discovery 200, and completion 400 with `no_provider_configured`. Model routes are a catalog, not proof that model weights or provider credentials are available.
 - The runtime was restarted and its generated token was retained. The temporary trial container was removed after the persistent service passed. The [sanitized server receipt](evidence/nightshift-server-2026-10-27.json) records the checks; no keys, tokens or researcher data are included.
 - **Still blocked:** a real cloud-provider API key, successful structured inference, a fresh annotation/recall workflow and Nightshift activity attribution. Celloras remains on its verified OpenShell runtime. No existing experiment, database record or application runtime setting was changed. This service check does not establish Nightshift hackathon eligibility by itself.
-
 
 - Pitch deck update: preserved the approved opening and revised slides 2 to 4 around the recorded uploaded-H5AD experiment, Zetaris annotation query, provisional Root hair review and H-MEM recall. Package, geometry, Inter font and re-import checks passed. All four slide previews and PDF pages were visually inspected. PDF embeds Inter; links point to the recorded experiment/activity. No new inference or application change was made. Microsoft PowerPoint execution was not tested.
 

@@ -125,6 +125,8 @@ export class PostgresAnalysis implements AnalysisRepository {
     );
     return {
       ...analysisRun(found.rows[0], true),
+      investigationAvailable:
+        process.env.CELLORAS_INVESTIGATION_ENABLED === "true",
       reviews: reviews.rows.map(review),
       annotationReviews: annotationReviews.rows.map(annotationReview),
     };
@@ -287,9 +289,14 @@ export class PostgresAnalysis implements AnalysisRepository {
     if (
       Object.keys(v).some(
         (key) =>
-          !["submissionId", "cluster", "decision", "cellType", "note"].includes(
-            key,
-          ),
+          ![
+            "submissionId",
+            "cluster",
+            "decision",
+            "cellType",
+            "note",
+            "investigationRunId",
+          ].includes(key),
       ) ||
       typeof v.submissionId !== "string" ||
       !UUID.test(v.submissionId) ||
@@ -309,6 +316,29 @@ export class PostgresAnalysis implements AnalysisRepository {
       (item) => item.cluster === v.cluster,
     );
     if (!cluster) throw new AnalysisError("analysis_input_invalid");
+    const investigationRunId =
+      v.investigationRunId === undefined ? null : v.investigationRunId;
+    if (investigationRunId !== null) {
+      if (
+        typeof investigationRunId !== "string" ||
+        !UUID.test(investigationRunId)
+      )
+        throw new AnalysisError("analysis_input_invalid");
+      const investigation = await this.get(
+        userId,
+        projectId,
+        investigationRunId,
+      );
+      if (
+        !("operation" in investigation.result) ||
+        investigation.result.operation !== "investigation" ||
+        investigation.result.summary.sourceRunId !== runId ||
+        investigation.result.summary.cluster !== v.cluster ||
+        investigation.result.dataset.artifactVersion !==
+          run.result.dataset.artifactVersion
+      )
+        throw new AnalysisError("analysis_input_invalid");
+    }
     let cellType: string | null = null;
     if (v.decision === "accepted" || v.decision === "corrected") {
       if (
@@ -345,15 +375,16 @@ export class PostgresAnalysis implements AnalysisRepository {
           r.cluster !== v.cluster ||
           r.decision !== v.decision ||
           r.cell_type !== cellType ||
-          r.note !== v.note.trim()
+          r.note !== v.note.trim() ||
+          r.investigation_run_id !== investigationRunId
         )
           throw new ChatSubmissionConflictError();
         await c.query("COMMIT");
         return { review: annotationReview(r) };
       }
       const saved = await c.query(
-        `INSERT INTO annotation_reviews(project_id,owner_id,run_id,submission_id,cluster,decision,cell_type,note)
-        SELECT p.id,$2,a.id,$4,$5,$6,$7,$8 FROM projects p
+        `INSERT INTO annotation_reviews(project_id,owner_id,run_id,submission_id,cluster,decision,cell_type,note,investigation_run_id)
+        SELECT p.id,$2,a.id,$4,$5,$6,$7,$8,$9 FROM projects p
         JOIN analysis_runs a ON a.project_id=p.id JOIN agent_turns t ON t.id=a.turn_id
         WHERE p.id=$1 AND p.owner_id=$2 AND a.owner_id=$2 AND a.id=$3 AND a.operation='annotation'
           AND t.project_id=$1 AND t.owner_id=$2 AND t.status='completed' AND NOT t.cancel_requested RETURNING *`,
@@ -366,6 +397,7 @@ export class PostgresAnalysis implements AnalysisRepository {
           v.decision,
           cellType,
           v.note.trim(),
+          investigationRunId,
         ],
       );
       if (!saved.rows[0]) throw new ProjectNotFoundError();
@@ -400,6 +432,7 @@ function review(row: Record<string, unknown>): AnalysisReview {
 }
 function annotationReview(row: Record<string, unknown>): AnnotationReview {
   return {
+    investigationRunId: row.investigation_run_id as string | null,
     id: row.id as string,
     runId: row.run_id as string,
     cluster: row.cluster as string,

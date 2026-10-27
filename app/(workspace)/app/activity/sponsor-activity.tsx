@@ -16,7 +16,10 @@ import styles from "./activity.module.css";
 
 function callPurpose(step: Step, steps: Step[]) {
   if (step.first.kind === "memory") return "Look for earlier decisions";
-  if (step.first.kind === "model") return "Work on the answer";
+  if (step.first.kind === "model")
+    return step.data.operation === "investigation"
+      ? "Compare evidence interpretations"
+      : "Work on the answer";
   const parent = steps.find((entry) => entry.id === step.first.parentSpanId);
   if (parent?.first.kind === "tool")
     return parent.data.operation === "annotation"
@@ -40,6 +43,8 @@ function outcome(sponsor: Sponsor, step: Step, detail: ActivityRunDetail) {
       ? "Reference check finished"
       : `${count} reference entries retrieved`;
   }
+  if (sponsor === "nightshift")
+    return `${step.data.outputCounts?.attempts ?? 3} interpretations received`;
   if (sponsor === "hmem") {
     const count = step.data.memoryCount;
     return count === undefined
@@ -56,6 +61,8 @@ function outcome(sponsor: Sponsor, step: Step, detail: ActivityRunDetail) {
 }
 
 function roleDescription(sponsor: Sponsor, step: Step, steps: Step[]) {
+  if (sponsor === "nightshift")
+    return "Compares three interpretations of the same measurements, evaluates their quality and preserves disagreement for review.";
   if (sponsor === "hmem")
     return "Finds decisions already recorded in this experiment, so the agent can refer back to them.";
   if (sponsor === "openshell")
@@ -124,6 +131,11 @@ function SponsorCard({
             {roleDescription(sponsor, primary, steps)}
           </p>
           <div className={styles.sponsorEvidence}>
+            {sponsor === "nightshift" && primary.data.providerJobId && (
+              <span>
+                Job: <code>{primary.data.providerJobId}</code>
+              </span>
+            )}
             {completed &&
               sponsor === "zetaris" &&
               primary.data.reference?.contentSha256 && (
@@ -212,6 +224,8 @@ export function SponsorActivity({
   detail: ActivityRunDetail;
 }) {
   const visible: Sponsor[] = ["zetaris", "hmem"];
+  if (steps.some((step) => sponsorForStep(step) === "nightshift"))
+    visible.push("nightshift");
   if (steps.some((step) => sponsorForStep(step) === "openshell"))
     visible.push("openshell");
   return (

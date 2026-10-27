@@ -40,9 +40,11 @@ Do not copy it into Git or discard it when recreating the container.
    `meterless/auto`. The runtime token and upstream provider key are distinct.
 3. Run the existing `scripts/verify-sponsors.mjs nightshift` probe with those
    settings. It must return a real, schema-valid answer and provider receipt.
-4. Verify a fresh owned Celloras annotation conversation, Zetaris evidence,
-   saved-decision recall through H-MEM, and activity attribution. Only then
-   persist `CELLORAS_AGENT_RUNTIME=nightshift` in the production deployment.
+4. Keep `CELLORAS_AGENT_RUNTIME=openshell` for conversation. Verify a real
+   investigation through `scripts/verify-investigation.mjs RUN_ID GROUP
+--provider`, then its visual card, explicit decision, H-MEM recall and
+   activity attribution. Only then enable `CELLORAS_INVESTIGATION_ENABLED=true`
+   in both app and worker. See the [activation gate](../../docs/configuration.md#investigate-an-unclear-group).
 
 Health and `/v1/models` responses do not prove inference. With no compute
 provider configured, an actual completion returns `no_provider_configured`.

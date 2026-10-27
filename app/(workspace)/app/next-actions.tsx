@@ -6,6 +6,7 @@ import styles from "./workspace.module.css";
 
 const actionIcons: Record<ScientificAction["operation"], IconName> = {
   annotation: "label",
+  investigation: "search",
   markers: "search",
   literature: "book",
   inspect: "grid",

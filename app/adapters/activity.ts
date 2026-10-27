@@ -81,6 +81,7 @@ const TITLES: Record<string, string> = {
   dotplot: "Gene comparison",
   literature: "Literature evidence",
   annotation: "Cell-type annotation",
+  investigation: "Cell group investigation",
   marker_evidence: "Marker evidence",
 };
 function resultSummary(
@@ -93,6 +94,8 @@ function resultSummary(
     Number(summary[key]) >= 0
       ? Number(summary[key]).toLocaleString("en-US")
       : null;
+  if (operation === "investigation")
+    return `${number("attemptCount") ?? "Recorded"} interpretations of the measured evidence. Original annotation unchanged.`;
   if (operation === "annotation") {
     return (
       [

@@ -77,6 +77,7 @@ export function parseAgentResponse(value) {
         "scientific_result",
         "literature_result",
         "annotation_result",
+        "investigation_result",
         "lookup_marker_evidence",
       ].includes(block?.type)
     ) {

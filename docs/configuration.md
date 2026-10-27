@@ -178,6 +178,25 @@ Nightshift is a separate [Meterless runtime](https://github.com/Meterless/Meterl
 
 1. Start/configure your actual Nightshift runtime and its model fleet. Set `NIGHTSHIFT_API_URL` to a worker-reachable endpoint, `NIGHTSHIFT_API_TOKEN` to its real proxy token and `NIGHTSHIFT_MODEL` to an ID returned by `/v1/models`, such as `meterless/auto`. `localhost` inside the worker means the worker container; a host runtime may need `host.docker.internal:8088`. Keep plain HTTP private.
 2. Run `node --env-file=.env scripts/verify-sponsors.mjs nightshift`. This verifies `/v1/models`, performs a real structured model call and reports only the selected route/returned model. Requests include `meterless-app: celloras` and `meterless-scope: user`; inference has a 180-second limit, bounded output and strict response validation. No failed inference is automatically retried or sent to another provider.
-3. After a successful probe, set `CELLORAS_AGENT_RUNTIME=nightshift` and recreate app/worker. The app still brokers and authorizes the same tools/cards. Retain OpenShell credentials/state until old sandbox leases are cleaned up. Set `CELLORAS_AGENT_RUNTIME=openshell` to switch back explicitly.
+3. For the additive investigation workflow, keep `CELLORAS_AGENT_RUNTIME=openshell`. Apply migration 012, then run the investigation probe below against a real saved annotation. Enable `CELLORAS_INVESTIGATION_ENABLED=true` in both app and worker only after successful inference and the full review/recall browser journey. The flag defaults to false. The existing conversation runtime does not change.
+
+### Investigate an unclear group
+
+Choose **Investigate this group** on an ambiguous or unresolved annotation. The orchestrator verifies the owned saved annotation, attached dataset version and freshly loaded reference (Zetaris when configured). It selects up to two distinguishing markers from each of the two highest-scoring candidates and measures co-detection in individual nuclei. It submits one native Nightshift `best_of_n` job with three interpretations and a frozen quality rubric. It validates the returned candidate IDs and evidence references, saves a separate visual review, and delivers that result directly. It does not require another conversational model call to release the completed review. Normal conversation continues through the configured CLI/API runtime.
+
+The card shows the actual counts, all interpretations, remaining uncertainty and an unexecuted next check. Nightshift's selected interpretation is a quality assessment, not biological confidence. The original annotation remains unchanged. An explicit saved decision links both results; H-MEM recalls it as a researcher decision, with the investigation link.
+
+```sh
+# Set CELLORAS_DATASET_DIR and the private Nightshift settings in your operator environment.
+node --env-file=.env scripts/verify-investigation.mjs ANNOTATION_RUN_UUID GROUP
+# Real inference probe. Requires enabled configuration and ready model lanes.
+node --env-file=.env scripts/verify-investigation.mjs ANNOTATION_RUN_UUID GROUP --provider
+```
+
+The independent source-file check currently accepts public datasets in `CELLORAS_DATASET_DIR`. The application also scopes uploaded datasets through `ProjectScientificData`. Private-upload investigation acceptance remains part of the activation gate.
+
+Operator limits: three generated interpretations, up to four measured genes and a six-minute job deadline. Nightshift's low relative attempt budget is not a dollar cap; quality evaluation can make additional model calls. Partial or invalid replies are rejected. No inference POST is retried automatically. Each admitted turn binds its job ID and evidence checksum in `investigation_jobs`; an uncertain submission blocks another active job for that source/group until the operator reconciles it. Cancellation and interrupted-turn cleanup call the native cancel endpoint. Disabling new investigations still allows cleanup of existing jobs. A failed optional cleanup is logged without blocking unrelated chat.
+
+With an intentionally unconfigured runtime, `--failure` verifies the real `no_ready_lane` rejection, job binding and activity records in a rolled-back database transaction. It is not a successful inference test. Before enabling: verify a completed three-attempt job, reload the card, save a review, recall that exact decision, cancel a live job and confirm no model job remains active. Native job submission is verified; positive inference, cancellation during generation and the completed review journey remain blocked on a model backend as of 27 October.
 
 Selecting `meterless/auto` does **not** prove Nemotron usage. Configure Nemotron in the runtime fleet and verify its actual route. Health only labels Nemotron ready when the active worker received a completed response reporting a Nemotron model; if the API returns only a routing-mode ID, it stays pending. Actual model receipts are retained in the owned turn context. Nightshift inference acceptance is blocked on provider configuration as of 2026-10-27. Nemotron execution is not verified.

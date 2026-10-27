@@ -43,7 +43,8 @@
                   "lookup_marker_evidence",
                   "scientific_result",
                   "literature_result",
-                  "annotation_result"
+                  "annotation_result",
+                  "investigation_result"
                 ]
               },
               "entryId": {

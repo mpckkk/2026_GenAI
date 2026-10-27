@@ -1,8 +1,9 @@
 # Changelog
 
+- Added a gated investigation of unclear cell groups: real marker co-detection, native Nightshift comparison jobs, visual reviews, explicit decision linkage and provider activity. Original annotations and the conversation runtime stay intact. Real data and native job admission are verified; activation remains blocked on ready model lanes and a completed review journey.
+
 - Added a private Linux x86_64 container deployment of the official Nightshift 1.5.1 runtime using userspace ARM emulation and native Node. Real health, rejected-token and model-discovery checks pass; inference explicitly reports `no_provider_configured`. Celloras remains on OpenShell until a provider key and real workflow acceptance are available.
 - Updated current sponsor guidance to include Nightshift, following the newer organizer correction. Preserved earlier audits as history and kept the private pitch outline out of source control.
-
 
 - Restored orchestrator responsibilities and reviewed the flowchart against the source. Clarified runtime status, H-MEM execution inside the orchestrator, review persistence through PostgreSQL, and the tool/evidence loop.
 

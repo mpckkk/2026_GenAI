@@ -63,7 +63,7 @@ async function readJson(response, maxBytes = 2 * 1024 * 1024) {
 }
 
 /** Same bounded broker protocol as OpenShell; this adapter launches no shell. */
-export class NightshiftAgent {
+export class NightshiftClient {
   async request(path, { body, signal, timeout = 10000 } = {}) {
     const config = settings();
     try {
@@ -82,12 +82,16 @@ export class NightshiftAgent {
           : AbortSignal.timeout(timeout),
       });
       if (!response.ok) {
-        await response.body?.cancel();
-        throw new NightshiftError(
+        const error = await readJson(response).catch(() => ({}));
+        const failure = new NightshiftError(
           [401, 403].includes(response.status)
             ? "nightshift_unauthorized"
-            : "nightshift_request_failed",
+            : error.error?.code === "no_provider_configured"
+              ? "nightshift_no_provider"
+              : "nightshift_request_failed",
         );
+        failure.status = response.status;
+        throw failure;
       }
       return await readJson(response);
     } catch (error) {
@@ -108,6 +112,9 @@ export class NightshiftAgent {
       throw new NightshiftError("nightshift_route_unavailable");
     this.checkedAt = Date.now();
   }
+}
+
+export class NightshiftAgent extends NightshiftClient {
   async run({ prompt, signal, progress }) {
     this.lastReceipt = null;
     if (typeof prompt !== "string" || Buffer.byteLength(prompt) > 262144)

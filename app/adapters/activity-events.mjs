@@ -13,6 +13,7 @@ const KINDS = new Set([
 const PHASES = new Set(["started", "completed", "failed", "cancelled", "info"]);
 const FIELDS = new Set([
   "provider",
+  "providerJobId",
   "datasetId",
   "artifactVersion",
   "operation",
@@ -74,6 +75,9 @@ export function validateActivityData(value = {}) {
       counts(v, ["turns", "researchEntries", "analysisRuns", "markers"]);
     else if (key === "outputCounts")
       counts(v, [
+        "attempts",
+        "nuclei",
+        "genes",
         "blocks",
         "characters",
         "results",

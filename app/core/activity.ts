@@ -14,6 +14,7 @@ export type ActivityPhase =
 /** Deliberately excludes raw model/provider payloads, credentials and hidden reasoning. */
 export interface ActivityData {
   provider?: string;
+  providerJobId?: string;
   datasetId?: string;
   artifactVersion?: string;
   operation?: string;
@@ -37,6 +38,9 @@ export interface ActivityData {
     markers?: number;
   };
   outputCounts?: {
+    attempts?: number;
+    nuclei?: number;
+    genes?: number;
     blocks?: number;
     characters?: number;
     results?: number;

@@ -1,8 +1,16 @@
 import type { AgentRuntime } from "../core/chat";
 export class NightshiftError extends Error {
   code: string;
+  status?: number;
 }
-export class NightshiftAgent implements AgentRuntime {
+export class NightshiftClient {
+  request(
+    path: string,
+    options?: { body?: unknown; signal?: AbortSignal; timeout?: number },
+  ): Promise<Record<string, unknown>>;
+  health: AgentRuntime["health"];
+}
+export class NightshiftAgent extends NightshiftClient implements AgentRuntime {
   lastReceipt: {
     provider: string;
     route: string;

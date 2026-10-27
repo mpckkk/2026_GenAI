@@ -96,6 +96,26 @@ async function responseError(
 
 function failedTurnMessage(code: string | null) {
   switch (code) {
+    case "investigation_unconfigured":
+    case "nightshift_no_provider":
+    case "nightshift_no_ready_lane":
+      return "Evidence review needs a connected model in Nightshift. Your original annotation is unchanged.";
+    case "investigation_submission_unknown":
+    case "investigation_already_submitted":
+    case "investigation_cleanup_required":
+      return "A review job may still exist for this group. Check its activity before trying again; Celloras will not submit a duplicate automatically.";
+    case "investigation_insufficient_candidates":
+    case "investigation_no_distinguishing_markers":
+      return "The reference does not provide enough distinct marker evidence for this comparison. Keep the group unresolved and inspect its genes or add research context.";
+    case "investigation_dataset_changed":
+    case "investigation_source_unavailable":
+    case "investigation_reference_changed":
+      return "The saved annotation no longer matches the attached data or reference. Run a new annotation before investigating this group.";
+    case "investigation_invalid_response":
+    case "investigation_incomplete":
+      return "The review did not return three complete interpretations with valid evidence references. No new label was saved.";
+    case "investigation_timeout":
+      return "The evidence review reached its time limit and was stopped. Your original annotation is unchanged.";
     case "agent_timeout":
       return "The agent reached its time limit. You can retry with a more focused question.";
     case "agent_execution_failed":

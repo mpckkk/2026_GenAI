@@ -75,10 +75,12 @@ export class ResearchMemory {
       `WITH annotation AS (
       SELECT DISTINCT ON(r.run_id,r.cluster) 'annotation:'||r.run_id||':'||r.cluster AS target,
         'annotation-review:'||r.id AS source, r.created_at,
-        jsonb_build_object('kind','annotation_review','runId',r.run_id,'cluster',r.cluster,'decision',r.decision,'cellType',r.cell_type,'note',r.note) AS value,
+        jsonb_build_object('kind','annotation_review','runId',r.run_id,'cluster',r.cluster,'decision',r.decision,'cellType',r.cell_type,'note',r.note,'investigationRunId',r.investigation_run_id,'investigationHref',CASE WHEN it.id IS NOT NULL THEN '/app/projects/'||r.project_id||'?chatBefore='||(it.position+1)||'#turn-'||it.id END) AS value,
         '/app/projects/'||r.project_id||'?chatBefore='||(t.position+1)||'#turn-'||t.id AS href
       FROM annotation_reviews r JOIN analysis_runs a ON a.id=r.run_id AND a.project_id=r.project_id AND a.owner_id=r.owner_id
       JOIN agent_turns t ON t.id=a.turn_id AND t.owner_id=r.owner_id AND t.project_id=r.project_id
+      LEFT JOIN analysis_runs i ON i.id=r.investigation_run_id AND i.project_id=r.project_id AND i.owner_id=r.owner_id
+      LEFT JOIN agent_turns it ON it.id=i.turn_id AND it.project_id=r.project_id AND it.owner_id=r.owner_id AND it.status='completed' AND NOT it.cancel_requested
       WHERE r.project_id=$1 AND r.owner_id=$2 AND t.status='completed' AND NOT t.cancel_requested
       ORDER BY r.run_id,r.cluster,r.created_at DESC,r.id DESC
     ), research AS (

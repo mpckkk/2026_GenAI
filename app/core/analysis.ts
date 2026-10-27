@@ -5,13 +5,16 @@ import type {
   ScientificPoint,
 } from "./scientific-data";
 import type { LiteratureResult } from "./literature";
+import type { InvestigationResult } from "./investigation";
 import type { AnnotationResult, AnnotationReview } from "./annotation";
 export interface ScientificAction {
-  operation: ScientificOperation | "literature" | "annotation";
+  operation:
+    ScientificOperation | "literature" | "annotation" | "investigation";
   datasetId: string;
   cluster?: string;
   genes?: string[];
   query?: string;
+  annotationRunId?: string;
 }
 export interface AnalysisWorkspace {
   dataset: ScientificDataset | null;
@@ -35,8 +38,14 @@ export interface LiteratureRun extends Run {
 export interface AnnotationRun extends Run {
   result: Omit<AnnotationResult, "payload">;
 }
+export interface InvestigationRun extends Run {
+  result: Omit<InvestigationResult, "payload">;
+}
 export type AnalysisRun =
-  (Run & { result: ScientificResult | AnnotationResult }) | LiteratureRun;
+  | (Run & {
+      result: ScientificResult | AnnotationResult | InvestigationResult;
+    })
+  | LiteratureRun;
 export interface AnalysisReview {
   id: string;
   runId: string;
