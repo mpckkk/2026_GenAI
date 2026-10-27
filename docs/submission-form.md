@@ -8,7 +8,7 @@ Plant scientists can now measure which genes are active in thousands of single c
 
 Celloras is an AI research partner that does this detective work in one conversation. The researcher asks, the agent runs the right tools and answers with a cell map, a suggested cell type per group, and the evidence: which marker genes are measured and the published source behind each one. When the evidence isn't enough, it says so instead of guessing. The researcher decides, and Celloras remembers the decision.
 
-We tested it on published soybean root data. For most groups, Celloras landed on the same cell types the original scientists had found by hand. When a group is unclear, you can ask it to dig deeper, and it tells you what is still uncertain and what to check next. The numbers come from the data, not from the AI.
+We tested it on published soybean root data. For most groups, Celloras landed on the same cell types the original scientists had found by hand. When a group is unclear, you can ask it to dig deeper, and it tells you what is still uncertain and what to check next. The numbers come from the data, not from the AI. Judges can try it without any setup: celloras.com → "Use demo credentials" on the sign-in page. Every request has a full trace under "Agent activity": each step, the Zetaris query, the H-MEM recall, the Nightshift job and the model that answered.
 
 ## Sponsor technology explanation
 Zetaris: stores our versioned reference of 42 published soybean root marker genes. The annotation tool queries it read-only on every request, verifies its content hash, and records the query in the activity view.
