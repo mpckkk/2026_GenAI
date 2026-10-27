@@ -760,3 +760,13 @@
     transition: none;
   }
 }
+.film {
+  padding-top: 72px;
+}
+.filmVideo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  background: #0d1b3d;
+}

@@ -116,6 +116,20 @@ export default function Landing() {
             GSE270392 <span aria-hidden="true">↗</span>
           </a>
         </div>
+        <section className={`${styles.film} ${styles.shell}`}>
+          <div className={styles.sectionHeading}>
+            <p className={styles.eyebrow}>In 90 seconds</p>
+            <h2>How Celloras names your cells.</h2>
+          </div>
+          <video
+            className={styles.filmVideo}
+            src="/video/celloras-promo.mp4"
+            poster="/video/celloras-promo.jpg"
+            controls
+            playsInline
+            preload="metadata"
+          />
+        </section>
         <section id="inside" className={`${styles.inside} ${styles.shell}`}>
           <div className={styles.sectionHeading}>
             <p className={styles.eyebrow}>
