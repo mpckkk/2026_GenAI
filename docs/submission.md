@@ -15,7 +15,7 @@ Required technology for the current plan: **Zetaris, one Meterless Engine, and N
 | Deliverable              | Contents                                                                             | Current status                                                                                    |
 | ------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
 | Demo video, 1–4 minutes  | The agent's main research workflow, actual Zetaris query provenance and H-MEM recall | Recording pending; outline below                                                                  |
-| Slide deck               | Problem, solution, architecture, sponsor use and observed results                    | [PowerPoint and PDF prepared](pitchdeck/README.md)                                                |
+| Slide deck               | Problem, solution, architecture, sponsor use and observed results                    | PowerPoint and PDF prepared                                                                       |
 | Public GitHub repository | All code, setup, usage and dependencies in the README                                | Public visibility verified; application is on `celloras.com`, while default branch remains `main` |
 | Sponsor explanation      | Zetaris's role, the H-MEM Engine and a test/demo showing each working                | [Written explanation and test pointers](../README.md#how-we-use-the-sponsor-technology) prepared  |
 
@@ -33,7 +33,7 @@ Read all ten expanded sections of the [binding event page](https://hackathon.gen
 | 4. Build window          | First implementation commit `694d1a8` is dated 23 October, inside the window. Declare earlier planning, supplied branding and third-party code/data separately.                                                                                        |
 | 5. Technology            | Actual Zetaris retrieval and Meterless H-MEM recall passed in one owned experiment. NVIDIA OpenShell supplies the verified runtime. See [sponsor evidence](../README.md#how-we-use-the-sponsor-technology).                                            |
 | 6. Deliverables          | Public branch, README, pitch/engineering decks and sponsor explanation exist. **Final video and form submission are pending.** Include both decks so architecture, stack, scope and future work accompany the short pitch.                             |
-| 7. Judging               | [Coverage mapping](pitchdeck/README.md#fit-to-the-judging-criteria) uses the published rubric. It records evidence, not predicted scores.                                                                                                              |
+| 7. Judging               | Coverage mapping uses the published rubric. It records evidence, not predicted scores.                                                                                                                                                                 |
 | 8. Prizes                | No Nemotron-award eligibility is claimed. Prize distribution and any recipient tax obligations remain team matters.                                                                                                                                    |
 | 9. Intellectual property | Data/dependency provenance and the vendored H-MEM license are documented. The team must confirm rights to all submitted assets and accept the event's promotional license when submitting. Public availability alone is not a blanket dataset license. |
 | 10. Schedule             | Submit before **27 October 2026, 23:45 UTC**, and check for announced changes. This audit did not submit or certify the entry.                                                                                                                         |
@@ -80,7 +80,7 @@ The existing prepared soybean-root experiment remains a verified alternate walkt
 
 **The combined public rehearsal passed on 2026-10-25.** The [ready demo](demo.md#open-the-ready-demo) contains actual annotation, a measured-marker dot plot, an illustrative saved review, H-MEM recall and its correction in one experiment. Annotation run `af2c9005-6be1-4f7c-baf4-dede8d06155c` retains Zetaris query `f7fbb611-05df-4f96-83c8-efe2e60e8d32`; recall turns `65facd5a-7116-4c72-8115-fa09d923913c` and `caf0379c-ae9f-4631-9af3-bc77bc6be142` retain the original and corrected review sources. Repeating preparation reused those exact records without additional inference or review writes. Numerical evidence and the earlier answer's receipt remained unchanged. Separate memory regression checks cover older-context and distinct-group behavior; this combined rehearsal covers one annotation group.
 
-The prepared history is available for walkthroughs now. The [four-slide deck](pitchdeck/README.md) is prepared. The actual 1–4 minute recording remains outstanding; rehearse any new live prompts before recording.
+The prepared history is available for walkthroughs now. The four-slide deck is prepared. The actual 1–4 minute recording remains outstanding; rehearse any new live prompts before recording.
 
 ## Upload video script — target 3:00
 
@@ -135,6 +135,6 @@ Label prepared result footage **Earlier actual run**. If waiting is shortened in
 
 ## Deck — four slides
 
-The [editable PowerPoint](pitchdeck/Celloras-Pitch-Deck.pptx) and [PDF](pitchdeck/Celloras-Pitch-Deck.pdf) use four slides: the agent and its visual output, a without/with comparison, the agent’s tools and sponsor roles, and an actual sourced decision-recall answer. The [deck guide](pitchdeck/README.md#fit-to-the-judging-criteria) maps the content to the official 100-point rubric.
+The editable PowerPoint and PDF use four slides: the agent and its visual output, a without/with comparison, the agent’s tools and sponsor roles, and an actual sourced decision-recall answer. The deck guide maps the content to the official 100-point rubric.
 
 Avoid unsupported claims of classification accuracy, full-atlas federation or “weeks to seconds.” Current annotation is exploratory; same-study agreement is not independent validation. Keep this boundary concise in the presentation and link [methods](annotation-method.md) for detail.

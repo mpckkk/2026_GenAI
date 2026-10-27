@@ -6,7 +6,7 @@
 
 Celloras helps plant researchers name the cell groups in their single-cell data, with evidence. Upload a dataset, and an agent maps the cells, suggests cell types from measured expression and published markers, and remembers each decision the researcher makes. Soybean comes first.
 
-**[Live app](https://celloras.com)** · [Pitch deck](docs/pitchdeck/Celloras-Pitch-Deck.pdf) · [Engineering deck](docs/technical-deck/Celloras-Technical-Deck.pdf) · Code lives on the [`celloras.com`](https://github.com/mpckkk/2026_GenAI/tree/celloras.com) branch.
+**[Live app](https://celloras.com)** · [Engineering deck](docs/technical-deck/Celloras-Technical-Deck.pdf) · Code lives on the [`celloras.com`](https://github.com/mpckkk/2026_GenAI/tree/celloras.com) branch.
 
 ## What it does
 

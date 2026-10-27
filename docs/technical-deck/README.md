@@ -1,6 +1,6 @@
 # Celloras engineering deck
 
-A ten-slide implementation walkthrough, separate from the [four-slide pitch](../pitchdeck/README.md).
+A ten-slide implementation walkthrough.
 
 - [Presentation PDF](Celloras-Technical-Deck.pdf)
 - [Editable PowerPoint](Celloras-Technical-Deck.pptx)
