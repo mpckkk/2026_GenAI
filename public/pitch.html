@@ -2,135 +2,119 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="Celloras investigates your plant cells and shows the evidence behind its recommendations. Explore a real soybean-root research workflow.">
-  <title>Celloras · The detective work after the experiment</title>
+  <meta name="description" content="Celloras is an AI agent for plant single-cell annotation. Upload a dataset, get cell-type recommendations and inspect the evidence.">
+  <title>Celloras · Meet your cells</title>
   <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="/pitch/pitch.css">
   <script src="/pitch/pitch.js" defer></script>
 </head>
 <body>
-<a href="#story" class="skip-link">Skip to the story</a>
-<header class="site-header">
-  <a href="/" class="brand" aria-label="Celloras home"><img src="/pitch/logo.png" alt="Celloras" width="1712" height="1152"></a>
-  <nav aria-label="Pitch navigation">
-    <a href="#case">The story</a>
-    <a href="#agent">In action</a>
-    <a href="#behind">Behind the answer</a>
-  </nav>
-  <a class="button compact" href="/login">Try the demo <span aria-hidden="true">↗</span></a>
-</header>
-<main id="story">
-  <section class="hero shell" aria-labelledby="hero-title">
-    <div class="hero-copy">
-      <p class="eyebrow"><span class="small-dot"></span> An AI agent for plant cell annotation</p>
-      <h1 id="hero-title">The experiment<br>is done.<br><span>The detective<br>work begins.</span></h1>
-      <p class="lead">You have thousands of cell profiles. Before you can explain the experiment, you need to know which cells you’re looking at.</p>
-      <a class="text-link" href="#case">Follow one investigation <span aria-hidden="true">↓</span></a>
-    </div>
-    <figure class="hero-map">
-      <div class="figure-heading"><span class="mono">Glycine max / root</span><span class="mono">01 / The question</span></div>
-      <div class="map-stage">
-        <canvas id="cell-map" role="img" aria-label="Loading the real soybean cell-similarity map"></canvas>
-        <p id="map-status" class="map-status" role="status">Loading the cell map…</p>
-        <noscript><p class="map-status">Enable JavaScript to explore the cell map. The recorded results are shown below.</p></noscript>
-      </div>
-      <div class="map-controls" role="group" aria-label="Map display">
-        <button type="button" data-map-mode="groups" aria-pressed="true" disabled>See the groups</button>
-        <button type="button" data-map-mode="candidate" aria-pressed="false" disabled>Follow one candidate <span aria-hidden="true">↗</span></button>
-      </div>
-      <figcaption><strong id="map-caption">7,496 nuclei. 12 groups to investigate.</strong><span>Each dot is a nucleus, positioned by gene-expression similarity.</span></figcaption>
-    </figure>
-    <div class="hero-bottom"><span>Starting with soybean roots</span><span>Real data. An interpretation you can inspect.</span><a href="#case" aria-label="Continue to the research problem">↓</a></div>
-  </section>
+  <header class="deck-header">
+    <a href="/" class="brand" aria-label="Celloras home"><img src="/pitch/logo.png" alt="Celloras" width="1712" height="1152"></a>
+    <span class="event-name">Open Agent Hackathon 2026</span>
+    <button type="button" class="sources-button" data-open-sources>Sources &amp; details ↗</button>
+  </header>
 
-  <section id="case" class="case-section shell section" aria-labelledby="case-title">
-    <div class="section-label"><span>02</span><span>The case for a cell name</span></div>
-    <div class="case-layout">
-      <h2 id="case-title">A cell name<br>needs <em>evidence</em><br>behind it.</h2>
-      <div class="case-copy">
-        <p class="large-copy">Calling a group “root hair” means connecting its active genes to published evidence.</p>
-        <p>When the clues conflict, the researcher has to weigh the explanations and decide what to investigate next. That work crosses analysis tools, reference tables and research notes.</p>
-        <div class="evidence-path" aria-label="Gene activity, published markers, then a suggested cell identity">
-          <div><span class="path-number">1</span><strong>Gene activity</strong><span>What’s measured?</span></div><span class="path-arrow" aria-hidden="true">→</span>
-          <div><span class="path-number">2</span><strong>Published markers</strong><span>What fits?</span></div><span class="path-arrow" aria-hidden="true">→</span>
-          <div><span class="path-number">3</span><strong>A cell identity</strong><span>What’s supported?</span></div>
+  <main id="pitch" aria-label="Celloras pitch">
+    <section class="slide cover current" id="slide-1" aria-labelledby="title-1">
+      <div class="cover-copy">
+        <p class="kicker">For plant single-cell researchers</p>
+        <h1 id="title-1">Meet<br>your <span>cells.</span></h1>
+        <p class="cover-description">An AI agent that identifies cell types<br>and shows the evidence behind them.</p>
+        <div class="cover-start"><span>Starting with soybean</span><span>01</span></div>
+      </div>
+      <figure class="cover-visual">
+        <div class="map-title"><strong>7,496</strong><span>cell profiles.<br>Which cells are they?</span></div>
+        <div class="map-stage"><canvas id="cell-map" role="img" aria-label="Loading the soybean cell-similarity map"></canvas><p class="map-status" id="map-status" role="status">Loading the cell map…</p></div>
+        <figcaption>Real soybean-root data. Each dot is one nucleus.</figcaption>
+      </figure>
+    </section>
+
+    <section class="slide problem" id="slide-2" aria-labelledby="title-2">
+      <p class="kicker">The problem</p>
+      <h2 id="title-2">The data is ready.<br><span>The interpretation isn’t.</span></h2>
+      <p class="slide-intro">Before comparing experiments, researchers need to know which cells they’re comparing.</p>
+      <div class="before-after">
+        <div class="before">
+          <h3>Without Celloras</h3>
+          <ol><li><span>01</span>Find the active genes</li><li><span>02</span>Look up published markers</li><li><span>03</span>Weigh possible cell identities</li><li><span>04</span>Record the decision and sources</li></ol>
+          <p>You connect the tools and assemble the evidence.</p>
         </div>
-        <p class="small-copy">Marker genes are clues to a cell’s identity. A single clue rarely tells the whole story.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="agent" class="agent-section section" aria-labelledby="agent-title">
-    <div class="shell">
-      <div class="section-label"><span>03</span><span>Meet your investigator</span></div>
-      <div class="agent-layout">
-        <div class="agent-copy">
-          <h2 id="agent-title">Put an agent<br>on the case.</h2>
-          <p class="large-copy">Upload your dataset. Celloras runs the analysis, checks published markers and recommends cell identities with supporting evidence.</p>
-          <p>Ask why a label fits, or what to examine next. The agent can run a follow-up analysis and bring the result back into the conversation.</p>
-          <div class="comparison">
-            <div><span class="mono">Without Celloras</span><p>You coordinate the tools and assemble the case.</p></div>
-            <div><span class="mono">With Celloras</span><p>The agent does that work and brings you an interpretation to question.</p></div>
-          </div>
-          <a class="text-link" href="/login">Give it a dataset <span aria-hidden="true">↗</span></a>
-          <p class="small-copy upload-note">Prepared H5AD with counts, cell groups and a cell map. Or start with the included demo.</p>
+        <div class="after">
+          <h3>With Celloras</h3>
+          <p class="after-answer">Upload your data.<br>The agent runs the work.</p>
+          <div class="after-result"><span class="result-arrow" aria-hidden="true">↳</span><p>Review a cell-type recommendation<br>with the evidence already attached.</p></div>
         </div>
-        <figure class="conversation">
-          <div class="conversation-top"><span class="small-dot"></span><span>Soybean root / a recorded conversation</span></div>
-          <blockquote class="user-message">Annotate all source clusters in soybean-root-gse270392.h5ad using the compatible published marker reference.</blockquote>
-          <div class="assistant-name"><span class="brand-mark"><img src="/pitch/logo.png" alt="" width="1712" height="1152" loading="lazy"></span><strong>Celloras</strong></div>
-          <p class="assistant-excerpt">The completed marker analysis gives <strong>7 provisional suggestions</strong>, <strong>1 ambiguous group</strong> and <strong>4 unresolved groups</strong> across all 12 source clusters.</p>
-          <a href="/pitch/conversation.png" target="_blank" rel="noopener" class="capture-link" aria-label="Open the actual annotation card at full size"><img src="/pitch/conversation.png" width="963" height="714" alt="Actual Celloras card showing the soybean cell map with suggested identities and unresolved groups" loading="lazy"></a>
-          <figcaption>Excerpts and card from the same recorded request. <a href="/pitch/conversation.png" target="_blank" rel="noopener">Open full-size card ↗</a></figcaption>
-        </figure>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="evidence" class="evidence-section section shell" aria-labelledby="evidence-title">
-    <div class="section-label"><span>04</span><span>The answer, and the case behind it</span></div>
-    <div class="evidence-heading"><h2 id="evidence-title">The answer comes<br>with its <em>evidence.</em></h2><p class="large-copy">Open the evidence. Challenge the interpretation. Save your decision.</p></div>
-    <div class="finding">
-      <div class="finding-number"><span class="big-number">388</span><span>nuclei in this group</span></div>
-      <div class="finding-identity"><span class="mono">Suggested identity</span><h3>Root hair</h3><span class="provisional"><span class="small-dot"></span> Provisional, ready for review</span></div>
-      <div class="finding-genes"><span class="mono">Two supporting marker genes</span><code>Glyma.01G224900</code><code>Glyma.17G030700</code><a class="text-link" href="#source-notes">Follow the source <span aria-hidden="true">↓</span></a></div>
-    </div>
-    <div class="recall-layout">
-      <div><p class="eyebrow">And when you come back</p><h3 class="recall-question">“What did we decide,<br>and why?”</h3><p>The decision stays connected to its evidence. Celloras retrieves it when you need it again.</p><p class="small-copy">Actual recall of an illustrative demo review. The root-hair identity remains provisional.</p></div>
-      <figure class="recall-capture"><img src="/pitch/recall.png" width="1038" height="402" alt="Actual Celloras response recalling the provisional root-hair decision, its supporting genes and its source" loading="lazy"><figcaption>Saved decision recalled with Meterless H-MEM. <a href="/pitch/recall.png" target="_blank" rel="noopener">View capture ↗</a></figcaption></figure>
-    </div>
-  </section>
-
-  <section id="behind" class="behind-section section" aria-labelledby="behind-title">
-    <div class="shell">
-      <div class="section-label"><span>05</span><span>Behind the answer</span></div>
-      <div class="behind-heading"><h2 id="behind-title">Follow the work.<br>Inspect the answer.</h2><p class="large-copy">The activity dashboard shows which tools ran, which sources they used and what came back.</p></div>
-      <div class="architecture-flow" aria-label="Request flows through the agent orchestrator and scientific tools to a visual result, then an explicit reviewed decision">
-        <div><span class="mono">01 / Your dataset</span><strong>Upload + question</strong></div><span aria-hidden="true">→</span>
-        <div><span class="mono">02 / Agent orchestrator</span><strong>Context + scientific tools</strong></div><span aria-hidden="true">→</span>
-        <div><span class="mono">03 / Visual answer</span><strong>Measurements + explanation</strong></div><span aria-hidden="true">→</span>
-        <div><span class="mono">04 / Your review</span><strong>A decision to build on</strong></div>
+    <section class="slide demonstration" id="slide-3" aria-labelledby="title-3">
+      <div class="demo-copy">
+        <p class="kicker">The working demo</p>
+        <h2 id="title-3">Upload.<br>Ask the agent<br>to annotate.</h2>
+        <p class="demo-description">Celloras runs the analysis and returns a cell map in the conversation.</p>
+        <div class="demo-file"><span class="file-icon" aria-hidden="true">↥</span><div><strong>soybean-root-gse270392.h5ad</strong><span>7,496 nuclei · 12 existing groups</span></div></div>
+        <div class="run-summary"><div><strong>7</strong><span>suggested</span></div><div><strong>1</strong><span>ambiguous</span></div><div><strong>4</strong><span>unresolved</span></div></div>
+        <p class="frame-note">Prepared H5AD with counts, groups and UMAP.</p>
       </div>
-      <div class="technology-list">
-        <article><span class="tech-index">01</span><div><h3>Zetaris</h3><p>Retrieves the published marker reference used in the annotation.</p></div><div class="tech-proof"><strong>42 marker associations</strong><a href="/pitch/activity.png" target="_blank" rel="noopener">Inspect recorded activity ↗</a></div></article>
-        <article><span class="tech-index">02</span><div><h3>Meterless H-MEM</h3><p>Brings back reviewed research decisions with links to their sources.</p></div><div class="tech-proof"><strong>1 saved decision recalled</strong><a href="#evidence">See the recalled decision ↑</a></div></article>
-        <article><span class="tech-index">03</span><div><h3>Meterless Nightshift</h3><p>Compares competing interpretations of an unclear group using the same measured evidence.</p></div><div class="tech-proof"><strong class="pending">Model connection pending</strong><span>Investigation implemented; not active yet.</span></div></article>
-      </div>
-      <div class="runtime-note"><p><strong>A replaceable runtime.</strong> The orchestrator handles context, tools and persistence. CLI or HTTP adapters handle model execution. The recorded conversation uses Codex through OpenShell.</p><a class="text-link" href="/technical-flow.html" target="_blank" rel="noopener">Open the technical flowchart <span aria-hidden="true">↗</span></a></div>
-    </div>
-  </section>
+      <figure class="agent-answer">
+        <div class="request-line"><span>You</span><blockquote>Annotate all source clusters in soybean-root-gse270392.h5ad using the compatible published marker reference.</blockquote></div>
+        <div class="agent-label"><span class="agent-dot"></span><strong>Celloras</strong><span>Actual result</span></div>
+        <a href="/pitch/conversation.png" target="_blank" rel="noopener" aria-label="Open the actual agent annotation card"><img src="/pitch/conversation.png" width="963" height="714" alt="Actual Celloras annotation card: a colored map with suggested cell identities and unresolved groups"></a>
+        <figcaption>Recorded request and result. Suggestions remain open to review.</figcaption>
+      </figure>
+    </section>
 
-  <section id="next" class="closing shell section" aria-labelledby="closing-title">
-    <div class="closing-copy"><div class="section-label"><span>06</span><span>The ambition</span></div><h2 id="closing-title">Put an investigator<br>beside every<br><em>plant researcher.</em></h2><p class="large-copy">An agent that helps identify the cells, investigates the evidence and remembers the decisions you made.</p><p>We start with soybean roots. Next: validated references for more plants and direct comparisons between studies.</p><a class="button" href="/login">Explore the soybean demo <span aria-hidden="true">↗</span></a><span class="demo-note">Demo login details are on the sign-in screen.</span></div>
-    <figure class="botanical"><img src="/images/soybean-root-editorial-v1.webp" width="1122" height="1402" alt="Illustration of a soybean plant with leaves and branching roots" loading="lazy"><figcaption><span>Glycine max</span><span>Our starting point</span></figcaption></figure>
-  </section>
-  <section class="sources shell" id="source-notes" aria-label="Dataset and demonstration sources">
-    <details><summary>Dataset, demonstration and sources <span aria-hidden="true">+</span></summary><div class="source-body"><p>This page uses the published GSE270392 soybean-root dataset: 7,496 nuclei and the original authors’ UMAP coordinates. The interactive map displays those coordinates, not a spatial layout. The highlighted group contains 388 nuclei.</p><p>The annotation and decision-recall captures come from one recorded Celloras experiment. Its marker reference is associated with the same study, so this demonstrates the workflow rather than independent annotation accuracy. A match does not establish publication readiness, and an unresolved group is not proof of novelty.</p><p>Current reference comparison uses marker evidence. Direct comparison of expression patterns between studies is future work. Nightshift investigation is implemented but disabled pending model connection and a successful live workflow.</p><div class="source-links"><a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE270392" target="_blank" rel="noopener">Published dataset ↗</a><a href="https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/evidence/agent-activity-public-2026-10-26.json" target="_blank" rel="noopener">Recorded workflow ↗</a><a href="https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md" target="_blank" rel="noopener">Annotation method ↗</a></div></div></details>
-  </section>
-</main>
-<footer class="shell"><a href="/" class="footer-wordmark">Celloras</a><span>An agent for plant cell annotation.</span><a href="https://github.com/mpckkk/2026_GenAI/tree/celloras.com" target="_blank" rel="noopener">View the code ↗</a></footer>
+    <section class="slide evidence" id="slide-4" aria-labelledby="title-4">
+      <div class="evidence-copy">
+        <p class="kicker">One group, explained</p>
+        <h2 id="title-4">Root hair.<br><span>Here’s why.</span></h2>
+        <p class="evidence-intro">The agent suggests an identity for <strong>388 nuclei</strong> and points to two supporting markers.</p>
+        <div class="gene-pair"><code>Glyma.01G224900</code><code>Glyma.17G030700</code></div>
+        <p class="evidence-status">Suggested identity, pending independent validation.</p>
+        <a class="plain-link" href="https://celloras.com/app/activity/3ff0f30e-3655-4e83-8b4e-08f703054b46" target="_blank" rel="noopener">Inspect the annotation record ↗</a>
+      </div>
+      <div class="decision-story">
+        <div class="decision-heading"><span>Researcher review</span><strong>Keep it provisional.</strong><p>Save the interpretation with its supporting genes and the need for independent evidence.</p></div>
+        <div class="recall-heading"><span>Next conversation</span><h3>The agent remembers<br>the decision and why.</h3></div>
+        <a href="/pitch/recall.png" target="_blank" rel="noopener" aria-label="Open the actual saved-decision recall"><img src="/pitch/recall.png" width="1038" height="402" alt="Actual agent response recalling the provisional root-hair decision and its source"></a>
+        <p class="frame-note">Actual recall of an illustrative demo review, using Meterless H-MEM.</p>
+      </div>
+    </section>
+
+    <section class="slide architecture" id="slide-5" aria-labelledby="title-5">
+      <p class="kicker">How it works</p>
+      <h2 id="title-5">You can follow <span>every step.</span></h2>
+      <div class="system-flow" aria-label="Dataset and request go to the Celloras orchestrator, which runs scientific tools and returns a visual result">
+        <div><span>Input</span><strong>Dataset + request</strong></div><b aria-hidden="true">→</b><div><span>Celloras orchestrator</span><strong>Context + tools + persistence</strong></div><b aria-hidden="true">→</b><div><span>Output</span><strong>Visual result + explanation</strong></div>
+      </div>
+      <div class="architecture-body">
+        <div class="technology-roles">
+          <div><span class="tech-number">01</span><div><h3>Zetaris</h3><p>Retrieves the published marker reference.</p><strong>42 marker associations in this run</strong></div></div>
+          <div><span class="tech-number">02</span><div><h3>Meterless H-MEM</h3><p>Retrieves earlier reviewed decisions.</p><strong>1 saved decision recalled</strong></div></div>
+          <div class="pending-role"><span class="tech-number">03</span><div><h3>Meterless Nightshift</h3><p>Planned use: compare competing interpretations.</p><strong>Implemented, inactive: model connection pending</strong></div></div>
+        </div>
+        <figure class="activity-proof"><a href="/pitch/activity.png" target="_blank" rel="noopener" aria-label="Open the actual activity record"><img src="/pitch/activity.png" width="1600" height="1100" alt="Recorded activity showing the Zetaris reference query and annotation tool results"></a><figcaption>Actual tool calls, sources and outcomes. <a href="/pitch/activity.png" target="_blank" rel="noopener">View full size ↗</a></figcaption></figure>
+      </div>
+      <p class="runtime-note">Replaceable CLI or HTTP runtime. This demo uses Codex through OpenShell. <a href="/technical-flow.html" target="_blank" rel="noopener">Engineering flowchart ↗</a></p>
+    </section>
+
+    <section class="slide closing" id="slide-6" aria-labelledby="title-6">
+      <div class="closing-copy"><p class="kicker">The ambition</p><h2 id="title-6">An AI colleague<br>for plant<br><span>research.</span></h2><p>Start with soybean cell annotation.<br>Extend to more plants and comparisons between studies.</p><a class="demo-link" href="/login">Try Celloras <span aria-hidden="true">↗</span></a><span class="demo-hint">Demo credentials are on the login screen.</span></div>
+      <figure class="closing-plant"><img src="/images/soybean-root-editorial-v1.webp" width="1122" height="1402" alt="Soybean plant with its leaves and roots"><figcaption><strong>Soybean today.</strong><span>More plants next.</span></figcaption></figure>
+    </section>
+  </main>
+
+  <footer class="deck-footer">
+    <span class="footer-context">Plant single-cell research</span>
+    <nav aria-label="Presentation slides" class="slide-tabs"><button aria-label="Slide 1: Celloras" aria-current="step" data-slide="0">1</button><button aria-label="Slide 2: The problem" data-slide="1">2</button><button aria-label="Slide 3: Agent demo" data-slide="2">3</button><button aria-label="Slide 4: Evidence" data-slide="3">4</button><button aria-label="Slide 5: Architecture" data-slide="4">5</button><button aria-label="Slide 6: Vision" data-slide="5">6</button></nav>
+    <div class="deck-controls"><span id="slide-position" aria-live="polite">01 / 06</span><button id="previous-slide" aria-label="Previous slide" disabled>←</button><button id="next-slide" aria-label="Next slide">→</button></div>
+  </footer>
+
+  <dialog id="sources-dialog" aria-labelledby="sources-title"><button type="button" class="dialog-close" aria-label="Close sources">×</button><h2 id="sources-title">Sources &amp; demo details</h2><p>The map uses all 7,496 nuclei and original author UMAP coordinates from GSE270392. It shows gene-expression similarity, not physical positions in the root.</p><p>The result, review, recall and activity belong to one recorded Celloras experiment. The marker reference is associated with the same study, so this demonstrates the workflow, not independent annotation accuracy.</p><p>The review is explicitly illustrative and keeps the root-hair identity provisional. Missing matches do not establish novelty. Current comparison uses marker evidence; direct expression comparison between studies and broader plant coverage are future work.</p><p>Nightshift investigation is implemented but inactive, pending a model connection and a successful real request. The displayed workflow uses Codex through OpenShell.</p><div class="source-links"><a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE270392" target="_blank" rel="noopener">Published dataset ↗</a><a href="https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/evidence/agent-activity-public-2026-10-26.json" target="_blank" rel="noopener">Workflow receipt ↗</a><a href="https://github.com/mpckkk/2026_GenAI/blob/celloras.com/docs/annotation-method.md" target="_blank" rel="noopener">Annotation method ↗</a></div></dialog>
+  <noscript><p class="noscript-note">JavaScript enables slide navigation and the live cell map. All presentation content is available below.</p></noscript>
 </body>
 </html>

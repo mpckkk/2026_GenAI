@@ -1,5 +1,7 @@
 # Engineering notes
 
+- The first Celloras pitch page was rejected as generic. A long marketing page with repeated detective metaphors and small proof images did not meet the pitch brief. Lead with what the product does, show one point per presentation frame, and give the actual agent result enough space to read.
+
 - For the Celloras story page, carry one recorded experiment through the map, agent response, review, recall and tool receipts. Disclose an excerpt as an excerpt; use genuine screenshots for product proof. Keep inactive Nightshift separate from verified Zetaris and H-MEM use.
 
 - The latest organizer correction supplied on 27 October explicitly requires Nightshift in addition to Zetaris and a Meterless Engine. Older optional-Nightshift notes below are historical and must not drive the current submission plan.

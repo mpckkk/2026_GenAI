@@ -1,5 +1,11 @@
 # Foundation verification — 2026-10-23
 
+## Browser pitch revision, 27 October 2026
+
+- Replaced the rejected long marketing page with six viewport-fitted desktop presentation frames and a normal vertical mobile reading layout. Real scientific assets and sponsor status are unchanged.
+- Visually inspected every desktop frame and the mobile page. Checked slide buttons, keyboard navigation, sources dialog and loaded images. Each desktop frame remained within its 720px design stage; no browser page errors or mobile horizontal overflow. No new inference was run.
+
+
 ## Story pitch page, 27 October 2026
 
 - Built `/pitch.html` from the approved six-part story using the real soybean UMAP and product captures from one recorded experiment. No new inference was run. Asset and claim provenance is documented in `docs/pitchdeck/pitch-page.md`.

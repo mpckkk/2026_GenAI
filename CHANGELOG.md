@@ -1,5 +1,7 @@
 # Changelog
 
+- Rebuilt `/pitch.html` as six browser presentation frames with concise copy, a direct before/after comparison and larger real agent results. Added keyboard and button navigation; mobile uses normal reading order. Retained the actual evidence and explicit pending Nightshift status.
+
 - Added `/pitch.html`, a six-part visual Celloras story with a real interactive soybean map, recorded agent cards, the reviewed root-hair example, H-MEM recall and inspectable Zetaris activity. Includes responsive layouts, demo links and explicit pending Nightshift status.
 
 - Updated the plain technical flowchart with the optional Nightshift investigation branch, separate review result, unchanged original annotation and explicit model-connection activation gate. Kept the active CLI/HTTP conversation interface, shared memory/activity paths and fitted zoomable layout.

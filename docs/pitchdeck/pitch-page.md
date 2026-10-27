@@ -1,6 +1,6 @@
-# Celloras story page
+# Celloras browser pitch
 
-Build the approved six-beat pitch as a standalone page at `/pitch.html` on the existing Celloras deployment. White and black with restrained green, large editorial type, actual GSE270392 coordinates and real product captures. Keep the private `pitch-outline.md` untracked.
+Initial version: build the approved six-beat pitch as a standalone page at `/pitch.html` on the existing Celloras deployment. White and black with restrained green, large editorial type, actual GSE270392 coordinates and real product captures. Keep the private `pitch-outline.md` untracked.
 
 ## File ledger and sequence
 
@@ -34,3 +34,17 @@ Inspect the actual page on desktop and mobile, including map mode changes, navig
 ## Browser verification
 
 Inspected the real page at 1440px desktop and 390px mobile, including all six sections and loaded screenshots. Toggled both map modes, verified the 388/7,496 captions, opened the source disclosure and checked image loading. No page errors, failed content requests or horizontal overflow. Static preview used port 3125 because the already-running production Next process on port 3100 had not indexed the newly added files. Deployment rebuild includes the new public files. Evidence is kept in ignored `.artifacts/pitch-page/`.
+
+## Revision after design feedback
+
+The first version was rejected as generic. Replace the long marketing page with six presentation frames, retaining the same route and verified assets. One point per frame: product, manual work, agent demonstration, root-hair evidence, architecture and recorded tool use, then plant coverage. Remove the detective metaphor, repeated CTAs and paragraphs that restate the same promise. Desktop frames fit the viewport with keyboard/button navigation; mobile uses normal vertical reading. Keep the real workflow and pending Nightshift status explicit.
+
+File ledger: rewrite `public/pitch.html`, `public/pitch/pitch.css`, `public/pitch/pitch.js`; update this document, verification notes, learned notes and changelog. Reuse existing images without edits. No runtime, science, login, private outline or database changes.
+
+Reference: Sequoia's [pitch guidance](https://sequoiacap.com/article/writing-a-business-plan) puts the company purpose before the problem and solution. Apply that sequence within the hackathon's required demo and architecture content; do not add invented traction or market claims. Use the Presentations and Made to Stick skills for concise copy and one visual idea per frame.
+
+### Revision verification
+
+Inspected all six desktop frames at 1440 × 900. Each stays within the fitted stage with no overflow. The actual result and recall screenshots remain unchanged. Verified direct slide buttons, Home/ArrowRight keyboard navigation, source-dialog open/Escape-close, image loading and the 390px mobile reading layout. No browser page errors or horizontal mobile overflow. Evidence: `.artifacts/pitch-revision/`.
+
+Current copy: Meet your cells → The data is ready, the interpretation isn't → Upload and ask the agent to annotate → Root-hair evidence and saved review → Architecture and recorded tool use → An AI colleague for plant research. The preceding long-page description is implementation history, not the current presentation.
