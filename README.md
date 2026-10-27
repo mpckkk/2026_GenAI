@@ -63,6 +63,20 @@ Real requests on the live app, using the soybean root dataset (7,496 cells, 12 g
 
 **What's unique:** published evidence (Zetaris), measured data and each researcher's own decisions (H-MEM) are kept apart. A remembered opinion can never pass as published evidence, and every step is visible in **Agent activity**. Development used Codex; Cursor was not used.
 
+## Pre-existing components
+
+All Celloras code in this repository was written during the hackathon, from 23 October 2026 (first commit `9efffb2`). It builds on these existing components:
+
+| Component                                | What it is                                                                   | How Celloras uses it                                                                                                                          |
+| ---------------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Meterless H-MEM Engine                   | Meterless's official reference engine, Apache-2.0, pinned revision `1742dec` | Vendored unmodified in [third_party/meterless-hmem](third_party/meterless-hmem/README.md). Our adapter is `app/adapters/research-memory.mjs`. |
+| Meterless Nightshift 1.5.1               | Meterless's runtime, downloaded and checksum-verified at build time          | Runs on our server. Deployment files are in [infra/nightshift](infra/nightshift/); no vendor files are in Git.                                |
+| Zetaris platform 2.4.3                   | Zetaris's hackathon release                                                  | Self-hosted next to Celloras. We load our marker table into it.                                                                               |
+| NVIDIA OpenShell and Codex CLI           | Agent sandbox and command-line agent                                         | Run the chat agent.                                                                                                                           |
+| NVIDIA Nemotron 3 Ultra                  | Model on the NVIDIA API                                                      | Answers Nightshift investigation jobs.                                                                                                        |
+| Soybean root atlas (GSE270392, Table S2) | Public data from Zhang et al., Cell 2024                                     | Demo dataset and published marker reference. Large source files stay outside Git.                                                             |
+| Open-source libraries and services       | Next.js, React, PostgreSQL, Keycloak and others                              | Pinned in [package.json](package.json) and the Compose files.                                                                                 |
+
 ## Data and method
 
 | Data                                                        | Source                                                                                                                                                                                                             |
